@@ -1,6 +1,6 @@
 package aniwash.model;
 
-public class Customer extends AbstractUser {
+public class Customer implements IUser {
 
     private String name;
     private int id;
