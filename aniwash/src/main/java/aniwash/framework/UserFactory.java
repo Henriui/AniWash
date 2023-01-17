@@ -3,17 +3,17 @@ import aniwash.model.*;
 
 public class UserFactory {
     
-    public IUser createCustomer(){
+    public AbstractUser createCustomer(){
         // TODO Auto-generated method stub
         return new Customer();
     }
 
-    public IUser createEmployee(){
+    public AbstractUser createEmployee(){
         // TODO Auto-generated method stub
         return new Employee();
     }
 
-    public IUser createEmployer(){
+    public AbstractUser createEmployer(){
         // TODO Auto-generated method stub
         return new Employer();
     }
