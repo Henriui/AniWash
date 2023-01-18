@@ -9,6 +9,30 @@ public class Customer implements IUser {
     private String address;
     private String postalcode;
 
+    public Customer() {
+    }
+
+    public Customer(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public Customer(String name, int id, String phone, String email) {
+        this.name = name;
+        this.id = id;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public Customer(String name, int id, String phone, String email, String address, String postalcode) {
+        this.name = name;
+        this.id = id;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.postalcode = postalcode;
+    }
+
     @Override
     public String getName() {
         return name;
