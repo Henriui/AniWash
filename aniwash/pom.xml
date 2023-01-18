@@ -25,6 +25,18 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>13</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>13</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -69,6 +81,21 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>0.0.6</version>
+          <executions>
+              <execution>
+                  <!-- Default configuration for running -->
+                  <!-- Usage: mvn clean javafx:run -->
+                  <id>default-cli</id>
+                  <configuration>
+                      <mainClass>com.project.Main</mainClass>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
       </plugins>
     </pluginManagement>
   </build>
