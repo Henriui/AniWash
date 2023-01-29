@@ -1,0 +1,68 @@
+.image_preview_container {
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 1.0) 50%, transparent 100%);
+}
+
+.asd {
+    -fx-background-color: #D5BDAF;
+    -fx-background-radius: 30 30 30 30;
+}
+
+.button1 {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 30 0 0 30;
+}
+
+.asd:hover {
+    -fx-background-color: #E3D5CA;
+    -fx-background-radius: 30 0 0 30;
+}
+
+.asd:active {
+    -fx-background-radius: 30 0 0 30;
+}
+
+.side-bar {
+    -fx-background-color: #fbfbfc;
+    -fx-padding: 20px;
+}
+
+.side-bar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-pref-width: 100%;
+    -fx-padding: 10px;
+    -fx-margin-top: 10px;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: white;
+    -fx-transition: all 3.3s ease-in-out;
+}
+
+.side-bar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.side-bar-button:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-border-color: transparent;
+}
+
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-text {
+    -fx-background-color: white;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: #dedddc;
+    -fx-stroke-width: 0.5;
+    -fx-background-color: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: #dedddc;
+    -fx-stroke-width: 0.5;
+}

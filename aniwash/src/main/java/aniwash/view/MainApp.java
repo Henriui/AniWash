@@ -1,28 +1,37 @@
-package aniwash;
+package aniwash.view;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
-/**
- * Hello world!
- *
- */
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.CalendarSource;
+import com.calendarfx.model.Entry;
+import com.calendarfx.model.Calendar.Style;
+import com.calendarfx.view.CalendarView;
+
 public class MainApp extends Application
 {
+
+    @FXML
+    private AnchorPane a;
     
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
-        scene = new Scene(root);
+        Parent root = FXMLLoader.load(getClass().getResource("mainView.fxml"));
         
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
@@ -39,4 +48,5 @@ public class MainApp extends Application
     public static void startSimulation(String[] args) {
         launch();
     }
+
 }
