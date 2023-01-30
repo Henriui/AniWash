@@ -69,7 +69,7 @@
                <children>
                   <AnchorPane layoutX="395.0" layoutY="418.0" prefHeight="262.0" prefWidth="325.0" style="-fx-background-color: #fffdfd; -fx-background-radius: 15;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="395.0">
                      <children>
-                        <Text fill="#757575" layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="30.1240234375">
+                        <Text fill="#757575" layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" translateY="6.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="30.1240234375">
                            <font>
                               <Font size="49.0" />
                            </font>
@@ -79,7 +79,7 @@
                               <Font name="Ikonli" size="21.0" />
                            </font>
                         </Text>
-                        <Text fill="#757575" layoutX="14.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="103" AnchorPane.bottomAnchor="52.35884490919261" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="145.10382356769014">
+                        <Text fill="#757575" layoutX="14.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="103" translateY="3.0" AnchorPane.bottomAnchor="52.35884490919261" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="145.10382356769014">
                            <font>
                               <Font size="49.0" />
                            </font>
