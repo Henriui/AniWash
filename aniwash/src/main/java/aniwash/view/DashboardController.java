@@ -1,5 +1,6 @@
 package aniwash.view;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -12,34 +13,38 @@ import com.calendarfx.model.Interval;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
-import com.calendarfx.view.YearMonthView;
-import com.calendarfx.view.DateControl.CreateCalendarSourceParameter;
-import com.calendarfx.view.page.DayPage;
 
-import javafx.event.EventHandler;
+import aniwash.MainApp;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
-import javafx.util.Callback;
 
-public class AsdController {
+public class DashboardController {
+    MainApp mainApp;
     @FXML
     private AnchorPane backGround;
     @FXML
     private CalendarView calendarview;
     @FXML
-    private AgendaView asd;
-  
+    private AgendaView agendaView;
     @FXML
-    private BarChart dddas;
+    private Button scheduleButton;
+    @FXML
+    private BarChart barChart;
+    private PopUp popup;
+
     public void initialize() {
         Calendar katja = new Calendar("Katja");
         Calendar dirk = new Calendar("Dirk");
 
         CalendarSource familyCalendarSource = new CalendarSource("Family");
         familyCalendarSource.getCalendars().addAll(katja, dirk);
-        asd.getCalendarSources().setAll(familyCalendarSource);
+        agendaView.getCalendarSources().setAll(familyCalendarSource);
 
         Calendar birthdays = new Calendar("Birthdays");
         Calendar holidays = new Calendar("Holidays");
@@ -48,33 +53,36 @@ public class AsdController {
         holidays.setStyle(Style.STYLE2);
         CalendarSource myCalendarSource = new CalendarSource("My Calendars");
         myCalendarSource.getCalendars().addAll(birthdays, holidays);
-        asd.getCalendarSources().addAll(myCalendarSource);
+        agendaView.getCalendarSources().addAll(myCalendarSource);
 
         Entry<String> dentistAppointment = new Entry<>("Dentist");
         Entry<String> d = new Entry<>("asdasd");
         Entry<String> a = new Entry<>("asdadasd");
         Entry<String> c = new Entry<>("ddddd");
+
         Entry entry = new Entry("BENIS");
-        
         Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),LocalDate.of(2023, Month.JANUARY, 31) , LocalTime.of(23, 30));
         entry.setInterval(interval);
-    
         Calendar calendar = new Calendar("Heatl Benis");
+    
         holidays.addEntry(entry);
 
-        asd.showEntry(dentistAppointment);
-        asd.showEntry(a);
-        asd.showEntry(c);
-        asd.showEntry(d);
+        agendaView.showEntry(dentistAppointment);
+        agendaView.showEntry(a);
+        agendaView.showEntry(c);
+        agendaView.showEntry(d);
         katja.addEntry(dentistAppointment);
         holidays.addEntry(a);
         dirk.addEntry(d);
         katja.addEntry(c);
         
-        System.out.println(asd.getCalendars());
+
+        System.out.println(agendaView.getCalendars());
     }
-    private Object foo(CalendarEvent evt) {
-        return null;
+
+    @FXML
+    private void mySchedule() throws IOException {
+        MainApp.setRoot("schedule");
     }
-    
+
 }

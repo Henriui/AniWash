@@ -1,4 +1,4 @@
-package aniwash.view;
+package aniwash;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
-
+import javafx.event.ActionEvent;
 public class MainApp extends Application
 {
 
@@ -19,7 +19,7 @@ public class MainApp extends Application
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("mainView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         
         scene = new Scene(root);
         stage.setScene(scene);

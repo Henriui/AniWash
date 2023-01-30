@@ -3,8 +3,15 @@
 }
 
 .asd {
-    -fx-background-color: #D5BDAF;
-    -fx-background-radius: 30 30 30 30;
+-fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-pref-width: 100%;
+    -fx-padding: 10px;
+    -fx-margin-top: 10px;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: rgb(184, 184, 184);
+    -fx-transition: all 3.3s ease-in-out;
 }
 
 .button1 {
@@ -34,12 +41,14 @@
     -fx-padding: 10px;
     -fx-margin-top: 10px;
     -fx-border-width: 0 0 2px 0;
-    -fx-border-color: white;
+    -fx-border-color: rgb(184, 184, 184);
     -fx-transition: all 3.3s ease-in-out;
 }
 
 .side-bar-button:hover {
     -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-transition: all 3.3s ease-out;
+    -fx-border-color: transparent;
 }
 
 .side-bar-button:pressed {
