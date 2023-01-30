@@ -1,9 +1,5 @@
 package aniwash.view;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.CalendarSource;
@@ -31,8 +27,6 @@ public class AsdController {
     private AgendaView asd;
   
     @FXML
-    private ZonedDateTime kkk;
-    @FXML
     private BarChart dddas;
     public void initialize() {
         Calendar katja = new Calendar("Katja");
@@ -55,7 +49,6 @@ public class AsdController {
         Entry<String> d = new Entry<>("asdasd");
         Entry<String> a = new Entry<>("asdadasd");
         Entry<String> c = new Entry<>("ddddd");
-        dentistAppointment.changeStartDate(LocalDate.now());
         asd.showEntry(dentistAppointment);
         asd.showEntry(a);
         asd.showEntry(c);

@@ -7,17 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
-import javafx.stage.StageStyle;
-
 import java.io.IOException;
-import java.time.LocalTime;
-
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
-import com.calendarfx.model.Calendar.Style;
-import com.calendarfx.view.CalendarView;
 
 public class MainApp extends Application
 {
