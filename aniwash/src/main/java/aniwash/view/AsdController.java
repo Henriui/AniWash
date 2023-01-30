@@ -1,9 +1,14 @@
 package aniwash.view;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import com.calendarfx.model.Interval;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
@@ -49,6 +54,14 @@ public class AsdController {
         Entry<String> d = new Entry<>("asdasd");
         Entry<String> a = new Entry<>("asdadasd");
         Entry<String> c = new Entry<>("ddddd");
+        Entry entry = new Entry("BENIS");
+        
+        Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),LocalDate.of(2023, Month.JANUARY, 31) , LocalTime.of(23, 30));
+        entry.setInterval(interval);
+    
+        Calendar calendar = new Calendar("Heatl Benis");
+        holidays.addEntry(entry);
+
         asd.showEntry(dentistAppointment);
         asd.showEntry(a);
         asd.showEntry(c);
