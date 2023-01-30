@@ -90,14 +90,8 @@
                            </font>
                         </Text>
                      </children>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </AnchorPane>
                   <AnchorPane layoutX="755.0" layoutY="417.0" prefHeight="265.0" prefWidth="309.0" style="-fx-background-color: #fffdfd; -fx-background-radius: 30;" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="417.0">
-                     <effect>
-                        <DropShadow />
-                     </effect>
                      <children>
                         <Text layoutX="29.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current month gains:" wrappingWidth="281.9775390625" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
                            <font>
@@ -147,17 +141,11 @@
                            </font>
                         </Text>
                      </children>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </AnchorPane>
                   <AnchorPane layoutX="47.0" layoutY="57.0" prefHeight="628.0" prefWidth="300.0" style="-fx-background-color: #fffdfd; -fx-background-radius: 15;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="57.0">
                      <children>
                         <AgendaView fx:id="asd" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0" />
                      </children>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </AnchorPane>
                </children></AnchorPane>
          </center>
