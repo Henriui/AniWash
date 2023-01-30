@@ -1,5 +1,6 @@
 package aniwash.view;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
@@ -28,8 +29,7 @@ public class AsdController {
     private CalendarView calendarview;
     @FXML
     private AgendaView asd;
-    @FXML
-    private YearMonthView ddd;
+  
     @FXML
     private ZonedDateTime kkk;
     @FXML
@@ -52,10 +52,18 @@ public class AsdController {
         asd.getCalendarSources().addAll(myCalendarSource);
 
         Entry<String> dentistAppointment = new Entry<>("Dentist");
+        Entry<String> d = new Entry<>("asdasd");
+        Entry<String> a = new Entry<>("asdadasd");
+        Entry<String> c = new Entry<>("ddddd");
+        dentistAppointment.changeStartDate(LocalDate.now());
         asd.showEntry(dentistAppointment);
-        ddd.showEntry(dentistAppointment);
+        asd.showEntry(a);
+        asd.showEntry(c);
+        asd.showEntry(d);
         katja.addEntry(dentistAppointment);
-        dddas.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
+        holidays.addEntry(a);
+        dirk.addEntry(d);
+        katja.addEntry(c);
         
         System.out.println(asd.getCalendars());
     }
