@@ -90,7 +90,7 @@
                               <Font name="Ikonli" size="21.0" />
                            </font>
                         </Text>
-                        <Separator layoutX="73.0" layoutY="110.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Separator layoutX="73.0" layoutY="110.0" prefWidth="200.0" AnchorPane.bottomAnchor="144.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="116.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="755.0" layoutY="417.0" prefHeight="265.0" prefWidth="325.0" style="-fx-background-color: #fffdfd; -fx-background-radius: 30;" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="35.0">
@@ -116,7 +116,7 @@
                            </font>
                         </Text>
                         <Button layoutX="14.0" layoutY="220.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="126.0" style="-fx-background-color: #f0f1f6; -fx-background-radius: 30;" text="More" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="185.0" />
-                        <Separator layoutY="114.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="116.0" />
+                        <Separator layoutY="114.0" prefWidth="200.0" AnchorPane.bottomAnchor="144.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="116.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="395.0" layoutY="57.0" maxHeight="800.0" prefHeight="347.0" prefWidth="666.0" style="-fx-background-color: #1e3058; -fx-background-radius: 30;" AnchorPane.leftAnchor="395.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="57.0">
