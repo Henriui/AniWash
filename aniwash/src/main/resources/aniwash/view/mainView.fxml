@@ -145,7 +145,7 @@
                         </Text>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="47.0" layoutY="57.0" prefHeight="623.0" prefWidth="338.0" style="-fx-background-color: #fffdfd; -fx-background-radius: 15;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="722.0" AnchorPane.topAnchor="57.0">
+                  <AnchorPane layoutX="47.0" layoutY="57.0" prefHeight="623.0" prefWidth="338.0" style="-fx-background-color: #fffdfd; -fx-background-radius: 15;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="57.0">
                      <children>
                         <AgendaView fx:id="agendaView" prefHeight="300.0" prefWidth="300.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="20.0" />
                      </children>
