@@ -1,14 +1,5 @@
 ## Ignore target folder
 
 target/
-.idea/.gitignore
-.idea/AniWash.iml
-.idea/compiler.xml
-.idea/encodings.xml
-.idea/jarRepositories.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/libraries/Maven__junit_junit_4_11.xml
-.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
+.idea/
 aniwash/aniwash.iml
