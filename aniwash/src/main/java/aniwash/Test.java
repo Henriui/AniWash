@@ -1,6 +1,6 @@
 package aniwash;
 
-import aniwash.Entity.*;
+import aniwash.entity.*;
 import aniwash.framework.*;
 
 public class Test {
