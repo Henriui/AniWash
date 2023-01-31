@@ -1,10 +1,16 @@
 package aniwash.model;
 
-public abstract class User {
+import jakarta.persistence.*;
 
-    // Attributes
-    private String name;
+@Entity
+@Table(name="User")
+public abstract class User {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+    private String name;
     private String phone;
     private String email;
     private String address;
