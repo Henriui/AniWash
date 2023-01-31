@@ -8,18 +8,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
-public class MainApp extends Application
-{
+
+import aniwash.resources.model.Calendars;
+
+public class MainApp extends Application {
 
     @FXML
     private AnchorPane a;
-    
+
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
+        // FIXME: Delete these two lines after database is implemented
+        Calendars calendar = new Calendars();
+        calendar.initCalendar();
+
         Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
-        
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

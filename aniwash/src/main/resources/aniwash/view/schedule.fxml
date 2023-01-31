@@ -21,7 +21,7 @@
                <children>
                   <VBox layoutY="11.0" prefHeight="700.0" prefWidth="193.0" spacing="10.0" styleClass="side-bar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <AnchorPane prefHeight="700.0" prefWidth="193.0" VBox.vgrow="ALWAYS">
+                        <AnchorPane prefHeight="700.0" prefWidth="193.0" scaleZ="1" VBox.vgrow="ALWAYS">
                            <children>
                               <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="142.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="178.0" styleClass="side-bar-button" text="My Schedule" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
                                  <font>
@@ -67,12 +67,40 @@
             <AnchorPane prefHeight="700.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                <children>
                   <Separator layoutX="14.0" layoutY="46.0" prefWidth="200.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" />
-                  <Text layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Schedule">
+                  <Text layoutX="60.0" layoutY="32.0" scaleZ="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Schedule">
                      <font>
                         <Font name="Ikonli" size="21.0" />
                      </font>
                   </Text>
-                  <CalendarView fx:id="calendarView" layoutX="14.0" prefHeight="700.0" prefWidth="1114.0" showSourceTrayButton="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0" />
+                  <CalendarView fx:id="calendarView" blendMode="MULTIPLY" layoutX="4.0" layoutY="6.0" prefHeight="694.0" prefWidth="1110.0" scaleZ="2.0" showAddCalendarButton="false" showPageSwitcher="false" showPageToolBarControls="false" showPrintButton="false" showSearchResultsTray="true" showSourceTrayButton="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="6.0" />
+                  <ImageView fitHeight="32.0" fitWidth="71.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/calendar.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="listButton" layoutX="450.0" layoutY="6.0" mnemonicParsing="false" onAction="#testListView" prefHeight="38.0" prefWidth="57.0" style="-fx-background-color: transparent;" text="List" textFill="#757575">
+                     <font>
+                        <Font name="Ikonli" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="testbutton" layoutX="507.0" layoutY="6.0" mnemonicParsing="false" onAction="#testWeekView" prefHeight="38.0" prefWidth="104.0" style="-fx-background-color: transparent;" text="Weekly" textFill="#757575">
+                     <font>
+                        <Font name="Ikonli" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="monthButton" layoutX="611.0" layoutY="6.0" mnemonicParsing="false" onAction="#testMonthlyView" prefHeight="38.0" prefWidth="104.0" style="-fx-background-color: transparent;" text="Monthly" textFill="#757575">
+                     <font>
+                        <Font name="Ikonli" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="1038.0" layoutY="641.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 100; -fx-background-color: #94b4ff;" text="+" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
+                     <font>
+                        <Font name="Ikonli" size="19.0" />
+                     </font>
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" height="50.0" radius="24.5" width="50.0" />
+                     </effect>
+                  </Button>
                </children>
             </AnchorPane>
          </center>
