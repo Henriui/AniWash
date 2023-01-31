@@ -54,7 +54,7 @@ public class DashboardController {
         Entry<String> a = new Entry<>("asdadasd");
         Entry<String> c = new Entry<>("ddddd");
 
-        Entry entry = new Entry("BENIS");
+        Entry entry = new Entry("Something");
         Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),LocalDate.of(2023, Month.JANUARY, 31) , LocalTime.of(23, 30));
         entry.setInterval(interval);
         Calendar calendar = new Calendar("Heatl Benis");
