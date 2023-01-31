@@ -24,7 +24,6 @@ public class PopUp implements Callback<EntryDetailsParameter, Boolean> {
     
     @Override
     public Boolean call(EntryDetailsParameter arg0){
-        System.out.println("asdasd");
         FXMLLoader loader;
         Scene scene;
         try {
@@ -35,8 +34,8 @@ public class PopUp implements Callback<EntryDetailsParameter, Boolean> {
             stage.setTitle("New Calendar");
             //stage.initStyle(StageStyle.TRANSPARENT);
             stage.initModality(Modality.APPLICATION_MODAL);
-            System.out.println("asdasd" + arg0.getEntry().getTitle());
-            arg0.getEntry().setTitle("Homo");
+            System.out.println(arg0.getEntry().getTitle());
+            arg0.getEntry().setTitle("This is importans");
             stage.show();
         } catch (IOException e) {
             // TODO Auto-generated catch block
