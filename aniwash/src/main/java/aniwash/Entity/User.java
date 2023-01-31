@@ -1,14 +1,23 @@
-package aniwash.model;
+package aniwash.Entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "User")
 public abstract class User {
 
-    // Attributes
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+    private String name;
     private String phone;
     private String email;
     private String address;
     private String postalcode;
+
+    public User() {
+    }
 
     public User(String name, int id, String phone, String email, String address, String postalcode) {
         this.name = name;
