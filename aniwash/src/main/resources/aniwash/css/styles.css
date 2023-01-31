@@ -35,7 +35,6 @@
 
 .side-bar-button {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
     -fx-font-size: 14px;
     -fx-pref-width: 100%;
     -fx-padding: 10px;
