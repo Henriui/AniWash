@@ -2,9 +2,9 @@ package aniwash.view;
 
 import com.calendarfx.view.CalendarView;
 
+import aniwash.resources.model.PopUp;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.PopupWindow.AnchorLocation;
 
 public class ScheduleController {
     @FXML

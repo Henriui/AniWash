@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.time.Month;
 
 import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.model.Interval;
@@ -15,11 +14,7 @@ import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
 
 import aniwash.MainApp;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -36,7 +31,6 @@ public class DashboardController {
     private Button scheduleButton;
     @FXML
     private BarChart barChart;
-    private PopUp popup;
 
     public void initialize() {
         Calendar katja = new Calendar("Katja");
@@ -75,8 +69,6 @@ public class DashboardController {
         holidays.addEntry(a);
         dirk.addEntry(d);
         katja.addEntry(c);
-        
-
         System.out.println(agendaView.getCalendars());
     }
 
