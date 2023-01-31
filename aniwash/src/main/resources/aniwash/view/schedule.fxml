@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.calendarfx.view.CalendarHeaderView?>
 <?import com.calendarfx.view.CalendarView?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
@@ -29,7 +28,7 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutY="69.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="160.0" styleClass="side-bar-button" text="Dashboard" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+                              <Button fx:id="dashboardButton" alignment="CENTER" contentDisplay="BOTTOM" layoutY="69.0" mnemonicParsing="false" onAction="#dashBoard" prefHeight="53.0" prefWidth="160.0" styleClass="side-bar-button" text="Dashboard" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -73,8 +72,7 @@
                         <Font name="Ikonli" size="21.0" />
                      </font>
                   </Text>
-                  <CalendarView fx:id="calendarView" layoutX="14.0" prefHeight="700.0" prefWidth="1114.0" showAddCalendarButton="false" showSourceTrayButton="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0" />
-                  <CalendarHeaderView />
+                  <CalendarView fx:id="calendarView" layoutX="14.0" prefHeight="700.0" prefWidth="1114.0" showSourceTrayButton="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </center>

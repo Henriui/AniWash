@@ -34,6 +34,7 @@ public class PopUp implements Callback<EntryDetailsParameter, Boolean> {
             System.out.println(arg0.getEntry().getTitle());
             arg0.getEntry().setTitle("This is importans");
             stage.show();
+            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
