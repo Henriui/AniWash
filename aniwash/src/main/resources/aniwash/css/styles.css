@@ -32,7 +32,10 @@
     -fx-background-color: #fbfbfc;
     -fx-padding: 20px;
 }
-
+.text{
+    -fx-text-fill: blue;
+    font-family: initial;
+}
 .side-bar-button {
     -fx-background-color: transparent;
     -fx-font-size: 14px;

@@ -32,30 +32,26 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
     }
 
     public void initCalendar() {
-        Calendar TeethCare = new Calendar("Teeth Care");
-        Calendar Nails = new Calendar("Nails");
+        Calendar HenriUi = new Calendar("Henri Uimonen");
+        Calendar JonneBo = new Calendar("Jonne Borgman");
 
-        calendars.add(TeethCare);
-        calendars.add(Nails);
-
+        calendars.add(HenriUi);
+        calendars.add(JonneBo);
+        
         entries.add(new Entry<>("Dentist"));
         entries.add(new Entry<>("asdasd"));
         entries.add(new Entry<>("asdadasd"));
         entries.add(new Entry<>("ddddd"));
         entries.add(new Entry<>("Something"));
-
-        TeethCare.setStyle(Style.STYLE7);
-        Nails.setStyle(Style.STYLE2);
+        HenriUi.addEntries(entries);
+        HenriUi.setStyle(Style.STYLE7);
+        JonneBo.setStyle(Style.STYLE2);
 
         CalendarSource familyCalendarSource = new CalendarSource("Appointments");
-        familyCalendarSource.getCalendars().addAll(TeethCare, Nails);
+        familyCalendarSource.getCalendars().addAll(HenriUi, JonneBo);
 
         Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),
                 LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 30));
-
-        for (Entry entry : entries) {
-            TeethCare.addEntry(entry);
-        }
     }
 
     public CalendarSource getCalendarss() {
