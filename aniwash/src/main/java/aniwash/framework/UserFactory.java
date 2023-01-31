@@ -1,5 +1,5 @@
 package aniwash.framework;
-import aniwash.model.*;
+import aniwash.Entity.*;
 
 public class UserFactory {
 
