@@ -1,4 +1,4 @@
-package aniwash.Entity;
+package aniwash.entity;
 
 import jakarta.persistence.*;
 
