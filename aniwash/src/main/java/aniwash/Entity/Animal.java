@@ -1,5 +1,7 @@
-package aniwash.model;
+package aniwash.Entity;
 
+import java.util.List;
+import java.util.ArrayList;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +15,9 @@ public class Animal {
     private String type;
     private String breed;
     private String description;
+
+    @ManyToMany(mappedBy = "animals")
+    private List<Customer> owner = new ArrayList<>();
 
     public Animal() {
     }
