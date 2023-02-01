@@ -43,6 +43,18 @@
       <artifactId>javafx-fxml</artifactId>
       <version>19</version>
     </dependency>
+
+    <dependency>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.1.6.Final</version>
+    </dependency>
+
+      <dependency>
+        <groupId>org.mariadb.jdbc</groupId>
+        <artifactId>mariadb-java-client</artifactId>
+        <version>3.1.2</version>  
+      </dependency>
   </dependencies>
 
   <build>
