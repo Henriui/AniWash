@@ -1,7 +1,7 @@
 package aniwash.entity;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +17,7 @@ public class Animal {
     private String description;
 
     @ManyToMany(mappedBy = "animals")
-    private List<Customer> owner = new ArrayList<>();
+    private Set<Customer> owner = new HashSet<>();
 
     public Animal() {
     }
@@ -27,6 +27,23 @@ public class Animal {
         this.type = type;
         this.breed = breed;
         this.description = description;
+    }
+
+    // addOwner
+    // returns true if the owner is added
+    // otherwise returns false
+    public boolean addOwner(Customer customer) {
+        return owner.add(customer);
+    }
+
+    // removeOwner
+    public void removeOwner(Customer customer) {
+        owner.remove(customer);
+    }
+
+    // getOwner
+    public Set<Customer> getOwner() {
+        return owner;
     }
 
     // Getters and Setters
