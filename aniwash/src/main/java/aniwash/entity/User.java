@@ -1,31 +1,31 @@
-package aniwash.Entity;
+package aniwash.entity;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "User")
+@MappedSuperclass
 public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-    private String name;
-    private String phone;
-    private String email;
-    private String address;
-    private String postalcode;
+    protected int id;
+
+    @Column(nullable = false)
+    protected String name;
+    @Column(nullable = false)
+    protected String phone;
+    @Column(nullable = false)
+    protected String email;
+    protected String address;
+    protected String postalcode;
 
     public User() {
     }
 
-    public User(String name, int id, String phone, String email, String address, String postalcode) {
+    public User(String name, int id, String phone, String email) {
         this.name = name;
         this.id = id;
         this.phone = phone;
         this.email = email;
-        this.address = address;
-        this.postalcode = postalcode;
     }
 
     // Getters and Setters

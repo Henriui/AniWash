@@ -1,19 +1,19 @@
-package aniwash.Entity;
+package aniwash.entity;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Animal")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
     private String name;
     private String type;
     private String breed;
+    private int animalAge;
     private String description;
 
     @ManyToMany(mappedBy = "animals")
@@ -22,10 +22,11 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(String name, String type, String breed, String description) {
+    public Animal(String name, String type, String breed, int animalAge, String description) {
         this.name = name;
         this.type = type;
         this.breed = breed;
+        this.animalAge = animalAge;
         this.description = description;
     }
 
@@ -44,6 +45,10 @@ public class Animal {
 
     public String getBreed() {
         return breed;
+    }
+
+    public int getAnimalAge() {
+        return animalAge;
     }
 
     public String getDescription() {
@@ -66,8 +71,19 @@ public class Animal {
         this.breed = breed;
     }
 
+    public void setAnimalAge(int animalAge) {
+        this.animalAge = animalAge;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public List<Customer> getOwner() {
+        return owner;
+    }
+
+    public void setOwner(List<Customer> owner) {
+        this.owner = owner;
+    }
 }
