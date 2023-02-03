@@ -8,10 +8,13 @@ public interface IAnimalDao {
     boolean addAnimal(Animal animal);
 
     List<Animal> findAllAnimal();
+
     Animal findByIdAnimal(int id);
+
+    Animal findByNameAnimal(String name);
 
     boolean deleteByIdAnimal(int id);
 
-    Animal updateAnimal(Animal animal);
+    boolean updateAnimal(Animal animal);
 
 }

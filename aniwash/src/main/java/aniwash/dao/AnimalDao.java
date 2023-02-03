@@ -13,11 +13,13 @@ public class AnimalDao implements IAnimalDao {
 
     public boolean addAnimal(Animal animal) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        boolean success = false;
+        boolean success = true;
         em.getTransaction().begin();
-        em.persist(animal);
-        if (animal != null) {
-            success = true;
+        Animal a = em.find(Animal.class, animal.getId());
+        if (a != null) {
+            success = false;
+        } else {
+            em.persist(animal);
         }
         em.getTransaction().commit();
         return success;
@@ -39,6 +41,19 @@ public class AnimalDao implements IAnimalDao {
         return t;
     }
 
+    public Animal findByNameAnimal(String name) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Animal t = null;
+        em.getTransaction().begin();
+        try {
+            t = em.createQuery("SELECT a FROM Animal a WHERE a.name = :name", Animal.class).setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No animal found with name: " + name);
+        }
+        em.getTransaction().commit();
+        return t;
+    }
+
     public boolean deleteByIdAnimal(int id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         boolean deleted = false;
@@ -52,14 +67,20 @@ public class AnimalDao implements IAnimalDao {
         return deleted;
     }
 
-    public Animal updateAnimal(Animal animal) {
+    public boolean updateAnimal(Animal animal) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         em.getTransaction().begin();
-        Animal t = em.find(Animal.class, animal);
+        Animal t = em.find(Animal.class, animal.getId());
+        if (t == null) {
+            em.getTransaction().commit();
+            return false;
+        }
+        t.setBreed(animal.getBreed());
+        t.setType(animal.getType());
         t.setAnimalAge(animal.getAnimalAge());
         t.setName(animal.getName());
         t.setDescription(animal.getDescription());
         em.getTransaction().commit();
-        return t;
+        return true;
     }
 }
