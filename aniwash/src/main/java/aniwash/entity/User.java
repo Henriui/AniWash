@@ -1,8 +1,10 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
 
     @Id
