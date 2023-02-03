@@ -16,8 +16,13 @@ public class CustomerDao implements ICustomerDao {
     public boolean addCustomer(Customer customer) {
         boolean success = true;
         em.getTransaction().begin();
-        //success = true;
-        em.merge(customer);
+        Customer c = em.find(Customer.class, customer.getId());
+        if (c != null) {
+            System.out.println("Customer already exists: " + customer.getId());
+            success = false;
+        } else {
+            em.merge(customer);
+        }
         em.getTransaction().commit();
         return success;
     }
@@ -41,16 +46,19 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public boolean updateCustomer(Customer customer) {
-        boolean success = false;
         em.getTransaction().begin();
         Customer c = em.find(Customer.class, customer.getId());
+        if (c == null) {
+            em.getTransaction().commit();
+            return false;
+        }
         c.setName(customer.getName());
         c.setEmail(customer.getEmail());
         c.setAddress(customer.getAddress());
         c.setPhone(customer.getPhone());
         c.setPostalcode(customer.getPostalcode());
         em.getTransaction().commit();
-        return success;
+        return true;
     }
 
     @Override

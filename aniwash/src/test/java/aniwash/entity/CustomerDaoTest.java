@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("CustomerDAO: tietokantatoimintojen (CRUD) testaus")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerDaoTest {
-    private ICustomerDao customerDao = new CustomerDao();
+    private final ICustomerDao customerDao = new CustomerDao();
 
     private final int id = 1;
     private final String name = "John";
@@ -24,14 +24,14 @@ public class CustomerDaoTest {
     private Customer customer = new Customer(name, id, phone, email);
 
     @BeforeEach
-    public void alkutoimet() {
+    public void beforeEach() {
         customer = new Customer(name, id, phone, email);
         customer.setAddress(address);
         customer.setPostalcode(postalcode);
     }
 
     @AfterEach
-    public void lopputoimet() {
+    public void endOfEach() {
         customerDao.deleteByIdCustomer(id);
     }
 
@@ -59,6 +59,18 @@ public class CustomerDaoTest {
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan sukupuolen päivitys ei onnistunut.");
         customer = customerDao.findByIdCustomer(customer);
         assertEquals(customer.getName(), "Jonna", "updateCustomer(): Asiakkaan nimi arvo väärin.");
+        customer.setAddress("Kuusikatu 2");
+        assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan osoite päivitys ei onnistunut.");
+        customer = customerDao.findByIdCustomer(customer);
+        assertEquals("Kuusikatu 2", customer.getAddress(), "getAddress(): customerin osoite arvo on väärin.");
+        customer.setPostalcode("00100");
+        assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan postinumeron päivitys ei onnistunut.");
+        customer = customerDao.findByIdCustomer(customer);
+        assertEquals("00100", customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
+        customer.setPhone("0401234567");
+        assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan puhelinnumeron päivitys ei onnistunut.");
+        customer = customerDao.findByIdCustomer(customer);
+        assertEquals("0401234567", customer.getPhone(), "getPhone(): customerin puhelinnumero arvo on väärin.");
 
         // Testissä lisätyn customerin poiston tulee onnistua
         assertTrue(customerDao.deleteByIdCustomer(customer.getId()), "deleteCustomerById(): Asiakkaan poisto ei onnistunut.");
@@ -84,10 +96,8 @@ public class CustomerDaoTest {
     @DisplayName("Samaa asiakasta ei saa lisätä toistamiseen")
     @Order(2)
     public void testAddCustomer2() {
-
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-
-        assertTrue(customerDao.addCustomer(customer), "addCustomer(): Saman asiakkaan voi lisätä kahteen kertaan.");
+        assertFalse(customerDao.addCustomer(customer), "addCustomer(): Saman asiakkaan voi lisätä kahteen kertaan.");
     }
 
     @Test
@@ -98,7 +108,6 @@ public class CustomerDaoTest {
         // Nyt haun tulee onnistua ja jokaisen kentän tulee tietenkin olla asetettu oikein
         System.out.println("customer id: " + customer.getId());
         customer = customerDao.findByIdCustomer(customer);
-        System.out.println("customer: " + customer);
         assertNotNull(customer, "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(1, customer.getId(), "getId(): customer id tunnus väärin.");
         assertEquals("john.johna@email.com", customer.getEmail(), "getEmail(): emailarvo väärin.");
@@ -109,7 +118,7 @@ public class CustomerDaoTest {
     @Test
     @DisplayName("Olemattoman asiakkaan haun tulee palauttaa null")
     @Order(4)
-    public void testSeachById2() {
+    public void testSearchById2() {
         assertNull(customerDao.findByIdCustomer(customer), "findByIdCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
         assertEquals(id, customer.getId(), "findByIdCustomer(): asiakkaan tunnus väärin.");
         assertEquals(email, customer.getEmail(), "findByIdCustomer(): Asiakkaan email arvo on väärin.");

@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 public abstract class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
 
     @Column(nullable = false)
@@ -76,5 +75,14 @@ public abstract class User {
 
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "phone = " + phone + ", " +
+                "email = " + email + ")";
     }
 }
