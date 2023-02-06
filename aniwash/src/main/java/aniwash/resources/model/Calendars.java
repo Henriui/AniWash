@@ -56,10 +56,7 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
 
     public CalendarSource getCalendarss() {
         CalendarSource familyCalendarSource = new CalendarSource("Product");
-        for (Calendar calendar : calendars) {
-            System.out.println(calendar.getName());
-            familyCalendarSource.getCalendars().add(calendar);
-        }
+        familyCalendarSource.getCalendars().addAll(calendars);
         return familyCalendarSource;
     }
 
