@@ -9,11 +9,11 @@ public interface IAnimalDao {
 
     List<Animal> findAllAnimal();
 
-    Animal findByIdAnimal(int id);
+    Animal findByIdAnimal(long id);
 
     Animal findByNameAnimal(String name);
 
-    boolean deleteByIdAnimal(int id);
+    boolean deleteByIdAnimal(long id);
 
     boolean updateAnimal(Animal animal);
 

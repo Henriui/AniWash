@@ -14,18 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerDaoTest {
     private final ICustomerDao customerDao = new CustomerDao();
 
-    private final int id = 1;
+    private long id = 1;
     private final String name = "John";
     private final String phone = "123456789";
     private final String email = "john.johna@email.com";
     private final String address = "John street 1";
     private final String postalcode = "12345";
 
-    private Customer customer = new Customer(name, id, phone, email);
+    private Customer customer = new Customer(name, phone, email);
+
 
     @BeforeEach
     public void beforeEach() {
-        customer = new Customer(name, id, phone, email);
+        customer = new Customer(name, phone, email);
         customer.setAddress(address);
         customer.setPostalcode(postalcode);
     }
@@ -47,9 +48,10 @@ public class CustomerDaoTest {
         // Lisää asiakas
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden customerin lisääminen ei onnistu.");
         assertFalse(customerDao.addCustomer(customer), "addCustomer(): Saman customerin pystyy lisäämään kahteen kertaan.");
+        id = customer.getId();
 
         // Nyt haun tulee onnistua ja kenttien tulee tietenkin olla asetettu oikein
-        assertNotNull((customer = customerDao.findByIdCustomer(customer)), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
+        assertNotNull((customer = customerDao.findByIdCustomer(id)), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(id, customer.getId(), "getId(): customer id tunnus väärin.");
         assertEquals(email, customer.getEmail(), "getEmail(): emailarvo väärin.");
         assertEquals(name, customer.getName(), "getName(): customerin nimi väärin.");
@@ -57,24 +59,26 @@ public class CustomerDaoTest {
         // CustomerUpdate() muutoksen tulee onnistua
         customer.setName("Jonna");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan sukupuolen päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        System.out.println("customer.getId() = " + customer.getId());
+        System.out.println("id: " + id);
+        customer = customerDao.findByIdCustomer(id);
         assertEquals(customer.getName(), "Jonna", "updateCustomer(): Asiakkaan nimi arvo väärin.");
         customer.setAddress("Kuusikatu 2");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan osoite päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(id);
         assertEquals("Kuusikatu 2", customer.getAddress(), "getAddress(): customerin osoite arvo on väärin.");
         customer.setPostalcode("00100");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan postinumeron päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(id);
         assertEquals("00100", customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
         customer.setPhone("0401234567");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan puhelinnumeron päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(id);
         assertEquals("0401234567", customer.getPhone(), "getPhone(): customerin puhelinnumero arvo on väärin.");
 
         // Testissä lisätyn customerin poiston tulee onnistua
         assertTrue(customerDao.deleteByIdCustomer(customer.getId()), "deleteCustomerById(): Asiakkaan poisto ei onnistunut.");
-        assertNull(customerDao.findByIdCustomer(customer), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
+        assertNull(customerDao.findByIdCustomer(id), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
 
         // Olemattoman valuutan poiston tulee "epäonnistua"
         assertFalse(customerDao.deleteByIdCustomer(333), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
@@ -86,7 +90,7 @@ public class CustomerDaoTest {
     public void testAddCustomer() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         // Nyt haun tulee onnistua ja jokaisen kentän tulee tietenkin olla asetettu oikein
-        assertNotNull((customer = customerDao.findByIdCustomer(customer)), "addCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
+        assertNotNull((customer = customerDao.findByIdCustomer(id)), "addCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(id, customer.getId(), "getId(): asiakkaan tunnus väärin.");
         assertEquals(name, customer.getName(), "getName(): Asiakkaan nimi on väärin.");
         assertEquals(email, customer.getEmail(), "getEmail(): Email on väärin.");
@@ -106,10 +110,10 @@ public class CustomerDaoTest {
     public void testSearchById() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         // Nyt haun tulee onnistua ja jokaisen kentän tulee tietenkin olla asetettu oikein
-        System.out.println("customer id: " + customer.getId());
-        customer = customerDao.findByIdCustomer(customer);
+        id = customer.getId();
+        customer = customerDao.findByIdCustomer(id);
         assertNotNull(customer, "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
-        assertEquals(1, customer.getId(), "getId(): customer id tunnus väärin.");
+        assertEquals(id, customer.getId(), "getId(): customer id tunnus väärin.");
         assertEquals("john.johna@email.com", customer.getEmail(), "getEmail(): emailarvo väärin.");
         assertEquals("John", customer.getName(), "getName(): customerin nimi väärin.");
 
@@ -119,10 +123,7 @@ public class CustomerDaoTest {
     @DisplayName("Olemattoman asiakkaan haun tulee palauttaa null")
     @Order(4)
     public void testSearchById2() {
-        assertNull(customerDao.findByIdCustomer(customer), "findByIdCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
-        assertEquals(id, customer.getId(), "findByIdCustomer(): asiakkaan tunnus väärin.");
-        assertEquals(email, customer.getEmail(), "findByIdCustomer(): Asiakkaan email arvo on väärin.");
-        assertEquals(name, customer.getName(), "findByIdCustomer(): Asiakkaan nimi arvo on väärin.");
+        assertNull(customerDao.findByIdCustomer(id), "findByIdCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
     }
 
     @Test
@@ -133,7 +134,7 @@ public class CustomerDaoTest {
 
         customer.setEmail("ulisija@ulisee.com");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn emailin päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(customer.getId());
         assertEquals(customer.getEmail(), "ulisija@ulisee.com", "updateCustomer(): email arvo on väärin.");
     }
 
@@ -145,7 +146,7 @@ public class CustomerDaoTest {
 
         customer.setName("Ulisor");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan nimen päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(customer.getId());
         assertEquals("Ulisor", customer.getName(), "getName(): customerin nimi väärin.");
     }
 
@@ -157,7 +158,7 @@ public class CustomerDaoTest {
 
         customer.setAddress("Kuusikatu 2");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan osoite päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(customer.getId());
         assertEquals("Kuusikatu 2", customer.getAddress(), "getAddress(): customerin osoite arvo on väärin.");
     }
 
@@ -169,7 +170,7 @@ public class CustomerDaoTest {
 
         customer.setPostalcode("00100");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan postinumeron päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(customer.getId());
         assertEquals("00100", customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
     }
 
@@ -181,7 +182,7 @@ public class CustomerDaoTest {
 
         customer.setPhone("0401234567");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan puhelinnumeron päivitys ei onnistunut.");
-        customer = customerDao.findByIdCustomer(customer);
+        customer = customerDao.findByIdCustomer(customer.getId());
         assertEquals("0401234567", customer.getPhone(), "getPhone(): customerin puhelinnumero arvo on väärin.");
     }
 
@@ -190,9 +191,9 @@ public class CustomerDaoTest {
     @Order(10)
     public void testDeleteCustomer() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-
+        id = customer.getId();
         assertTrue((customerDao.deleteByIdCustomer(id)), "deleteCustomer(): Customerin poisto ei onnistunut.");
-        assertTrue((customerDao.findByIdCustomer(customer) == null), "deleteCustomer(): Customerin poisto ei onnistunut - asiakas voitiin hakea tietokannasta.");
+        assertTrue((customerDao.findByIdCustomer(id) == null), "deleteCustomer(): Customerin poisto ei onnistunut - asiakas voitiin hakea tietokannasta.");
     }
 
     @Test

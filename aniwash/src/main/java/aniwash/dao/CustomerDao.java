@@ -21,7 +21,7 @@ public class CustomerDao implements ICustomerDao {
             System.out.println("Customer already exists: " + customer.getId());
             success = false;
         } else {
-            em.merge(customer);
+            em.persist(customer);
         }
         em.getTransaction().commit();
         return success;
@@ -37,9 +37,14 @@ public class CustomerDao implements ICustomerDao {
     }
 
     @Override
-    public Customer findByIdCustomer(Customer customer) {
+    public Customer findByIdCustomer(long id) {
+        Customer c = null;
         em.getTransaction().begin();
-        Customer c = em.find(Customer.class, customer.getId());
+        try {
+            c = em.find(Customer.class, id);
+        } catch (NoResultException e) {
+            System.out.println("No customer found with id: " + id);
+        }
         em.getTransaction().commit();
         return c;
     }
@@ -62,7 +67,7 @@ public class CustomerDao implements ICustomerDao {
     }
 
     @Override
-    public boolean deleteByIdCustomer(int id) {
+    public boolean deleteByIdCustomer(long id) {
         boolean deleted = false;
         em.getTransaction().begin();
         Customer t = em.find(Customer.class, id);

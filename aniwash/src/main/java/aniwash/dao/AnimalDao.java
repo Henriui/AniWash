@@ -10,13 +10,15 @@ import java.util.List;
  * @author rasmushy
  */
 public class AnimalDao implements IAnimalDao {
+    private EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
+    @Override
     public boolean addAnimal(Animal animal) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         boolean success = true;
         em.getTransaction().begin();
         Animal a = em.find(Animal.class, animal.getId());
         if (a != null) {
+            System.out.println("Animal already exists: " + animal.getId());
             success = false;
         } else {
             em.persist(animal);
@@ -26,15 +28,13 @@ public class AnimalDao implements IAnimalDao {
     }
 
     public List<Animal> findAllAnimal() {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         em.getTransaction().begin();
         List<Animal> animals = em.createQuery("SELECT a FROM Animal a", Animal.class).getResultList();
         em.getTransaction().commit();
         return animals;
     }
 
-    public Animal findByIdAnimal(int id) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+    public Animal findByIdAnimal(long id) {
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, id);
         em.getTransaction().commit();
@@ -42,7 +42,6 @@ public class AnimalDao implements IAnimalDao {
     }
 
     public Animal findByNameAnimal(String name) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal t = null;
         em.getTransaction().begin();
         try {
@@ -54,8 +53,7 @@ public class AnimalDao implements IAnimalDao {
         return t;
     }
 
-    public boolean deleteByIdAnimal(int id) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+    public boolean deleteByIdAnimal(long id) {
         boolean deleted = false;
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, id);
@@ -68,7 +66,6 @@ public class AnimalDao implements IAnimalDao {
     }
 
     public boolean updateAnimal(Animal animal) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, animal.getId());
         if (t == null) {

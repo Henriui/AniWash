@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String type;
     private String breed;
@@ -35,7 +35,7 @@ public class Animal {
         return name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -59,7 +59,7 @@ public class Animal {
         this.name = name;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

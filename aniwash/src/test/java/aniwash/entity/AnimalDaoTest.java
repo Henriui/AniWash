@@ -43,12 +43,12 @@ public class AnimalDaoTest {
         // Lisää animal
         assertTrue(animalDao.addAnimal(animal), "addCustomer(): Uuden customerin lisääminen ei onnistu.");
         assertFalse(animalDao.addAnimal(animal), "addCustomer(): Saman customerin pystyy lisäämään kahteen kertaan.");
-
+        long id = animal.getId();
         assertTrue(animalDao.findAllAnimal().size() > 0, "findAllCustomer(): Ei löydy yhtään asiakasta.");
 
         // Nyt haun tulee onnistua ja kenttien tulee tietenkin olla asetettu oikein
-        assertNotNull((animal = animalDao.findByIdAnimal(animal.getId())), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
-        assertEquals(15, animal.getId(), "getId(): animal id tunnus väärin - odotettiin testien määrän mukaan arvoa 15.");
+        assertNotNull((animal = animalDao.findByIdAnimal(id)), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
+        assertEquals(id, animal.getId(), "getId(): animal id tunnus väärin.");
         assertEquals(aIka, animal.getAnimalAge(), "getIka(): animal ika arvo väärin.");
         assertEquals(aNimi, animal.getName(), "getName(): animal nimi väärin.");
         assertEquals(aTyyppi, animal.getType(), "getType(): animal tyyppi väärin.");
@@ -217,7 +217,7 @@ public class AnimalDaoTest {
     public void testFindByIdAnimal2() {
         animalDao.addAnimal(animal);
         animalDao.deleteByIdAnimal(animal.getId());
-        assertNull(animalDao.findByIdAnimal(animal.getId()), "deleteByIdAnimal(): Animalin poisto ei onnistunut - asiakas voitiin hakea tietokannasta.");
+        assertNull(animalDao.findByIdAnimal(animal.getId()), "deleteByIdAnimal(): Animalin poisto ei onnistunut - eläin voitiin hakea tietokannasta.");
     }
 
     @Test

@@ -79,11 +79,9 @@ public class EmployeeDao implements IEmployeeDao {
             em.getTransaction().commit();
             return false;
         }
+        //t.setUsername(employee.getUsername());
         t.setName(employee.getName());
-        t.setAddress(employee.getAddress());
         t.setEmail(employee.getEmail());
-        t.setPhone(employee.getPhone());
-        t.setPostalcode(employee.getPostalcode());
         t.setTitle(employee.getTitle());
         em.getTransaction().commit();
         return true;

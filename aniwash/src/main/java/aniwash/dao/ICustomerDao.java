@@ -9,9 +9,9 @@ public interface ICustomerDao {
 
     List<Customer> findAllCustomer();
 
-    Customer findByIdCustomer(Customer customer);
+    Customer findByIdCustomer(long id);
 
-    boolean deleteByIdCustomer(int id);
+    boolean deleteByIdCustomer(long id);
 
     boolean updateCustomer(Customer customer);
 }
