@@ -2,8 +2,7 @@ package aniwash.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,8 +13,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    private LocalDate date;
-    private LocalTime time;
+    private ZonedDateTime date;
+
+    private String description;
 
     @ManyToOne
     private Employee employee;
@@ -26,9 +26,9 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(LocalDate date, LocalTime time) {
+    public Appointment(ZonedDateTime date, String description) {
         this.date = date;
-        this.time = time;
+        this.description = description;
     }
 
     // addProduct
@@ -63,24 +63,28 @@ public class Appointment {
         return id;
     }
 
-    public LocalDate getDate() {
+    public String getDescription() {
+        return description;
+    }
+
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public Employee getEmployee() {
+        return employee;
     }
 
     public Set<Product> getProducts() {
         return products;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
     }
 
 }
