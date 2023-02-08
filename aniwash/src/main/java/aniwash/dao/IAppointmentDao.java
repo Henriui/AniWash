@@ -13,11 +13,11 @@ public interface IAppointmentDao {
 
     List<Appointment> findAllAppointment();
 
-    Appointment findByIdAppointment(int id);
+    Appointment findByIdAppointment(Long id);
 
     Appointment findByDateAppointment(Date date);
 
-    boolean deleteByIdAppointment(int id);
+    boolean deleteByIdAppointment(Long id);
 
     boolean updateAppointment(Appointment appointment);
 

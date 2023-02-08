@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerDaoTest {
     private final ICustomerDao customerDao = new CustomerDao();
 
-    private long id = 1;
+    private Long id = 1L;
     private final String name = "John";
     private final String phone = "123456789";
     private final String email = "john.johna@email.com";
@@ -81,7 +81,7 @@ public class CustomerDaoTest {
         assertNull(customerDao.findByIdCustomer(id), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
 
         // Olemattoman valuutan poiston tulee "epäonnistua"
-        assertFalse(customerDao.deleteByIdCustomer(333), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
+        assertFalse(customerDao.deleteByIdCustomer(333L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
     }
 
     @Test
@@ -200,7 +200,7 @@ public class CustomerDaoTest {
     @DisplayName("Olemattoman asiakkaan poistoyrityksen tulee palauttaa false")
     @Order(11)
     public void testDeleteCustomer2() {
-        assertFalse(customerDao.deleteByIdCustomer(0), "deleteCustomer(): Väittää poistaneensa olemattoman customerin.");
+        assertFalse(customerDao.deleteByIdCustomer(0L), "deleteCustomer(): Väittää poistaneensa olemattoman customerin.");
     }
 
 }

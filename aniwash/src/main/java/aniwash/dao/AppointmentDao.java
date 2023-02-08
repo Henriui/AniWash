@@ -36,7 +36,7 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public Appointment findByIdAppointment(int id) {
+    public Appointment findByIdAppointment(Long id) {
         em.getTransaction().begin();
         Appointment appointment = em.find(Appointment.class, id);
         em.getTransaction().commit();
@@ -59,7 +59,7 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public boolean deleteByIdAppointment(int id) {
+    public boolean deleteByIdAppointment(Long id) {
         em.getTransaction().begin();
         boolean deleted = false;
         Appointment appointment = em.find(Appointment.class, id);
