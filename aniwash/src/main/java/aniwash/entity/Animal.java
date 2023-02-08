@@ -1,31 +1,32 @@
 package aniwash.entity;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Animal")
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    private long id;
     private String name;
     private String type;
     private String breed;
+    private int animalAge;
     private String description;
 
     @ManyToMany(mappedBy = "animals")
-    private List<Customer> owner = new ArrayList<>();
+    private Set<Customer> owner = new HashSet<>();
 
     public Animal() {
     }
 
-    public Animal(String name, String type, String breed, String description) {
+    public Animal(String name, String type, String breed, int animalAge, String description) {
         this.name = name;
         this.type = type;
         this.breed = breed;
+        this.animalAge = animalAge;
         this.description = description;
     }
 
@@ -34,7 +35,7 @@ public class Animal {
         return name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -46,6 +47,10 @@ public class Animal {
         return breed;
     }
 
+    public int getAnimalAge() {
+        return animalAge;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -54,7 +59,7 @@ public class Animal {
         this.name = name;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -66,8 +71,30 @@ public class Animal {
         this.breed = breed;
     }
 
+    public void setAnimalAge(int animalAge) {
+        this.animalAge = animalAge;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public Set<Customer> getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Set<Customer> owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "type = " + type + ", " +
+                "breed = " + breed + ", " +
+                "animalAge = " + animalAge + ", " +
+                "description = " + description + ")";
+    }
 }
