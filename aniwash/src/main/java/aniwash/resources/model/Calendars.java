@@ -25,38 +25,61 @@ import javafx.util.Callback;
 public class Calendars implements Callback<CreateCalendarSourceParameter, CalendarSource> {
 
     private static ArrayList<Calendar> calendars = new ArrayList<Calendar>();
-    private static ArrayList<Entry> entries = new ArrayList<Entry>();
-
+    private static ArrayList<Entry> Teehtentries = new ArrayList<Entry>();
+    private static ArrayList<Entry> Nailentries = new ArrayList<Entry>();
+    private static CalendarSource familyCalendarSource = new CalendarSource("Product");
+    
     public Calendars() {
 
     }
 
+    // FIXME: This is a test method, it will be removed later
+
     public void initCalendar() {
+
+        // These are the calendars where entries will be added to. 
+        // Entries are Customers
+        // Calendars are Products
+
         Calendar TeethCare = new Calendar("Teeth Care");
         Calendar Nails = new Calendar("Nails");
 
         calendars.add(TeethCare);
         calendars.add(Nails);
 
-        entries.add(new Entry<>("Dentist"));
-        entries.add(new Entry<>("asdasd"));
-        entries.add(new Entry<>("asdadasd"));
-        entries.add(new Entry<>("ddddd"));
-        entries.add(new Entry<>("Something"));
-        TeethCare.addEntries(entries);
+        Teehtentries.add(new Entry<>("Dentist"));
+        Teehtentries.add(new Entry<>("asdasd"));
+        Nailentries.add(new Entry<>("asdadasd"));
+        Nailentries.add(new Entry<>("ddddd"));
+        Nailentries.add(new Entry<>("Something"));
+
+        // Adds all the entries to the calendar
+
+        TeethCare.addEntries(Teehtentries);
+        Nails.addEntries(Nailentries);
+
+        // Sets the style of the calendar from style 1 to 7
+
         TeethCare.setStyle(Style.STYLE7);
         Nails.setStyle(Style.STYLE2);
+        
+        // Interval is a way to set custom date and time of the entry
+        System.out.println("initCalendar" + calendars.size());
+        
+        /*        Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),
+        LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 30)); */
+        
+        // CalendarSource is a mother to all the calendars
 
-        CalendarSource familyCalendarSource = new CalendarSource("Appointments");
-        familyCalendarSource.getCalendars().addAll(TeethCare, Nails);
+        familyCalendarSource.getCalendars().addAll(calendars);
+        System.out.println("getCalendarss" + familyCalendarSource.getCalendars());
 
-        Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),
-                LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 30));
     }
 
+    // Getters and Setters
+
     public CalendarSource getCalendarss() {
-        CalendarSource familyCalendarSource = new CalendarSource("Product");
-        familyCalendarSource.getCalendars().addAll(calendars);
+        System.out.println("getCalendarss" + familyCalendarSource.getCalendars());
         return familyCalendarSource;
     }
 
@@ -73,8 +96,9 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
         // entries.add(entry);
     }
 
-    public Calendar creatCalendar(String name) {
+    public Calendar createCalendar(String name) {
         Calendar calendar = new Calendar(name);
+        familyCalendarSource.getCalendars().add(calendar);
         return calendar;
     }
 
