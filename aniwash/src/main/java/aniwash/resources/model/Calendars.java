@@ -98,6 +98,10 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
         familyCalendarSource.getCalendars().add(calendar);
         return calendar;
     }
+    public ArrayList<Calendar> getCalendars() {
+        return calendars;
+    }
+    
 
     @Override
     public CalendarSource call(CreateCalendarSourceParameter arg0) {

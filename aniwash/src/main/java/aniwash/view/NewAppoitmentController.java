@@ -1,6 +1,9 @@
 package aniwash.view;
 
+import com.calendarfx.view.DateControl.EntryDetailsParameter;
+
 import aniwash.entity.Customer;
+import aniwash.resources.model.CreatePopUp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -11,8 +14,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
-public class NewAppoitmentController {
+public class NewAppoitmentController extends CreatePopUp{
     @FXML
     private TableColumn personTable;
     @FXML
@@ -25,9 +31,26 @@ public class NewAppoitmentController {
     private TableView<Customer> personView;
     @FXML
     private TextField searchField;
+    @FXML
+    private AnchorPane servicePane;
+    @FXML
+    private AnchorPane petPane;
+    @FXML
+    private Circle one;
+    @FXML
+    private Circle two;
+    @FXML
+    private Circle three;
+    @FXML
+    private Rectangle first;
+    @FXML
+    private Rectangle second;
+    @FXML
+    private Rectangle third;
+    private EntryDetailsParameter dddd;
 
     public void initialize() {
-
+        setArg();
         // Initialize the person table with the three columns.
 
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -84,6 +107,9 @@ public class NewAppoitmentController {
             if (newValue != null) {
                 Customer selectedPerson = (Customer) newValue;
                 selectCustomer(selectedPerson);
+                servicePane.setDisable(false);
+                one.styleProperty().set("-fx-fill: #47c496");
+                first.styleProperty().set("-fx-fill: #47c496");
             }
         });
 
@@ -95,9 +121,23 @@ public class NewAppoitmentController {
         // TODO Auto-generated method stub
         System.out.println("Selected person: " + customer.getName() + " "
                 + customer.getEmail());
+        dddd.getEntry().setLocation(customer.getName());
+        sendEntry();
 
     }
 
+    public void setArg(){
+        System.out.println("arg0");
+        EntryDetailsParameter arg0 = getArg();
+        System.out.println("dddd " + arg0.getEntry().getTitle());
+        dddd = arg0;
+        System.out.println("asdasdasdasd " + dddd.getEntry().getTitle());
+
+    }
+
+    public void sendEntry(){
+        saveEntry(dddd);
+    }
     // Create some sample data.
     // TODO: Replace with real data.
     private ObservableList<Customer> getPeople() {
