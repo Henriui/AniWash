@@ -22,7 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
-public class Calendars implements Callback<CreateCalendarSourceParameter, CalendarSource> {
+public class Calendars {
 
     private static ArrayList<Calendar> calendars = new ArrayList<Calendar>();
     private static ArrayList<Entry> Teehtentries = new ArrayList<Entry>();
@@ -80,10 +80,14 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
         return familyCalendarSource;
     }
 
+    // If we want to add a new product, we can use this method
+
     public void CreateProduct(String name) {
         Calendar calendar = new Calendar(name);
         calendars.add(calendar);
     }
+
+    // This is a test method, it will be removed later
 
     public void CreateEntry(Calendar calendarName, String name, String description, LocalDate date, LocalTime time) {
         Entry entry = new Entry<>(name);
@@ -93,20 +97,16 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
         // entries.add(entry);
     }
 
+    // This is a test method, it will be removed later
+
     public Calendar createCalendar(String name) {
         Calendar calendar = new Calendar(name);
         familyCalendarSource.getCalendars().add(calendar);
         return calendar;
     }
+
     public ArrayList<Calendar> getCalendars() {
         return calendars;
-    }
-    
-
-    @Override
-    public CalendarSource call(CreateCalendarSourceParameter arg0) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

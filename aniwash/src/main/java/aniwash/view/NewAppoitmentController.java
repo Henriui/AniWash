@@ -47,7 +47,7 @@ public class NewAppoitmentController extends CreatePopUp{
     private Rectangle second;
     @FXML
     private Rectangle third;
-    private EntryDetailsParameter dddd;
+    private EntryDetailsParameter newEntry;
 
     public void initialize() {
         setArg();
@@ -116,12 +116,15 @@ public class NewAppoitmentController extends CreatePopUp{
     }
 
     // Save the selected person.
-
+    @FXML
+    public void test(){
+        System.out.println("test");
+    }
     private void selectCustomer(Customer customer) {
         // TODO Auto-generated method stub
         System.out.println("Selected person: " + customer.getName() + " "
                 + customer.getEmail());
-        dddd.getEntry().setLocation(customer.getName());
+        newEntry.getEntry().setLocation(customer.getName());
         sendEntry();
 
     }
@@ -129,14 +132,14 @@ public class NewAppoitmentController extends CreatePopUp{
     public void setArg(){
         System.out.println("arg0");
         EntryDetailsParameter arg0 = getArg();
-        System.out.println("dddd " + arg0.getEntry().getTitle());
-        dddd = arg0;
-        System.out.println("asdasdasdasd " + dddd.getEntry().getTitle());
+        System.out.println("newEntry " + arg0.getEntry().getTitle());
+        newEntry = arg0;
+        System.out.println("asdasdasdasd " + newEntry.getEntry().getTitle());
 
     }
 
     public void sendEntry(){
-        saveEntry(dddd);
+        saveEntry(newEntry);
     }
     // Create some sample data.
     // TODO: Replace with real data.
