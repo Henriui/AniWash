@@ -9,7 +9,11 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.CalendarView;
+import com.calendarfx.view.DateControl;
 import com.calendarfx.view.DateControl.CreateEntryParameter;
+import com.calendarfx.view.DateControl.EntryContextMenuParameter;
+import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.DateControl.EntryDetailsPopOverContentParameter;
 
 import aniwash.MainApp;
 import aniwash.resources.model.Calendars;
@@ -17,9 +21,11 @@ import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.EditPopUp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -46,47 +52,8 @@ public class ScheduleController {
     public void initialize() {
         calendarView.getCalendarSources().addAll(calendars.getCalendarss());
         System.out.println("CalendarView initialized");
-        calendarView.setEntryDetailsCallback(new CreatePopUp());
-
-        //calendarView.entryDetailsCallbackProperty();
-
-        calendarView.entryFactoryProperty().set(new Callback<CreateEntryParameter, Entry<?>>() {
-            
-            @Override
-            public Entry<?> call(CreateEntryParameter param) {
-                System.out.println("Entry created");
-                Entry<?> entry = new Entry<>();
-                FXMLLoader loader;
-                Scene scene;
-                try {
-                    loader = loadFXML("asd");
-                    scene = new Scene((Parent) loader.load());
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setTitle("Henri oot gay");
-                    //stage.initStyle(StageStyle.TRANSPARENT);
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.show();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return entry;
-            }
-        });
-       
         
-        // Calendar asd = calendars.creatCalendar("NewFun");
-        // calendars.CreateEntry(asd, "NULLISATI", "NULLI", LocalDate.now(),
-        // LocalTime.now());
-        // calendarView.setEntryDetailsCallback(new PopUp());
-        // background.getChildren().add(calendarView);
-    }
-
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        // Finds fxml file from the resources folder.
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
+        calendarView.setEntryDetailsCallback(new CreatePopUp());
     }
 
     @FXML

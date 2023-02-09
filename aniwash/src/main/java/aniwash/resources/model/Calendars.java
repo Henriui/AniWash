@@ -64,7 +64,6 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
         Nails.setStyle(Style.STYLE2);
         
         // Interval is a way to set custom date and time of the entry
-        System.out.println("initCalendar" + calendars.size());
         
         /*        Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),
         LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 30)); */
@@ -72,8 +71,6 @@ public class Calendars implements Callback<CreateCalendarSourceParameter, Calend
         // CalendarSource is a mother to all the calendars
 
         familyCalendarSource.getCalendars().addAll(calendars);
-        System.out.println("getCalendarss" + familyCalendarSource.getCalendars());
-
     }
 
     // Getters and Setters

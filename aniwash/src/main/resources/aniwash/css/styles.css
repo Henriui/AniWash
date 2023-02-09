@@ -81,3 +81,7 @@
     -fx-stroke: #dedddc;
     -fx-stroke-width: 0.5;
 }
+
+.table-row-cell:selected {
+    -fx-background-color: #47c496;
+}
