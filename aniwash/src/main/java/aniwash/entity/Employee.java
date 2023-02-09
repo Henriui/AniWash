@@ -1,14 +1,13 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long eId;
+    private long id;
 
     @Column(nullable = false)
     private String username;
@@ -32,7 +31,7 @@ public class Employee {
     }
 
     public Employee(String username, String password, String name, String email, String title) {
-        this.username = username + eId;
+        this.username = username + id;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -40,11 +39,11 @@ public class Employee {
     }
 
     public long getId() {
-        return eId;
+        return id;
     }
 
     public void setId(long id) {
-        this.eId = id;
+        this.id = id;
     }
 
     public String getUsername() {

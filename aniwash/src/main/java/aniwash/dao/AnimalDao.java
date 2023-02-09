@@ -1,6 +1,7 @@
 package aniwash.dao;
 
 import aniwash.entity.Animal;
+import aniwash.entity.Customer;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class AnimalDao implements IAnimalDao {
         return success;
     }
 
+    @Override
     public List<Animal> findAllAnimal() {
         em.getTransaction().begin();
         List<Animal> animals = em.createQuery("SELECT a FROM Animal a", Animal.class).getResultList();
@@ -34,13 +36,16 @@ public class AnimalDao implements IAnimalDao {
         return animals;
     }
 
-    public Animal findByIdAnimal(long id) {
+
+    @Override
+    public Animal findByIdAnimal(Long id) {
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, id);
         em.getTransaction().commit();
         return t;
     }
 
+    @Override
     public Animal findByNameAnimal(String name) {
         Animal t = null;
         em.getTransaction().begin();
@@ -53,7 +58,8 @@ public class AnimalDao implements IAnimalDao {
         return t;
     }
 
-    public boolean deleteByIdAnimal(long id) {
+    @Override
+    public boolean deleteByIdAnimal(Long id) {
         boolean deleted = false;
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, id);
@@ -65,6 +71,7 @@ public class AnimalDao implements IAnimalDao {
         return deleted;
     }
 
+    @Override
     public boolean updateAnimal(Animal animal) {
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, animal.getId());

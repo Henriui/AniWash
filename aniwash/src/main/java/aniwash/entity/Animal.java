@@ -1,6 +1,7 @@
 package aniwash.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private String name;
     private String type;
     private String breed;
@@ -88,13 +90,22 @@ public class Animal {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Animal)) return false;
+
+        Animal a = (Animal) o;
+        return Objects.equals(id, a.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                "type = " + type + ", " +
-                "breed = " + breed + ", " +
-                "animalAge = " + animalAge + ", " +
-                "description = " + description + ")";
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "type = " + type + ", " + "breed = " + breed + ", " + "animalAge = " + animalAge + ", " + "description = " + description + ")";
     }
 }

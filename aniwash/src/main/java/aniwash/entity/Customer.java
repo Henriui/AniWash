@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cId;
+    private long id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -19,7 +19,8 @@ public class Customer {
     private String address;
     private String postalcode;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "customer_animal", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "animals_id"))
     private Set<Animal> animals = new HashSet<>();
 
     // Use constructor for database connection
@@ -42,6 +43,27 @@ public class Customer {
 
     public void addAnimal(Animal animal) {
         animals.add(animal);
+        animal.getOwner().add(this);
+    }
+
+    public void removeAnimal(Animal animal) {
+        animals.remove(animal);
+        animal.getOwner().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Customer)) return false;
+
+        Long cId = id;
+        return cId != null && cId.equals(((Customer) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
     public String getName() {
@@ -49,7 +71,7 @@ public class Customer {
     }
 
     public long getId() {
-        return cId;
+        return id;
     }
 
     public String getPhone() {
@@ -73,7 +95,7 @@ public class Customer {
     }
 
     public void setId(long id) {
-        this.cId = id;
+        this.id = id;
     }
 
     public void setPhone(String phone) {
@@ -94,6 +116,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + cId + ", " + "name = " + name + ", " + "phone = " + phone + ", " + "email = " + email + ", " + "address = " + address + ", " + "postalcode = " + postalcode + ", " + "animals = " + animals + ")";
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "phone = " + phone + ", " + "email = " + email + ", " + "address = " + address + ", " + "postalcode = " + postalcode + ", " + "animals = " + animals + ")";
     }
 }

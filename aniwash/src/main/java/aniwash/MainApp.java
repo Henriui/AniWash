@@ -1,5 +1,9 @@
 package aniwash;
 
+import aniwash.dao.AnimalDao;
+import aniwash.dao.CustomerDao;
+import aniwash.entity.Animal;
+import aniwash.entity.Customer;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +38,7 @@ public class MainApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
+
 
     public static void startSimulation(String[] args) {
         launch();

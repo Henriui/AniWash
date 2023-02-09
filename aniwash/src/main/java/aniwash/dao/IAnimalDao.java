@@ -1,6 +1,7 @@
 package aniwash.dao;
 
 import aniwash.entity.Animal;
+import aniwash.entity.Customer;
 
 import java.util.List;
 
@@ -9,11 +10,11 @@ public interface IAnimalDao {
 
     List<Animal> findAllAnimal();
 
-    Animal findByIdAnimal(long id);
+    Animal findByIdAnimal(Long id);
 
     Animal findByNameAnimal(String name);
 
-    boolean deleteByIdAnimal(long id);
+    boolean deleteByIdAnimal(Long id);
 
     boolean updateAnimal(Animal animal);
 
