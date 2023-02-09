@@ -41,22 +41,6 @@ public class Appointment {
         products.remove(product);
     }
 
-    // addEmployee
-    // returns true if the employee is added
-    // otherwise returns false
-    public boolean addEmployee(Employee employee) {
-        if (employee.addAppointment(this)) {
-            this.employee = employee;
-            return true;
-        }
-        return false;
-    }
-
-    // removeEmployee
-    public void removeEmployee(Employee employee) {
-        employee.removeAppointment(this);
-        this.employee = null;
-    }
 
     // Getters and Setters
     public int getId() {
