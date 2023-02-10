@@ -11,16 +11,27 @@ import java.util.Set;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
+
+    @Column(nullable = false)
     private ZonedDateTime date;
 
     private String description;
 
-    @ManyToOne
-    private Employee employee;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_customer", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
+    private Set<Customer> customers = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_animal", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "animal_id"))
+    private Set<Animal> animals = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "appointment_product", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
     public Appointment() {
@@ -53,10 +64,6 @@ public class Appointment {
 
     public ZonedDateTime getDate() {
         return date;
-    }
-
-    public Employee getEmployee() {
-        return employee;
     }
 
     public Set<Product> getProducts() {

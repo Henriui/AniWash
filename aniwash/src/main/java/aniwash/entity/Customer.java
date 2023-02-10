@@ -1,9 +1,9 @@
 package aniwash.entity;
 
+import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Entity
 public class Customer {
@@ -22,6 +22,9 @@ public class Customer {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "customer_animal", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "animals_id"))
     private Set<Animal> animals = new HashSet<>();
+
+    @ManyToMany(mappedBy = "customers")
+    private Set<Appointment> appointments = new HashSet<>();
 
     // Use constructor for database connection
     public Customer() {

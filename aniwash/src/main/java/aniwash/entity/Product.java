@@ -2,6 +2,9 @@ package aniwash.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Product")
 public class Product {
@@ -13,6 +16,9 @@ public class Product {
     private String name;
     private String description;
     private double price;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Appointment> appointments = new HashSet<>();
 
     public Product() {
     }

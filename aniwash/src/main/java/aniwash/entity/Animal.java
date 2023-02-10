@@ -1,10 +1,10 @@
 package aniwash.entity;
 
+import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Entity
 public class Animal {
@@ -20,6 +20,9 @@ public class Animal {
 
     @ManyToMany(mappedBy = "animals")
     private Set<Customer> owner = new HashSet<>();
+
+    @ManyToMany(mappedBy = "animals")
+    private Set<Appointment> appointments = new HashSet<>();
 
     public Animal() {
     }
