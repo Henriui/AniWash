@@ -16,11 +16,23 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Customer and Animal class CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerAnimalDbTest {
-    IAnimalDao aDao = new AnimalDao();
-    ICustomerDao cDao = new CustomerDao();
+    private final IAnimalDao aDao = new AnimalDao();
+    private final ICustomerDao cDao = new CustomerDao();
+
+    private Customer customer = new Customer("John", "+358 - 0", "rammus" + "@gmail.com");
+
+    @BeforeEach
+    public void init() {
+        customer = new Customer("John", "+358 - 0", "rammus" + "@gmail.com");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        cDao.deleteByIdCustomer(customer.getId());
+    }
 
     @Test
-    @DisplayName("Rammus test")
+    @DisplayName("Create multiple customers and animals test")
     @Order(1)
     public void rammusTest() {
         System.out.println("Rammus is the best");
@@ -40,50 +52,39 @@ public class CustomerAnimalDbTest {
         }
 
         for (Animal a : animals) {
-            Customer c = cDao.findByIdCustomer(1L);
+            Customer c = cDao.findByNameCustomer("John1");
             aDao.addAnimal(a);
             c.addAnimal(a);
         }
 
         assertEquals(10, cDao.findAllCustomer().size(), "Customer list size is not 10");
-        assertEquals(11, cDao.findAllAnimalsByOwnerId(1L).size(), "Customer 1 animal list size is not 11");
+        assertEquals(11, cDao.findByEmailCustomer("rammus1@gmail.com").findAllAnimals().size(), "Customer 1 animal list size is not 11");
         assertEquals(20, aDao.findAllAnimal().size(), "Animal list size is not 21");
     }
 
-/*
     @Test
-    @DisplayName("Delete test")
-    private void deleteTest() {
-        System.out.println("Delete test");
-        Customer c = cDao.findByIdCustomer(1L);
-        cDao.deleteByIdCustomer(c.getId());
-        for (Animal a : c.getAnimals()) {
-            aDao.deleteByIdAnimal(a.getId());
-        }
-    }
-*/
-
-/*
-    @Test
+    @Order(2)
     @DisplayName("Find all customers test")
-    private void findAllCustomerTest() {
+    public void findAllCustomerTest() {
         List<Customer> customers = cDao.findAllCustomer();
         for (Customer c : customers) {
             System.out.println("Found customer: " + c.toString());
         }
     }
-*/
 
-/*
     @Test
+    @Order(3)
     @DisplayName("Find all animals from customer test")
-    private void findTest() {
+    public void findTest() {
         System.out.println("Find test");
-        for (Animal a : cDao.findAllAnimalsByOwnerId(1L)) {
-            System.out.println("Customer has animal: " + a.toString());
+        List<Customer> customerList = cDao.findAllCustomer();
+        List<Animal> animalList = new ArrayList<>();
+        for (Customer c : customerList) {
+            animalList.addAll(c.getAnimals());
+        }
+        for (Animal a : animalList) {
+            System.out.println("Found animal: " + a.toString());
         }
     }
-*/
-
-
 }
+

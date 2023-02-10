@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class EmployeeDao implements IEmployeeDao {
 
-    EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addEmployee(Employee employee) {

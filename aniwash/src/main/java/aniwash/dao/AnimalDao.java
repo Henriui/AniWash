@@ -11,7 +11,7 @@ import java.util.List;
  * @author rasmushy
  */
 public class AnimalDao implements IAnimalDao {
-    private EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addAnimal(Animal animal) {
@@ -64,7 +64,13 @@ public class AnimalDao implements IAnimalDao {
         em.getTransaction().begin();
         Animal t = em.find(Animal.class, id);
         if (t != null) {
+            for (Customer c : t.getOwner()) {
+                if (c.getAnimals().contains(t)) {
+                    c.removeAnimal(t);
+                }
+            }
             em.remove(t);
+            System.out.println("Animal deleted: " + t.getName());
             deleted = true;
         }
         em.getTransaction().commit();
