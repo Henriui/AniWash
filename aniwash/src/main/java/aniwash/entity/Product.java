@@ -29,6 +29,16 @@ public class Product {
         this.price = price;
     }
 
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.getProducts().add(this);
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.getProducts().remove(this);
+    }
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -56,5 +66,13 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

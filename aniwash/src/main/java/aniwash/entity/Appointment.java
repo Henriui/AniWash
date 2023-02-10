@@ -11,7 +11,7 @@ import java.util.Set;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(nullable = false)
     private ZonedDateTime date;
@@ -42,19 +42,48 @@ public class Appointment {
         this.description = description;
     }
 
-    // addProduct
-    public boolean addProduct(Product product) {
-        return products.add(product);
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+        employee.getAppointments().add(this);
     }
 
-    // removeProduct
+    public void removeEmployee(Employee employee) {
+        employees.remove(employee);
+        employee.getAppointments().remove(this);
+    }
+
+    public void addCustomer(Customer customer) {
+        customers.add(customer);
+        customer.getAppointments().add(this);
+    }
+
+    public void removeCustomer(Customer customer) {
+        customers.remove(customer);
+        customer.getAppointments().remove(this);
+    }
+
+    public void addAnimal(Animal animal) {
+        animals.add(animal);
+        animal.getAppointments().add(this);
+    }
+
+    public void removeAnimal(Animal animal) {
+        animals.remove(animal);
+        animal.getAppointments().remove(this);
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getAppointments().add(this);
+    }
+
     public void removeProduct(Product product) {
         products.remove(product);
+        product.getAppointments().remove(this);
     }
 
-
     // Getters and Setters
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -76,6 +105,34 @@ public class Appointment {
 
     public void setDate(ZonedDateTime date) {
         this.date = date;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public Set<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public Set<Animal> getAnimals() {
+        return animals;
+    }
+
+    public void setAnimals(Set<Animal> animals) {
+        this.animals = animals;
     }
 
 }

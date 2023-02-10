@@ -44,6 +44,16 @@ public class Employee {
         this.title = title;
     }
 
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.getEmployees().add(this);
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.getEmployees().remove(this);
+    }
+
     public long getId() {
         return id;
     }
@@ -90,6 +100,14 @@ public class Employee {
 
     public String getTitle() {
         return title;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
 }

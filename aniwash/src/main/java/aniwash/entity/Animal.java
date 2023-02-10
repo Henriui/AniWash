@@ -92,6 +92,14 @@ public class Animal {
         this.owner = owner;
     }
 
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

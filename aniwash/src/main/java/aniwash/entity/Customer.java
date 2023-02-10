@@ -36,14 +36,6 @@ public class Customer {
         this.email = email;
     }
 
-    public Set<Animal> getAnimals() {
-        return animals;
-    }
-
-    public void setAnimals(Set<Animal> animals) {
-        this.animals = animals;
-    }
-
     public void addAnimal(Animal animal) {
         animals.add(animal);
         animal.getOwner().add(this);
@@ -52,6 +44,16 @@ public class Customer {
     public void removeAnimal(Animal animal) {
         animals.remove(animal);
         animal.getOwner().remove(this);
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.getCustomers().add(this);
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.getCustomers().remove(this);
     }
 
     @Override
@@ -115,6 +117,22 @@ public class Customer {
 
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
+    }
+
+    public Set<Animal> getAnimals() {
+        return animals;
+    }
+
+    public void setAnimals(Set<Animal> animals) {
+        this.animals = animals;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     @Override
