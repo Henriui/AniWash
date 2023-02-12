@@ -145,9 +145,6 @@ public class AnimalDaoTest {
             animalDao.deleteByIdAnimal(a.getId());
         }
 
-        animals = animalDao.findAllAnimal();
-        System.out.println(animals.toString());
-
         assertEquals(0, animalDao.findAllAnimal().size());
     }
 
@@ -205,7 +202,6 @@ public class AnimalDaoTest {
         animalDao.addAnimal(animal);
         animal.setDescription("mjäyy");
         assertTrue(animalDao.updateAnimal(animal));
-
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("mjäyy", animal.getDescription(), "getDescription(): Eläimen kuvaus kentän päivitys ei onnistunut.");
     }
