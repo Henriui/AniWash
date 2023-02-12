@@ -9,6 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "Appointment")
 public class Appointment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,6 +17,7 @@ public class Appointment {
     @Column(nullable = false)
     private ZonedDateTime date;
 
+    @Column(nullable = false)
     private String description;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -95,20 +97,12 @@ public class Appointment {
         return date;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
     public void setDate(ZonedDateTime date) {
         this.date = date;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
     }
 
     public Set<Employee> getEmployees() {
@@ -133,6 +127,14 @@ public class Appointment {
 
     public void setAnimals(Set<Animal> animals) {
         this.animals = animals;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
 }

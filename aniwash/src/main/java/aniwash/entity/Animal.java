@@ -35,8 +35,6 @@ public class Animal {
         this.description = description;
     }
 
-    // Getters and Setters
-
     public void removeOwner(Customer customer) {
         owner.remove(customer);
         customer.getAnimals().remove(this);
@@ -46,6 +44,18 @@ public class Animal {
         owner.add(customer);
         customer.getAnimals().add(this);
     }
+    
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.getAnimals().remove(this);
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.getAnimals().add(this);
+    }
+
+    // Getters and Setters
 
     public String getName() {
         return name;

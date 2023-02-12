@@ -1,11 +1,11 @@
 package aniwash.entity;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Entity
 public class Customer {
@@ -36,6 +36,14 @@ public class Customer {
         this.name = name;
         this.phone = phone;
         this.email = email;
+    }
+
+    public Customer(String name, String phone, String email, String address, String postalcode) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.postalcode = postalcode;
     }
 
     public void addAnimal(Animal animal) {
@@ -77,6 +85,8 @@ public class Customer {
         List<Animal> animalList = new ArrayList<>(getAnimals());
         return animalList;
     }
+
+    // Getters and Setters
 
     public String getName() {
         return name;

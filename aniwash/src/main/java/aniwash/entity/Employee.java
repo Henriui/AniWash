@@ -54,6 +54,8 @@ public class Employee {
         appointment.getEmployees().remove(this);
     }
 
+    // Getters and Setters
+
     public long getId() {
         return id;
     }

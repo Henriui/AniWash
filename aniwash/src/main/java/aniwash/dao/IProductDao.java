@@ -6,9 +6,6 @@ import java.util.List;
 
 
 public interface IProductDao {
-
-    // Dao methods
-
     boolean addProduct(Product product);
 
     List<Product> findAllProduct();

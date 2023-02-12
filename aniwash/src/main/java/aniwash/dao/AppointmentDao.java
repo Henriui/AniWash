@@ -76,9 +76,9 @@ public class AppointmentDao implements IAppointmentDao {
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (app != null) {
             app.setDate(appointment.getDate());
-/*            app.setEmployee(appointment.getEmployee());
-            app.setCustomer(appointment.getCustomer());
-            app.setService(appointment.getService());*/
+            app.setEmployees(appointment.getEmployees());
+            app.setCustomers(appointment.getCustomers());
+            app.setProducts(appointment.getProducts());
             updated = true;
         }
 
