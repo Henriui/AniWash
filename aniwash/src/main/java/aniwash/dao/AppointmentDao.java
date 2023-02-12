@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AppointmentDao implements IAppointmentDao {
 
-    EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addAppointment(Appointment appointment) {

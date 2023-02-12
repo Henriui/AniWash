@@ -14,9 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerDaoTest {
     private final ICustomerDao customerDao = new CustomerDao();
 
-    private Long id = 1L;
     private final String name = "John";
-    private final String phone = "123456789";
+    private final String phone = "0401234567";
     private final String email = "john.johna@email.com";
     private final String address = "John street 1";
     private final String postalcode = "12345";
@@ -33,6 +32,7 @@ public class CustomerDaoTest {
 
     @AfterEach
     public void endOfEach() {
+        long id = customer.getId();
         customerDao.deleteByIdCustomer(id);
     }
 
@@ -48,7 +48,7 @@ public class CustomerDaoTest {
         // Lisää asiakas
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden customerin lisääminen ei onnistu.");
         assertFalse(customerDao.addCustomer(customer), "addCustomer(): Saman customerin pystyy lisäämään kahteen kertaan.");
-        id = customer.getId();
+        long id = customer.getId();
 
         // Nyt haun tulee onnistua ja kenttien tulee tietenkin olla asetettu oikein
         assertNotNull((customer = customerDao.findByIdCustomer(id)), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
@@ -81,7 +81,7 @@ public class CustomerDaoTest {
         assertNull(customerDao.findByIdCustomer(id), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
 
         // Olemattoman valuutan poiston tulee "epäonnistua"
-        assertFalse(customerDao.deleteByIdCustomer(333L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
+        assertFalse(customerDao.deleteByIdCustomer(0L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
     }
 
     @Test
@@ -90,8 +90,7 @@ public class CustomerDaoTest {
     public void testAddCustomer() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         // Nyt haun tulee onnistua ja jokaisen kentän tulee tietenkin olla asetettu oikein
-        assertNotNull((customer = customerDao.findByIdCustomer(id)), "addCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
-        assertEquals(id, customer.getId(), "getId(): asiakkaan tunnus väärin.");
+        assertNotNull((customer = customerDao.findByNameCustomer("John")), "addCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(name, customer.getName(), "getName(): Asiakkaan nimi on väärin.");
         assertEquals(email, customer.getEmail(), "getEmail(): Email on väärin.");
     }
@@ -110,7 +109,7 @@ public class CustomerDaoTest {
     public void testSearchById() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         // Nyt haun tulee onnistua ja jokaisen kentän tulee tietenkin olla asetettu oikein
-        id = customer.getId();
+        long id = customer.getId();
         customer = customerDao.findByIdCustomer(id);
         assertNotNull(customer, "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(id, customer.getId(), "getId(): customer id tunnus väärin.");
@@ -123,7 +122,10 @@ public class CustomerDaoTest {
     @DisplayName("Olemattoman asiakkaan haun tulee palauttaa null")
     @Order(4)
     public void testSearchById2() {
-        assertNull(customerDao.findByIdCustomer(id), "findByIdCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
+        assertNull(customerDao.findByNameCustomer("John"), "findByNameCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
+        assertNull(customerDao.findByEmailCustomer("john.johna@email.com"), "findByEmailCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
+        assertNull(customerDao.findByPhoneCustomer("0401234567"), "findByPhoneCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
+
     }
 
     @Test
@@ -191,7 +193,7 @@ public class CustomerDaoTest {
     @Order(10)
     public void testDeleteCustomer() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-        id = customer.getId();
+        long id = customer.getId();
         assertTrue((customerDao.deleteByIdCustomer(id)), "deleteCustomer(): Customerin poisto ei onnistunut.");
         assertTrue((customerDao.findByIdCustomer(id) == null), "deleteCustomer(): Customerin poisto ei onnistunut - asiakas voitiin hakea tietokannasta.");
     }

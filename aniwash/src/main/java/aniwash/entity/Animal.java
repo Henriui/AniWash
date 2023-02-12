@@ -36,6 +36,17 @@ public class Animal {
     }
 
     // Getters and Setters
+
+    public void removeOwner(Customer customer) {
+        owner.remove(customer);
+        customer.getAnimals().remove(this);
+    }
+
+    public void addOwner(Customer customer) {
+        owner.add(customer);
+        customer.getAnimals().add(this);
+    }
+
     public String getName() {
         return name;
     }
