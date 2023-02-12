@@ -38,7 +38,7 @@ public class EmployeeDao implements IEmployeeDao {
     }
 
     @Override
-    public Employee findByIdEmployee(int id) {
+    public Employee findByIdEmployee(Long id) {
         em.getTransaction().begin();
         Employee employee = em.find(Employee.class, id);
         em.getTransaction().commit();
@@ -59,7 +59,7 @@ public class EmployeeDao implements IEmployeeDao {
     }
 
     @Override
-    public boolean deleteByIdEmployee(int id) {
+    public boolean deleteByIdEmployee(Long id) {
         boolean deleted = false;
         em.getTransaction().begin();
         Employee employee = em.find(Employee.class, id);
