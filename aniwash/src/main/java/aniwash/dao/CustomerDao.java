@@ -86,7 +86,7 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public List<Customer> findByNameCustomerList(String name) {
-        List<Customer> c = null;
+        List<Customer> c;
         em.getTransaction().begin();
         c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name order by name desc", Customer.class).setParameter("name", name).getResultList();
         em.getTransaction().commit();
@@ -120,7 +120,6 @@ public class CustomerDao implements ICustomerDao {
                 t.removeAnimal(a);
                 if (a.getOwner().size() == 0) {
                     em.remove(a);
-                    System.out.println("Animal " + a.getName() + " deleted");
                 }
             }
             em.remove(t);
@@ -131,4 +130,3 @@ public class CustomerDao implements ICustomerDao {
     }
 
 }
-

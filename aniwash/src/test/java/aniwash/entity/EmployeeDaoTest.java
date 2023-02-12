@@ -82,11 +82,12 @@ public class EmployeeDaoTest {
     }
 
     @Test
-    @DisplayName("Find all employees test")
+    @DisplayName("Find employee by name test")
     @Order(6)
-    public void findAllEmployeesTest() {
+    public void findEmployeeByNameTest() {
         eDao.addEmployee(employee);
-        assertEquals(1, eDao.findAllEmployee().size(), "Employee list size is not 1");
+        Employee e = eDao.findByNameEmployee(employee.getName());
+        assertEquals(name, e.getName(), "Employee name is not the same");
     }
 
     @Test
@@ -106,12 +107,30 @@ public class EmployeeDaoTest {
     }
 
     @Test
-    @DisplayName("Delete employee test")
+    @DisplayName("Update employee password test")
     @Order(8)
+    public void updateEmployeePasswordTest() {
+        eDao.addEmployee(employee);
+        employee = eDao.findByIdEmployee(employee.getId());
+        employee.setPassword("newPassword");
+        assertTrue(eDao.updateEmployee(employee), "updateEmployee(): Employee was not updated");
+        employee = eDao.findByIdEmployee(employee.getId());
+        assertEquals("newPassword", employee.getPassword(), "updateEmployee(): Employee password is not the same");
+        System.out.println(employee.getPassword());
+    }
+
+    @Test
+    @DisplayName("Delete employee test")
+    @Order(9)
     public void deleteEmployeeTest() {
         eDao.addEmployee(employee);
         assertTrue(eDao.deleteByIdEmployee(employee.getId()), "deleteByIdEmployee(): Employee was not deleted");
-        assertEquals(0, eDao.findAllEmployee().size(), "Employee list size is not 0");
     }
 
+    @Test
+    @DisplayName("Delete null employee test")
+    @Order(10)
+    public void deleteEmployeeTest2() {
+        assertFalse(eDao.deleteByIdEmployee(employee.getId()), "deleteByIdEmployee(): There was Employee to delete");
+    }
 }

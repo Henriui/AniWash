@@ -70,7 +70,6 @@ public class AnimalDao implements IAnimalDao {
                 }
             }
             em.remove(t);
-            System.out.println("Animal deleted: " + t.getName());
             deleted = true;
         }
         em.getTransaction().commit();
