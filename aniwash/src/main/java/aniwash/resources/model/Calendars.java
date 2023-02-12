@@ -63,11 +63,6 @@ public class Calendars {
         TeethCare.setStyle(Style.STYLE7);
         Nails.setStyle(Style.STYLE2);
         
-        // Interval is a way to set custom date and time of the entry
-        
-        /*        Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),
-        LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 30)); */
-        
         // CalendarSource is a mother to all the calendars
 
         familyCalendarSource.getCalendars().addAll(calendars);
