@@ -2,7 +2,7 @@ package aniwash.dao;
 
 import aniwash.entity.Appointment;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface IAppointmentDao {
@@ -12,7 +12,7 @@ public interface IAppointmentDao {
 
     Appointment findByIdAppointment(Long id);
 
-    Appointment findByDateAppointment(Date date);
+    Appointment findByDateAppointment(ZonedDateTime date);
 
 /*  TODO: Implement these methods
     Appointment findByEmployeeAppointment(Employee employee);

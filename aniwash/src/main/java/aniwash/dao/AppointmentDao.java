@@ -3,7 +3,7 @@ package aniwash.dao;
 import aniwash.entity.Appointment;
 import jakarta.persistence.EntityManager;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class AppointmentDao implements IAppointmentDao {
@@ -43,7 +43,7 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public Appointment findByDateAppointment(Date date) {
+    public Appointment findByDateAppointment(ZonedDateTime date) {
         Appointment app = null;
         em.getTransaction().begin();
         try {
