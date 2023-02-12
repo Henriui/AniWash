@@ -3,7 +3,9 @@ package aniwash.entity;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -82,6 +84,26 @@ public class Appointment {
     public void removeProduct(Product product) {
         products.remove(product);
         product.getAppointments().remove(this);
+    }
+
+    public List<Employee> findAllEmployees() {
+        List<Employee> employees = new ArrayList<>(getEmployees());
+        return employees;
+    }
+
+    public List<Customer> findAllCustomers() {
+        List<Customer> customers = new ArrayList<>(getCustomers());
+        return customers;
+    }
+
+    public List<Animal> findAllAnimals() {
+        List<Animal> animals = new ArrayList<>(getAnimals());
+        return animals;
+    }
+
+    public List<Product> findAllProducts() {
+        List<Product> products = new ArrayList<>(getProducts());
+        return products;
     }
 
     // Getters and Setters
