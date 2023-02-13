@@ -23,4 +23,5 @@ public interface IEmployeeDao {
     boolean deleteByIdEmployee(long id);
 
     boolean updateEmployee(Employee employee);
+
 }

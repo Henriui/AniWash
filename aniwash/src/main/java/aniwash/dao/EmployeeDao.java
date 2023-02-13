@@ -3,6 +3,7 @@ package aniwash.dao;
 import aniwash.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 
 import java.util.List;
 

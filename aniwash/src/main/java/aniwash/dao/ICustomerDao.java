@@ -24,4 +24,5 @@ public interface ICustomerDao {
     List<Customer> findByNameCustomerList(String name);
 
     boolean updateCustomer(Customer customer);
+
 }
