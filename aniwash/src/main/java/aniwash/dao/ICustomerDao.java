@@ -11,8 +11,6 @@ public interface ICustomerDao {
 
     List<Customer> findAllCustomer();
 
-    List<Animal> findAllAnimalsByOwnerId(long id);
-
     Customer findByIdCustomer(long id);
 
     boolean deleteByIdCustomer(long id);
@@ -21,7 +19,10 @@ public interface ICustomerDao {
 
     Customer findByPhoneCustomer(String phone);
 
+    Customer findByNameCustomer(String name);
+
     List<Customer> findByNameCustomerList(String name);
 
     boolean updateCustomer(Customer customer);
+
 }

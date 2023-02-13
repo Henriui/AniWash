@@ -10,11 +10,18 @@ public interface IEmployeeDao {
 
     List<Employee> findAllEmployee();
 
-    Employee findByIdEmployee(Long id);
+    Employee findByIdEmployee(long id);
 
     Employee findByNameEmployee(String name);
 
-    boolean deleteByIdEmployee(Long id);
+    Employee findByEmailEmployee(String email);
+
+    Employee findByTitleEmployee(String title);
+
+    Employee findByUsernameEmployee(String username);
+
+    boolean deleteByIdEmployee(long id);
 
     boolean updateEmployee(Employee employee);
+
 }

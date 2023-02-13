@@ -4,16 +4,14 @@ import aniwash.entity.Animal;
 import aniwash.entity.Customer;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /*
  * This class is used to access the database and perform CRUD operations on the Customer table.
  * @author rasmushy
  */
 public class CustomerDao implements ICustomerDao {
-    private EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addCustomer(Customer customer) {
@@ -37,16 +35,6 @@ public class CustomerDao implements ICustomerDao {
         List<Customer> customers = em.createQuery("SELECT a FROM Customer a", Customer.class).getResultList();
         em.getTransaction().commit();
         return customers;
-    }
-
-    @Override
-    public List<Animal> findAllAnimalsByOwnerId(long id) {
-        em.getTransaction().begin();
-        Customer c = em.find(Customer.class, id);
-        Set<Animal> animalSet = c.getAnimals();
-        List<Animal> animalList = new ArrayList<>(animalSet);
-        em.getTransaction().commit();
-        return animalList;
     }
 
     @Override
@@ -84,8 +72,21 @@ public class CustomerDao implements ICustomerDao {
     }
 
     @Override
+    public Customer findByNameCustomer(String name) {
+        Customer c = null;
+        em.getTransaction().begin();
+        try {
+            c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name", Customer.class).setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No customer found with name: " + name);
+        }
+        em.getTransaction().commit();
+        return c;
+    }
+
+    @Override
     public List<Customer> findByNameCustomerList(String name) {
-        List<Customer> c = null;
+        List<Customer> c;
         em.getTransaction().begin();
         c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name order by name desc", Customer.class).setParameter("name", name).getResultList();
         em.getTransaction().commit();
@@ -115,6 +116,12 @@ public class CustomerDao implements ICustomerDao {
         em.getTransaction().begin();
         Customer t = em.find(Customer.class, id);
         if (t != null) {
+            for (Animal a : t.getAnimals()) {
+                t.removeAnimal(a);
+                if (a.getOwner().size() == 0) {
+                    em.remove(a);
+                }
+            }
             em.remove(t);
             deleted = true;
         }
@@ -123,4 +130,3 @@ public class CustomerDao implements ICustomerDao {
     }
 
 }
-

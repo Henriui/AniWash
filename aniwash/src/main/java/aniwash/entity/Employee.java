@@ -1,6 +1,7 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
 public class Employee {
@@ -13,10 +14,7 @@ public class Employee {
     private String username;
 
     @Column(nullable = false)
-    /*
-       TODO: pw encryption
-       @ColumnTransformer(read = "cast(AES_ENCRYPT(password, 'pwKey') as char(255))", write = "AES_DECRYPT(?, 'pwKey')")
-    */
+    @ColumnTransformer(read = "cast(AES_DECRYPT(password, 'pwKey') as char(255))", write = "AES_ENCRYPT(?, 'pwKey')")
     private String password;
 
     @Column(nullable = false)

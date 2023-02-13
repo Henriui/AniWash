@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -22,7 +24,6 @@ public class AnimalDaoTest {
     private final String aDescription = "Värikäs ja iloinen koira, joka rakastaa ihmisiä ja leikkejä - sietäisi laittaa piikille.";
 
     private Animal animal = new Animal(aNimi, aTyyppi, aRotu, aIka, aDescription);
-    // public Animal(String name, String type, String breed, int animalAge, String description) {
 
     @BeforeEach
     public void setUp() {
@@ -86,7 +87,7 @@ public class AnimalDaoTest {
         assertNull(animalDao.findByIdAnimal(animal.getId()), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
 
         // Olemattoman valuutan poiston tulee "epäonnistua"
-        assertFalse(animalDao.deleteByIdAnimal(333L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
+        assertFalse(animalDao.deleteByIdAnimal(0L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
     }
 
     @Test
@@ -139,8 +140,11 @@ public class AnimalDaoTest {
     @DisplayName("Etsitään kaikki eläimet - tietokannassa ei ole eläimiä")
     public void testFindAllAnimal2() {
         animalDao.addAnimal(animal);
-        System.out.println("animal: " + animal);
-        animalDao.deleteByIdAnimal(animal.getId());
+        List<Animal> animals = animalDao.findAllAnimal();
+        for (Animal a : animals) {
+            animalDao.deleteByIdAnimal(a.getId());
+        }
+
         assertEquals(0, animalDao.findAllAnimal().size());
     }
 
@@ -198,7 +202,6 @@ public class AnimalDaoTest {
         animalDao.addAnimal(animal);
         animal.setDescription("mjäyy");
         assertTrue(animalDao.updateAnimal(animal));
-
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("mjäyy", animal.getDescription(), "getDescription(): Eläimen kuvaus kentän päivitys ei onnistunut.");
     }
@@ -233,7 +236,7 @@ public class AnimalDaoTest {
     @DisplayName("Olemattoman eläimen poistoyrityksen tulee palauttaa false")
     @Order(15)
     public void testDeleteByIdAnimal2() {
-        assertFalse(animalDao.deleteByIdAnimal(333L));
+        assertFalse(animalDao.deleteByIdAnimal(0L));
     }
 
 }

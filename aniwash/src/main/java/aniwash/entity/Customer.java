@@ -1,6 +1,8 @@
 package aniwash.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -64,6 +66,11 @@ public class Customer {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public List<Animal> findAllAnimals() {
+        List<Animal> animalList = new ArrayList<>(getAnimals());
+        return animalList;
     }
 
     public String getName() {
