@@ -14,6 +14,8 @@ import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
 
 import aniwash.MainApp;
+import aniwash.resources.model.Calendars;
+
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
@@ -31,45 +33,12 @@ public class DashboardController {
     private Button scheduleButton;
     @FXML
     private BarChart barChart;
+    private Calendars calendars = new Calendars();
 
     public void initialize() {
-        Calendar katja = new Calendar("Katja");
-        Calendar dirk = new Calendar("Dirk");
 
-        CalendarSource familyCalendarSource = new CalendarSource("Family");
-        familyCalendarSource.getCalendars().addAll(katja, dirk);
-        agendaView.getCalendarSources().setAll(familyCalendarSource);
-
-        Calendar birthdays = new Calendar("Birthdays");
-        Calendar holidays = new Calendar("Holidays");
-
-        birthdays.setStyle(Style.STYLE1);
-        holidays.setStyle(Style.STYLE2);
-        CalendarSource myCalendarSource = new CalendarSource("My Calendars");
-        myCalendarSource.getCalendars().addAll(birthdays, holidays);
-        agendaView.getCalendarSources().addAll(myCalendarSource);
-
-        Entry<String> dentistAppointment = new Entry<>("Dentist");
-        Entry<String> d = new Entry<>("asdasd");
-        Entry<String> a = new Entry<>("asdadasd");
-        Entry<String> c = new Entry<>("ddddd");
-
-        Entry entry = new Entry("Something");
-        Interval interval = new Interval(LocalDate.of(2023, Month.JANUARY, 31), LocalTime.of(23, 0),LocalDate.of(2023, Month.JANUARY, 31) , LocalTime.of(23, 30));
-        entry.setInterval(interval);
-        Calendar calendar = new Calendar("Heatl Benis");
-    
-        holidays.addEntry(entry);
-
-        agendaView.showEntry(dentistAppointment);
-        agendaView.showEntry(a);
-        agendaView.showEntry(c);
-        agendaView.showEntry(d);
-        katja.addEntry(dentistAppointment);
-        holidays.addEntry(a);
-        dirk.addEntry(d);
-        katja.addEntry(c);
-        System.out.println(agendaView.getCalendars());
+        agendaView.getCalendarSources().addAll(calendars.getCalendarss());
+        // agendaView.setCalendarSourceFactory(new Calendars());
     }
 
     @FXML

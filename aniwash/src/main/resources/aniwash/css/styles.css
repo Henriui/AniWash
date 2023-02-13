@@ -32,10 +32,12 @@
     -fx-background-color: #fbfbfc;
     -fx-padding: 20px;
 }
-
+.text{
+    -fx-text-fill: blue;
+    font-family: initial;
+}
 .side-bar-button {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
     -fx-font-size: 14px;
     -fx-pref-width: 100%;
     -fx-padding: 10px;
@@ -61,6 +63,10 @@
     -fx-background-color: transparent;
 }
 
+.calendarview-background {
+    -fx-background-color: transparent;
+}
+
 .chart-text {
     -fx-background-color: white;
 }
@@ -74,4 +80,8 @@
 .chart-horizontal-grid-lines {
     -fx-stroke: #dedddc;
     -fx-stroke-width: 0.5;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #47c496;
 }

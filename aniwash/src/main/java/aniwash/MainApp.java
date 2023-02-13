@@ -1,18 +1,15 @@
 package aniwash;
 
-import aniwash.dao.AnimalDao;
-import aniwash.dao.CustomerDao;
-import aniwash.entity.Animal;
-import aniwash.entity.Customer;
 import javafx.application.Application;
+import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
 import java.io.IOException;
+
+import aniwash.resources.model.Calendars;
 
 public class MainApp extends Application {
 
@@ -23,8 +20,11 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
+        // FIXME: Delete these two lines after database is implemented
+        Calendars calendar = new Calendars();
+        calendar.initCalendar();
 
+        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -38,7 +38,6 @@ public class MainApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
-
 
     public static void startSimulation(String[] args) {
         launch();
