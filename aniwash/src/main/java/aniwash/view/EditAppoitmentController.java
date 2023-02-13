@@ -1,5 +1,6 @@
 package aniwash.view;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import com.calendarfx.model.Calendar;
@@ -30,7 +31,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class NewAppoitmentController extends CreatePopUp {
+public class EditAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
     @FXML
     private TableColumn personTable;
@@ -75,9 +76,6 @@ public class NewAppoitmentController extends CreatePopUp {
 
     public void initialize() {
         setArg();
-        System.out.println("NewAppoitmentController initialized");
-        services.getItems().add("                                   Create new service  +");
-        petList.getItems().add("                                   Create new pet  +");
 
         // Initialize datepicker with selected date
 
@@ -95,7 +93,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
         ObservableList<Customer> people = getPeople();
         servicesa = products.getCalendars();
-
+        
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
         });
@@ -150,14 +148,13 @@ public class NewAppoitmentController extends CreatePopUp {
 
         // Listen for customer selection changes and show the person details when
         // changed.
+    
 
         personView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 Customer selectedPerson = (Customer) newValue;
                 selectCustomer(selectedPerson);
                 services.setDisable(false);
-                one.styleProperty().set("-fx-fill: #47c496");
-                first.styleProperty().set("-fx-fill: #47c496");
 
                 selectedPerson.getAnimals().forEach(animal -> {
                     petList.getItems().addAll(animal.getDescription());
@@ -173,8 +170,6 @@ public class NewAppoitmentController extends CreatePopUp {
             int selectedIndex = services.getSelectionModel().getSelectedIndex();
             selectService(newValue, selectedIndex);
             petList.setDisable(false);
-            two.styleProperty().set("-fx-fill: #47c496");
-            second.styleProperty().set("-fx-fill: #47c496");
         });
 
         // Listen for pet selection changes and show the person details when changed.
@@ -191,9 +186,9 @@ public class NewAppoitmentController extends CreatePopUp {
             }
             else{
                 newEntry.getEntry().setLocation(newEntry.getEntry().getLocation() + " " + newValue);
-                three.styleProperty().set("-fx-fill: #47c496");
             }
         });
+        getInfo();
 
     }
 
@@ -238,11 +233,20 @@ public class NewAppoitmentController extends CreatePopUp {
             alert.setContentText("WOW");
             alert.showAndWait();
         } else {
-            Calendar service = servicesa.get(selectedIndex-1);
+            Calendar service = servicesa.get(selectedIndex);
             newEntry.getEntry().setCalendar(service);
             newEntry.getEntry().setTitle(service.getName());
 
         }
+
+    }
+
+    public void getInfo(){
+        personView.getSelectionModel().select(Integer.parseInt("3"));
+        personView.scrollTo(3);
+        int indexOfItemToSelect = services.getItems().indexOf(newEntry.getEntry().getCalendar().getName());
+        System.out.println("!!" + newEntry.getEntry().getCalendar().getName() + "!! " + indexOfItemToSelect);
+        services.getSelectionModel().select(indexOfItemToSelect);
 
     }
     // Get infromation about the entry

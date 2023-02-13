@@ -48,7 +48,7 @@ public class ScheduleController {
     @FXML
     private Button monthButton;
     private Calendars calendars = new Calendars();
-
+    private EntryDetailsParameter newEntry;
     public void initialize() {
         calendarView.getCalendarSources().addAll(calendars.getCalendarss());
         System.out.println("CalendarView initialized");
@@ -60,23 +60,23 @@ public class ScheduleController {
     private void dashBoard() throws IOException {
         MainApp.setRoot("mainView");
     }
-
+    
     @FXML
     private void testWeekView() {
         calendarView.showWeekPage();
         Color selected = new Color(1, 1, 1, 1).rgb(255, 255, 255);
         testbutton.setTextFill(selected);
         testbutton.styleProperty().set("-fx-background-color: #1485ff");
-
+        
         Color unselected = new Color(1, 1, 1, 1).rgb(117, 117, 117);
         listButton.setTextFill(unselected);
         listButton.styleProperty().set("-fx-background-color: transparent");
-
+        
         monthButton.setTextFill(unselected);
         monthButton.styleProperty().set("-fx-background-color: transparent");
-
+        
     }
-
+    
     @FXML
     private void testListView() {
         calendarView.showDayPage();
@@ -86,23 +86,24 @@ public class ScheduleController {
         Color unselected = new Color(1, 1, 1, 1).rgb(117, 117, 117);
         testbutton.setTextFill(unselected);
         testbutton.styleProperty().set("-fx-background-color: transparent");
-
+        
         monthButton.setTextFill(unselected);
         monthButton.styleProperty().set("-fx-background-color: transparent");
     }
-
+    
     @FXML
     private void testMonthlyView() {
         calendarView.showMonthPage();
         Color selected = new Color(1, 1, 1, 1).rgb(255, 255, 255);
         monthButton.styleProperty().set("-fx-background-color: #1485ff");
         monthButton.setTextFill(selected);
-
+        
         Color unselected = new Color(1, 1, 1, 1).rgb(117, 117, 117);
         listButton.setTextFill(unselected);
         listButton.styleProperty().set("-fx-background-color: transparent");
         testbutton.setTextFill(unselected);
         testbutton.styleProperty().set("-fx-background-color: transparent");
+  
     }
 
 }
