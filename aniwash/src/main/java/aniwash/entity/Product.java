@@ -80,4 +80,9 @@ public class Product {
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
     }
+
+    @Override
+    public String toString(){
+        return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", appointments=" + appointments + ")";
+    }
 }

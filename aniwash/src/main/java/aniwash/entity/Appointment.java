@@ -159,4 +159,17 @@ public class Appointment {
         this.products = products;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", date=" + date +
+                ", description='" + description + '\'' +
+                ", employees=" + employees +
+                ", customers=" + customers +
+                ", animals=" + animals +
+                ", products=" + products +
+                ")";
+    }
+
 }

@@ -112,4 +112,8 @@ public class Employee {
         this.appointments = appointments;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", title=" + title + ", appointments=" + appointments + ")";
+    }
 }
