@@ -81,7 +81,7 @@ public class Product {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", appointments=" + appointments + ")";
     }
 }

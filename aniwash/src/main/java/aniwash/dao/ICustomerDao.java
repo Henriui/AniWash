@@ -1,8 +1,11 @@
 package aniwash.dao;
 
+import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ICustomerDao {
     boolean addCustomer(Customer customer);
@@ -18,6 +21,10 @@ public interface ICustomerDao {
     Customer findByNameCustomer(String name);
 
     List<Customer> findByNameCustomerList(String name);
+
+    Set<Appointment> findAppointmentsByCustomerName(String name);
+
+    Set<Animal> findAnimalsByCustomerName(String name);
 
     boolean updateCustomer(Customer customer);
 

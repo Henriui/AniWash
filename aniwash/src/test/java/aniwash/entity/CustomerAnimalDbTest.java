@@ -1,13 +1,12 @@
 package aniwash.entity;
 
 import aniwash.dao.*;
-
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DisplayName("Customer and Animal class CRUD testings")
@@ -83,7 +82,6 @@ public class CustomerAnimalDbTest {
         }
     }
 
-
     @Test
     @Order(5)
     @DisplayName("Delete all customers test")
@@ -96,6 +94,7 @@ public class CustomerAnimalDbTest {
         customerList = cDao.findAllCustomer();
         assertEquals(0, customerList.size(), "Customer list size is not 0");
     }
+
     @Test
     @Order(6)
     @DisplayName("Delete all animals test")
@@ -122,4 +121,3 @@ public class CustomerAnimalDbTest {
         assertEquals(0, employeeList.size(), "Employee list size is not 0");
     }
 }
-

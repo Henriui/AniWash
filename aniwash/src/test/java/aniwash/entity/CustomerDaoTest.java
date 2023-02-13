@@ -2,9 +2,11 @@ package aniwash.entity;
 
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.*;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -220,4 +222,25 @@ public class CustomerDaoTest {
         assertFalse(customerDao.deleteByIdCustomer(customer.getId()), "deleteCustomer(): Väittää poistaneensa olemattoman customerin.");
     }
 
+    @Test
+    @Order(14)
+    @DisplayName("Find all appointments with customer name")
+    public void findAppointmentsByNameTest() {
+        Appointment a = new Appointment(ZonedDateTime.parse("2020-01-01T10:00:00+02:00[Europe/Helsinki]"), "Testi pesu");
+        customer.addAppointment(a);
+        customerDao.addCustomer(customer);
+        List<Appointment> aList = new ArrayList<>(customerDao.findAppointmentsByCustomerName("John"));
+        assertEquals(aList.get(0).getDescription(), "Testi pesu", "findAppointmentsByCustomerName(): Didn't find appointments with customers name.");
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("Find all animals with customer name")
+    public void findAnimalsByNameTest() {
+        Animal a = new Animal("Pertti", "Dog", "Saksanpaimenkoira", 8, "Pertti on hyvä koira.");
+        customer.addAnimal(a);
+        customerDao.addCustomer(customer);
+        List<Animal> aList = new ArrayList<>(customerDao.findAnimalsByCustomerName("John"));
+        assertEquals(aList.get(0).getName(), "Pertti", "findAnimalsByCustomerName(): Didn't find animals with customers name.");
+    }
 }

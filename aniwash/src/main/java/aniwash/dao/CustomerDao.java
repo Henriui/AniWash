@@ -1,10 +1,14 @@
 package aniwash.dao;
 
 import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /*
@@ -79,6 +83,24 @@ public class CustomerDao implements ICustomerDao {
             System.out.println("No customer found with name: " + name);
         }
         return c;
+    }
+
+    @Override
+    public Set<Appointment> findAppointmentsByCustomerName(String name) {
+        em.getTransaction().begin();
+        Customer c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name", Customer.class).setParameter("name", name).getSingleResult();
+        em.getTransaction().commit();
+        Set<Appointment> a = c.getAppointments();
+        return a;
+    }
+
+    @Override
+    public Set<Animal> findAnimalsByCustomerName(String name) {
+        em.getTransaction().begin();
+        Customer c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name", Customer.class).setParameter("name", name).getSingleResult();
+        em.getTransaction().commit();
+        Set<Animal> a = c.getAnimals();
+        return a;
     }
 
     @Override
