@@ -22,7 +22,7 @@ public class Customer {
     private String postalcode;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "customer_animal", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "animals_id"))
+    @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "owner_id")}, inverseJoinColumns = @JoinColumn(name = "animals_id"))
     private Set<Animal> animals = new HashSet<>();
 
     @ManyToMany(mappedBy = "customers")
@@ -73,7 +73,7 @@ public class Customer {
         if (!(o instanceof Customer)) return false;
 
         Long cId = id;
-        return cId != null && cId.equals(((Customer) o).getId());
+        return cId.equals(((Customer) o).getId());
     }
 
     @Override
@@ -82,8 +82,7 @@ public class Customer {
     }
 
     public List<Animal> findAllAnimals() {
-        List<Animal> animalList = new ArrayList<>(getAnimals());
-        return animalList;
+        return new ArrayList<>(getAnimals());
     }
 
     // Getters and Setters

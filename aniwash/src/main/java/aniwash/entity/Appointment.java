@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "Appointment")
 public class Appointment {
 
     @Id
@@ -87,23 +86,19 @@ public class Appointment {
     }
 
     public List<Employee> findAllEmployees() {
-        List<Employee> employees = new ArrayList<>(getEmployees());
-        return employees;
+        return new ArrayList<>(getEmployees());
     }
 
     public List<Customer> findAllCustomers() {
-        List<Customer> customers = new ArrayList<>(getCustomers());
-        return customers;
+        return new ArrayList<>(getCustomers());
     }
 
     public List<Animal> findAllAnimals() {
-        List<Animal> animals = new ArrayList<>(getAnimals());
-        return animals;
+        return new ArrayList<>(getAnimals());
     }
 
     public List<Product> findAllProducts() {
-        List<Product> products = new ArrayList<>(getProducts());
-        return products;
+        return new ArrayList<>(getProducts());
     }
 
     // Getters and Setters

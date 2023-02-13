@@ -5,6 +5,7 @@ import aniwash.entity.Customer;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /*
  * This class is used to access the database and perform CRUD operations on the Customer table.
@@ -15,92 +16,78 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public boolean addCustomer(Customer customer) {
-        boolean success = true;
-        em.getTransaction().begin();
         Customer c = em.find(Customer.class, customer.getId());
         if (c != null) {
             System.out.println("Customer already exists: " + customer.getId());
-            success = false;
-        } else {
-            em.persist(customer);
+            return false;
         }
-        em.getTransaction().commit();
-        return success;
+
+        executeInTransaction(em -> em.persist(customer));
+        return true;
     }
 
 
     @Override
     public List<Customer> findAllCustomer() {
-        em.getTransaction().begin();
-        List<Customer> customers = em.createQuery("SELECT a FROM Customer a", Customer.class).getResultList();
-        em.getTransaction().commit();
-        return customers;
+        return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
     }
 
     @Override
     public Customer findByIdCustomer(long id) {
-        em.getTransaction().begin();
-        Customer c = em.find(Customer.class, id);
-        em.getTransaction().commit();
-        return c;
+        return em.find(Customer.class, id);
     }
 
     @Override
     public Customer findByEmailCustomer(String email) {
         Customer c = null;
-        em.getTransaction().begin();
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.email = :email", Customer.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No customer found with email: " + email);
         }
-        em.getTransaction().commit();
         return c;
     }
 
     @Override
     public Customer findByPhoneCustomer(String phone) {
         Customer c = null;
-        em.getTransaction().begin();
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.phone = :phone", Customer.class).setParameter("phone", phone).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No customer found with phone: " + phone);
         }
-        em.getTransaction().commit();
         return c;
     }
 
     @Override
     public Customer findByNameCustomer(String name) {
         Customer c = null;
-        em.getTransaction().begin();
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name", Customer.class).setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No customer found with name: " + name);
         }
-        em.getTransaction().commit();
         return c;
     }
 
     @Override
     public List<Customer> findByNameCustomerList(String name) {
-        List<Customer> c;
-        em.getTransaction().begin();
-        c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name order by name desc", Customer.class).setParameter("name", name).getResultList();
-        em.getTransaction().commit();
+        List<Customer> c = null;
+        try {
+            c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name order by name desc", Customer.class).setParameter("name", name).getResultList();
+        } catch (NoResultException e) {
+            System.out.println("No customer found with name: " + name);
+        }
         return c;
     }
 
     @Override
     public boolean updateCustomer(Customer customer) {
-        em.getTransaction().begin();
         Customer c = em.find(Customer.class, customer.getId());
         if (c == null) {
-            em.getTransaction().commit();
             return false;
         }
+        em.getTransaction().begin();
         c.setName(customer.getName());
         c.setEmail(customer.getEmail());
         c.setAddress(customer.getAddress());
@@ -112,21 +99,23 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public boolean deleteByIdCustomer(long id) {
-        boolean deleted = false;
-        em.getTransaction().begin();
-        Customer t = em.find(Customer.class, id);
-        if (t != null) {
-            for (Animal a : t.getAnimals()) {
-                t.removeAnimal(a);
-                if (a.getOwner().size() == 0) {
-                    em.remove(a);
-                }
-            }
-            em.remove(t);
-            deleted = true;
+        Customer c = em.find(Customer.class, id);
+        if (c != null) {
+            executeInTransaction(em -> em.remove(c));
+            return true;
         }
-        em.getTransaction().commit();
-        return deleted;
+        return false;
     }
 
+    private void executeInTransaction(Consumer<EntityManager> action) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            action.accept(em);
+            tx.commit();
+        } catch (RuntimeException e) {
+            tx.rollback();
+            throw e;
+        }
+    }
 }
