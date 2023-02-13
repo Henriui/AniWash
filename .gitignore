@@ -1,8 +1,7 @@
-## Ignore target folder
-
+## Ignore folders
 target/
 .vscode/
 .idea/
 
-## Ignore target file
+## Ignore files
 aniwash/aniwash.iml

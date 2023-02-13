@@ -3,7 +3,7 @@ package aniwash.dao;
 import aniwash.entity.Appointment;
 import jakarta.persistence.EntityManager;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public class AppointmentDao implements IAppointmentDao {
@@ -12,12 +12,11 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public boolean addAppointment(Appointment appointment) {
-        Appointment app = null;
         boolean added = true;
         em.getTransaction().begin();
-        //app = em.find(Appointment.class, appointment.getId());
+        Appointment app = em.find(Appointment.class, appointment.getId());
         if (app != null) {
-            //   System.out.println("Appointment already exists: " + appointment.getId());
+            System.out.println("Appointment already exists: " + appointment.getId());
             added = false;
         } else {
             em.persist(appointment);
@@ -28,9 +27,8 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public List<Appointment> findAllAppointment() {
-        List<Appointment> appointments = null;
         em.getTransaction().begin();
-        // appointments = em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
+        List<Appointment> appointments = em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
         em.getTransaction().commit();
         return appointments;
     }
@@ -45,11 +43,11 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public Appointment findByDateAppointment(Date date) {
+    public Appointment findByDateAppointment(ZonedDateTime date) {
         Appointment app = null;
         em.getTransaction().begin();
         try {
-            //  app = em.createQuery("SELECT a FROM Appointment a WHERE a.date = :date", Appointment.class).setParameter("date", date).getSingleResult();
+            app = em.createQuery("SELECT a FROM Appointment a WHERE a.date = :date", Appointment.class).setParameter("date", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }
@@ -73,17 +71,14 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public boolean updateAppointment(Appointment appointment) {
-        Appointment app = null;
         boolean updated = false;
         em.getTransaction().begin();
-        // app = em.find(Appointment.class, appointment.getId());
+        Appointment app = em.find(Appointment.class, appointment.getId());
         if (app != null) {
-/*
             app.setDate(appointment.getDate());
-            app.setEmployee(appointment.getEmployee());
-            app.setCustomer(appointment.getCustomer());
-            app.setService(appointment.getService());
-*/
+            app.setEmployees(appointment.getEmployees());
+            app.setCustomers(appointment.getCustomers());
+            app.setProducts(appointment.getProducts());
             updated = true;
         }
 

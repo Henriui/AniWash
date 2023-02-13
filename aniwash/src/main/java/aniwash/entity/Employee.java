@@ -3,6 +3,9 @@ package aniwash.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class Employee {
 
@@ -25,6 +28,9 @@ public class Employee {
     @Column(nullable = false)
     private String title;
 
+    @ManyToMany(mappedBy = "employees")
+    private Set<Appointment> appointments = new HashSet<>();
+
     public Employee() {
     }
 
@@ -35,6 +41,18 @@ public class Employee {
         this.email = email;
         this.title = title;
     }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.getEmployees().add(this);
+    }
+
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.getEmployees().remove(this);
+    }
+
+    // Getters and Setters
 
     public long getId() {
         return id;
@@ -84,4 +102,16 @@ public class Employee {
         return title;
     }
 
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", title=" + title + ", appointments=" + appointments + ")";
+    }
 }

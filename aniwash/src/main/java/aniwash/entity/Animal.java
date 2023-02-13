@@ -1,10 +1,10 @@
 package aniwash.entity;
 
+import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import jakarta.persistence.*;
 
 @Entity
 public class Animal {
@@ -21,6 +21,9 @@ public class Animal {
     @ManyToMany(mappedBy = "animals")
     private Set<Customer> owner = new HashSet<>();
 
+    @ManyToMany(mappedBy = "animals")
+    private Set<Appointment> appointments = new HashSet<>();
+
     public Animal() {
     }
 
@@ -32,8 +35,6 @@ public class Animal {
         this.description = description;
     }
 
-    // Getters and Setters
-
     public void removeOwner(Customer customer) {
         owner.remove(customer);
         customer.getAnimals().remove(this);
@@ -43,6 +44,18 @@ public class Animal {
         owner.add(customer);
         customer.getAnimals().add(this);
     }
+    
+    public void removeAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+        appointment.getAnimals().remove(this);
+    }
+
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+        appointment.getAnimals().add(this);
+    }
+
+    // Getters and Setters
 
     public String getName() {
         return name;
@@ -98,6 +111,14 @@ public class Animal {
 
     public void setOwner(Set<Customer> owner) {
         this.owner = owner;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     @Override
