@@ -10,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 import aniwash.resources.model.Calendars;
-import aniwash.view.LoginController;
 
 public class MainApp extends Application {
 
@@ -22,9 +21,10 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // FIXME: Delete these two lines after database is implemented
-        // Calendars calendar = new Calendars();
-        // calendar.initCalendar();
-        Parent root = FXMLLoader.load(getClass().getResource("view/login.fxml"));
+        Calendars calendar = new Calendars();
+        calendar.initCalendar();
+
+        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
