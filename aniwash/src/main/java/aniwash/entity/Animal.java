@@ -126,7 +126,9 @@ public class Animal {
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof Animal a)) return false;
+        if (!(o instanceof Animal)) return false;
+
+        Animal a = (Animal) o;
 
         return Objects.equals(id, a.id);
     }
