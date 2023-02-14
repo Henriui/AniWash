@@ -6,7 +6,8 @@
     <persistence-unit name="com.aniwash" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/aniwash"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://10.114.32.11:3306/aniwash?createDatabaseIfNotExist=true"/>
             <property name="jakarta.persistence.jdbc.user" value="dbuser22"/>
             <property name="jakarta.persistence.jdbc.password" value="dbpass"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
