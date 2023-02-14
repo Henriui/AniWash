@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
 
@@ -73,6 +74,8 @@ public class EditAppoitmentController extends CreatePopUp {
     private Rectangle third;
     private EntryDetailsParameter newEntry;
     private ArrayList<Calendar> servicesa;
+    private int selectedProduc;
+    private Customer selectedCustomer;
 
     public void initialize() {
         setArg();
@@ -149,7 +152,6 @@ public class EditAppoitmentController extends CreatePopUp {
         // Listen for customer selection changes and show the person details when
         // changed.
     
-
         personView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 Customer selectedPerson = (Customer) newValue;
@@ -259,7 +261,19 @@ public class EditAppoitmentController extends CreatePopUp {
     // FIXME: This is a temporary method.
 
      public void sendEntry() {
-     saveEntry(newEntry);
+        Entry<Object> entry = new Entry();
+        entry.changeStartDate(newEntry.getEntry().getStartDate());
+        entry.changeStartTime(newEntry.getEntry().getStartTime());
+        entry.changeEndDate(newEntry.getEntry().getStartDate());
+        entry.changeEndTime(newEntry.getEntry().getEndTime());
+        entry.setLocation(newEntry.getEntry().getLocation());
+        entry.setTitle(newEntry.getEntry().getTitle());
+        // entry.setId(String.valueOf(newEntry.getEntry().getId()));
+        System.out.println("and this is? " + entry.getId());
+        entry.setUserObject(selectedCustomer);
+        products.addAppoitmEntry(entry, servicesa.get(selectedProduc));
+        servicesa.get(selectedProduc+1).addEntry(entry);
+        servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
      }
      
 

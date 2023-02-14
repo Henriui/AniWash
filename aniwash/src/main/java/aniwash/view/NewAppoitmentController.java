@@ -3,6 +3,7 @@ package aniwash.view;
 import java.util.ArrayList;
 
 import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
 
@@ -72,9 +73,16 @@ public class NewAppoitmentController extends CreatePopUp {
     private Rectangle third;
     private EntryDetailsParameter newEntry;
     private ArrayList<Calendar> servicesa;
+    private int selectedProduc;
+    private Customer selectedCustomer;
 
     public void initialize() {
-        setArg();
+
+        // Get the created entry from the calendar view.
+        
+        EntryDetailsParameter arg0 = getArg();
+        newEntry = arg0;
+
         System.out.println("NewAppoitmentController initialized");
         services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
@@ -96,6 +104,8 @@ public class NewAppoitmentController extends CreatePopUp {
         ObservableList<Customer> people = getPeople();
         servicesa = products.getCalendars();
 
+        // Add data to the service list
+        
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
         });
@@ -202,7 +212,6 @@ public class NewAppoitmentController extends CreatePopUp {
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        EntryDetailsParameter temp = newEntry;
         if(newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry")){
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("TESTI");
@@ -221,6 +230,7 @@ public class NewAppoitmentController extends CreatePopUp {
     // Set entrys "Location" which is used to store customer name and pet.
 
     private void selectCustomer(Customer customer) {
+        selectedCustomer = customer;
         System.out.println("Selected person: " + customer.getName() + " "
                 + customer.getEmail() + " " + customer.getId());
         newEntry.getEntry().setLocation(customer.getName());
@@ -241,21 +251,26 @@ public class NewAppoitmentController extends CreatePopUp {
             Calendar service = servicesa.get(selectedIndex-1);
             newEntry.getEntry().setCalendar(service);
             newEntry.getEntry().setTitle(service.getName());
-
+            selectedProduc = selectedIndex;
         }
 
     }
-    // Get infromation about the entry
-
-    public void setArg() {
-        EntryDetailsParameter arg0 = getArg();
-        newEntry = arg0;
-    }
-
-    // FIXME: This is a temporary method.
 
      public void sendEntry() {
-     saveEntry(newEntry);
+        Entry<Object> entry = new Entry();
+        entry.changeStartDate(newEntry.getEntry().getStartDate());
+        entry.changeStartTime(newEntry.getEntry().getStartTime());
+        entry.changeEndDate(newEntry.getEntry().getStartDate());
+        entry.changeEndTime(newEntry.getEntry().getEndTime());
+        entry.setLocation(newEntry.getEntry().getLocation());
+        entry.setTitle(newEntry.getEntry().getTitle());
+        //entry.setId(String.valueOf(newEntry.getEntry().getId()));
+        System.out.println("and this is? " + entry.getId());
+        entry.setUserObject(selectedCustomer);
+        
+        products.addAppoitmEntry(entry, servicesa.get(selectedProduc-1));
+        servicesa.get(selectedProduc-1).addEntry(entry);
+        servicesa.get(selectedProduc-1).removeEntry(newEntry.getEntry());
      }
      
 
@@ -271,9 +286,8 @@ public class NewAppoitmentController extends CreatePopUp {
         customers.add(new Customer("asd4", "112", "jonne.borgman@metropolia.if"));
         customers.add(new Customer("asd5", "112", "jonne.borgman@metropolia.if"));
         customers.add(new Customer("asd6", "112", "jonne.borgman@metropolia.if"));
-
+        long id = 1;
         for (Customer customer : customers) {
-            long id = 1;
             customer.setId(id);
             id++;
         }

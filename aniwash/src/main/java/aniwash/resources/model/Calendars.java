@@ -68,6 +68,9 @@ public class Calendars {
         familyCalendarSource.getCalendars().addAll(calendars);
     }
 
+    public void addAppoitmEntry(Entry entry, Calendar calendar) {
+        calendar.addEntry(entry);
+    }
     // Getters and Setters
 
     public CalendarSource getCalendarss() {
