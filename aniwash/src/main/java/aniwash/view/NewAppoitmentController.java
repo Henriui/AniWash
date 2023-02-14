@@ -75,7 +75,7 @@ public class NewAppoitmentController extends CreatePopUp {
     private ArrayList<Calendar> servicesa;
     private int selectedProduc;
     private Customer selectedCustomer;
-
+    private Customer selectedPerson;
     public void initialize() {
 
         // Get the created entry from the calendar view.
@@ -105,7 +105,7 @@ public class NewAppoitmentController extends CreatePopUp {
         servicesa = products.getCalendars();
 
         // Add data to the service list
-        
+
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
         });
@@ -115,6 +115,8 @@ public class NewAppoitmentController extends CreatePopUp {
 
         FilteredList<Customer> filteredData = new FilteredList<>(people, p -> true);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            petList.getSelectionModel().clearSelection();
+            personView.getSelectionModel().clearSelection();
             filteredData.setPredicate(person -> {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
@@ -154,6 +156,13 @@ public class NewAppoitmentController extends CreatePopUp {
                     alert.setHeaderText("CREATE NEW CUSTOMER");
                     alert.setContentText("WOW");
                     alert.showAndWait();
+                }else{
+                    ObservableList<String> items = petList.getItems();
+                    items.removeAll(items.subList(1, items.size()));
+
+                    selectedPerson.getAnimals().forEach(animal -> {
+                        petList.getItems().addAll(animal.getDescription());
+                    });
                 }
             }
         });
@@ -163,16 +172,13 @@ public class NewAppoitmentController extends CreatePopUp {
 
         personView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                Customer selectedPerson = (Customer) newValue;
+                selectedPerson = (Customer) newValue;
                 selectCustomer(selectedPerson);
                 services.setDisable(false);
                 one.styleProperty().set("-fx-fill: #47c496");
                 first.styleProperty().set("-fx-fill: #47c496");
-
-                selectedPerson.getAnimals().forEach(animal -> {
-                    petList.getItems().addAll(animal.getDescription());
-                });
             }
+
         });
 
         // Listen for service selection changes and show the person details when
@@ -190,7 +196,7 @@ public class NewAppoitmentController extends CreatePopUp {
         // Listen for pet selection changes and show the person details when changed.
 
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Selected item: " + newValue);
+            System.out.println("Selected pet: " + newValue);
             if (newValue.contains("Create new pet")) {
                 System.out.println("Create new pet");
                 Alert alert = new Alert(AlertType.INFORMATION);
@@ -198,8 +204,7 @@ public class NewAppoitmentController extends CreatePopUp {
                 alert.setHeaderText("CREATE NEW CUSTOMER");
                 alert.setContentText("WOW");
                 alert.showAndWait();
-            }
-            else{
+            } else {
                 newEntry.getEntry().setLocation(newEntry.getEntry().getLocation() + " " + newValue);
                 three.styleProperty().set("-fx-fill: #47c496");
             }
@@ -212,7 +217,7 @@ public class NewAppoitmentController extends CreatePopUp {
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        if(newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry")){
+        if(newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1){
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("TESTI");
             alert.setHeaderText("CREATE NEW CUSTOMER");
@@ -293,7 +298,15 @@ public class NewAppoitmentController extends CreatePopUp {
         }
 
         customers.get(0).addAnimal(new Animal("dog", "dog", "dog", 10, "koere"));
-
+        customers.get(0).addAnimal(new Animal("dog", "dog", "dog", 10, "koere"));
+        customers.get(1).addAnimal(new Animal("dog", "dog", "dog", 10, "asd"));
+        customers.get(1).addAnimal(new Animal("dog", "dog", "dog", 10, "dsa"));
+        customers.get(2).addAnimal(new Animal("dog", "dog", "dog", 10, "qew"));
         return customers;
+    }
+    @FXML
+    public void textChanged(){
+        System.out.println("text changed");
+        personView.getSelectionModel().clearSelection();
     }
 }

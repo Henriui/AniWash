@@ -295,8 +295,10 @@ public class EditAppoitmentController extends CreatePopUp {
             customer.setId(id);
             id++;
         }
-
         customers.get(0).addAnimal(new Animal("dog", "dog", "dog", 10, "koere"));
+        customers.get(1).addAnimal(new Animal("dog", "dog", "dog", 10, "asd"));
+        customers.get(1).addAnimal(new Animal("dog", "dog", "dog", 10, "dsa"));
+        customers.get(2).addAnimal(new Animal("dog", "dog", "dog", 10, "qew"));
 
         return customers;
     }
