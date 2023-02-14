@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="466.0" maxWidth="555.0" minHeight="466.0" minWidth="555.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="aniwash.view.LoginController">
+    <children>
+        <Button layoutX="250.0" layoutY="400.0" maxHeight="25.0" maxWidth="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Login"
+                onAction="#loginButton" />
+        <PasswordField layoutX="203.0" layoutY="310.0" maxHeight="25.0" maxWidth="149.0" />
+        <TextField layoutX="203.0" layoutY="240.0" maxHeight="25.0" maxWidth="149.0" />
+        <Text layoutX="238.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Text layoutX="240.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" textAlignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Text layoutX="208.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AniWash" wrappingWidth="138.6875">
+            <font>
+                <Font name="System Bold" size="33.0" />
+            </font>
+        </Text>
+      <ImageView fitHeight="88.0" fitWidth="115.0" layoutX="233.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/what.png" />
+         </image>
+      </ImageView>
+         </children>
+      </AnchorPane>
