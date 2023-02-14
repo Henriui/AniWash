@@ -18,6 +18,7 @@ public class Animal {
     private int animalAge;
     private String description;
 
+
     @ManyToMany(mappedBy = "animals")
     private Set<Customer> owner = new HashSet<>();
 
@@ -44,7 +45,7 @@ public class Animal {
         owner.add(customer);
         customer.getAnimals().add(this);
     }
-    
+
     public void removeAppointment(Appointment appointment) {
         appointments.remove(appointment);
         appointment.getAnimals().remove(this);
@@ -128,6 +129,7 @@ public class Animal {
         if (!(o instanceof Animal)) return false;
 
         Animal a = (Animal) o;
+
         return Objects.equals(id, a.id);
     }
 

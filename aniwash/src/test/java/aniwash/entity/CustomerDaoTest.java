@@ -32,8 +32,7 @@ public class CustomerDaoTest {
 
     @AfterEach
     public void endOfEach() {
-        long id = customer.getId();
-        customerDao.deleteByIdCustomer(id);
+        customerDao.deleteByIdCustomer(customer.getId());
     }
 
     /*
@@ -77,11 +76,11 @@ public class CustomerDaoTest {
         assertEquals("0401234567", customer.getPhone(), "getPhone(): customerin puhelinnumero arvo on väärin.");
 
         // Testissä lisätyn customerin poiston tulee onnistua
-        assertTrue(customerDao.deleteByIdCustomer(customer.getId()), "deleteCustomerById(): Asiakkaan poisto ei onnistunut.");
+        assertTrue(customerDao.deleteByIdCustomer(id), "deleteCustomerById(): Asiakkaan poisto ei onnistunut.");
         assertNull(customerDao.findByIdCustomer(id), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
 
-        // Olemattoman valuutan poiston tulee "epäonnistua"
-        assertFalse(customerDao.deleteByIdCustomer(0L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
+        // Olemattoman customerin poiston tulee "epäonnistua"
+        assertFalse(customerDao.deleteByIdCustomer(id), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
     }
 
     @Test
@@ -165,8 +164,16 @@ public class CustomerDaoTest {
     }
 
     @Test
-    @DisplayName("Asiakkaan postinumeron muutos tulee onnistua")
+    @DisplayName("Asiakkaan osoite on oikea")
     @Order(8)
+    public void testAddress2() {
+        assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+        assertEquals(address, customer.getAddress(), "getAddress(): customerin osoite arvo on väärin.");
+    }
+
+    @Test
+    @DisplayName("Asiakkaan postinumeron muutos tulee onnistua")
+    @Order(9)
     public void testPostcode() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
 
@@ -177,11 +184,18 @@ public class CustomerDaoTest {
     }
 
     @Test
+    @DisplayName("Asiakkaan postinumero on oikea")
+    @Order(10)
+    public void testPostcode2() {
+        assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+        assertEquals(postalcode, customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
+    }
+
+    @Test
     @DisplayName("Asiakkaan puhelinnumeron muutos tulee onnistua")
-    @Order(9)
+    @Order(11)
     public void testPhone() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-
         customer.setPhone("0401234567");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan puhelinnumeron päivitys ei onnistunut.");
         customer = customerDao.findByIdCustomer(customer.getId());
@@ -190,19 +204,20 @@ public class CustomerDaoTest {
 
     @Test
     @DisplayName("Asiakkaan poiston tulee onnistuttua")
-    @Order(10)
+    @Order(12)
     public void testDeleteCustomer() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-        long id = customer.getId();
-        assertTrue((customerDao.deleteByIdCustomer(id)), "deleteCustomer(): Customerin poisto ei onnistunut.");
-        assertTrue((customerDao.findByIdCustomer(id) == null), "deleteCustomer(): Customerin poisto ei onnistunut - asiakas voitiin hakea tietokannasta.");
+        Customer c = customerDao.findByIdCustomer(customer.getId());
+        assertTrue((customerDao.deleteByIdCustomer(c.getId())), "deleteCustomer(): Customerin poisto ei onnistunut.");
+        c = customerDao.findByIdCustomer(c.getId());
+        assertNull(c, "deleteCustomer(): Customerin poisto ei onnistunut - asiakas voitiin hakea tietokannasta.");
     }
 
     @Test
     @DisplayName("Olemattoman asiakkaan poistoyrityksen tulee palauttaa false")
-    @Order(11)
+    @Order(13)
     public void testDeleteCustomer2() {
-        assertFalse(customerDao.deleteByIdCustomer(0L), "deleteCustomer(): Väittää poistaneensa olemattoman customerin.");
+        assertFalse(customerDao.deleteByIdCustomer(customer.getId()), "deleteCustomer(): Väittää poistaneensa olemattoman customerin.");
     }
 
 }
