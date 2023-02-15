@@ -98,7 +98,7 @@
          </font>
       </Text>
       <Separator layoutX="122.0" layoutY="385.0" prefHeight="3.0" prefWidth="366.0" AnchorPane.leftAnchor="122.0" AnchorPane.rightAnchor="112.0" />
-      <ListView fx:id="petList" disable="true" fixedCellSize="0.0" layoutX="126.0" layoutY="393.0" prefHeight="114.0" prefWidth="350.0" />
+      <ListView fx:id="petList" fixedCellSize="0.0" layoutX="126.0" layoutY="393.0" prefHeight="114.0" prefWidth="350.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="163.0" layoutX="98.0" layoutY="170.0" stroke="#ffffff00" strokeType="INSIDE" width="405.0">
          <effect>
             <DropShadow height="220.31" radius="81.0775" width="106.0">
@@ -114,6 +114,6 @@
          </font>
       </Text>
       <Separator layoutX="118.0" layoutY="217.0" prefWidth="200.0" />
-      <ListView fx:id="services" disable="true" fixedCellSize="0.0" layoutX="126.0" layoutY="220.0" prefHeight="107.0" prefWidth="350.0" />
+      <ListView fx:id="services" fixedCellSize="0.0" layoutX="126.0" layoutY="220.0" prefHeight="107.0" prefWidth="350.0" />
    </children>
 </AnchorPane>

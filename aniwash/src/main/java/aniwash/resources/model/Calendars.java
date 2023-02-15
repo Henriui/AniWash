@@ -27,9 +27,9 @@ import javafx.util.Callback;
 public class Calendars {
     private Product product;
     private ProductDao productDao;
+
     private static ArrayList<Calendar> calendars = new ArrayList<Calendar>();
-    private static ArrayList<Entry> Teehtentries = new ArrayList<Entry>();
-    private static ArrayList<Entry> Nailentries = new ArrayList<Entry>();
+
     private static ArrayList<Style> styles = new ArrayList<Style>();
     private static ArrayList<Product> products = new ArrayList<Product>();
     private static CalendarSource familyCalendarSource = new CalendarSource("Product");
@@ -70,42 +70,20 @@ public class Calendars {
             calendars.add(calendar);
         }
         
-        Teehtentries.add(new Entry<>("Dentist"));
-        Teehtentries.add(new Entry<>("asdasd"));
-        Nailentries.add(new Entry<>("asdadasd"));
-        Nailentries.add(new Entry<>("ddddd"));
-        Nailentries.add(new Entry<>("Something"));
-        
         // CalendarSource is a mother to all the calendars
 
         familyCalendarSource.getCalendars().addAll(calendars);
     }
 
     public void addAppoitmEntry(Entry entry, Calendar calendar) {
+        System.out.println("addAppoitmEntry " + entry.getTitle() + " " + entry.getUserObject() + " " + calendar.getName() + " " + calendar.getUserObject());
         calendar.addEntry(entry);
     }
+
     // Getters and Setters
 
     public CalendarSource getCalendarss() {
-        System.out.println("getCalendarss" + familyCalendarSource.getCalendars());
         return familyCalendarSource;
-    }
-
-    // If we want to add a new product, we can use this method
-
-    public void CreateProduct(String name) {
-        Calendar calendar = new Calendar(name);
-        calendars.add(calendar);
-    }
-
-    // This is a test method, it will be removed later
-
-    public void CreateEntry(Calendar calendarName, String name, String description, LocalDate date, LocalTime time) {
-        Entry entry = new Entry<>(name);
-        entry.setInterval(new Interval(date, time, date, time));
-        calendarName.addEntry(entry);
-        calendars.add(calendarName);
-        // entries.add(entry);
     }
 
     // This is a test method, it will be removed later
