@@ -276,8 +276,7 @@ public class NewAppoitmentController extends CreatePopUp {
         entry.setUserObject(selectedCustomer);
         
         products.addAppoitmEntry(entry, servicesa.get(selectedProduc-1));
-        servicesa.get(selectedProduc-1).addEntry(entry);
-        servicesa.get(selectedProduc-1).removeEntry(newEntry.getEntry());
+        newEntry.getEntry().removeFromCalendar();
      }
      
 

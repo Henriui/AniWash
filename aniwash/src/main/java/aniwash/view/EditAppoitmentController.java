@@ -218,6 +218,7 @@ public class EditAppoitmentController extends CreatePopUp {
     // Set entrys "Location" which is used to store customer name and pet.
 
     private void selectCustomer(Customer customer) {
+        selectedCustomer = customer;
         System.out.println("Selected person: " + customer.getName() + " "
                 + customer.getEmail() + " " + customer.getId());
         newEntry.getEntry().setLocation(customer.getName());
@@ -283,14 +284,18 @@ public class EditAppoitmentController extends CreatePopUp {
         entry.setLocation(newEntry.getEntry().getLocation());
         entry.setTitle(newEntry.getEntry().getTitle());
         
-        System.out.println("newEntrys id this is? " + newEntry.getEntry().getId());
+        System.out.println("newEntrys id this is?!?!??!?! " + newEntry.getEntry().getId());
         entry.setId(String.valueOf(selectedCustomer.getId()));
-        System.out.println("and this is? " + entry.getId());
+        System.out.println("tuutko tähän");
+        System.out.println("entrys id this is?!?!??!?! " + selectedCustomer);
         entry.setUserObject(selectedCustomer);
         
-        products.addAppoitmEntry(entry, servicesa.get(selectedProduc-1));
-        servicesa.get(selectedProduc-1).addEntry(entry);
-        servicesa.get(selectedProduc-1).removeEntry(newEntry.getEntry());
+        //products.addAppoitmEntry(entry, servicesa.get(selectedProduc));
+        
+        for (int i = 0; i < servicesa.size(); i++) {
+            System.out.println("servicesa " + servicesa.get(i).getName());
+        }
+        //servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
      }
      
 
