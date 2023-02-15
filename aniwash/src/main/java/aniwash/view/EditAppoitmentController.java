@@ -238,17 +238,31 @@ public class EditAppoitmentController extends CreatePopUp {
             Calendar service = servicesa.get(selectedIndex);
             newEntry.getEntry().setCalendar(service);
             newEntry.getEntry().setTitle(service.getName());
-
         }
 
     }
 
     public void getInfo(){
-        personView.getSelectionModel().select(Integer.parseInt("3"));
-        personView.scrollTo(3);
+        System.out.println("getInfo " + newEntry.getEntry().getId());
+        personView.getSelectionModel().select(Integer.parseInt(newEntry.getEntry().getId())-1);
+        personView.scrollTo(Integer.parseInt(newEntry.getEntry().getId())-1);
         int indexOfItemToSelect = services.getItems().indexOf(newEntry.getEntry().getCalendar().getName());
         System.out.println("!!" + newEntry.getEntry().getCalendar().getName() + "!! " + indexOfItemToSelect);
         services.getSelectionModel().select(indexOfItemToSelect);
+        services.scrollTo(indexOfItemToSelect);
+
+        String textToMatch = newEntry.getEntry().getLocation();
+        for (int i = 0; i < petList.getItems().size(); i++) {
+            String itemText = petList.getItems().get(i);
+            if (itemText.contains(textToMatch)) {
+                System.out.println("petList " + itemText);
+                petList.getSelectionModel().select(i);
+            break;
+    }
+}
+
+        petList.getSelectionModel().select(0);
+        petList.scrollTo(0);
 
     }
     // Get infromation about the entry
@@ -268,12 +282,15 @@ public class EditAppoitmentController extends CreatePopUp {
         entry.changeEndTime(newEntry.getEntry().getEndTime());
         entry.setLocation(newEntry.getEntry().getLocation());
         entry.setTitle(newEntry.getEntry().getTitle());
-        // entry.setId(String.valueOf(newEntry.getEntry().getId()));
+        
+        System.out.println("newEntrys id this is? " + newEntry.getEntry().getId());
+        entry.setId(String.valueOf(selectedCustomer.getId()));
         System.out.println("and this is? " + entry.getId());
         entry.setUserObject(selectedCustomer);
-        products.addAppoitmEntry(entry, servicesa.get(selectedProduc));
-        servicesa.get(selectedProduc+1).addEntry(entry);
-        servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
+        
+        products.addAppoitmEntry(entry, servicesa.get(selectedProduc-1));
+        servicesa.get(selectedProduc-1).addEntry(entry);
+        servicesa.get(selectedProduc-1).removeEntry(newEntry.getEntry());
      }
      
 

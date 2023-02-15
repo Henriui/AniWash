@@ -239,7 +239,7 @@ public class NewAppoitmentController extends CreatePopUp {
         System.out.println("Selected person: " + customer.getName() + " "
                 + customer.getEmail() + " " + customer.getId());
         newEntry.getEntry().setLocation(customer.getName());
-        newEntry.getEntry().setId(String.valueOf(customer.getId()));
+        //newEntry.getEntry().setId(String.valueOf(customer.getId()));
     }
 
     // Set entrys "Title" which is used to store service name.
@@ -269,7 +269,9 @@ public class NewAppoitmentController extends CreatePopUp {
         entry.changeEndTime(newEntry.getEntry().getEndTime());
         entry.setLocation(newEntry.getEntry().getLocation());
         entry.setTitle(newEntry.getEntry().getTitle());
-        //entry.setId(String.valueOf(newEntry.getEntry().getId()));
+        
+        System.out.println("newEntrys id this is? " + newEntry.getEntry().getId());
+        entry.setId(String.valueOf(selectedCustomer.getId()));
         System.out.println("and this is? " + entry.getId());
         entry.setUserObject(selectedCustomer);
         
