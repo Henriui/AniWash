@@ -21,12 +21,14 @@ public class CustomerAnimalDbTest {
     private Customer customer = new Customer("John", "+358 - 0", "rammus" + "@gmail.com");
 
     @BeforeEach
-    public void init() {
+    public void beforeEach() {
         customer = new Customer("John", "+358 - 0", "rammus" + "@gmail.com");
+        customer.setAddress("Kuusikko");
+        customer.setPostalcode("12345");
     }
 
     @AfterEach
-    public void tearDown() {
+    public void afterEach() {
         cDao.deleteByIdCustomer(customer.getId());
     }
 
@@ -37,7 +39,6 @@ public class CustomerAnimalDbTest {
         System.out.println("Rammus is the best");
         for (int i = 0; i < 10; i++) {
             Customer c = new Customer("John" + i, "+358 - 0" + i, "rammus" + i + "@gmail.com");
-
             Animal a = new Animal("Uli" + i, "Dog", "Husky", 1 + i, "Uliseva rakki");
             cDao.addCustomer(c);
             aDao.addAnimal(a);
@@ -82,34 +83,43 @@ public class CustomerAnimalDbTest {
         }
     }
 
+
     @Test
     @Order(5)
     @DisplayName("Delete all customers test")
     public void deleteAllCustomerTest() {
         System.out.println("Delete all customer test");
-/*
         List<Customer> customerList = cDao.findAllCustomer();
         for (Customer c : customerList) {
             cDao.deleteByIdCustomer(c.getId());
         }
         customerList = cDao.findAllCustomer();
         assertEquals(0, customerList.size(), "Customer list size is not 0");
-*/
+    }
+    @Test
+    @Order(6)
+    @DisplayName("Delete all animals test")
+    public void deleteAllAnimalTest() {
+        System.out.println("Delete all animal test");
+        List<Animal> animalList = aDao.findAllAnimal();
+        for (Animal a : animalList) {
+            aDao.deleteByIdAnimal(a.getId());
+        }
+        animalList = aDao.findAllAnimal();
+        assertEquals(0, animalList.size(), "Animal list size is not 0");
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @DisplayName("Delete all employees test")
     public void deleteAllEmployeeTest() {
         System.out.println("Delete all employee test");
-/*
         List<Employee> employeeList = eDao.findAllEmployee();
         for (Employee e : employeeList) {
             eDao.deleteByIdEmployee(e.getId());
         }
         employeeList = eDao.findAllEmployee();
         assertEquals(0, employeeList.size(), "Employee list size is not 0");
-*/
     }
 }
 
