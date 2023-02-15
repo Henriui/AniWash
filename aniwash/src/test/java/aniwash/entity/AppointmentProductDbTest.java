@@ -4,6 +4,7 @@ import aniwash.dao.AppointmentDao;
 import aniwash.dao.IAppointmentDao;
 import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
@@ -32,6 +33,8 @@ public class AppointmentProductDbTest {
     @AfterEach
     public void tearDown() {
         aDao.deleteByIdAppointment(appointment.getId());
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        em.clear();
     }
 
     @Test
