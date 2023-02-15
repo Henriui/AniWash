@@ -3,7 +3,6 @@ package aniwash.dao;
 import aniwash.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
 
 import java.util.List;
 
@@ -18,6 +17,18 @@ public class EmployeeDao implements IEmployeeDao {
     @Override
     public boolean addEmployee(Employee employee) {
         boolean success = true;
+
+        // Find employee by username to check if it already exists.
+        // If it does, return false.
+
+        Employee e = findByUsernameEmployee(employee.getUsername());
+        if (e != null) {
+            System.out.println("Employee with given username already exists.");
+            return false;
+        }
+
+        // Find employee by id to check if it already exists.
+
         em.getTransaction().begin();
         Employee c = em.find(Employee.class, employee.getId());
         if (c != null) {

@@ -43,14 +43,15 @@ public class LoginController {
             if (e.getPassword().equals(password)) {
                 System.out.println("Login successful");
                 try {
+                    // Set mainView scene.
                     MainApp.setRoot("mainView");
                     MainApp.changeStageSize(1300, 800);
+                    return;
                 } catch (Exception ee) {
                     System.out.println("Error loading mainView");
                 }
             }
         }
-        // Set mainView scene.
         System.out.println("Wrong username or password");
     }
 

@@ -28,7 +28,7 @@ public class MainApp extends Application {
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
 
-        Parent root = FXMLLoader.load(getClass().getResource("view/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @DisplayName("EmployeeDAO: CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EmployeeDaoTest {
@@ -39,6 +38,7 @@ public class EmployeeDaoTest {
     @Order(1)
     public void createEmployeeTest() {
         assertTrue(eDao.addEmployee(employee), "addEmployee(): Employee was not added");
+        assertFalse(eDao.addEmployee(employee), "addEmployee(): Duplicates should not be allowed.");
         assertNotNull((employee = eDao.findByNameEmployee("Tim")), "addEmployee(): Added employee is null");
         assertEquals(name, employee.getName(), "getName(): Name is invalid");
         assertEquals(email, employee.getEmail(), "getEmail(): Email is invalid.");
