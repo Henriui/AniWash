@@ -1,24 +1,26 @@
 package aniwash.dao;
 
 import aniwash.entity.Animal;
-import aniwash.entity.Customer;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /*
  * This class is used to access the database and perform CRUD operations on the Animal table.
- * @author rasmushy
+ * @author rasmushy, lassib
  */
 public class AnimalDao implements IAnimalDao {
+
     private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addAnimal(Animal animal) {
         Animal a = em.find(Animal.class, animal.getId());
         if (a != null) {
-            System.out.println("Animal already exists: " + animal.getId());
+            System.out.println("Animal already exists with id: " + animal.getId());
             return false;
         }
 
@@ -52,6 +54,7 @@ public class AnimalDao implements IAnimalDao {
     public boolean updateAnimal(Animal animal) {
         Animal t = em.find(Animal.class, animal.getId());
         if (t == null) {
+            System.out.println("Animal does not exist in database. Id: " + animal.getId());
             return false;
         }
         em.getTransaction().begin();
@@ -71,7 +74,7 @@ public class AnimalDao implements IAnimalDao {
             executeInTransaction(em -> em.remove(a));
             return true;
         }
-        System.out.println("Animal does not exist: " + a);
+        System.out.println("Animal does not exist with id: " + id);
         return false;
     }
 
