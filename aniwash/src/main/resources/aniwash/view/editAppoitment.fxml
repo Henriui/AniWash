@@ -33,7 +33,7 @@
                </effect>
             </Rectangle>
             <TableView fx:id="personView" layoutX="26.0" layoutY="88.0" prefHeight="72.0" prefWidth="365.0" style="-fx-background-color: #d0d1d4;" stylesheets="@../css/styles.css" />
-            <TextField fx:id="searchField" layoutX="26.0" layoutY="50.0" prefHeight="38.0" prefWidth="365.0" promptText="Search..." style="-fx-background-color: #d0d1d4;" />
+            <TextField fx:id="searchField" layoutX="26.0" layoutY="50.0" onKeyPressed="#asd" prefHeight="38.0" prefWidth="365.0" promptText="Search..." style="-fx-background-color: #d0d1d4;" />
             <Text layoutX="26.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select customer" AnchorPane.topAnchor="10.0">
                <font>
                   <Font size="15.0" />
