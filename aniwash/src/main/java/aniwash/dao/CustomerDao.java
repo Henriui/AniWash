@@ -1,8 +1,9 @@
 package aniwash.dao;
 
-import aniwash.entity.Animal;
 import aniwash.entity.Customer;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,7 +19,7 @@ public class CustomerDao implements ICustomerDao {
     public boolean addCustomer(Customer customer) {
         Customer c = em.find(Customer.class, customer.getId());
         if (c != null) {
-            System.out.println("Customer already exists: " + customer.getId());
+            System.out.println("Customer already exists with id: " + customer.getId());
             return false;
         }
 
@@ -85,6 +86,7 @@ public class CustomerDao implements ICustomerDao {
     public boolean updateCustomer(Customer customer) {
         Customer c = em.find(Customer.class, customer.getId());
         if (c == null) {
+            System.out.println("Customer does not exist with id: " + customer.getId());
             return false;
         }
         em.getTransaction().begin();
@@ -104,6 +106,7 @@ public class CustomerDao implements ICustomerDao {
             executeInTransaction(em -> em.remove(c));
             return true;
         }
+        System.out.println("Customer does not exist with id: " + id);
         return false;
     }
 
