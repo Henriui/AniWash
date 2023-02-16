@@ -17,6 +17,7 @@ public class MainApp extends Application {
     private AnchorPane a;
 
     private static Scene scene;
+    private static Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -24,6 +25,10 @@ public class MainApp extends Application {
         Calendars calendar = new Calendars();
         calendar.initCalendar();
 
+        // Set stage static so it can be accessed from other classes
+        MainApp.stage = stage;
+
+        // TODO: Change this to the login view when project done.
         Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
@@ -43,4 +48,9 @@ public class MainApp extends Application {
         launch();
     }
 
+    // Method to change stage size.
+    public static void changeStageSize(int width, int height) {
+        stage.setWidth(width);
+        stage.setHeight(height);
+    }
 }

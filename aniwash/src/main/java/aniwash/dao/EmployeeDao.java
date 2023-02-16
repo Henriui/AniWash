@@ -18,11 +18,21 @@ public class EmployeeDao implements IEmployeeDao {
 
     @Override
     public boolean addEmployee(Employee employee) {
+        // Find employee by username to check if it already exists.
+        // If it does, return false.
+        
+        Employee e = findByUsernameEmployee(employee.getUsername());
+        if (e != null) {
+            System.out.println("Employee with given username already exists.");
+            return false;
+        }
+        
         Employee c = em.find(Employee.class, employee.getId());
         if (c != null) {
             System.out.println("Employee already exists with id: " + employee.getId());
             return false;
         }
+        
         executeInTransaction(em -> em.persist(employee));
         return true;
     }
