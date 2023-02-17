@@ -72,9 +72,11 @@ public class ProductDaoTest {
     public void testFindAllProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
         assertTrue(productDao.findAllProduct().size() > 0, "findAllProduct(): No products found.");
+        System.out.println("size: " + productDao.findAllProduct().size());
         assertTrue(productDao.findAllProduct().size() == 1, "findAllProduct(): Number of products does not match.");
         Product product2 = new Product("Pesu iso", "Ison eläimen pesu", 50.00);
         assertTrue(productDao.addProduct((product2)), "addProduct(): Can't add new product.");
+        System.out.println("size: " + productDao.findAllProduct().size());
         assertTrue(productDao.findAllProduct().size() == 2, "findAllProduct(): Number of products does not match.");
 
     }
@@ -88,6 +90,7 @@ public class ProductDaoTest {
         for (Product p : products) {
             productDao.deleteByIdProduct(p.getId());
         }
+        System.out.println("size: " + productDao.findAllProduct().size());
         assertTrue(productDao.findAllProduct().size() == 0, "findAllProduct(): Products found.");
     }
 

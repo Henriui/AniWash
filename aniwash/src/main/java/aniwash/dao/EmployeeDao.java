@@ -14,41 +14,47 @@ import java.util.function.Consumer;
  */
 public class EmployeeDao implements IEmployeeDao {
 
-    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-
     @Override
     public boolean addEmployee(Employee employee) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         // Find employee by username to check if it already exists.
         // If it does, return false.
-        
-        Employee e = findByUsernameEmployee(employee.getUsername());
-        if (e != null) {
-            System.out.println("Employee with given username already exists.");
-            return false;
+        try {
+            Employee e = em.createQuery("SELECT a FROM Employee a WHERE a.username = :username", Employee.class).setParameter("username", employee.getUsername()).getSingleResult();
+            if (em.contains(e)) {
+                System.out.println("Employee with given username already exists.");
+                return false;
+            }
+        } catch (NoResultException e) {
+            System.out.println("No Employee found with username: " + employee.getUsername());
         }
-        
+
         Employee c = em.find(Employee.class, employee.getId());
-        if (c != null) {
+        if (em.contains(c)) {
             System.out.println("Employee already exists with id: " + employee.getId());
             return false;
         }
-        
-        executeInTransaction(em -> em.persist(employee));
+
+        executeInTransaction(entityManager -> em.persist(employee), em);
         return true;
     }
 
     @Override
     public List<Employee> findAllEmployee() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT a FROM Employee a", Employee.class).getResultList();
     }
 
     @Override
     public Employee findByIdEmployee(long id) {
+
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Employee.class, id);
     }
 
     @Override
     public Employee findByNameEmployee(String name) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
             emp = em.createQuery("SELECT a FROM Employee a WHERE a.name = :name", Employee.class).setParameter("name", name).getSingleResult();
@@ -60,6 +66,7 @@ public class EmployeeDao implements IEmployeeDao {
 
     @Override
     public Employee findByEmailEmployee(String email) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
             emp = em.createQuery("SELECT a FROM Employee a WHERE a.email = :email", Employee.class).setParameter("email", email).getSingleResult();
@@ -71,6 +78,7 @@ public class EmployeeDao implements IEmployeeDao {
 
     @Override
     public Employee findByTitleEmployee(String title) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
             emp = em.createQuery("SELECT a FROM Employee a WHERE a.title = :title", Employee.class).setParameter("title", title).getSingleResult();
@@ -82,6 +90,7 @@ public class EmployeeDao implements IEmployeeDao {
 
     @Override
     public Employee findByUsernameEmployee(String username) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
             emp = em.createQuery("SELECT a FROM Employee a WHERE a.username = :username", Employee.class).setParameter("username", username).getSingleResult();
@@ -93,6 +102,7 @@ public class EmployeeDao implements IEmployeeDao {
 
     @Override
     public boolean updateEmployee(Employee employee) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee t = em.find(Employee.class, employee.getId());
         if (t == null) {
             System.out.println("Employee does not exist: " + employee.getId());
@@ -109,16 +119,17 @@ public class EmployeeDao implements IEmployeeDao {
 
     @Override
     public boolean deleteByIdEmployee(long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee employee = em.find(Employee.class, id);
         if (employee != null) {
-            executeInTransaction(em -> em.remove(employee));
+            executeInTransaction(entityManager -> em.remove(employee), em);
             return true;
         }
         System.out.println("Employee does not exist with id: " + id);
         return false;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action) {
+    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -129,5 +140,5 @@ public class EmployeeDao implements IEmployeeDao {
             throw e;
         }
     }
-    
+
 }

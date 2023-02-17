@@ -21,8 +21,8 @@ public class Customer {
     private String address;
     private String postalcode;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "owner_id")}, inverseJoinColumns = @JoinColumn(name = "animals_id"))
+
+    @ManyToMany(mappedBy = "owner")
     private Set<Animal> animals = new HashSet<>();
 
     @ManyToMany(mappedBy = "customers")
