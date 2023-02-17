@@ -20,7 +20,6 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
     public Boolean call(EntryDetailsParameter arg0) {
         final FXMLLoader loader;
         final Scene scene;
-        System.out.println("ARG = "+ arg0);
         savedArg0 = arg0;
         if (arg0.getEntry().getTitle().equals("New Entry"))
             try {
@@ -43,7 +42,6 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
                 stage.setTitle("Edit Appoitment");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.show();
-                System.out.println("Customers name is " + arg0.getEntry().getLocation());
             } catch (IOException e) {
                 e.printStackTrace();
             }

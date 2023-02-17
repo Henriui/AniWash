@@ -76,7 +76,7 @@ public class Calendars {
     }
 
     public void addAppoitmEntry(Entry entry, Calendar calendar) {
-        System.out.println("addAppoitmEntry " + entry.getTitle() + " " + entry.getUserObject() + " " + calendar.getName() + " " + calendar.getUserObject());
+        System.out.println("addAppoitmEntry " + entry.getTitle() + ", location " + entry.getLocation() + " " + calendar.getName() + " " + entry.getUserObject());
         calendar.addEntry(entry);
     }
 

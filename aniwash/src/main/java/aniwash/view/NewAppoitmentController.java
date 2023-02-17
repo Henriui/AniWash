@@ -285,7 +285,7 @@ public class NewAppoitmentController extends CreatePopUp {
         customers.add(new Customer("asd4", "112", "jonne.borgman@metropolia.if"));
         customers.add(new Customer("asd5", "112", "jonne.borgman@metropolia.if"));
         customers.add(new Customer("asd6", "112", "jonne.borgman@metropolia.if"));
-        long id = 1;
+        long id = 0;
         for (Customer customer : customers) {
             customer.setId(id);
             id++;
