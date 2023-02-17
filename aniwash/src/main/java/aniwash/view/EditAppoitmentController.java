@@ -262,7 +262,6 @@ public class EditAppoitmentController extends CreatePopUp {
         });
 
         String textToMatch = newEntry.getEntry().getLocation();
-        System.out.println("textToMatch " + textToMatch);
         for (int i = 0; i < petList.getItems().size(); i++) {
             String itemText = petList.getItems().get(i);
             if (textToMatch.contains(itemText)) {
@@ -295,8 +294,6 @@ public class EditAppoitmentController extends CreatePopUp {
             newEntry.getEntry().setId(String.valueOf(selectedCustomer.getId()));
             // newEntry.getEntry().setLocation(newEntry.getEntry().getLocation());
         }
-        System.out.println("tuutko tähän");
-        System.out.println("entrys id this is?!?!??!?! " + newEntry.getEntry().getId());
         // newEntry.getEntry().setUserObject(selectedCustomer);
 
         products.addAppoitmEntry(newEntry.getEntry(),
