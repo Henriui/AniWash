@@ -35,14 +35,13 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
             }
         else {
             try {
-                loader = loadFXML("createAppoitment");
+                loader = loadFXML("editAppoitment");
                 scene = new Scene((Parent) loader.load());
                 Stage stage = new Stage();
                 stage.setScene(scene);
                 stage.setTitle("Edit Appoitment");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.show();
-                System.out.println("dddd " + arg0.getEntry().getLocation());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -53,9 +52,6 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
         return savedArg0;
     }
     
-    public void saveEntry(EntryDetailsParameter arg0) {
-        System.out.println("Tallennetaan " + arg0.getEntry().getTitle() + " " + arg0.getEntry().getLocation() + " " + arg0.getEntry().getStartTime() + " " + arg0.getEntry().getEndTime() + " " + arg0.getEntry().getId());
-    }
     // This method is used to load the fxml file.
 
     private static FXMLLoader loadFXML(String fxml) throws IOException {
