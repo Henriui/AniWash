@@ -66,6 +66,9 @@ public class CustomersController {
                 setBackground(background);
             }
         });
+
+        // Bind the searchField text property to the filter predicate property.
+
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             Predicate<Customer> filter = customer -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -78,6 +81,9 @@ public class CustomersController {
             listView.setItems(filteredCustomers);
 
         });
+        
+        // Bind the customerCount text property to the size of the list
+
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 Customer selectedCustomer = listView.getSelectionModel().getSelectedItem();

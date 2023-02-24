@@ -36,6 +36,7 @@ public class CustomerListViewCell extends ListCell<Customer> {
         super();
 
         // Create the customer info HBox once
+
         Label nameLabel = new Label();
         Label emailLabel = new Label();
         emailLabel.setMinWidth(150);
@@ -44,9 +45,8 @@ public class CustomerListViewCell extends ListCell<Customer> {
         basicInfoBox.setTranslateX(50);
         basicInfoHBox = new HBox(basicInfoBox);
         basicInfoHBox.setSpacing(100);
-        basicInfoHBox.setSpacing(100); // set spacing to 20 pixels
         basicInfoBox.setPadding(new Insets(0, 50, 0, 0));
-        VBox.setMargin(basicInfoHBox, new Insets(1100, 0, 0, 0)); // add margin of 10 pixels to top
+        VBox.setMargin(basicInfoHBox, new Insets(10, 0, 0, 0)); // add margin of 10 pixels to top
 
         Label cityLabel = new Label();
         Label phoneLabel = new Label();
@@ -55,7 +55,7 @@ public class CustomerListViewCell extends ListCell<Customer> {
         phoneLabel.setMinHeight(5);
 
         contactInfoBox = new VBox(phoneLabel);
-        VBox.setMargin(contactInfoBox, new Insets(1100, 0, 0, 0)); // add margin of 10 pixels to top
+        VBox.setMargin(contactInfoBox, new Insets(10, 0, 0, 0)); // add margin of 10 pixels to top
 
         Label addressLabel = new Label();
         Label postalCodeLabel = new Label();
@@ -65,8 +65,9 @@ public class CustomerListViewCell extends ListCell<Customer> {
 
         customerInfoHBox = new HBox(basicInfoHBox, contactInfoBox, appointmentInfoBox, ddd);
         customerInfoHBox.setSpacing(100);
-        VBox.setMargin(customerInfoHBox, new Insets(1100, 0, 0, 0)); // add margin of 5 pixels to top
-        customerInfoHBox.setStyle("-fx-background-color: #ffffff; -fx-padding: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);");
+        VBox.setMargin(customerInfoHBox, new Insets(5, 0, 0, 0)); // add margin of 5 pixels to top
+        customerInfoHBox.setStyle(
+                "-fx-background-color: #ffffff; -fx-padding: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);");
     }
 
     @Override
@@ -77,6 +78,7 @@ public class CustomerListViewCell extends ListCell<Customer> {
             setText(null);
             setGraphic(null);
         } else {
+
             // Update the cell content with the customer information
 
             Label nameLabel = (Label) ((VBox) basicInfoHBox.getChildren().get(0)).getChildren().get(0);
@@ -95,6 +97,7 @@ public class CustomerListViewCell extends ListCell<Customer> {
             postalCodeLabel.setText(customer.getPostalcode());
 
             // Set cell content
+            
             setText(null);
             setGraphic(customerInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 65;");

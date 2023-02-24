@@ -116,8 +116,8 @@ public class EditAppoitmentController extends CreatePopUp {
                 alert.setContentText("WOW");
                 alert.showAndWait();
             } else {
-                // newEntry.getEntry().setLocation(newEntry.getEntry().getLocation() + " " +
-                // newValue);
+                newEntry.getEntry().setLocation(newEntry.getEntry().getLocation() + " " +
+                        newValue);
             }
         });
         services.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

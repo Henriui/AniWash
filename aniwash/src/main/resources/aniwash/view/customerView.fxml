@@ -108,7 +108,7 @@
                         <Font name="Ikonli" size="19.0" />
                      </font>
                      <effect>
-                        <DropShadow blurType="ONE_PASS_BOX" height="50.0" radius="24.5" width="50.0" />
+                        <DropShadow blurType="ONE_PASS_BOX" height="5.0" radius="2.0" width="5.0" />
                      </effect>
                   </Button>
                   <Text fill="#545454" layoutX="219.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by:">
