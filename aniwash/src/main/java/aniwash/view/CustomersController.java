@@ -48,7 +48,12 @@ public class CustomersController {
     private TextField searchField;
 
     public void initialize() {
+
+        // Bind the ListView to the ObservableList
+
         listView.setItems(customers);
+
+        // Bind the customerCount text property to the size of the list
 
         customerCount.setText(String.valueOf(customers.size()));
 
@@ -56,6 +61,8 @@ public class CustomersController {
 
         listView.setCellFactory(listView -> new CustomerListViewCell());
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
+
+        // Set the placeholder text for the ListView
 
         Background background = new Background(
                 new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
@@ -82,7 +89,7 @@ public class CustomersController {
 
         });
         
-        // Bind the customerCount text property to the size of the list
+        // Double click on a customer to open the customer info popup window
 
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
