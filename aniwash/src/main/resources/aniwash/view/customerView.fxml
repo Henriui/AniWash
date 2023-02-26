@@ -103,7 +103,7 @@
                      </font>
                   </Text>
                   <Separator layoutX="205.0" layoutY="59.0" orientation="VERTICAL" prefHeight="56.0" prefWidth="0.0" />
-                  <Button layoutX="1047.0" layoutY="67.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 100; -fx-background-color: #1485ff;" text="+" textFill="WHITE">
+                  <Button fx:id="newCustomer" layoutX="1047.0" layoutY="67.0" mnemonicParsing="false" onAction="#newCustomer" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 100; -fx-background-color: #1485ff;" text="+" textFill="WHITE">
                      <font>
                         <Font name="Ikonli" size="19.0" />
                      </font>

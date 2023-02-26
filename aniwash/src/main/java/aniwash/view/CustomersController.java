@@ -4,13 +4,21 @@ import java.io.IOException;
 import java.util.function.Predicate;
 
 import aniwash.MainApp;
+import aniwash.entity.Animal;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomerListViewCell;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -19,12 +27,18 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class CustomersController {
     @FXML
     private ListView<Customer> listView;
     @FXML
     private Text customerCount;
+    @FXML
+    private Button newCustomer;
+    private static Customer selectedCustomer;
+
     private final ObservableList<Customer> customers = FXCollections.observableArrayList(
             new Customer("asd1", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"),
             new Customer("asd2", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
@@ -47,8 +61,14 @@ public class CustomersController {
     @FXML
     private TextField searchField;
 
-    public void initialize() {
+    public void test() {
+        for (Customer customer : customers) {
+            customer.addAnimal(new Animal("Testi", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
+        }
+    }
 
+    public void initialize() {
+        test();
         // Bind the ListView to the ObservableList
 
         listView.setItems(customers);
@@ -88,20 +108,52 @@ public class CustomersController {
             listView.setItems(filteredCustomers);
 
         });
-        
+
         // Double click on a customer to open the customer info popup window
 
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                Customer selectedCustomer = listView.getSelectionModel().getSelectedItem();
+                selectedCustomer = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
                 // Pass the selected customer object to the popup window to display its info
-                System.out.println(selectedCustomer.getName());
+                final FXMLLoader loader;
+                final Scene scene;
+                try {
+                    loader = loadFXML("editCustomerView");
+                    scene = new Scene((Parent) loader.load());
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setTitle("Edit Customer");
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.show();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
 
     }
-    
+
+    @FXML
+    public void newCustomer() throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("newCustomerView");
+        scene = new Scene((Parent) loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Create Customer");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
+    public Customer getSelectedCustomer() {
+        System.out.println("tissi = " + selectedCustomer);
+        return selectedCustomer;
+    }
+
     @FXML
     private void mySchedule() throws IOException {
         MainApp.setRoot("schedule");
@@ -110,5 +162,10 @@ public class CustomersController {
     @FXML
     private void dashBoard() throws IOException {
         MainApp.setRoot("mainView");
+    }
+
+    private static FXMLLoader loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        return fxmlLoader;
     }
 }
