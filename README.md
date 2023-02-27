@@ -4,7 +4,14 @@
 * [Features](#Features)
 * [Installation](#Installation)
 * [Future plans](#Future-plans)
-* [Use case diagram](#Use-case-diagram)
+* [Class overview](#Class-overview)
+* * [Class diagram](#Class-diagram)
+* [Use case overview](#Use-case) 
+* * [Use case diagram](#Use-case-diagram)
+* [Package diagram](#Package-diagram)
+* [Activity diagram](#Activity-diagram)
+* [Sequence diagram](#sequence-diagram)
+* [](#)
 ## Features
 Aniwash is a software for customer management and pet care scheduling. 
 
@@ -32,3 +39,11 @@ To install Java, you can follow the instructions on the [Java website](https://w
 * Add a page where the customer can see their invoices.
 ## Use case diagram:
 ![Use case diagram](readme_resources/usecase.jpg)
+## Class diagram:
+![Class diagram](readme_resources/Class_diagram.png)
+
+## Package diagram:
+![Package diagram](readme_resources/pkg_diagram.jpg)
+
+## Activity diagram:
+![Activity diagram](readme_resources/ActivityDiagram.jpg)
