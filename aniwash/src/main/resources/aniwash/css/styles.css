@@ -85,3 +85,11 @@
 .table-row-cell:selected {
     -fx-background-color: #47c496;
 }
+
+.list-cell:selected {
+    -fx-background-color: gray;
+}
+.list-cell:filled:selected {
+    -fx-background-color: red;
+    -fx-text-background-color: #47c496;
+}
