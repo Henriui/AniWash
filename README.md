@@ -51,5 +51,41 @@ To install Java, you can follow the instructions on the [Java website](https://w
 ## Activity diagram:
 <img src="readme_resources/ActivityDiagram.jpg" width="600" height="600">
 
+### Actors
+
+Employee:
+The employee actor is the main user of the application and is most in contact with customers. Employee can create new customers, pets, products and appointments. Employees are authenticated by login username and password.
+
+Employer:
+The employer actor has the same actions as an employee, but also can add or remove employees.
+
+Database:
+The database actor is responsible for accessing the database for CRUD operations. Database actor is responsible for backend access. Other actors use the actions to retrieve, store or edit information from the database. 
+
+### Actions
+
+Employee actions:
+* Customers
+* Pets
+* Products
+* Appointments
+* *	All the above actions access all CRUD operations performed by Database actor.
+* Login
+* *	Only has access to read for login purposes.
+
+Database CRUD actions:
+* Create
+* *	Inserts new data into the database.
+* Read
+* *	Retrieves data from the database.
+* Update
+* *	Updates data in the database.
+* Delete
+* *	Deletes data from the database.
+
+Employer actions:
+* Employees
+* *	All CRUD operations
+
 ## Sequence diagram:
 <img src="readme_resources/SequenceDiagram.jpg" width="1000" height="500">
