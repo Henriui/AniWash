@@ -1,4 +1,4 @@
-# AniWash
+# AniWash <br/><img src="aniwash/src/main/resources/aniwash/images/what.png"  width="150" height="150">
 
 ## Table of contents
 * [Features](#Features)
@@ -12,7 +12,9 @@
 * [Activity diagram](#Activity-diagram)
 * [Sequence diagram](#sequence-diagram)
 * [](#)
+
 ## Features
+
 Aniwash is a software for customer management and pet care scheduling. 
 
 In the current version, the software has two employee types: the employer and the employee.
@@ -38,12 +40,16 @@ To install Java, you can follow the instructions on the [Java website](https://w
 * Add a pet page where the customer can see their pet's information and appointments.
 * Add a page where the customer can see their invoices.
 ## Use case diagram:
-![Use case diagram](readme_resources/usecase.jpg)
+<img src="readme_resources/usecase.jpg" width="800" height="600">
+
 ## Class diagram:
-![Class diagram](readme_resources/Class_diagram.png)
+<img src="readme_resources/Class_diagram.png" width="800" height="600">
 
 ## Package diagram:
-![Package diagram](readme_resources/pkg_diagram.jpg)
+<img src="readme_resources/pkg_diagram.jpg" width="800" height="600">
 
 ## Activity diagram:
-![Activity diagram](readme_resources/ActivityDiagram.jpg)
+<img src="readme_resources/ActivityDiagram.jpg" width="600" height="600">
+
+## Sequence diagram:
+<img src="readme_resources/SequenceDiagram.jpg" width="1000" height="500">
