@@ -68,4 +68,22 @@ public class AppointmentProductDbTest {
         assertEquals(1, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-02-03T10:15:30+02:00")).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
         assertEquals(18, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 19.");
     }
+
+    //TODO: Fix this test
+    @Test
+    @DisplayName("Remove product from appointment")
+    @Order(2)
+    public void testRemoveProductFromAppointment() {
+        aDao.addAppointment(appointment);
+        pDao.addProduct(product);
+        appointment.addProduct(product);
+
+        assertEquals(1, aDao.findByStartDateAppointment(startDate).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+        assertEquals(1, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+
+        appointment.removeProduct(product);
+
+        assertEquals(0, aDao.findByStartDateAppointment(startDate).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 0.");
+        assertEquals(1, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+    }
 }
