@@ -147,10 +147,6 @@ public class EditCustomerController {
         Scene popupScene = new Scene(popupRoot);
         popupStage.setScene(popupScene);
         popupStage.show();
-
-    }
-
-    public void reloadView() {
-        // TODO: Get animals from database again.
+        CreateNewAnimalController.setCustomer(customer);
     }
 }

@@ -126,6 +126,9 @@ public class CustomersController {
                     stage.setTitle("Edit Customer");
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.show();
+                    stage.setOnHidden(view -> {
+                        // TODO: Get customers from database so the listview reloads
+                    });
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -147,10 +150,13 @@ public class CustomersController {
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
     }
 
     public Customer getSelectedCustomer() {
-        System.out.println("tissi = " + selectedCustomer);
         return selectedCustomer;
     }
 
