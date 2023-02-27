@@ -46,4 +46,9 @@ public class DashboardController {
         MainApp.setRoot("schedule");
     }
 
+    @FXML
+    private void customers() throws IOException {
+        MainApp.setRoot("customerView");
+    }
+
 }

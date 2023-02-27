@@ -14,7 +14,8 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
 
     static EntryDetailsParameter savedArg0;
 
-    // This method is called when the user double clicks on a calendar entry or an empty space in calendar.
+    // This method is called when the user double clicks on a calendar entry or an
+    // empty space in calendar.
 
     @Override
     public Boolean call(EntryDetailsParameter arg0) {
@@ -48,10 +49,11 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
         }
         return null;
     }
+
     public EntryDetailsParameter getArg() {
         return savedArg0;
     }
-    
+
     // This method is used to load the fxml file.
 
     private static FXMLLoader loadFXML(String fxml) throws IOException {
