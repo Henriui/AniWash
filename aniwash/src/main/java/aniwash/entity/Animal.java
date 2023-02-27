@@ -8,11 +8,17 @@ import java.util.Set;
 
 @Entity
 public class Animal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private boolean deleted;
+
     private String type;
     private String breed;
     private int animalAge;
@@ -34,6 +40,7 @@ public class Animal {
         this.breed = breed;
         this.animalAge = animalAge;
         this.description = description;
+        this.deleted = false;
     }
 
     public void removeOwner(Customer customer) {
@@ -82,6 +89,10 @@ public class Animal {
         return description;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -104,6 +115,10 @@ public class Animal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Set<Customer> getOwner() {

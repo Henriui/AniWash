@@ -2,8 +2,6 @@ package aniwash.entity;
 
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +25,7 @@ public class CustomerDaoTest {
     public void beforeEach() {
         customer = new Customer(name, phone, email);
         customer.setAddress(address);
-        customer.setPostalcode(postalcode);
+        customer.setPostalCode(postalcode);
     }
 
     @AfterEach
@@ -66,10 +64,10 @@ public class CustomerDaoTest {
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan osoite päivitys ei onnistunut.");
         customer = customerDao.findByIdCustomer(id);
         assertEquals("Kuusikatu 2", customer.getAddress(), "getAddress(): customerin osoite arvo on väärin.");
-        customer.setPostalcode("00100");
+        customer.setPostalCode("00100");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan postinumeron päivitys ei onnistunut.");
         customer = customerDao.findByIdCustomer(id);
-        assertEquals("00100", customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
+        assertEquals("00100", customer.getPostalCode(), "getPostalcode(): customerin postinumero arvo on väärin.");
         customer.setPhone("0401234567");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan puhelinnumeron päivitys ei onnistunut.");
         customer = customerDao.findByIdCustomer(id);
@@ -177,10 +175,10 @@ public class CustomerDaoTest {
     public void testPostcode() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
 
-        customer.setPostalcode("00100");
+        customer.setPostalCode("00100");
         assertTrue(customerDao.updateCustomer(customer), "updateCustomer(): Juuri lisätyn asiakkaan postinumeron päivitys ei onnistunut.");
         customer = customerDao.findByIdCustomer(customer.getId());
-        assertEquals("00100", customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
+        assertEquals("00100", customer.getPostalCode(), "getPostalcode(): customerin postinumero arvo on väärin.");
     }
 
     @Test
@@ -188,7 +186,7 @@ public class CustomerDaoTest {
     @Order(10)
     public void testPostcode2() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-        assertEquals(postalcode, customer.getPostalcode(), "getPostalcode(): customerin postinumero arvo on väärin.");
+        assertEquals(postalcode, customer.getPostalCode(), "getPostalcode(): customerin postinumero arvo on väärin.");
     }
 
     @Test

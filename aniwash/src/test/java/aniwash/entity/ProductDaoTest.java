@@ -17,11 +17,11 @@ public class ProductDaoTest {
     private final String Description = "Pienen eläimen pesu";
     private final double Price = 30.00;
 
-    private Product product = new Product(Nimi, Description, Price);
+    private Product product = new Product(Nimi, Description, Price, "basic");
 
     @BeforeEach
     public void setUp() {
-        product = new Product(Nimi, Description, Price);
+        product = new Product(Nimi, Description, Price, "basic");
     }
 
     @AfterEach
@@ -72,10 +72,10 @@ public class ProductDaoTest {
     public void testFindAllProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
         assertTrue(productDao.findAllProduct().size() > 0, "findAllProduct(): No products found.");
-        assertTrue(productDao.findAllProduct().size() == 1, "findAllProduct(): Number of products does not match.");
-        Product product2 = new Product("Pesu iso", "Ison eläimen pesu", 50.00);
+        assertEquals(1, productDao.findAllProduct().size(), "findAllProduct(): Number of products does not match.");
+        Product product2 = new Product("Pesu iso", "Ison eläimen pesu", 50.00, "basic");
         assertTrue(productDao.addProduct((product2)), "addProduct(): Can't add new product.");
-        assertTrue(productDao.findAllProduct().size() == 2, "findAllProduct(): Number of products does not match.");
+        assertEquals(2, productDao.findAllProduct().size(), "findAllProduct(): Number of products does not match.");
 
     }
 
@@ -88,7 +88,7 @@ public class ProductDaoTest {
         for (Product p : products) {
             productDao.deleteByIdProduct(p.getId());
         }
-        assertTrue(productDao.findAllProduct().size() == 0, "findAllProduct(): Products found.");
+        assertEquals(0, productDao.findAllProduct().size(), "findAllProduct(): Products found.");
     }
 
     @Test

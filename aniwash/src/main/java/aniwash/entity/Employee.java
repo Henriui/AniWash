@@ -25,8 +25,12 @@ public class Employee {
 
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
+    private boolean deleted;
 
     @ManyToMany(mappedBy = "employees")
     private Set<Appointment> appointments = new HashSet<>();
@@ -40,6 +44,7 @@ public class Employee {
         this.name = name;
         this.email = email;
         this.title = title;
+        this.deleted = false;
     }
 
     public void addAppointment(Appointment appointment) {
@@ -82,6 +87,10 @@ public class Employee {
         return name;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -100,6 +109,10 @@ public class Employee {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Set<Appointment> getAppointments() {
