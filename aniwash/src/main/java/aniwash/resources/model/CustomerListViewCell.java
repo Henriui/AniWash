@@ -20,7 +20,9 @@ public class CustomerListViewCell extends ListCell<Customer> {
 
         Label nameLabel = new Label();
         Label emailLabel = new Label();
-        emailLabel.setMinWidth(150);
+        emailLabel.setMinWidth(200);
+        nameLabel.fontProperty().set(new javafx.scene.text.Font(15));
+        emailLabel.fontProperty().set(new javafx.scene.text.Font(15));
 
         VBox basicInfoBox = new VBox(nameLabel, emailLabel);
         basicInfoBox.setTranslateX(50);
@@ -34,6 +36,8 @@ public class CustomerListViewCell extends ListCell<Customer> {
         cityLabel.setMinWidth(120);
         phoneLabel.setMinWidth(180);
         phoneLabel.setMinHeight(5);
+        cityLabel.fontProperty().set(new javafx.scene.text.Font(15));
+        phoneLabel.fontProperty().set(new javafx.scene.text.Font(15));
 
         contactInfoBox = new VBox(phoneLabel);
         VBox.setMargin(contactInfoBox, new Insets(10, 0, 0, 0)); // add margin of 10 pixels to top
@@ -43,6 +47,8 @@ public class CustomerListViewCell extends ListCell<Customer> {
         VBox appointmentInfoBox = new VBox(addressLabel);
         VBox ddd = new VBox(postalCodeLabel);
         addressLabel.setMinWidth(200);
+        addressLabel.fontProperty().set(new javafx.scene.text.Font(15));
+        postalCodeLabel.fontProperty().set(new javafx.scene.text.Font(15));
 
         customerInfoHBox = new HBox(basicInfoHBox, contactInfoBox, appointmentInfoBox, ddd);
         customerInfoHBox.setSpacing(100);
@@ -81,7 +87,7 @@ public class CustomerListViewCell extends ListCell<Customer> {
             
             setText(null);
             setGraphic(customerInfoHBox);
-            setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 65;");
+            setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 75;");
         }
     }
 }

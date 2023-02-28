@@ -1,6 +1,5 @@
 package aniwash.resources.model;
 
-import aniwash.entity.Appointment;
 import aniwash.entity.Product;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -17,21 +16,25 @@ public class CustomerListViewCellProduct extends ListCell<Product> {
         super();
         // Create the customer info HBox once
 
-        Label dateLabel = new Label();
+        Label nameLabel = new Label();
         Label descriptionLabel = new Label();
-        descriptionLabel.setMinWidth(50);
+        nameLabel.setMinWidth(300);
+        nameLabel.fontProperty().set(new javafx.scene.text.Font(20));
+        descriptionLabel.setMinWidth(300);
+        descriptionLabel.fontProperty().set(new javafx.scene.text.Font(20));
 
-        VBox basicInfoBox = new VBox(dateLabel);
+        VBox basicInfoBox = new VBox(nameLabel);
         VBox ageBox = new VBox(descriptionLabel);
 
-        basicInfoBox.setTranslateX(30);
+        basicInfoBox.setTranslateX(75);
         basicInfoHBox = new HBox(basicInfoBox);
         basicInfoBox.setPadding(new Insets(0, 50, 0, 0));
         VBox.setMargin(basicInfoHBox, new Insets(10, 0, 0, 0)); // add margin of 10 pixels to top
 
         Label priceLabel = new Label();
         VBox appointmentInfoBox = new VBox(priceLabel);
-        priceLabel.setMinWidth(50);
+        priceLabel.setMinWidth(100);
+        priceLabel.fontProperty().set(new javafx.scene.text.Font(20));
 
         customerInfoHBox = new HBox(basicInfoHBox, ageBox, appointmentInfoBox);
         customerInfoHBox.setSpacing(100);
@@ -51,11 +54,11 @@ public class CustomerListViewCellProduct extends ListCell<Product> {
 
             // Update the cell content with the customer information
 
-            Label dateLabel = (Label) ((VBox) basicInfoHBox.getChildren().get(0)).getChildren().get(0);
-            dateLabel.setText(product.getName());
+            Label nameLabel = (Label) ((VBox) basicInfoHBox.getChildren().get(0)).getChildren().get(0);
+            nameLabel.setText(product.getName());
 
             Label priceLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(2)).getChildren().get(0);
-            priceLabel.setText(String.valueOf(product.getPrice()));
+            priceLabel.setText(String.valueOf(product.getPrice() + "€"));
 
             Label descriptionLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(1)).getChildren().get(0);
             descriptionLabel.setText(product.getDescription());
@@ -65,7 +68,7 @@ public class CustomerListViewCellProduct extends ListCell<Product> {
             
             setText(null);
             setGraphic(customerInfoHBox);
-            setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 45;");
+            setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 60;");
         }
     }
 }

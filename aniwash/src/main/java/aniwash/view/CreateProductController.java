@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.function.Predicate;
 
 import aniwash.MainApp;
-import aniwash.entity.Customer;
 import aniwash.entity.Product;
 import aniwash.resources.model.CustomerListViewCellProduct;
 import javafx.collections.FXCollections;

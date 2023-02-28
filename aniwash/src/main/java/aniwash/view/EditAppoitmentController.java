@@ -1,12 +1,11 @@
 package aniwash.view;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
-import com.calendarfx.view.TimeField;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.TimeField;
 
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
@@ -18,17 +17,16 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -54,16 +52,6 @@ public class EditAppoitmentController extends CreatePopUp {
     private TextField searchField;
     @FXML
     private AnchorPane servicePane;
-    @FXML
-    private Circle one;
-    @FXML
-    private Circle two;
-    @FXML
-    private Circle three;
-    @FXML
-    private Rectangle first;
-    @FXML
-    private Rectangle second;
     @FXML
     private DatePicker date;
     @FXML
