@@ -9,8 +9,6 @@
 * * [Class diagram](#class-diagram)
 * [Use case diagram](#use-case-diagram) 
 * * [Explanation](#explanation)
-* [Package diagram](#package-overview)
-* * [Explanaton](#package-diagram)
 * [Activity diagram](#activity-diagram)
 * * [Explanation](#explanation)
 * [Sequence diagram](#sequence-diagram)
