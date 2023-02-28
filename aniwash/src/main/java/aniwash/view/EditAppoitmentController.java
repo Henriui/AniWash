@@ -1,29 +1,20 @@
 package aniwash.view;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
-import com.calendarfx.view.TimeField;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
-
-import aniwash.entity.Animal;
+import aniwash.dao.CustomerDao;
+import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
 import aniwash.resources.model.Calendars;
 import aniwash.resources.model.CreatePopUp;
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
+import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -31,6 +22,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class EditAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
@@ -80,6 +73,8 @@ public class EditAppoitmentController extends CreatePopUp {
     private ObservableList<Customer> people;
     private ObservableList<Customer> allPeople;
 
+    private ICustomerDao customerDao;
+
     public void initialize() {
         setArg();
 
@@ -98,8 +93,9 @@ public class EditAppoitmentController extends CreatePopUp {
 
         // Add data to the table
 
-        people = getPeople();
-        servicesa = products.getCalendars();
+        customerDao = new CustomerDao();
+        people = FXCollections.observableArrayList(customerDao.findAllCustomer());
+        servicesa = new ArrayList<>(products.getCalendars().values());
 
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
@@ -150,7 +146,7 @@ public class EditAppoitmentController extends CreatePopUp {
 
     @FXML
     public void modifyEntry() {
-        allPeople = getPeople();
+        allPeople = FXCollections.observableArrayList(customerDao.findAllCustomer());
         personView.getSelectionModel().clearSelection();
         petList.getSelectionModel().clearSelection();
 
@@ -246,7 +242,7 @@ public class EditAppoitmentController extends CreatePopUp {
     public void getInfo() {
 
         ObservableList<Customer> tempCustomer = FXCollections.observableArrayList();
-        Customer customer = people.get(Integer.parseInt(newEntry.getEntry().getId()));
+        Customer customer = people.get(Integer.parseInt(newEntry.getEntry().getId()) - 1);
         tempCustomer.add(0, customer);
         personView.setItems(tempCustomer);
         personView.getSelectionModel().select(0);
@@ -258,7 +254,7 @@ public class EditAppoitmentController extends CreatePopUp {
         services.scrollTo(indexOfItemToSelect);
 
         customer.getAnimals().forEach(animal -> {
-            petList.getItems().addAll(animal.getDescription());
+            petList.getItems().addAll(animal.getName());
         });
 
         String textToMatch = newEntry.getEntry().getLocation();
@@ -301,6 +297,7 @@ public class EditAppoitmentController extends CreatePopUp {
         // servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
     }
 
+/*
     // Create some sample data.
     // TODO: Replace with real data.
     private ObservableList<Customer> getPeople() {
@@ -328,4 +325,5 @@ public class EditAppoitmentController extends CreatePopUp {
 
         return customers;
     }
+*/
 }
