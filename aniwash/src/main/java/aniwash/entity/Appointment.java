@@ -16,10 +16,16 @@ public class Appointment {
     private long id;
 
     @Column(nullable = false)
-    private ZonedDateTime date;
+    private ZonedDateTime startDate;
+
+    @Column(nullable = false)
+    private ZonedDateTime endDate;
 
     @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    private boolean deleted;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
@@ -40,9 +46,11 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(ZonedDateTime date, String description) {
-        this.date = date;
+    public Appointment(ZonedDateTime startDate, ZonedDateTime endDate, String description) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.description = description;
+        this.deleted = false;
     }
 
     public void addEmployee(Employee employee) {
@@ -110,16 +118,32 @@ public class Appointment {
         return description;
     }
 
-    public ZonedDateTime getDate() {
-        return date;
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Set<Employee> getEmployees() {
@@ -158,7 +182,7 @@ public class Appointment {
     public String toString() {
         return getClass().getSimpleName() +
                 "(id=" + id +
-                ", date=" + date +
+                ", date=" + startDate +
                 ", description='" + description + '\'' +
                 ", employees=" + employees +
                 ", customers=" + customers +

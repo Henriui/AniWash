@@ -21,16 +21,24 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
+    @Column(nullable = false)
+    private String style;
+
+    @Column(nullable = false)
+    private boolean deleted;
+
     @ManyToMany(mappedBy = "products")
     private Set<Appointment> appointments = new HashSet<>();
 
     public Product() {
     }
 
-    public Product(String name, String description, double price) {
+    public Product(String name, String description, double price, String style) {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.style = style;
+        this.deleted = false;
     }
 
     public void addAppointment(Appointment appointment) {
@@ -72,6 +80,22 @@ public class Product {
         this.price = price;
     }
 
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -81,7 +105,7 @@ public class Product {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", appointments=" + appointments + ")";
     }
 }
