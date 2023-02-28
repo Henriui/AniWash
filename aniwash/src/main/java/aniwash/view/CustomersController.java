@@ -1,10 +1,12 @@
 package aniwash.view;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.function.Predicate;
 
 import aniwash.MainApp;
 import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomerListViewCell;
 import javafx.beans.binding.Bindings;
@@ -39,7 +41,7 @@ public class CustomersController {
     private Button newCustomer;
     private static Customer selectedCustomer;
 
-    private final ObservableList<Customer> customers = FXCollections.observableArrayList(
+    private static ObservableList<Customer> customers = FXCollections.observableArrayList(
             new Customer("asd1", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"),
             new Customer("asd2", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
                     "00960"),
@@ -63,7 +65,9 @@ public class CustomersController {
 
     public void test() {
         for (Customer customer : customers) {
-            customer.addAnimal(new Animal("Testi", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
+            customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
+            customer.addAppointment(new Appointment(ZonedDateTime.now(), "Cancer Treatment"));
+    
         }
     }
 
