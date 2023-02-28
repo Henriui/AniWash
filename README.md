@@ -7,14 +7,14 @@
 * [Future plans](#future-plans)
 * [Class overview](#class-overview)
 * * [Class diagram](#class-diagram)
-* [Use case overview](#use-case-overview) 
-* * [Use case diagram](#use-case-diagram)
-* [Package overview](#package-overview)
-* * [Package diagram](#package-diagram)
-* [Activity overview](#activity-overview)
-* * [Activity diagram](#activity-diagram)
+* [Use case diagram](#use-case-diagram) 
+* * [Explanation](#explanation)
+* [Package diagram](#package-overview)
+* * [Explanaton](#package-diagram)
+* [Activity diagram](#activity-diagram)
+* * [Explanation](#explanation)
 * [Sequence diagram](#sequence-diagram)
-* [Sequence diagram explanation](#sequence-diagram-explanation)
+* * [Explanation](#explanation)
 
 ## Introduction
 
@@ -82,10 +82,11 @@ LoginController is a class used for user login.
 
 Calendars class contains the information of the appointments and products in the calendar, this is where the information is fetched from the database where it is then transferred to the user's view.
 
-## Use case overview
-### Use case diagram:
+## Use case diagram
+### Diagram:
 <img src="readme_resources/usecase.jpg" width="800" height="600">
 
+### Explanation
 ### Actors
 
 Employee:
@@ -122,20 +123,35 @@ Employer actions:
 * Employees
 * *	All CRUD operations
 
-## Package overview:
-<img src="readme_resources/pkg_diagram.jpg" width="800" height="600">
-
-### Package diagram
-
-## Activity overview:
+## Activity diagram:
 <img src="readme_resources/ActivityDiagram.jpg" width="600" height="600">
 
-### Activity diagram
+### Explanation
+
+Login: 
+User enters the login view and inputs username and password.
+
+Check auth: 
+Check from the database that user is authorized to log in (username is correct, password is the same).
+
+Add reservation: 
+The user creates a new appointment after logging in.
+
+Choose customer: 
+User selects a customer from the customers list. If a customer doesn’t exist, user can create a new customer.
+
+Choose pet: 
+User selects a pet from the customers pets.
+
+If the pet exists in the system, but is linked to for example another family member, user can link the pet to the customer. Otherwise user creates a new pet.
+
+Add other info: 
+Date, description etc.
 
 ## Sequence diagram:
 <img src="readme_resources/SequenceDiagram.jpg" width="1000" height="500">
 
-### Sequence diagram explanation
+### Explanation
 
 The sequence diagram shows the process of creating a new appointment.
 
