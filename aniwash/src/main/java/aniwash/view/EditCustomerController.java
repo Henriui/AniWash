@@ -5,8 +5,8 @@ import java.io.IOException;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCellAnimal;
-import aniwash.resources.model.CustomerListViewCellAppointment;
+import aniwash.resources.model.CustomListViewCellAnimal;
+import aniwash.resources.model.CustomListViewCellAppointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,8 +72,8 @@ public class EditCustomerController {
 
         appointmentListView.setItems(appointmentsList);
         listView.setItems(animals);
-        listView.setCellFactory(listView -> new CustomerListViewCellAnimal());
-        appointmentListView.setCellFactory(appointmentListView -> new CustomerListViewCellAppointment());
+        listView.setCellFactory(listView -> new CustomListViewCellAnimal());
+        appointmentListView.setCellFactory(appointmentListView -> new CustomListViewCellAppointment());
 
         Background background = new Background(
                 new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));

@@ -8,7 +8,7 @@ import aniwash.MainApp;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCell;
+import aniwash.resources.model.CustomListViewCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -79,7 +79,7 @@ public class CustomersController {
 
         // Set the cell factory to create custom ListCells
 
-        listView.setCellFactory(listView -> new CustomerListViewCell());
+        listView.setCellFactory(listView -> new CustomListViewCell());
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
 
         // Set the placeholder text for the ListView

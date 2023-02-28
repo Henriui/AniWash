@@ -7,12 +7,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class CustomerListViewCellAppointment extends ListCell<Appointment> {
+public class CustomListViewCellAppointment extends ListCell<Appointment> {
 
     private HBox animalInfoHBox;
     private HBox dateHBox;
 
-    public CustomerListViewCellAppointment() {
+    public CustomListViewCellAppointment() {
         super();
         // Create the customer info HBox once
 

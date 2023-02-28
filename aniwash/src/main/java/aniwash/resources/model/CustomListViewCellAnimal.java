@@ -7,13 +7,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class CustomerListViewCellAnimal extends ListCell<Animal> {
+public class CustomListViewCellAnimal extends ListCell<Animal> {
 
     private HBox animalInfoHBox;
     private VBox typeBox;
     private HBox basicInfoHBox;
 
-    public CustomerListViewCellAnimal() {
+    public CustomListViewCellAnimal() {
         super();
 
         // Create the customer info HBox once
