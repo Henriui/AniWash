@@ -35,7 +35,7 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="238.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" styleClass="side-bar-button" text="Customers" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
+                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="238.0" mnemonicParsing="false" onAction="#customers" prefHeight="25.0" prefWidth="160.0" styleClass="side-bar-button" text="Customers" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>

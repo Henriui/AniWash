@@ -146,6 +146,11 @@ public class ProductController {
         MainApp.setRoot("mainView");
     }
 
+    @FXML
+    private void customers() throws IOException {
+        MainApp.setRoot("customerView");
+    }
+
     private static FXMLLoader loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader;
