@@ -72,6 +72,10 @@ public class ScheduleController {
     private void customers() throws IOException {
         MainApp.setRoot("customerView");
     }
+    @FXML
+    private void products() throws IOException {
+        MainApp.setRoot("productsView");
+    }
 
     @FXML
     private void testWeekView() {

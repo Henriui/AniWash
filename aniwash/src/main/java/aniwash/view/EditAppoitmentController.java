@@ -204,7 +204,6 @@ public class EditAppoitmentController extends CreatePopUp {
                     });
                 }
             } else if (event.getCode().equals(KeyCode.BACK_SPACE)) {
-                // personView.getSelectionModel().clearSelection();
             }
         });
 
@@ -221,9 +220,7 @@ public class EditAppoitmentController extends CreatePopUp {
 
     private void selectCustomer(Customer customer) {
         selectedCustomer = customer;
-
         newEntry.getEntry().setLocation(customer.getName());
-        // newEntry.getEntry().setId(String.valueOf(customer.getId()));
     }
 
     // Set entrys "Title" which is used to store service name.
@@ -293,13 +290,10 @@ public class EditAppoitmentController extends CreatePopUp {
             Entry asd = newEntry.getEntry();
             asd.setUserObject(selectedPerson);
             newEntry.getEntry().setId(String.valueOf(selectedCustomer.getId()));
-            // newEntry.getEntry().setLocation(newEntry.getEntry().getLocation());
         }
-        // newEntry.getEntry().setUserObject(selectedCustomer);
 
         products.addAppoitmEntry(newEntry.getEntry(),
                 servicesa.get(services.getSelectionModel().getSelectedIndex() - 1));
-        // servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
     }
 
     // Create some sample data.

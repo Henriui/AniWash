@@ -51,4 +51,8 @@ public class DashboardController {
         MainApp.setRoot("customerView");
     }
 
+    @FXML
+    private void products() throws IOException {
+        MainApp.setRoot("productsView");
+    }
 }

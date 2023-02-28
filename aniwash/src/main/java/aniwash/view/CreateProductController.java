@@ -1,22 +1,16 @@
 package aniwash.view;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
 import java.util.function.Predicate;
 
 import aniwash.MainApp;
-import aniwash.entity.Animal;
-import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCell;
-import javafx.beans.binding.Bindings;
+import aniwash.entity.Product;
+import aniwash.resources.model.CustomerListViewCellProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,69 +22,48 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CustomersController {
+public class CreateProductController {
     @FXML
-    private ListView<Customer> listView;
-    @FXML
-    private Text customerCount;
-    @FXML
-    private Button newCustomer;
-    private static Customer selectedCustomer;
-
-    private static ObservableList<Customer> customers = FXCollections.observableArrayList(
-            new Customer("asd1", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"),
-            new Customer("asd2", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd3", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd4", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd5", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd6", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd7", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd8", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd9", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd10", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"));
+    private ListView<Product> listView;
+    private static ObservableList<Product> customers = FXCollections.observableArrayList(
+            new Product("asd1", "112", 10), new Product("asd2", "112", 10), new Product("asd3", "112", 10),
+            new Product("asd4", "112", 10), new Product("asd5", "112", 10), new Product("asd6", "112", 10),
+            new Product("asd7", "112", 10), new Product("asd8", "112", 10), new Product("asd9", "112", 10),
+            new Product("asd10", "112", 10), new Product("asd11", "112", 10), new Product("asd12", "112", 10),
+            new Product("asd13", "112", 10), new Product("asd14", "112", 10), new Product("asd15", "112", 10),
+            new Product("asd16", "112", 10), new Product("asd17", "112", 10), new Product("asd18", "112", 10),
+            new Product("asd19", "112", 10), new Product("asd20", "112", 10), new Product("asd21", "112", 10),
+            new Product("asd22", "112", 10), new Product("asd23", "112", 10), new Product("asd24", "112", 10),
+            new Product("asd25", "112", 10), new Product("asd26", "112", 10), new Product("asd27", "112", 10),
+            new Product("asd28", "112", 10), new Product("asd29", "112", 10), new Product("asd30", "112", 10),
+            new Product("asd31", "112", 10), new Product("asd32", "112", 10), new Product("asd33", "112", 10),
+            new Product("asd34", "112", 10), new Product("asd35", "112", 10), new Product("asd36", "112", 10),
+            new Product("asd37", "112", 10), new Product("asd38", "112", 10), new Product("asd39", "112", 10),
+            new Product("asd40", "112", 10), new Product("asd41", "112", 10), new Product("asd42", "112", 10),
+            new Product("asd43", "112", 10), new Product("asd44", "112", 10));
     @FXML
     private TextField searchField;
-
-    public void test() {
-        for (Customer customer : customers) {
-            customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
-            customer.addAppointment(new Appointment(ZonedDateTime.now(), "Cancer Treatment"));
-    
-        }
-    }
+    @FXML
+    private Button newCustomer;
+    private static Product selectedCustomer;
 
     public void initialize() {
-        test();
-        // Bind the ListView to the ObservableList
 
         listView.setItems(customers);
 
-        // Bind the customerCount text property to the size of the list
-
-        customerCount.setText(String.valueOf(customers.size()));
-
         // Set the cell factory to create custom ListCells
 
-        listView.setCellFactory(listView -> new CustomerListViewCell());
+        listView.setCellFactory(listView -> new CustomerListViewCellProduct());
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
 
         // Set the placeholder text for the ListView
 
         Background background = new Background(
                 new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
-        listView.setPlaceholder(new Label("No items") {
+        listView.setPlaceholder(new Label("No products") {
             @Override
             protected void updateBounds() {
                 super.updateBounds();
@@ -101,14 +74,14 @@ public class CustomersController {
         // Bind the searchField text property to the filter predicate property.
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            Predicate<Customer> filter = customer -> {
+            Predicate<Product> filter = customer -> {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 } else {
                     return customer.getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
-            ObservableList<Customer> filteredCustomers = customers.filtered(filter);
+            ObservableList<Product> filteredCustomers = customers.filtered(filter);
             listView.setItems(filteredCustomers);
 
         });
@@ -160,7 +133,7 @@ public class CustomersController {
         });
     }
 
-    public Customer getSelectedCustomer() {
+    public Product getSelectedCustomer() {
         return selectedCustomer;
     }
 
@@ -172,11 +145,6 @@ public class CustomersController {
     @FXML
     private void dashBoard() throws IOException {
         MainApp.setRoot("mainView");
-    }
-
-    @FXML
-    private void products() throws IOException {
-        MainApp.setRoot("productsView");
     }
 
     private static FXMLLoader loadFXML(String fxml) throws IOException {
