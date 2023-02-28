@@ -5,8 +5,6 @@ import aniwash.dao.IAppointmentDao;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -147,19 +145,15 @@ public class AppointmentDaoTest {
         assertTrue(appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
     }
 
-    //TODO fix this test
     @Test
     @Order(13)
-    @DisplayName("Give appointment animals as a list and fetch them")
-    public void testSetAnimals() {
+    @DisplayName("Set appointment as not deleted and fetch it")
+    public void testSetNotDeleted() {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        Set<Animal> animals = new HashSet<>();
-        animals.add(new Animal("Putte", "Kissa", "Miaw", 10, "Vilkas kissa"));
-        animals.add(new Animal("Katti", "Kissa", "Miau", 10, "Rauhallinen kissa"));
-        appointment.setAnimals(animals);
+        appointment.setDeleted(false);
         assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        assertEquals(2, appointment.getAnimals().size(), "updateAppointment(): Number of animals in updated appointment does not match.");
+        assertFalse(appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
     }
 }

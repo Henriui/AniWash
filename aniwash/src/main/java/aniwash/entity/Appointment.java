@@ -182,12 +182,10 @@ public class Appointment {
     public String toString() {
         return getClass().getSimpleName() +
                 "(id=" + id +
-                ", date=" + startDate +
-                ", description='" + description + '\'' +
-                ", employees=" + employees +
-                ", customers=" + customers +
-                ", animals=" + animals +
-                ", products=" + products +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", description='" + description +
+                "', deleted=" + deleted +
                 ")";
     }
 

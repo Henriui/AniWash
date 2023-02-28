@@ -57,8 +57,11 @@ public class AppointmentDao implements IAppointmentDao {
         }
         em.getTransaction().begin();
         app.setStartDate(appointment.getStartDate());
+        app.setEndDate(appointment.getEndDate());
+        app.setDeleted(appointment.isDeleted());
         app.setEmployees(appointment.getEmployees());
         app.setCustomers(appointment.getCustomers());
+        app.setAnimals(appointment.getAnimals());
         app.setProducts(appointment.getProducts());
         em.getTransaction().commit();
         return true;
@@ -68,7 +71,7 @@ public class AppointmentDao implements IAppointmentDao {
     public boolean deleteByIdAppointment(Long id) {
         Appointment appointment = em.find(Appointment.class, id);
         if (appointment != null) {
-            em.remove(appointment);
+            executeInTransaction(em -> em.remove(appointment));
             return true;
         }
         System.out.println("No appointment found with id: " + id);

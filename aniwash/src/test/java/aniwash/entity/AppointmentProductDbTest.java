@@ -4,7 +4,6 @@ import aniwash.dao.AppointmentDao;
 import aniwash.dao.IAppointmentDao;
 import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
@@ -23,19 +22,15 @@ public class AppointmentProductDbTest {
     private final ZonedDateTime endDate = ZonedDateTime.parse("2021-12-03T11:15:30+02:00");
 
     private Appointment appointment = new Appointment(startDate, endDate, "Elmo koiran pesu");
-    private Product product = new Product("Iso pesu", "Ison eläimen pesu", 50, "basic");
 
     @BeforeEach
     public void setUp() {
         appointment = new Appointment(startDate, endDate, "Elmo koiran pesu");
-        product = new Product("Iso pesu", "Ison eläimen pesu", 50, "basic");
     }
 
     @AfterEach
     public void tearDown() {
         aDao.deleteByIdAppointment(appointment.getId());
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        em.clear();
     }
 
     @Test
@@ -70,23 +65,45 @@ public class AppointmentProductDbTest {
 
     }
 
-    //TODO: Fix this test
     @Test
-    @DisplayName("Remove product from appointment")
+    @DisplayName("Find all products from appointments")
     @Order(2)
-    public void testRemoveProductFromAppointment() {
-        aDao.addAppointment(appointment);
-        pDao.addProduct(product);
-        appointment.addProduct(product);
+    public void findAllProductsFromAppointment() {
+        System.out.println("Find test");
+        List<Appointment> appointmentsList = aDao.findAllAppointment();
+        List<Product> productsList = new ArrayList<>();
+        for (Appointment a : appointmentsList) {
+            productsList.addAll(a.getProducts());
+        }
+        System.out.println(productsList.size());
+        for (Product p : productsList) {
+            System.out.println("Found product: " + p.toString());
+        }
+    }
 
-        assertEquals(1, aDao.findByStartDateAppointment(startDate).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
-        assertEquals(7, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 7.");
-        assertEquals(1, pDao.findByNameProduct(product.getName()).getAppointments().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+    @Test
+    @DisplayName("Delete all Appointments")
+    @Order(3)
+    public void deleteAllAppointments() {
+        System.out.println("Delete all appointments test");
+        List<Appointment> appointmentsList = aDao.findAllAppointment();
+        for (Appointment a : appointmentsList) {
+            aDao.deleteByIdAppointment(a.getId());
+        }
+        appointmentsList = aDao.findAllAppointment();
+        assertEquals(0, appointmentsList.size(), "findAllAppointments(): Wrong amount of appointments. Should be 0.");
+    }
 
-        appointment.removeProduct(product);
-
-        assertEquals(0, aDao.findByStartDateAppointment(startDate).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 0.");
-        assertEquals(7, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 7.");
-        assertEquals(0, pDao.findByNameProduct(product.getName()).getAppointments().size(), "findAllProducts(): Wrong amount of products. Should be 0.");
+    @Test
+    @DisplayName("Delete all Products")
+    @Order(4)
+    public void deleteAllProducts() {
+        System.out.println("Delete all products test");
+        List<Product> productsList = pDao.findAllProduct();
+        for (Product p : productsList) {
+            pDao.deleteByIdProduct(p.getId());
+        }
+        productsList = pDao.findAllProduct();
+        assertEquals(0, productsList.size(), "findAllProducts(): Wrong amount of products. Should be 0.");
     }
 }

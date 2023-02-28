@@ -155,6 +155,14 @@ public class Animal {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "type = " + type + ", " + "breed = " + breed + ", " + "animalAge = " + animalAge + ", " + "description = " + description + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", name=" + name +
+                ", type=" + type +
+                ", breed=" + breed +
+                ", animalAge=" + animalAge +
+                ", description=" + description +
+                ", deleted=" + deleted +
+                ")";
     }
 }

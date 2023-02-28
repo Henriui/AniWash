@@ -87,10 +87,6 @@ public class Employee {
         return name;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -111,6 +107,10 @@ public class Employee {
         return title;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
@@ -125,6 +125,14 @@ public class Employee {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", title=" + title + ", appointments=" + appointments + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", username=" + username +
+                ", password=" + password +
+                ", name=" + name +
+                ", title=" + title +
+                ", email=" + email +
+                ", deleted=" + deleted +
+                ")";
     }
 }

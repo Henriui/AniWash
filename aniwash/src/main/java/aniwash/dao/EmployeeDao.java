@@ -20,19 +20,19 @@ public class EmployeeDao implements IEmployeeDao {
     public boolean addEmployee(Employee employee) {
         // Find employee by username to check if it already exists.
         // If it does, return false.
-        
+
         Employee e = findByUsernameEmployee(employee.getUsername());
         if (e != null) {
             System.out.println("Employee with given username already exists.");
             return false;
         }
-        
+
         Employee c = em.find(Employee.class, employee.getId());
         if (c != null) {
             System.out.println("Employee already exists with id: " + employee.getId());
             return false;
         }
-        
+
         executeInTransaction(em -> em.persist(employee));
         return true;
     }
@@ -99,10 +99,13 @@ public class EmployeeDao implements IEmployeeDao {
             return false;
         }
         em.getTransaction().begin();
-        //t.setUsername(employee.getUsername());
+        t.setUsername(employee.getUsername());
+        t.setPassword(employee.getPassword());
         t.setName(employee.getName());
         t.setEmail(employee.getEmail());
         t.setTitle(employee.getTitle());
+        t.setDeleted(employee.isDeleted());
+        t.setAppointments(employee.getAppointments());
         em.getTransaction().commit();
         return true;
     }
@@ -129,5 +132,5 @@ public class EmployeeDao implements IEmployeeDao {
             throw e;
         }
     }
-    
+
 }

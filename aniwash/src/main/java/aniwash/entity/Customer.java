@@ -171,6 +171,14 @@ public class Customer {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "phone = " + phone + ", " + "email = " + email + ", " + "address = " + address + ", " + "postal code = " + postalCode + ", " + "animals = " + animals + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", name=" + name +
+                ", phone=" + phone +
+                ", email=" + email +
+                ", address=" + address +
+                ", postal code=" + postalCode +
+                ", deleted=" + deleted +
+                ")";
     }
 }
