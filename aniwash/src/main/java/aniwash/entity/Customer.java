@@ -9,17 +9,25 @@ import java.util.Set;
 
 @Entity
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String phone;
+
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private boolean deleted;
+
     private String address;
-    private String postalcode;
+    private String postalCode;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "owner_id")}, inverseJoinColumns = @JoinColumn(name = "animals_id"))
@@ -36,14 +44,16 @@ public class Customer {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.deleted = false;
     }
 
-    public Customer(String name, String phone, String email, String address, String postalcode) {
+    public Customer(String name, String phone, String email, String address, String postalCode) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.postalcode = postalcode;
+        this.postalCode = postalCode;
+        this.deleted = false;
     }
 
     public void addAnimal(Animal animal) {
@@ -107,8 +117,12 @@ public class Customer {
         return address;
     }
 
-    public String getPostalcode() {
-        return postalcode;
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 
     public void setName(String name) {
@@ -131,8 +145,12 @@ public class Customer {
         this.address = address;
     }
 
-    public void setPostalcode(String postalcode) {
-        this.postalcode = postalcode;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Set<Animal> getAnimals() {
@@ -153,6 +171,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "phone = " + phone + ", " + "email = " + email + ", " + "address = " + address + ", " + "postalcode = " + postalcode + ", " + "animals = " + animals + ")";
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "phone = " + phone + ", " + "email = " + email + ", " + "address = " + address + ", " + "postal code = " + postalCode + ", " + "animals = " + animals + ")";
     }
 }

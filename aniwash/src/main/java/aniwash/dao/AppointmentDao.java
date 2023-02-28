@@ -38,10 +38,10 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public Appointment findByDateAppointment(ZonedDateTime date) {
+    public Appointment findByStartDateAppointment(ZonedDateTime date) {
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a WHERE a.date = :date", Appointment.class).setParameter("date", date).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :date", Appointment.class).setParameter("date", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }
@@ -56,7 +56,7 @@ public class AppointmentDao implements IAppointmentDao {
             return false;
         }
         em.getTransaction().begin();
-        app.setDate(appointment.getDate());
+        app.setStartDate(appointment.getStartDate());
         app.setEmployees(appointment.getEmployees());
         app.setCustomers(appointment.getCustomers());
         app.setProducts(appointment.getProducts());
@@ -86,5 +86,5 @@ public class AppointmentDao implements IAppointmentDao {
             throw e;
         }
     }
-    
+
 }
