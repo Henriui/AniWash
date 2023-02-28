@@ -5,6 +5,8 @@ import aniwash.dao.IAppointmentDao;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,5 +107,59 @@ public class AppointmentDaoTest {
     @DisplayName("Delete non-existing appointment should return false")
     public void testDeleteNonExistingAppointment() {
         assertFalse(appointmentDao.deleteByIdAppointment(appointment.getId()), "deleteByIdAppointment(): Delete non-existing appointment should return false.");
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("Find non-existing appointment should return null")
+    public void testFindNonExistingAppointment() {
+        assertNull(appointmentDao.findByIdAppointment(appointment.getId()), "findByIdAppointment(): Find non-existing appointment should return null.");
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("Find non-existing appointment by start date should return null")
+    public void testFindNonExistingAppointmentByStartDate() {
+        assertNull(appointmentDao.findByStartDateAppointment(ZonedDateTime.parse(startDate)), "findByStartDateAppointment(): Find non-existing appointment should return null.");
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("Set appointment end date and fetch it")
+    public void testSetEndDate() {
+        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        appointment.setEndDate(ZonedDateTime.parse("2011-11-09T10:15:30+02:00"));
+        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
+        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertEquals(appointment.getEndDate(), ZonedDateTime.parse("2011-11-09T10:15:30+02:00"), "updateAppointment(): End date of updated appointment does not match.");
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("Set appointment as deleted and fetch it")
+    public void testSetDeleted() {
+        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        appointment.setDeleted(true);
+        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
+        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
+    }
+
+    //TODO fix this test
+    @Test
+    @Order(13)
+    @DisplayName("Give appointment animals as a list and fetch them")
+    public void testSetAnimals() {
+        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        Set<Animal> animals = new HashSet<>();
+        animals.add(new Animal("Putte", "Kissa", "Miaw", 10, "Vilkas kissa"));
+        animals.add(new Animal("Katti", "Kissa", "Miau", 10, "Rauhallinen kissa"));
+        appointment.setAnimals(animals);
+        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
+        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertEquals(2, appointment.getAnimals().size(), "updateAppointment(): Number of animals in updated appointment does not match.");
     }
 }
