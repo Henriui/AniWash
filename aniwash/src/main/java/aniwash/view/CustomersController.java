@@ -9,14 +9,10 @@ import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomerListViewCell;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -67,7 +63,7 @@ public class CustomersController {
         for (Customer customer : customers) {
             customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
             customer.addAppointment(new Appointment(ZonedDateTime.now(), "Cancer Treatment"));
-    
+
         }
     }
 

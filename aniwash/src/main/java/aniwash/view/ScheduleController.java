@@ -1,46 +1,16 @@
 package aniwash.view;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.time.temporal.WeekFields;
-import java.util.Locale;
 
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
-
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
-import com.calendarfx.model.Calendar.Style;
-import com.calendarfx.view.AllDayView;
 import com.calendarfx.view.CalendarView;
-import com.calendarfx.view.DateControl;
-import com.calendarfx.view.VirtualGrid;
-import com.calendarfx.view.DateControl.CreateEntryParameter;
-import com.calendarfx.view.DateControl.EntryContextMenuParameter;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
-import com.calendarfx.view.DateControl.EntryDetailsPopOverContentParameter;
 
 import aniwash.MainApp;
 import aniwash.resources.model.Calendars;
 import aniwash.resources.model.CreatePopUp;
-import aniwash.resources.model.EditPopUp;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class ScheduleController {
     private CreatePopUp popup = new CreatePopUp();

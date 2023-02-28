@@ -24,7 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class CreateProductController {
+public class ProductController {
     @FXML
     private ListView<Product> listView;
     private static ObservableList<Product> customers = FXCollections.observableArrayList(
@@ -46,7 +46,7 @@ public class CreateProductController {
     @FXML
     private TextField searchField;
     @FXML
-    private Button newCustomer;
+    private Button newProduct;
     private static Product selectedCustomer;
 
     public void initialize() {
@@ -115,11 +115,11 @@ public class CreateProductController {
     }
 
     @FXML
-    public void newCustomer() throws IOException {
+    public void newProduct() throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
-        loader = loadFXML("newCustomerView");
+        loader = loadFXML("newProductView");
         scene = new Scene((Parent) loader.load());
         Stage stage = new Stage();
         stage.setScene(scene);

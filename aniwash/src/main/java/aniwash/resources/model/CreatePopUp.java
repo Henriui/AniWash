@@ -1,7 +1,9 @@
 package aniwash.resources.model;
 
 import java.io.IOException;
+
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
+
 import aniwash.MainApp;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

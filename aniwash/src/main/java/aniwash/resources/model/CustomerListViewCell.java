@@ -84,7 +84,7 @@ public class CustomerListViewCell extends ListCell<Customer> {
             postalCodeLabel.setText(customer.getPostalcode());
 
             // Set cell content
-            
+
             setText(null);
             setGraphic(customerInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 75;");

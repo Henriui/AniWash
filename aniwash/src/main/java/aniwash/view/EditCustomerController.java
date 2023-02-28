@@ -17,11 +17,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -69,7 +69,7 @@ public class EditCustomerController {
         customer = customersController.getSelectedCustomer();
         animals.addAll(customer.getAnimals());
         appointmentsList.addAll(customer.getAppointments());
-        
+
         appointmentListView.setItems(appointmentsList);
         listView.setItems(animals);
         listView.setCellFactory(listView -> new CustomerListViewCellAnimal());

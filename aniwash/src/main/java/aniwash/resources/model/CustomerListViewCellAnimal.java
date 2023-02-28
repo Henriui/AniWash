@@ -76,7 +76,7 @@ public class CustomerListViewCellAnimal extends ListCell<Animal> {
             descriptionLabel.setText(animal.getDescription());
 
             // Set cell content
-            
+
             setText(null);
             setGraphic(customerInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 45;");

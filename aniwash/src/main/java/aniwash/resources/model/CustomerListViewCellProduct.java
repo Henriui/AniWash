@@ -63,9 +63,8 @@ public class CustomerListViewCellProduct extends ListCell<Product> {
             Label descriptionLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(1)).getChildren().get(0);
             descriptionLabel.setText(product.getDescription());
 
-
             // Set cell content
-            
+
             setText(null);
             setGraphic(customerInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 60;");
