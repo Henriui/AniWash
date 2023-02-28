@@ -9,8 +9,10 @@
 * * [Class diagram](#class-diagram)
 * [Use case overview](#use-case-overview) 
 * * [Use case diagram](#use-case-diagram)
-* [Package diagram](#package-diagram)
-* [Activity diagram](#activity-diagram)
+* [Package overview](#package-overview)
+* * [Package diagram](#package-diagram)
+* [Activity overview](#activity-overview)
+* * [Activity diagram](#activity-diagram)
 * [Sequence diagram](#sequence-diagram)
 * [Sequence diagram explanation](#sequence-diagram-explanation)
 
@@ -120,11 +122,15 @@ Employer actions:
 * Employees
 * *	All CRUD operations
 
-## Package diagram:
+## Package overview:
 <img src="readme_resources/pkg_diagram.jpg" width="800" height="600">
 
-## Activity diagram:
+### Package diagram
+
+## Activity overview:
 <img src="readme_resources/ActivityDiagram.jpg" width="600" height="600">
+
+### Activity diagram
 
 ## Sequence diagram:
 <img src="readme_resources/SequenceDiagram.jpg" width="1000" height="500">
