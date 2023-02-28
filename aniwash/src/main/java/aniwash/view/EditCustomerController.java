@@ -1,7 +1,5 @@
 package aniwash.view;
 
-import java.io.IOException;
-
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomerListViewCellAnimal;
@@ -14,11 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class EditCustomerController {
     // Create text fields for Customer section
@@ -65,7 +65,7 @@ public class EditCustomerController {
         phoneField.setText(customer.getPhone());
         emailField.setText(customer.getEmail());
         addressField.setText(customer.getAddress());
-        postalCodeField.setText(customer.getPostalcode());
+        postalCodeField.setText(customer.getPostalCode());
 
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
@@ -103,7 +103,7 @@ public class EditCustomerController {
         customer.setEmail(email);
         customer.setName(name);
         customer.setPhone(phone);
-        customer.setPostalcode(postalCode);
+        customer.setPostalCode(postalCode);
 
         // TODO: Do something with the customer object
 

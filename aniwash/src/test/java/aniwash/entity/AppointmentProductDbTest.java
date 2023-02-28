@@ -80,10 +80,12 @@ public class AppointmentProductDbTest {
 
         assertEquals(1, aDao.findByStartDateAppointment(startDate).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
         assertEquals(1, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+        assertEquals(1, pDao.findByNameProduct(product.getName()).getAppointments().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
 
         appointment.removeProduct(product);
 
         assertEquals(0, aDao.findByStartDateAppointment(startDate).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 0.");
         assertEquals(1, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+        assertEquals(0, pDao.findByNameProduct(product.getName()).getAppointments().size(), "findAllProducts(): Wrong amount of products. Should be 0.");
     }
 }
