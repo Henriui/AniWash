@@ -1,13 +1,12 @@
 package aniwash.entity;
 
 import aniwash.dao.*;
-
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @DisplayName("Customer and Animal class CRUD testings")
@@ -24,7 +23,7 @@ public class CustomerAnimalDbTest {
     public void beforeEach() {
         customer = new Customer("John", "+358 - 0", "rammus" + "@gmail.com");
         customer.setAddress("Kuusikko");
-        customer.setPostalcode("12345");
+        customer.setPostalCode("12345");
     }
 
     @AfterEach
@@ -96,6 +95,7 @@ public class CustomerAnimalDbTest {
         customerList = cDao.findAllCustomer();
         assertEquals(0, customerList.size(), "Customer list size is not 0");
     }
+
     @Test
     @Order(6)
     @DisplayName("Delete all animals test")

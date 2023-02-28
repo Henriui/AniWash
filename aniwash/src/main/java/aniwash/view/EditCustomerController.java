@@ -91,7 +91,7 @@ public class EditCustomerController {
         phoneField.setText(customer.getPhone());
         emailField.setText(customer.getEmail());
         addressField.setText(customer.getAddress());
-        postalCodeField.setText(customer.getPostalcode());
+        postalCodeField.setText(customer.getPostalCode());
 
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
@@ -129,7 +129,7 @@ public class EditCustomerController {
         customer.setEmail(email);
         customer.setName(name);
         customer.setPhone(phone);
-        customer.setPostalcode(postalCode);
+        customer.setPostalCode(postalCode);
 
         // TODO: Do something with the customer object
 

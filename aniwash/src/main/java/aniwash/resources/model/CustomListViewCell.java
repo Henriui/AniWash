@@ -81,7 +81,7 @@ public class CustomListViewCell extends ListCell<Customer> {
             addressLabel.setText(customer.getAddress());
 
             Label postalCodeLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(3)).getChildren().get(0);
-            postalCodeLabel.setText(customer.getPostalcode());
+            postalCodeLabel.setText(customer.getPostalCode());
 
             // Set cell content
 

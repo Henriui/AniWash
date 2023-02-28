@@ -1,14 +1,13 @@
 package aniwash.resources.model;
 
-import java.util.ArrayList;
-
+import aniwash.dao.ProductDao;
+import aniwash.entity.Product;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 
-import aniwash.dao.ProductDao;
-import aniwash.entity.Product;
+import java.util.ArrayList;
 
 public class Calendars {
     private Product product;
@@ -36,15 +35,15 @@ public class Calendars {
         styles.add(Style.STYLE6);
         styles.add(Style.STYLE7);
 
-        products.add(new Product("Teeth Care", "Caring Teeth", 35));
-        products.add(new Product("Nails", "Caring Nails", 30));
-        products.add(new Product("Trimming", "Trimming fur", 45));
-        products.add(new Product("Washing", "Washing", 15));
-        products.add(new Product("Testicle remove", "Removing testicles", 150));
-        products.add(new Product("Chiropractice", "Chriropracticing", 80));
-        products.add(new Product("Day care", "Day caring", 100));
+        products.add(new Product("Teeth Care", "Caring Teeth", 35, "basic"));
+        products.add(new Product("Nails", "Caring Nails", 30, "basic"));
+        products.add(new Product("Trimming", "Trimming fur", 45, "basic"));
+        products.add(new Product("Washing", "Washing", 15, "basic"));
+        products.add(new Product("Testicle remove", "Removing testicles", 150, "basic"));
+        products.add(new Product("Chiropractice", "Chriropracticing", 80, "basic"));
+        products.add(new Product("Day care", "Day caring", 100, "basic"));
 
-        // These are the calendars where entries will be added to.
+        // These are the calendars where entries will be added to. 
         // Entries are Customers
         // Calendars are Products
 
