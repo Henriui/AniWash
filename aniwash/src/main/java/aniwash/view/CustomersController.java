@@ -62,7 +62,7 @@ public class CustomersController {
     public void test() {
         for (Customer customer : customers) {
             customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
-            customer.addAppointment(new Appointment(ZonedDateTime.now(), "Cancer Treatment"));
+            customer.addAppointment(new Appointment(ZonedDateTime.now(), (ZonedDateTime.now()), "Cancer Treatment"));
 
         }
     }

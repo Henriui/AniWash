@@ -28,21 +28,21 @@ public class ProductController {
     @FXML
     private ListView<Product> listView;
     private static ObservableList<Product> customers = FXCollections.observableArrayList(
-            new Product("asd1", "112", 10), new Product("asd2", "112", 10), new Product("asd3", "112", 10),
-            new Product("asd4", "112", 10), new Product("asd5", "112", 10), new Product("asd6", "112", 10),
-            new Product("asd7", "112", 10), new Product("asd8", "112", 10), new Product("asd9", "112", 10),
-            new Product("asd10", "112", 10), new Product("asd11", "112", 10), new Product("asd12", "112", 10),
-            new Product("asd13", "112", 10), new Product("asd14", "112", 10), new Product("asd15", "112", 10),
-            new Product("asd16", "112", 10), new Product("asd17", "112", 10), new Product("asd18", "112", 10),
-            new Product("asd19", "112", 10), new Product("asd20", "112", 10), new Product("asd21", "112", 10),
-            new Product("asd22", "112", 10), new Product("asd23", "112", 10), new Product("asd24", "112", 10),
-            new Product("asd25", "112", 10), new Product("asd26", "112", 10), new Product("asd27", "112", 10),
-            new Product("asd28", "112", 10), new Product("asd29", "112", 10), new Product("asd30", "112", 10),
-            new Product("asd31", "112", 10), new Product("asd32", "112", 10), new Product("asd33", "112", 10),
-            new Product("asd34", "112", 10), new Product("asd35", "112", 10), new Product("asd36", "112", 10),
-            new Product("asd37", "112", 10), new Product("asd38", "112", 10), new Product("asd39", "112", 10),
-            new Product("asd40", "112", 10), new Product("asd41", "112", 10), new Product("asd42", "112", 10),
-            new Product("asd43", "112", 10), new Product("asd44", "112", 10));
+            new Product("asd1", "112", 10, null), new Product("asd2", "112", 10, null), new Product("asd3", "112", 10, null),
+            new Product("asd4", "112", 10, null), new Product("asd5", "112", 10, null), new Product("asd6", "112", 10, null),
+            new Product("asd7", "112", 10, null), new Product("asd8", "112", 10, null), new Product("asd9", "112", 10, null),
+            new Product("asd10, null", "112", 10, null), new Product("asd11", "112", 10, null), new Product("asd12", "112", 10, null),
+            new Product("asd13", "112", 10, null), new Product("asd14", "112", 10, null), new Product("asd15", "112", 10, null),
+            new Product("asd16", "112", 10, null), new Product("asd17", "112", 10, null), new Product("asd18", "112", 10, null),
+            new Product("asd19", "112", 10, null), new Product("asd20", "112", 10, null), new Product("asd21", "112", 10, null),
+            new Product("asd22", "112", 10, null), new Product("asd23", "112", 10, null), new Product("asd24", "112", 10, null),
+            new Product("asd25", "112", 10, null), new Product("asd26", "112", 10, null), new Product("asd27", "112", 10, null),
+            new Product("asd28", "112", 10, null), new Product("asd29", "112", 10, null), new Product("asd30", "112", 10, null),
+            new Product("asd31", "112", 10, null), new Product("asd32", "112", 10, null), new Product("asd33", "112", 10, null),
+            new Product("asd34", "112", 10, null), new Product("asd35", "112", 10, null), new Product("asd36", "112", 10, null),
+            new Product("asd37", "112", 10, null), new Product("asd38", "112", 10, null), new Product("asd39", "112", 10, null),
+            new Product("asd40", "112", 10, null), new Product("asd41", "112", 10, null), new Product("asd42", "112", 10, null),
+            new Product("asd43", "112", 10, null), new Product("asd44", "112", 10, null));
     @FXML
     private TextField searchField;
     @FXML
