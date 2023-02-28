@@ -47,7 +47,7 @@ public class ProductController {
     private TextField searchField;
     @FXML
     private Button newProduct;
-    private static Product selectedCustomer;
+    private static Product selectedProduct;
 
     public void initialize() {
 
@@ -89,13 +89,13 @@ public class ProductController {
 
         listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                selectedCustomer = listView.getSelectionModel().getSelectedItem();
+                selectedProduct = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
                 // Pass the selected customer object to the popup window to display its info
                 final FXMLLoader loader;
                 final Scene scene;
                 try {
-                    loader = loadFXML("editCustomerView");
+                    loader = loadFXML("");
                     scene = new Scene((Parent) loader.load());
                     Stage stage = new Stage();
                     stage.setScene(scene);
@@ -133,7 +133,7 @@ public class ProductController {
     }
 
     public Product getSelectedCustomer() {
-        return selectedCustomer;
+        return selectedProduct;
     }
 
     @FXML
