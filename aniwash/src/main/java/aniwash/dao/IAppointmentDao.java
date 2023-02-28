@@ -12,7 +12,7 @@ public interface IAppointmentDao {
 
     Appointment findByIdAppointment(Long id);
 
-    Appointment findByDateAppointment(ZonedDateTime date);
+    Appointment findByStartDateAppointment(ZonedDateTime date);
 
 /*  TODO: Implement these methods?
     Appointment findByEmployeeAppointment(Employee employee);

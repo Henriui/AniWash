@@ -3,7 +3,7 @@
 }
 
 .asd {
-    -fx-background-color: transparent;
+-fx-background-color: transparent;
     -fx-text-fill: black;
     -fx-font-size: 14px;
     -fx-pref-width: 100%;
@@ -32,12 +32,10 @@
     -fx-background-color: #fbfbfc;
     -fx-padding: 20px;
 }
-
-.text {
+.text{
     -fx-text-fill: blue;
     font-family: initial;
 }
-
 .side-bar-button {
     -fx-background-color: transparent;
     -fx-font-size: 14px;
@@ -88,6 +86,13 @@
     -fx-background-color: #47c496;
 }
 
+.list-cell:selected {
+    -fx-background-color: gray;
+}
+.list-cell:filled:selected {
+    -fx-background-color: red;
+    -fx-text-background-color: #47c496;
+}
 * {
     -style8-color: rgba(255, 0, 0, 0.9);
     -style9-color: rgba(0, 0, 255, 0.9);

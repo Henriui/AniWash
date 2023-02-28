@@ -8,11 +8,17 @@ import java.util.Set;
 
 @Entity
 public class Animal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private boolean deleted;
+
     private String type;
     private String breed;
     private int animalAge;
@@ -35,6 +41,7 @@ public class Animal {
         this.breed = breed;
         this.animalAge = animalAge;
         this.description = description;
+        this.deleted = false;
     }
 
     public void removeOwner(Customer customer) {
@@ -63,48 +70,56 @@ public class Animal {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getBreed() {
         return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
     }
 
     public int getAnimalAge() {
         return animalAge;
     }
 
-    public void setAnimalAge(int animalAge) {
-        this.animalAge = animalAge;
-    }
-
     public String getDescription() {
         return description;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public void setAnimalAge(int animalAge) {
+        this.animalAge = animalAge;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Set<Customer> getOwner() {
