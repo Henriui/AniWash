@@ -94,6 +94,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
         // Initialize datepicker with selected date
 
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!" + newEntry.getEntry().getStartDate());
         date.setValue(newEntry.getEntry().getStartDate());
         startTime.setValue(newEntry.getEntry().getStartTime());
         endTime.setValue(newEntry.getEntry().getEndTime());
