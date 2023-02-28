@@ -9,8 +9,8 @@ import javafx.scene.layout.VBox;
 
 public class CustomerListViewCellAnimal extends ListCell<Animal> {
 
-    private HBox customerInfoHBox;
-    private VBox contactInfoBox;
+    private HBox animalInfoHBox;
+    private VBox typeBox;
     private HBox basicInfoHBox;
 
     public CustomerListViewCellAnimal() {
@@ -33,19 +33,19 @@ public class CustomerListViewCellAnimal extends ListCell<Animal> {
         Label typeLabel = new Label();
         typeLabel.setMinWidth(50);
 
-        contactInfoBox = new VBox(typeLabel);
-        VBox.setMargin(contactInfoBox, new Insets(10, 0, 0, 0)); // add margin of 10 pixels to top
+        typeBox = new VBox(typeLabel);
+        VBox.setMargin(typeBox, new Insets(10, 0, 0, 0)); // add margin of 10 pixels to top
 
         Label breedLabel = new Label();
         Label descriptionLabel = new Label();
-        VBox appointmentInfoBox = new VBox(breedLabel);
-        VBox ddd = new VBox(descriptionLabel);
+        VBox breedBox = new VBox(breedLabel);
+        VBox descriptionBox = new VBox(descriptionLabel);
         breedLabel.setMinWidth(50);
 
-        customerInfoHBox = new HBox(basicInfoHBox, ageBox, contactInfoBox, appointmentInfoBox, ddd);
-        customerInfoHBox.setSpacing(100);
-        VBox.setMargin(customerInfoHBox, new Insets(5, 0, 0, 0)); // add margin of 5 pixels to top
-        customerInfoHBox.setStyle(
+        animalInfoHBox = new HBox(basicInfoHBox, ageBox, typeBox, breedBox, descriptionBox);
+        animalInfoHBox.setSpacing(100);
+        VBox.setMargin(animalInfoHBox, new Insets(5, 0, 0, 0)); // add margin of 5 pixels to top
+        animalInfoHBox.setStyle(
                 "-fx-background-color: #ffffff; -fx-padding: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);");
     }
 
@@ -63,22 +63,22 @@ public class CustomerListViewCellAnimal extends ListCell<Animal> {
             Label nameLabel = (Label) ((VBox) basicInfoHBox.getChildren().get(0)).getChildren().get(0);
             nameLabel.setText(animal.getName());
 
-            Label ageLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(1)).getChildren().get(0);
+            Label ageLabel = (Label) ((VBox) animalInfoHBox.getChildren().get(1)).getChildren().get(0);
             ageLabel.setText(String.valueOf(animal.getAnimalAge()));
 
-            Label typeLabel = (Label) (contactInfoBox.getChildren().get(0));
+            Label typeLabel = (Label) (typeBox.getChildren().get(0));
             typeLabel.setText(animal.getType());
 
-            Label breedLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(3)).getChildren().get(0);
+            Label breedLabel = (Label) ((VBox) animalInfoHBox.getChildren().get(3)).getChildren().get(0);
             breedLabel.setText(animal.getBreed());
 
-            Label descriptionLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(4)).getChildren().get(0);
+            Label descriptionLabel = (Label) ((VBox) animalInfoHBox.getChildren().get(4)).getChildren().get(0);
             descriptionLabel.setText(animal.getDescription());
 
             // Set cell content
 
             setText(null);
-            setGraphic(customerInfoHBox);
+            setGraphic(animalInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 45;");
         }
     }
