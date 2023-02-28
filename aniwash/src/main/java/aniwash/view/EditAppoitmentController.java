@@ -1,5 +1,6 @@
 package aniwash.view;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.calendarfx.model.Calendar;
@@ -16,6 +17,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -28,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EditAppoitmentController extends CreatePopUp {
@@ -97,12 +101,11 @@ public class EditAppoitmentController extends CreatePopUp {
 
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && newValue.contains("Create new pet")) {
-                System.out.println("Create new pet");
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("TESTI");
-                alert.setHeaderText("CREATE NEW CUSTOMER");
-                alert.setContentText("WOW");
-                alert.showAndWait();
+                try {
+                    newAnimal();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
                 newEntry.getEntry().setLocation(newEntry.getEntry().getLocation() + " " +
                         newValue);
@@ -178,11 +181,12 @@ public class EditAppoitmentController extends CreatePopUp {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 personView.getSelectionModel().select(0);
                 if (filteredData.isEmpty()) {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("TESTI");
-                    alert.setHeaderText("CREATE NEW CUSTOMER");
-                    alert.setContentText("WOW");
-                    alert.showAndWait();
+                    try {
+                        newCustomer();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } else {
                     ObservableList<String> items = petList.getItems();
                     items.removeAll(items.subList(1, items.size()));
@@ -215,12 +219,12 @@ public class EditAppoitmentController extends CreatePopUp {
 
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
-            System.out.println("Create new service");
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("TESTI");
-            alert.setHeaderText("CREATE NEW CUSTOMER");
-            alert.setContentText("WOW");
-            alert.showAndWait();
+            try {
+                newProduct();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);
@@ -284,6 +288,59 @@ public class EditAppoitmentController extends CreatePopUp {
                 servicesa.get(services.getSelectionModel().getSelectedIndex() - 1));
     }
 
+    public void newCustomer() throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("newCustomerView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Create Customer");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
+    }
+
+    public void newAnimal() throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("createNewAnimalView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Create Animal");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        CreateNewAnimalController.setCustomer(selectedPerson);
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
+    }
+
+    public void newProduct() throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("newProductView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Create Product");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        CreateNewAnimalController.setCustomer(selectedPerson);
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
+    }
+    
     // Create some sample data.
     // TODO: Replace with real data.
     private ObservableList<Customer> getPeople() {

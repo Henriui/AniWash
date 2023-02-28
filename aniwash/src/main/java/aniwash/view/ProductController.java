@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 import aniwash.MainApp;
 import aniwash.entity.Product;
-import aniwash.resources.model.CustomerListViewCellProduct;
+import aniwash.resources.model.CustomListViewCellProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -55,7 +55,7 @@ public class ProductController {
 
         // Set the cell factory to create custom ListCells
 
-        listView.setCellFactory(listView -> new CustomerListViewCellProduct());
+        listView.setCellFactory(listView -> new CustomListViewCellProduct());
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
 
         // Set the placeholder text for the ListView

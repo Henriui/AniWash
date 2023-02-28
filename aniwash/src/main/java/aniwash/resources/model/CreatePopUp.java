@@ -58,7 +58,7 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
 
     // This method is used to load the fxml file.
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
+    protected static FXMLLoader loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader;
     }

@@ -245,12 +245,12 @@ public class NewAppoitmentController extends CreatePopUp {
 
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
-            System.out.println("Create new service");
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("TESTI");
-            alert.setHeaderText("CREATE NEW CUSTOMER");
-            alert.setContentText("WOW");
-            alert.showAndWait();
+            try {
+                newProduct();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);
@@ -343,7 +343,25 @@ public class NewAppoitmentController extends CreatePopUp {
         });
     }
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
+    public void newProduct() throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("newProductView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Create Product");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        CreateNewAnimalController.setCustomer(selectedPerson);
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
+    }
+
+    protected static FXMLLoader loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader;
     }
