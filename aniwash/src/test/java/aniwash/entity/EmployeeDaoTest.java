@@ -21,11 +21,11 @@ public class EmployeeDaoTest {
     private final String email = "tim@aniwash.com";
     private final String title = "Manager";
 
-    private Employee employee = new Employee(username, password, name, email, title);
+    private Employee employee = new Employee(username, password, name, email, title, UserType.EMPLOYEE);
 
     @BeforeEach
     public void init() {
-        employee = new Employee(username, password, name, email, title);
+        employee = new Employee(username, password, name, email, title, UserType.EMPLOYEE);
     }
 
     @AfterEach
