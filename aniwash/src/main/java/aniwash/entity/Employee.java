@@ -32,13 +32,16 @@ public class Employee {
     @Column(nullable = false)
     private boolean deleted;
 
+    @Column(nullable = false)
+    private UserType userType;
+
     @ManyToMany(mappedBy = "employees")
     private Set<Appointment> appointments = new HashSet<>();
 
     public Employee() {
     }
 
-    public Employee(String username, String password, String name, String email, String title) {
+    public Employee(String username, String password, String name, String email, String title, UserType userType) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -121,6 +124,13 @@ public class Employee {
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     @Override

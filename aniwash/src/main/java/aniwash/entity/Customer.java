@@ -29,6 +29,9 @@ public class Customer {
     private String address;
     private String postalCode;
 
+    // Customer is always a customer usertype.
+    private UserType userType = UserType.CUSTOMER;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "owner_id")}, inverseJoinColumns = @JoinColumn(name = "animals_id"))
     private Set<Animal> animals = new HashSet<>();
@@ -167,6 +170,10 @@ public class Customer {
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public UserType getUserType() {
+        return userType;
     }
 
     @Override
