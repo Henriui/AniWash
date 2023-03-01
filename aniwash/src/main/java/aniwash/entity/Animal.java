@@ -1,12 +1,14 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Where(clause = "deleted = 0")
 public class Animal {
 
     @Id
@@ -17,7 +19,7 @@ public class Animal {
     private String name;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private int deleted = 0;
 
     private String type;
     private String breed;
@@ -40,7 +42,6 @@ public class Animal {
         this.breed = breed;
         this.animalAge = animalAge;
         this.description = description;
-        this.deleted = false;
     }
 
     public void removeOwner(Customer customer) {
@@ -89,7 +90,7 @@ public class Animal {
         return description;
     }
 
-    public boolean isDeleted() {
+    public int isDeleted() {
         return deleted;
     }
 
@@ -117,8 +118,8 @@ public class Animal {
         this.description = description;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public Set<Customer> getOwner() {

@@ -104,7 +104,6 @@ public class EmployeeDao implements IEmployeeDao {
         t.setName(employee.getName());
         t.setEmail(employee.getEmail());
         t.setTitle(employee.getTitle());
-        t.setDeleted(employee.isDeleted());
         t.setAppointments(employee.getAppointments());
         em.getTransaction().commit();
         return true;

@@ -1,6 +1,7 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Where(clause = "deleted = 0")
 public class Customer {
 
     @Id
@@ -24,7 +26,7 @@ public class Customer {
     private String email;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private int deleted = 0;
 
     private String address;
     private String postalCode;
@@ -45,7 +47,6 @@ public class Customer {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.deleted = false;
     }
 
     public Customer(String name, String phone, String email, String address, String postalCode) {
@@ -54,7 +55,6 @@ public class Customer {
         this.email = email;
         this.address = address;
         this.postalCode = postalCode;
-        this.deleted = false;
     }
 
     public void addAnimal(Animal animal) {
@@ -122,7 +122,7 @@ public class Customer {
         return postalCode;
     }
 
-    public boolean isDeleted() {
+    public int isDeleted() {
         return deleted;
     }
 
@@ -150,8 +150,8 @@ public class Customer {
         this.postalCode = postalCode;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public Set<Animal> getAnimals() {

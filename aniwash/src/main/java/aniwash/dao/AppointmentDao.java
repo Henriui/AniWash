@@ -58,7 +58,6 @@ public class AppointmentDao implements IAppointmentDao {
         em.getTransaction().begin();
         app.setStartDate(appointment.getStartDate());
         app.setEndDate(appointment.getEndDate());
-        app.setDeleted(appointment.isDeleted());
         app.setEmployees(appointment.getEmployees());
         app.setCustomers(appointment.getCustomers());
         app.setAnimals(appointment.getAnimals());

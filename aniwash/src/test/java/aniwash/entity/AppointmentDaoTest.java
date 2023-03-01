@@ -139,10 +139,10 @@ public class AppointmentDaoTest {
     public void testSetDeleted() {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        appointment.setDeleted(true);
+        appointment.setDeleted();
         assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        assertTrue(appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
+        assertEquals(1, appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
     }
 
     @Test
@@ -151,9 +151,8 @@ public class AppointmentDaoTest {
     public void testSetNotDeleted() {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        appointment.setDeleted(false);
+        appointment.setDeleted();
         assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        assertFalse(appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
+        assertEquals(1, appointmentDao.findByIdAppointment(appointment.getId()).isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
     }
 }

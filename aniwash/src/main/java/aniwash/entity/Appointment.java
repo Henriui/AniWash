@@ -1,6 +1,7 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Where(clause = "deleted = 0")
 public class Appointment {
 
     @Id
@@ -25,7 +27,7 @@ public class Appointment {
     private String description;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private int deleted = 0;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
@@ -50,7 +52,6 @@ public class Appointment {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
-        this.deleted = false;
     }
 
     public void addEmployee(Employee employee) {
@@ -126,7 +127,7 @@ public class Appointment {
         return endDate;
     }
 
-    public boolean isDeleted() {
+    public int isDeleted() {
         return deleted;
     }
 
@@ -142,8 +143,8 @@ public class Appointment {
         this.endDate = endDate;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public Set<Employee> getEmployees() {

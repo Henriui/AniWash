@@ -1,11 +1,13 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Where(clause = "deleted = 0")
 public class Product {
 
     @Id
@@ -25,7 +27,7 @@ public class Product {
     private String style;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private int deleted = 0;
 
     @ManyToMany(mappedBy = "products")
     private Set<Appointment> appointments = new HashSet<>();
@@ -38,7 +40,6 @@ public class Product {
         this.description = description;
         this.price = price;
         this.style = style;
-        this.deleted = false;
     }
 
     public void addAppointment(Appointment appointment) {
@@ -88,12 +89,12 @@ public class Product {
         this.style = style;
     }
 
-    public boolean isDeleted() {
+    public int isDeleted() {
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public Set<Appointment> getAppointments() {

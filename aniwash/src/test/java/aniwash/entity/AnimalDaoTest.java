@@ -241,8 +241,8 @@ public class AnimalDaoTest {
     @Order(16)
     public void testSoftDeleteAnimal() {
         animalDao.addAnimal(animal);
-        animal.setDeleted(true);
-        animalDao.updateAnimal(animal);
-        assertTrue(animalDao.findByNameAnimal(animal.getName()).isDeleted(), "Eläimen pehmeä poistaminen ei onnistunut");
+        animal.setDeleted();
+        assertTrue(animalDao.updateAnimal(animal), "Päivitetyn eläimen tallennus ei onnistunut");
+        assertEquals(1, animalDao.findByIdAnimal(animal.getId()).isDeleted(), "Eläimen pehmeä poistaminen ei onnistunut");
     }
 }
