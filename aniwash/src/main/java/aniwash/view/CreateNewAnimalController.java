@@ -2,6 +2,7 @@ package aniwash.view;
 
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
+import aniwash.resources.utilies.ControllerUtilies;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -55,14 +56,14 @@ public class CreateNewAnimalController {
         if (petName.isEmpty() || petType.isEmpty()
                 || petBreed.isEmpty() || petAge.isEmpty() || petDescription.isEmpty()) {
             // Show error message if mandatory fields are empty
-            showAlert("Please fill in all mandatory fields.");
+            ControllerUtilies.showAlert("Please fill in all mandatory fields.");
             return;
         }
 
-        if (!isNumeric(petAge)) {
+        if (!ControllerUtilies.isNumeric(petAge)) {
             // Show error message if petAge fields contain non-numeric
             // characters
-            showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilies.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
             return;
         }
 
@@ -75,18 +76,6 @@ public class CreateNewAnimalController {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-    }
-
-    private void showAlert(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
     }
 
     @FXML

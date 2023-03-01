@@ -13,6 +13,7 @@ import aniwash.entity.Animal;
 import aniwash.entity.Customer;
 import aniwash.resources.model.Calendars;
 import aniwash.resources.model.CreatePopUp;
+import aniwash.resources.utilies.ControllerUtilies;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -156,7 +157,7 @@ public class NewAppoitmentController extends CreatePopUp {
                 personView.getSelectionModel().select(0);
                 if (filteredData.isEmpty()) {
                     try {
-                        newCustomer();
+                        ControllerUtilies.newCustomer();
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -202,7 +203,7 @@ public class NewAppoitmentController extends CreatePopUp {
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.contains("Create new pet")) {
                 try {
-                    newAnimal();
+                    ControllerUtilies.newAnimal(selectedPerson);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -247,7 +248,7 @@ public class NewAppoitmentController extends CreatePopUp {
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
             try {
-                newProduct();
+               ControllerUtilies.newProduct();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -307,63 +308,5 @@ public class NewAppoitmentController extends CreatePopUp {
     @FXML
     public void textChanged() {
         personView.getSelectionModel().clearSelection();
-    }
-
-    public void newCustomer() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newCustomerView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Customer");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
-    }
-
-    public void newAnimal() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("createNewAnimalView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Animal");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-        CreateNewAnimalController.setCustomer(selectedPerson);
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
-    }
-
-    public void newProduct() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newProductView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Product");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-        CreateNewAnimalController.setCustomer(selectedPerson);
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
-    }
-
-    protected static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
     }
 }

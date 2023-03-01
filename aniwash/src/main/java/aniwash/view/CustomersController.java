@@ -9,6 +9,7 @@ import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCell;
+import aniwash.resources.utilies.ControllerUtilies;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -106,7 +107,6 @@ public class CustomersController {
             };
             ObservableList<Customer> filteredCustomers = customers.filtered(filter);
             listView.setItems(filteredCustomers);
-
         });
 
         // Double click on a customer to open the customer info popup window
@@ -116,44 +116,19 @@ public class CustomersController {
                 selectedCustomer = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
                 // Pass the selected customer object to the popup window to display its info
-                final FXMLLoader loader;
-                final Scene scene;
                 try {
-                    loader = loadFXML("editCustomerView");
-                    scene = new Scene((Parent) loader.load());
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setTitle("Edit Customer");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.show();
-                    stage.setOnHidden(view -> {
-                        // TODO: Get customers from database so the listview reloads
-                    });
+                    ControllerUtilies.editCustomer();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     @FXML
     public void newCustomer() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newCustomerView");
-        scene = new Scene((Parent) loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Customer");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
+        ControllerUtilies.newCustomer();
     }
 
     public Customer getSelectedCustomer() {
@@ -173,10 +148,5 @@ public class CustomersController {
     @FXML
     private void products() throws IOException {
         MainApp.setRoot("productsView");
-    }
-
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
     }
 }

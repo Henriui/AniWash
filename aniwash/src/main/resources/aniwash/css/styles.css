@@ -93,3 +93,10 @@
     -fx-background-color: red;
     -fx-text-background-color: #47c496;
 }
+
+.list-view .list-cell:even {
+    -fx-background-color: #f2f5f9;
+    }
+    .list-view .list-cell:odd {
+    -fx-background-color: #f2f5f9;
+    }
