@@ -24,6 +24,7 @@ public class CreateNewAnimalController {
     private TextField petDescriptionField;
     @FXML
     private Button saveButton;
+    private static Customer customer;
 
     public void initialize() {
         // Set the text fields to be editable
@@ -38,10 +39,12 @@ public class CreateNewAnimalController {
 
     }
 
+    public static void setCustomer(Customer selCustomer) {
+        customer = selCustomer;
+    }
+
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
-        EditCustomerController editCustomerController = new EditCustomerController();
-        Customer customer = editCustomerController.getCustomer();
 
         String petName = petNameField.getText().trim();
         String petType = petTypeField.getText().trim();
@@ -62,15 +65,15 @@ public class CreateNewAnimalController {
             showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
             return;
         }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!" + customer.getName());
+
         // All input values are valid, create the Customer object
+
         customer.addAnimal(new Animal(petName, petType, petBreed, Integer.valueOf(petAge), petDescription));
 
         // TODO: Do something with the Animal object
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
-        editCustomerController.reloadView();
         stage.close();
     }
 
