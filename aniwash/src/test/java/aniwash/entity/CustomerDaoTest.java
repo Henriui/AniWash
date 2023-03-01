@@ -79,6 +79,15 @@ public class CustomerDaoTest {
 
         // Olemattoman customerin poiston tulee "epäonnistua"
         assertFalse(customerDao.deleteByIdCustomer(id), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
+
+        // Poistetaan kaikki customerit
+        System.out.println("Delete all employees test");
+        List<Customer> customerList = customerDao.findAllCustomer();
+        for (Customer c : customerList) {
+            customerDao.deleteByIdCustomer(c.getId());
+        }
+        assertEquals(0, customerDao.findAllCustomer().size(), "Employee list size should be 0");
+
     }
 
     @Test

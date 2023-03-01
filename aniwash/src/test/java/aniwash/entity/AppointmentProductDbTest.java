@@ -34,7 +34,7 @@ public class AppointmentProductDbTest {
     }
 
     @Test
-    @DisplayName("Create multiple appointments and products then remove appointments and products")
+    @DisplayName("Create multiple appointments and products test")
     @Order(1)
     public void testCreateMultipleAppointmentsAndProducts() {
         for (int i = 1; i < 4; i++) {
