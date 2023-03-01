@@ -48,7 +48,7 @@ public class Calendars {
         // Calendars are Products
 
         for (Product product : products) {
-            //productDao.addProduct(product);
+            // productDao.addProduct(product);
 
             Calendar calendar = new Calendar(product.getName());
             calendar.setStyle(styles.get(products.indexOf(product)));
@@ -61,7 +61,8 @@ public class Calendars {
     }
 
     public void addAppoitmEntry(Entry entry, Calendar calendar) {
-        System.out.println("addAppoitmEntry " + entry.getTitle() + ", location " + entry.getLocation() + " " + calendar.getName() + " " + entry.getUserObject());
+        System.out.println("addAppoitmEntry " + entry.getTitle() + ", location " + entry.getLocation() + " "
+                + calendar.getName() + " " + entry.getUserObject());
         calendar.addEntry(entry);
     }
 

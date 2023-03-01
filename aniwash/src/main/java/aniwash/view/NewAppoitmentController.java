@@ -3,12 +3,10 @@ package aniwash.view;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.hibernate.annotations.Parent;
-
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
-import com.calendarfx.view.TimeField;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.TimeField;
 
 import aniwash.MainApp;
 import aniwash.entity.Animal;
@@ -23,13 +21,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -96,6 +94,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
         // Initialize datepicker with selected date
 
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!" + newEntry.getEntry().getStartDate());
         date.setValue(newEntry.getEntry().getStartDate());
         startTime.setValue(newEntry.getEntry().getStartTime());
         endTime.setValue(newEntry.getEntry().getEndTime());
@@ -247,12 +246,12 @@ public class NewAppoitmentController extends CreatePopUp {
 
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
-            System.out.println("Create new service");
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("TESTI");
-            alert.setHeaderText("CREATE NEW CUSTOMER");
-            alert.setContentText("WOW");
-            alert.showAndWait();
+            try {
+                newProduct();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);
@@ -345,7 +344,25 @@ public class NewAppoitmentController extends CreatePopUp {
         });
     }
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
+    public void newProduct() throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("newProductView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Create Product");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+        CreateNewAnimalController.setCustomer(selectedPerson);
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
+    }
+
+    protected static FXMLLoader loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader;
     }
