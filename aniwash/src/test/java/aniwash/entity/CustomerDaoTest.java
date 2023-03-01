@@ -236,7 +236,7 @@ public class CustomerDaoTest {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         assertTrue(customerDao.addCustomer(customer2), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         assertTrue(customerDao.addCustomer(customer3), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-        
+
         List<Customer> customers2 = new ArrayList<>();
         customers2.add(customer);
         customers2.add(customer2);
@@ -246,6 +246,18 @@ public class CustomerDaoTest {
         assertTrue(customers.size() > 0, "findByNameCustomerList(): Asiakas listan haku nimen perusteella ei onnistunut. Lista liian lyhyt.");
         assertEquals(3, customers.size(), "findByNameCustomerList(): Asiakas listan haku nimen perusteella ei onnistunut. Listan pituus ei täsmää.");
         assertEquals(customers2, customers, "findByNameCustomerList(): Asiakas listan haku nimen perusteella ei onnistunut. Listat eivät täsmää.");
+    }
+
+    @Test
+    @DisplayName("Customer soft delete")
+    @Order(15)
+    public void testSoftDelete() {
+        assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+        long id = customer.getId();
+        customer.setDeleted();
+        assertTrue(customerDao.updateCustomer(customer), "updateCustomer");
+        assertNotNull(customerDao.findByIdCustomer(id), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
+        assertEquals(1, customerDao.findByIdCustomer(id).isDeleted(), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
     }
 
 }

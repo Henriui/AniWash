@@ -1,10 +1,7 @@
 package aniwash.entity;
 
-import aniwash.dao.IEmployeeDao;
 import aniwash.dao.EmployeeDao;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import aniwash.dao.IEmployeeDao;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,5 +129,17 @@ public class EmployeeDaoTest {
     @Order(10)
     public void deleteEmployeeTest2() {
         assertFalse(eDao.deleteByIdEmployee(employee.getId()), "deleteByIdEmployee(): There was Employee to delete");
+    }
+
+    @Test
+    @DisplayName("Employee soft delete test")
+    @Order(11)
+    public void softDeleteEmployeeTest() {
+        assertTrue(eDao.addEmployee(employee), "addEmployee(): Employee was not added");
+        long id = employee.getId();
+        employee.setDeleted();
+        assertTrue(eDao.updateEmployee(employee), "updateEmployee(): Employee was not updated");
+        assertNotNull((employee = eDao.findByIdEmployee(id)), "addEmployee(): Added employee is null");
+        assertEquals(1, employee.isDeleted(), "isDeleted(): Employee is not deleted");
     }
 }
