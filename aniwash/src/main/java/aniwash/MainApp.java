@@ -9,13 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
+import aniwash.datastorage.Biscuit;
+import aniwash.entity.Employee;
 import aniwash.resources.model.Calendars;
 
 public class MainApp extends Application {
 
     @FXML
     private AnchorPane a;
-
+    private static Biscuit cookie;
     private static Scene scene;
     private static Stage stage;
 
@@ -31,8 +33,13 @@ public class MainApp extends Application {
         // TODO: Change this to the login view when project done.
         Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         scene = new Scene(root);
+        cookie = new Biscuit();
         stage.setScene(scene);
         stage.show();
+    }
+
+    private static void setBiscuit(Employee e) {
+        cookie.setBiscuit(e);
     }
 
     public static void setRoot(String fxml) throws IOException {
