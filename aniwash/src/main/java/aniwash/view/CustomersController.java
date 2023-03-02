@@ -4,7 +4,6 @@ import aniwash.MainApp;
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCell;
 import aniwash.resources.model.CustomListViewCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -156,5 +155,10 @@ public class CustomersController {
     @FXML
     private void dashBoard() throws IOException {
         MainApp.setRoot("mainView");
+    }
+
+    @FXML
+    private void products() throws IOException {
+        MainApp.setRoot("productsView");
     }
 }

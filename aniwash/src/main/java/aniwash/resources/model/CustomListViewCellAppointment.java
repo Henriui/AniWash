@@ -46,7 +46,7 @@ public class CustomListViewCellAppointment extends ListCell<Appointment> {
 
             // Update the cell content with the customer information
 
-            Label dateLabel = (Label) ((VBox) basicInfoHBox.getChildren().get(0)).getChildren().get(0);
+            Label dateLabel = (Label) ((VBox) dateHBox.getChildren().get(0)).getChildren().get(0);
             dateLabel.setText(String.valueOf(appointment.getStartDate().toLocalDate()));
 
             Label descriptionLabel = (Label) ((VBox) animalInfoHBox.getChildren().get(1)).getChildren().get(0);
