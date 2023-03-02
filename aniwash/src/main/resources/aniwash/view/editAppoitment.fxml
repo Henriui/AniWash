@@ -70,7 +70,7 @@
                 </Text>
                 <Separator layoutX="20.0" layoutY="40.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0"
                            AnchorPane.rightAnchor="20.0"/>
-                <DatePicker fx:id="startDate" layoutX="20.0" layoutY="72.0"/>
+                <DatePicker fx:id="date" layoutX="21.0" layoutY="72.0"/>
                 <TimeField fx:id="startTime" layoutX="269.0" layoutY="58.0"/>
                 <TimeField fx:id="endTime" layoutX="269.0" layoutY="89.0"/>
                 <Text layoutX="219.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start"

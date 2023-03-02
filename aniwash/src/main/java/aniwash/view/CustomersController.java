@@ -1,12 +1,8 @@
 package aniwash.view;
 
-import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.util.function.Predicate;
-
 import aniwash.MainApp;
-import aniwash.entity.Animal;
-import aniwash.entity.Appointment;
+import aniwash.dao.CustomerDao;
+import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCell;
 import javafx.collections.FXCollections;
@@ -28,37 +24,21 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.function.Predicate;
+
 public class CustomersController {
+    private static Customer selectedCustomer;
     @FXML
     private ListView<Customer> listView;
     @FXML
     private Text customerCount;
     @FXML
     private Button newCustomer;
-    private static Customer selectedCustomer;
-
-    private static ObservableList<Customer> customers = FXCollections.observableArrayList(
-            new Customer("asd1", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"),
-            new Customer("asd2", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd3", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd4", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd5", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd6", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd7", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd8", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd9", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd10", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"));
     @FXML
     private TextField searchField;
 
+/*
     public void test() {
         for (Customer customer : customers) {
             customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
@@ -66,11 +46,19 @@ public class CustomersController {
 
         }
     }
+*/
+
+    private static FXMLLoader loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        return fxmlLoader;
+    }
 
     public void initialize() {
-        test();
+        //test();
         // Bind the ListView to the ObservableList
 
+        ICustomerDao customerDao = new CustomerDao();
+        ObservableList<Customer> customers = FXCollections.observableList(customerDao.findAllCustomer());
         listView.setItems(customers);
 
         // Bind the customerCount text property to the size of the list
@@ -84,8 +72,7 @@ public class CustomersController {
 
         // Set the placeholder text for the ListView
 
-        Background background = new Background(
-                new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
         listView.setPlaceholder(new Label("No items") {
             @Override
             protected void updateBounds() {
@@ -173,10 +160,5 @@ public class CustomersController {
     @FXML
     private void products() throws IOException {
         MainApp.setRoot("productsView");
-    }
-
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
     }
 }

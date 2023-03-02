@@ -2,11 +2,13 @@ package aniwash.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Where(clause = "DELETED = 0")
 public class Employee {
 
     @Id
@@ -29,8 +31,8 @@ public class Employee {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private boolean deleted;
+    @Column(name = "DELETED", nullable = false)
+    private int deleted = 0;
 
     @ManyToMany(mappedBy = "employees")
     private Set<Appointment> appointments = new HashSet<>();
@@ -44,7 +46,6 @@ public class Employee {
         this.name = name;
         this.email = email;
         this.title = title;
-        this.deleted = false;
     }
 
     public void addAppointment(Appointment appointment) {
@@ -87,12 +88,16 @@ public class Employee {
         return name;
     }
 
-    public boolean isDeleted() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int isDeleted() {
         return deleted;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public String getEmail() {
@@ -103,16 +108,12 @@ public class Employee {
         this.email = email;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Appointment> getAppointments() {
