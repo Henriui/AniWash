@@ -14,8 +14,6 @@ import com.calendarfx.view.DateControl.EntryDetailsParameter;
 import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -74,6 +72,7 @@ public class NewAppoitmentController extends CreatePopUp {
     private int selectedProduc;
     private Customer selectedCustomer;
     // Save the selected person and send entry .
+    private ObservableList<Customer> allPeople;
 
     public void initialize() {
 
@@ -98,66 +97,60 @@ public class NewAppoitmentController extends CreatePopUp {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
+        personView.getColumns().addAll(firstNameColumn, phoneColumn, emailColumn);
+
         // Add data to the table
 
         servicesa = new ArrayList<>(products.getCalendarMap().values());
-        ObservableList<Customer> people = getPeople();
 
         // Add data to the service list
-
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
         });
 
-        // Wrap the ObservableList in a FilteredList (initially display all data).
+        update();
+        personView.setItems(null);
 
-        FilteredList<Customer> filteredData = new FilteredList<>(people, p -> true);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            petList.getSelectionModel().clearSelection();
-            personView.getSelectionModel().clearSelection();
-            filteredData.setPredicate(person -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
+            if (newValue == null) {
+                return;
+            }
 
-                String lowerCaseFilter = newValue.toLowerCase();
+            personView.setItems(allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
 
-                return person.getName().toLowerCase().contains(lowerCaseFilter);
-            });
-
+            if (newValue.isEmpty()) {
+                personView.setItems(null);
+            }
         });
 
-        // Wrap the FilteredList in a SortedList.
-
-        SortedList<Customer> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(personView.comparatorProperty());
-
-        // Add sorted (and filtered) data to the table.
-
-        personView.setItems(sortedData);
-        personView.getColumns().addAll(firstNameColumn, phoneColumn, emailColumn);
-
         // Set the selection model to allow only one row to be selected at a time.
-
         searchField.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                personView.getSelectionModel().select(0);
-                if (filteredData.isEmpty()) {
+                if (searchField.getText().isEmpty() || personView.getItems().isEmpty()) {
+                    personView.getSelectionModel().clearSelection();
                     try {
                         // NEW CUSTOMER POPUP
-                        ControllerUtilities.newCustomer();
+                        Stage stage = new Stage();
+                        stage.setOnHidden(e -> {
+                            update();
+                            selectCustomer(personView.getItems().get(personView.getItems().size() - 1));
+                            updatePets();
+                        });
+                        ControllerUtilities.newCustomer(stage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    ObservableList<String> items = petList.getItems();
-                    items.removeAll(items.subList(1, items.size()));
-
-                    selectedCustomer.getAnimals().forEach(animal -> {
-                        petList.getItems().addAll(animal.getName());
-                    });
+                    personView.getSelectionModel().select(0);
+                    updatePets();
                 }
             }
+        });
+
+
+        personView.setOnMouseClicked(mouseEvent -> {
+            selectCustomer(personView.getSelectionModel().getSelectedItem());
+            updatePets();
         });
 
         // Listen for customer selection changes and show the person details when
@@ -170,7 +163,6 @@ public class NewAppoitmentController extends CreatePopUp {
                 one.styleProperty().set("-fx-fill: #47c496");
                 first.styleProperty().set("-fx-fill: #47c496");
             }
-
         });
 
         // Listen for service selection changes and show the person details when
@@ -187,12 +179,18 @@ public class NewAppoitmentController extends CreatePopUp {
         // Listen for pet selection changes and show the person details when changed.
 
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.contains("Create new pet")) {
+            if (newValue.contains("Create new pet") && selectedCustomer != null) {
                 try {
                     // NEW ANIMAL POPUP
-                    // ControllerUtilities.newAnimal(selectedCustomer);
-                } finally {
-                    update();
+                    Stage stage = new Stage();
+                    stage.setOnHidden(e -> {
+                        update();
+                        updatePets();
+                        newEntry.getEntry().setLocation(newValue);
+                    });
+                    ControllerUtilities.newAnimal(selectedCustomer, stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             } else {
                 newEntry.getEntry().setLocation(newValue);
@@ -225,10 +223,6 @@ public class NewAppoitmentController extends CreatePopUp {
 
     private void selectCustomer(Customer customer) {
         selectedCustomer = customer;
-/*
-        Animal[] animals = selectedCustomer.getAnimals().toArray(new Animal[selectedCustomer.getAnimals().size()]);
-        newEntry.getEntry().setLocation(animals[petList.getSelectionModel().getSelectedIndex() - 1].getName());
-*/
     }
 
     private void selectService(String newValue, int selectedIndex) {
@@ -260,6 +254,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
     private String createAppointment(ZonedDateTime start, ZonedDateTime end) {
         Animal[] animals = selectedCustomer.getAnimals().toArray(new Animal[selectedCustomer.getAnimals().size()]);
+
         IProductDao productDao = new ProductDao();
         Product product = productDao.findByNameProduct(servicesa.get(selectedProduc - 1).getName());
 
@@ -274,15 +269,19 @@ public class NewAppoitmentController extends CreatePopUp {
     }
 
     private void update() {
-/*
-        personView.getSelectionModel().select(0);
+        allPeople = getPeople();
+        personView.setItems(allPeople);
+    }
+
+    private void updatePets() {
+        personView.getSelectionModel().select(selectedCustomer);
+        personView.setItems(allPeople.filtered(customer -> customer.getName().contains(selectedCustomer.getName())));
         ObservableList<String> items = petList.getItems();
         items.removeAll(items.subList(1, items.size()));
 
         selectedCustomer.getAnimals().forEach(animal -> {
             petList.getItems().addAll(animal.getName());
         });
-*/
     }
 
     private ObservableList<Customer> getPeople() {
