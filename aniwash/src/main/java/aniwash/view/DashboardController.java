@@ -1,21 +1,12 @@
 package aniwash.view;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
 
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.model.Entry;
-import com.calendarfx.model.Interval;
-import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
 
 import aniwash.MainApp;
 import aniwash.resources.model.Calendars;
-
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
@@ -51,4 +42,8 @@ public class DashboardController {
         MainApp.setRoot("customerView");
     }
 
+    @FXML
+    private void products() throws IOException {
+        MainApp.setRoot("productsView");
+    }
 }

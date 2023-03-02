@@ -5,8 +5,8 @@ import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCellAnimal;
-import aniwash.resources.model.CustomerListViewCellAppointment;
+import aniwash.resources.model.CustomListViewCellAnimal;
+import aniwash.resources.model.CustomListViewCellAppointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +16,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
@@ -70,8 +76,8 @@ public class EditCustomerController {
 
         appointmentListView.setItems(appointmentsList);
         listView.setItems(animals);
-        listView.setCellFactory(listView -> new CustomerListViewCellAnimal());
-        appointmentListView.setCellFactory(appointmentListView -> new CustomerListViewCellAppointment());
+        listView.setCellFactory(listView -> new CustomListViewCellAnimal());
+        appointmentListView.setCellFactory(appointmentListView -> new CustomListViewCellAppointment());
 
         Background background = new Background(
                 new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));

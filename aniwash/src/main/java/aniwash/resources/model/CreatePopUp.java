@@ -1,7 +1,9 @@
 package aniwash.resources.model;
 
 import java.io.IOException;
+
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
+
 import aniwash.MainApp;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,7 +58,7 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
 
     // This method is used to load the fxml file.
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
+    protected static FXMLLoader loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader;
     }
