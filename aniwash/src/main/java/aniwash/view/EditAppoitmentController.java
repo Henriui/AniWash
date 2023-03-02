@@ -14,8 +14,6 @@ import com.calendarfx.view.DateControl.EntryDetailsParameter;
 import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -26,9 +24,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class EditAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
@@ -102,8 +100,19 @@ public class EditAppoitmentController extends CreatePopUp {
         personView.getColumns().addAll(firstNameColumn, phoneColumn, emailColumn);
 
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && newValue.contains("Create new pet")) {
-                // CREATE NEW PET
+            if (newValue.contains("Create new pet") && selectedPerson != null) {
+                try {
+                    // NEW ANIMAL POPUP
+                    Stage stage = new Stage();
+                    stage.setOnHidden(e -> {
+                        update();
+                        updatePets();
+                        newEntry.getEntry().setLocation(newValue);
+                    });
+                    ControllerUtilities.newAnimal(selectedPerson, stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 newEntry.getEntry().setLocation(newValue);
             }
@@ -123,7 +132,7 @@ public class EditAppoitmentController extends CreatePopUp {
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        if (newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if (personView.getSelectionModel().getSelectedItem() == null || newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select a service and a pet");
         } else {
             Stage stage = (Stage) save.getScene().getWindow();
@@ -135,59 +144,54 @@ public class EditAppoitmentController extends CreatePopUp {
     @FXML
     public void modifyEntry() {
         allPeople = getPeople();
+        personView.setItems(allPeople);
 
-        FilteredList<Customer> filteredData = new FilteredList<>(allPeople, p -> true);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            personView.getSelectionModel().clearSelection();
-            petList.getSelectionModel().clearSelection();
-            filteredData.setPredicate(person -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
 
-                String lowerCaseFilter = newValue.toLowerCase();
+            if (newValue == null) {
+                return;
+            }
 
-                if (person.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                } else if (person.getPhone().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                return false;
-            });
+            personView.setItems(allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
+
+            if (newValue.isEmpty()) {
+                personView.setItems(null);
+            }
 
         });
 
-        // Wrap the FilteredList in a SortedList.
-
-        SortedList<Customer> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(personView.comparatorProperty());
-
-        // Add sorted (and filtered) data to the table.
-
-        personView.setItems(sortedData);
-
         // Set the selection model to allow only one row to be selected at a time.
-
         searchField.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                personView.getSelectionModel().select(0);
-                if (filteredData.isEmpty()) {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("TESTI");
-                    alert.setHeaderText("CREATE NEW CUSTOMER");
-                    alert.setContentText("WOW");
-                    alert.showAndWait();
+                if (searchField.getText().isEmpty() || personView.getItems().isEmpty()) {
+                    personView.getSelectionModel().clearSelection();
+                    try {
+                        //CREATE NEW CUSTOMER
+                        Stage stage = new Stage();
+                        stage.setOnHidden(e -> {
+                            update();
+                            selectCustomer(personView.getItems().get(personView.getItems().size() - 1));
+                            updatePets();
+                        });
+                        ControllerUtilities.newCustomer(stage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
-                    ObservableList<String> items = petList.getItems();
-                    items.removeAll(items.subList(1, items.size()));
-
-                    selectedPerson.getAnimals().forEach(animal -> {
-                        petList.getItems().addAll(animal.getName());
-                    });
+                    personView.getSelectionModel().select(0);
+                    updatePets();
                 }
-            } else if (event.getCode().equals(KeyCode.BACK_SPACE)) {
-                // personView.getSelectionModel().clearSelection();
             }
+        });
+
+        personView.setOnMouseClicked(mouseEvent -> {
+            personView.getSelectionModel().getSelectedItem();
+            ObservableList<String> items = petList.getItems();
+            items.removeAll(items.subList(1, items.size()));
+
+            selectedPerson.getAnimals().forEach(animal -> {
+                petList.getItems().addAll(animal.getName());
+            });
         });
 
         personView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -274,50 +278,45 @@ public class EditAppoitmentController extends CreatePopUp {
         IAppointmentDao appointmentDao = new AppointmentDao();
         Appointment appointment = appointmentDao.findByIdAppointment(ControllerUtilities.longifyStringId(appointmentId));
 
-        Set<Product> products = appointment.getProducts();
-        for (Product p : products) {
-            if (!p.getName().equals(productName)) {
-                appointment.removeProduct(p);
-            }
-        }
-
-        if (products.isEmpty()) {
+        if (!appointment.findAllProducts().get(0).getName().equals(productName)) {
+            appointment.removeProduct(appointment.findAllProducts().get(0));
             IProductDao productDao = new ProductDao();
             Product product = productDao.findByNameProduct(productName);
-            products.add(product);
+            appointment.addProduct(product);
         }
 
-        Set<Customer> customers = appointment.getCustomers();
-        for (Customer c : customers) {
-            if (c.getId() != customer.getId()) {
-                appointment.removeCustomer(c);
-            }
+        if (!appointment.findAllCustomers().get(0).getName().equals(customer.getName())) {
+            appointment.removeCustomer(appointment.findAllCustomers().get(0));
+            appointment.addCustomer(customer);
         }
 
-        if (customers.isEmpty()) {
-            customers.add(customer);
-        }
-
-        Set<Animal> animals = appointment.getAnimals();
-        for (Animal a : animals) {
-            if (a.getId() != appointment.findAllAnimals().get(0).getId()) {
-                appointment.removeAnimal(a);
-            }
-        }
-
-        if (animals.isEmpty()) {
+        if (!appointment.findAllAnimals().get(0).getName().equals(animalName)) {
+            appointment.removeAnimal(appointment.findAllAnimals().get(0));
             IAnimalDao animalDao = new AnimalDao();
             Animal animal = animalDao.findByNameAnimal(animalName);
-            animals.add(animal);
+            appointment.addAnimal(animal);
         }
 
         appointment.setStartDate(start);
         appointment.setEndDate(end);
-        appointment.setCustomers(customers);
-        appointment.setProducts(products);
-        appointment.setAnimals(animals);
 
         appointmentDao.updateAppointment(appointment);
+    }
+
+    private void update() {
+        allPeople = getPeople();
+        personView.setItems(allPeople);
+    }
+
+    private void updatePets() {
+        personView.getSelectionModel().select(selectedPerson);
+        personView.setItems(allPeople.filtered(customer -> customer.getName().contains(selectedPerson.getName())));
+        ObservableList<String> items = petList.getItems();
+        items.removeAll(items.subList(1, items.size()));
+
+        selectedPerson.getAnimals().forEach(animal -> {
+            petList.getItems().addAll(animal.getName());
+        });
     }
 
     private ObservableList<Customer> getPeople() {
