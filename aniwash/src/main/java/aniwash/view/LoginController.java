@@ -47,6 +47,7 @@ public class LoginController {
                 try {
                     // Set mainView scene.
                     MainApp.setRoot("mainView");
+                    MainApp.setBiscuit(e);
                     MainApp.changeStageSize(1300, 800);
                     return;
                 } catch (Exception ee) {

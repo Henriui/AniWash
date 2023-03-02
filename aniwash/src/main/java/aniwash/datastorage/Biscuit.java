@@ -105,4 +105,13 @@ public class Biscuit {
         // Return user type of logged in user.
         return e.getUserType();
     }
+
+    /**
+     * Logout the logged in user.
+     * @author henriui
+     */
+    public void logout() {
+        // Set logged in user to null.
+        e = null;
+    }
 }

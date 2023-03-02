@@ -23,6 +23,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
         // FIXME: Delete these two lines after database is implemented
         Calendars calendar = new Calendars();
         calendar.initCalendar();
@@ -30,19 +31,31 @@ public class MainApp extends Application {
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
 
+        // Initialise biscuit
+        cookie = new Biscuit();
+
         // TODO: Change this to the login view when project done.
         Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
         scene = new Scene(root);
-        cookie = new Biscuit();
         stage.setScene(scene);
         stage.show();
     }
 
-    private static void setBiscuit(Employee e) {
+    public static void setBiscuit(Employee e) {
         cookie.setBiscuit(e);
     }
 
+    public static Biscuit getBiscuit() {
+        return cookie;
+    }
+
     public static void setRoot(String fxml) throws IOException {
+        // Check if user is logged in. Otherwise, redirect to login view.
+        if (!cookie.isBiscuitSet() || cookie.isBiscuitExpired()) {
+            scene.setRoot(loadFXML("login"));
+            return;
+        }
+        cookie.updateLastActivity();
         scene.setRoot(loadFXML(fxml));
     }
 

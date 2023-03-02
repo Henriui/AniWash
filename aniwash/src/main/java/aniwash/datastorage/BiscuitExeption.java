@@ -7,6 +7,8 @@ import java.io.PrintWriter;
  * BiscuitExeption class is used to throw exceptions when there is a problem
  * with the Biscuit class.
  * 
+ * Usually thrown when the Biscuit is empty or timed out.
+ * 
  * @author henriui
  */
 public class BiscuitExeption extends Throwable {
