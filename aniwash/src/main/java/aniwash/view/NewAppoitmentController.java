@@ -73,7 +73,6 @@ public class NewAppoitmentController extends CreatePopUp {
     private ArrayList<Calendar> servicesa;
     private int selectedProduc;
     private Customer selectedCustomer;
-    private Customer selectedPerson;
     // Save the selected person and send entry .
 
     public void initialize() {
@@ -87,7 +86,7 @@ public class NewAppoitmentController extends CreatePopUp {
         petList.getItems().add("                                   Create new pet  +");
 
         // Initialize datepicker with selected date
-        System.out.println(newEntry.getEntry());
+        System.out.println("NewAppointmentController newEntry: " + newEntry.getEntry());
 
         date.setValue(newEntry.getEntry().getStartDate());
         startTime.setValue(newEntry.getEntry().getStartTime());
@@ -101,7 +100,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
         // Add data to the table
 
-        servicesa = new ArrayList<>(products.getCalendars().values());
+        servicesa = new ArrayList<>(products.getCalendarMap().values());
         ObservableList<Customer> people = getPeople();
 
         // Add data to the service list
@@ -154,7 +153,7 @@ public class NewAppoitmentController extends CreatePopUp {
                     ObservableList<String> items = petList.getItems();
                     items.removeAll(items.subList(1, items.size()));
 
-                    selectedPerson.getAnimals().forEach(animal -> {
+                    selectedCustomer.getAnimals().forEach(animal -> {
                         petList.getItems().addAll(animal.getName());
                     });
                 }
@@ -166,8 +165,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
         personView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                selectedPerson = (Customer) newValue;
-                selectCustomer(selectedPerson);
+                selectCustomer(newValue);
                 services.setDisable(false);
                 one.styleProperty().set("-fx-fill: #47c496");
                 first.styleProperty().set("-fx-fill: #47c496");
@@ -192,7 +190,7 @@ public class NewAppoitmentController extends CreatePopUp {
             if (newValue.contains("Create new pet")) {
                 try {
                     // NEW ANIMAL POPUP
-                    // ControllerUtilities.newAnimal(selectedPerson);
+                    // ControllerUtilities.newAnimal(selectedCustomer);
                 } finally {
                     update();
                 }
@@ -251,16 +249,16 @@ public class NewAppoitmentController extends CreatePopUp {
         entry.changeStartTime(newEntry.getEntry().getStartTime());
         entry.changeEndDate(newEntry.getEntry().getStartDate());
         entry.changeEndTime(newEntry.getEntry().getEndTime());
-        entry.setId(saveAppointment(newEntry.getEntry().getStartAsZonedDateTime(), newEntry.getEntry().getEndAsZonedDateTime()));
+        entry.setId(createAppointment(newEntry.getEntry().getStartAsZonedDateTime(), newEntry.getEntry().getEndAsZonedDateTime()));
         entry.setLocation(newEntry.getEntry().getLocation());
         entry.setTitle(newEntry.getEntry().getTitle());
         entry.setUserObject(selectedCustomer);
         entry.setCalendar(servicesa.get(selectedProduc - 1));
         newEntry.getEntry().removeFromCalendar();
-        products.addAppoitmEntry(entry, servicesa.get(selectedProduc - 1));
+        products.addAppointmentEntry(entry, servicesa.get(selectedProduc - 1));
     }
 
-    private String saveAppointment(ZonedDateTime start, ZonedDateTime end) {
+    private String createAppointment(ZonedDateTime start, ZonedDateTime end) {
         Animal[] animals = selectedCustomer.getAnimals().toArray(new Animal[selectedCustomer.getAnimals().size()]);
         IProductDao productDao = new ProductDao();
         Product product = productDao.findByNameProduct(servicesa.get(selectedProduc - 1).getName());
@@ -281,18 +279,15 @@ public class NewAppoitmentController extends CreatePopUp {
         ObservableList<String> items = petList.getItems();
         items.removeAll(items.subList(1, items.size()));
 
-        selectedPerson.getAnimals().forEach(animal -> {
+        selectedCustomer.getAnimals().forEach(animal -> {
             petList.getItems().addAll(animal.getName());
         });
 */
     }
 
-    // Create some sample data.
-    // TODO: Replace with real data.
     private ObservableList<Customer> getPeople() {
         ICustomerDao customerDao = new CustomerDao();
-        ObservableList<Customer> customers = FXCollections.observableList(customerDao.findAllCustomer());
-        return customers;
+        return FXCollections.observableList(customerDao.findAllCustomer());
     }
 
 

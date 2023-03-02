@@ -22,7 +22,7 @@ import static com.calendarfx.model.CalendarEvent.ENTRY_INTERVAL_CHANGED;
 import static java.lang.String.valueOf;
 
 public class Calendars {
-    private static final Map<String, Calendar> calendars = new HashMap<>();
+    private static final Map<String, Calendar> calendarMap = new HashMap<>();
     private static final ArrayList<Product> products = new ArrayList<Product>();
     private static final CalendarSource familyCalendarSource = new CalendarSource("Product");
     private IProductDao productDao;
@@ -32,28 +32,26 @@ public class Calendars {
     private IEmployeeDao employeeDao;
     private final EventHandler<CalendarEvent> eventHandler = calendarEvent -> {
         System.out.println("Event: " + calendarEvent);
-        EventType<? extends Event> eventType = calendarEvent.getEventType();
         Calendar calendar = calendarEvent.getEntry().getCalendar();
-        if (ENTRY_CALENDAR_CHANGED.equals(eventType)) {
-            System.out.println("Entry id: " + calendarEvent.getEntry().getId());
+        System.out.println("Entry: " + calendarEvent.getEntry());
 
-            if (calendar == null && calendarEvent.getEntry().getId().startsWith("id")) {
+        if (!calendarEvent.getEntry().getId().startsWith("id")) {
+            return;
+        }
+
+        EventType<? extends Event> eventType = calendarEvent.getEventType();
+        if (eventType == ENTRY_CALENDAR_CHANGED) {
+            if (calendar == null) {
                 if (appointmentDao.deleteByIdAppointment(ControllerUtilities.longifyStringId(calendarEvent.getEntry().getId()))) {
                     System.out.println("Appointment id deleted: " + calendarEvent.getEntry().getId());
                 }
             }
-        } else if (ENTRY_INTERVAL_CHANGED.equals(eventType)) {
-            if (calendar != null) {
-                try {
-                    Appointment appointment = appointmentDao.findByIdAppointment(ControllerUtilities.longifyStringId(calendarEvent.getEntry().getId()));
-                    appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
-                    appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
-                    if (appointmentDao.updateAppointment(appointment)) {
-                        System.out.println("Appointment date updated: " + appointment.getStartDate() + " - " + appointment.getEndDate());
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Error: " + e);
-                }
+        } else if (eventType == ENTRY_INTERVAL_CHANGED) {
+            Appointment appointment = appointmentDao.findByIdAppointment(ControllerUtilities.longifyStringId(calendarEvent.getEntry().getId()));
+            appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
+            appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
+            if (appointmentDao.updateAppointment(appointment)) {
+                System.out.println("Appointment date updated: " + appointment.getStartDate() + " - " + appointment.getEndDate());
             }
         }
     };
@@ -72,41 +70,28 @@ public class Calendars {
 
         createDbDataTest();
 
-        Customer customer = customerDao.findByIdCustomer(1);
-        for (int i = 0; i < 10; ++i) {
-            Animal animal = new Animal("c1EXTRAANIMAL" + i, "doggo" + i, "sekarekku", 1 + i, "uliuli");
-            customer.addAnimal(animal);
-            animalDao.addAnimal(animal);
-        }
-
-
-        List<Product> productList = productDao.findAllProduct();
-        products.addAll(productList);
-
+        products.addAll(productDao.findAllProduct());
         // These are the calendars where entries will be added to.
         // Entries are Customers
         // Calendars are Products
 
         for (Product product : products) {
-            //productDao.addProduct(product);
             Calendar calendar = new Calendar(product.getName());
             calendar.setStyle(product.getStyle());
             calendar.addEventHandler(eventHandler);
-            calendars.put(product.getName(), calendar);
+            calendarMap.put(product.getName(), calendar);
         }
-
-        // CalendarSource is a mother to all the calendars
 
         addEntriesToCalendar();
 
-        System.out.println("initCalendar style: " + calendars.get("Product 1").getStyle());
-        familyCalendarSource.getCalendars().addAll(calendars.values());
+        // CalendarSource is a mother to all the calendars
+        familyCalendarSource.getCalendars().addAll(calendarMap.values());
     }
 
     // Getters and Setters
 
-    public void addAppoitmEntry(Entry entry, Calendar calendar) {
-        System.out.println("addAppoitmEntry " + entry.getTitle() + ", location " + entry.getLocation() + " " + calendar.getName() + " " + entry.getUserObject());
+    public void addAppointmentEntry(Entry entry, Calendar calendar) {
+        System.out.println("addAppointmentEntry " + entry.getTitle() + ", location " + entry.getLocation() + " " + calendar.getName() + " " + entry.getUserObject());
         calendar.addEntry(entry);
     }
 
@@ -122,8 +107,8 @@ public class Calendars {
         return calendar;
     }
 
-    public Map<String, Calendar> getCalendars() {
-        return calendars;
+    public Map<String, Calendar> getCalendarMap() {
+        return calendarMap;
     }
 
     private void createDbDataTest() {
@@ -150,6 +135,13 @@ public class Calendars {
             employeeDao.addEmployee(employee);
             appointmentDao.addAppointment(appointment);
         }
+
+        Customer customer = customerDao.findByIdCustomer(1);
+        for (int i = 0; i < 5; ++i) {
+            Animal animal = new Animal("c1EXTRAANIMAL" + i, "doggo" + i, "sekarekku", 1 + i, "uliuli");
+            customer.addAnimal(animal);
+            animalDao.addAnimal(animal);
+        }
     }
 
     private void addEntriesToCalendar() {
@@ -168,7 +160,7 @@ public class Calendars {
             entry.setId("id" + valueOf(appointment.getId()));
             // userObject = customer
             entry.setUserObject(appointment.findAllCustomers().get(0));
-            addAppoitmEntry(entry, calendars.get(appointment.findAllProducts().get(0).getName()));
+            addAppointmentEntry(entry, calendarMap.get(appointment.findAllProducts().get(0).getName()));
         }
     }
 
