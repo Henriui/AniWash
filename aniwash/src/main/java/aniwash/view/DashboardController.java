@@ -1,16 +1,19 @@
 package aniwash.view;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
 
 import aniwash.MainApp;
+import aniwash.datastorage.BiscuitExeption;
 import aniwash.resources.model.Calendars;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public class DashboardController {
     MainApp mainApp;
@@ -25,11 +28,32 @@ public class DashboardController {
     @FXML
     private BarChart barChart;
     private Calendars calendars = new Calendars();
+    @FXML
+    private Text welcometext;
 
     public void initialize() {
 
         agendaView.getCalendarSources().addAll(calendars.getCalendarss());
+        try {
+            // Write welcome text based on time of day (good morning, afternoon, evening)
+            int time = LocalDateTime.now().getHour();
+            System.out.println(time);
+            if (time >= 0 && time < 12) {
+                welcometext.setText("Good morning, " + MainApp.getBiscuit().getUsername() + "!");
+            } else if (time >= 12 && time < 18) {
+                welcometext.setText("Good afternoon, " + MainApp.getBiscuit().getUsername()+ "!");
+            } else {
+                welcometext.setText("Good evening, " + MainApp.getBiscuit().getUsername()+ "!");
+            }
+        } catch (BiscuitExeption e) {
+            System.out.println("Biscuit fuked up");
+            try {logout();} catch (IOException e1){e1.printStackTrace();}
+        }
         // agendaView.setCalendarSourceFactory(new Calendars());
+    }
+
+    private void logout() throws IOException {
+        MainApp.setRoot("login");
     }
 
     @FXML

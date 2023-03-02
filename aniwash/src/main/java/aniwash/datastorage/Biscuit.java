@@ -73,20 +73,20 @@ public class Biscuit {
     }
 
     /**
-     * Get the username of the logged in user.
+     * Get the logged in user.
      * 
-     * @return Username of the logged in user.
+     * @return Logged in user object.
      * @throws BiscuitExeption If there is no logged in user.
      * @author henriui
      * @see BiscuitExeption
      */
-    public String getUsername() throws BiscuitExeption {
+    public Employee getUser() throws BiscuitExeption {
         if (!isBiscuitSet()) {
             // Throw exception if there is no logged in user.
             throw new BiscuitExeption("No user logged in.");
         }
-        // Return username of logged in user.
-        return e.getUsername();
+        // Return object of logged in user.
+        return e;
     }
 
     /**
