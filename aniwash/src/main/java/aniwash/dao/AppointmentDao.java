@@ -39,11 +39,11 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public Appointment findByDateAppointment(ZonedDateTime date) {
+    public Appointment findByStartDateAppointment(ZonedDateTime date) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :date", Appointment.class).setParameter("date", date).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :date", Appointment.class).setParameter("startDate", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }

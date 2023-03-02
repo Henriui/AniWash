@@ -24,7 +24,7 @@ public class CustomerAnimalDbTest {
     public void beforeEach() {
         customer = new Customer("John", "+358 - 0", "rammus" + "@gmail.com");
         customer.setAddress("Kuusikko");
-        customer.setPostalcode("12345");
+        customer.setPostalCode("12345");
     }
 
     @AfterEach

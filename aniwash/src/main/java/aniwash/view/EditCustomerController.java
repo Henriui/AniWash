@@ -1,7 +1,7 @@
 package aniwash.view;
 
-import java.io.IOException;
-
+import aniwash.dao.CustomerDao;
+import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
@@ -16,17 +16,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class EditCustomerController {
     // Create text fields for Customer section
@@ -69,7 +67,7 @@ public class EditCustomerController {
         customer = customersController.getSelectedCustomer();
         animals.addAll(customer.getAnimals());
         appointmentsList.addAll(customer.getAppointments());
-        
+
         appointmentListView.setItems(appointmentsList);
         listView.setItems(animals);
         listView.setCellFactory(listView -> new CustomerListViewCellAnimal());
@@ -131,9 +129,9 @@ public class EditCustomerController {
         customer.setPhone(phone);
         customer.setPostalCode(postalCode);
 
-        // TODO: Do something with the customer object
+        ICustomerDao customerDao = new CustomerDao();
+        customerDao.updateCustomer(customer);
 
-        System.out.println("TODO SAVE TO DATABASE: " + customer);
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();

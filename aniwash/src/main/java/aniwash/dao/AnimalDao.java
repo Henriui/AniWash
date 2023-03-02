@@ -14,7 +14,6 @@ import java.util.function.Consumer;
  */
 public class AnimalDao implements IAnimalDao {
 
-
     @Override
     public boolean addAnimal(Animal animal) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();

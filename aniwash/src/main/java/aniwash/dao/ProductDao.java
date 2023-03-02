@@ -14,7 +14,6 @@ import java.util.function.Consumer;
  */
 public class ProductDao implements IProductDao {
 
-
     @Override
     public boolean addProduct(Product product) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();

@@ -1,12 +1,14 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Where(clause = "DELETED = 0")
 public class Animal {
 
     @Id
@@ -16,8 +18,8 @@ public class Animal {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private boolean deleted;
+    @Column(name = "DELETED", nullable = false)
+    private int deleted = 0;
 
     private String type;
     private String breed;
@@ -41,7 +43,6 @@ public class Animal {
         this.breed = breed;
         this.animalAge = animalAge;
         this.description = description;
-        this.deleted = false;
     }
 
     public void removeOwner(Customer customer) {
@@ -70,56 +71,56 @@ public class Animal {
         return name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getBreed() {
-        return breed;
-    }
-
-    public int getAnimalAge() {
-        return animalAge;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getBreed() {
+        return breed;
     }
 
     public void setBreed(String breed) {
         this.breed = breed;
     }
 
+    public int getAnimalAge() {
+        return animalAge;
+    }
+
     public void setAnimalAge(int animalAge) {
         this.animalAge = animalAge;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public int isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public Set<Customer> getOwner() {

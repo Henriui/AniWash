@@ -47,14 +47,14 @@ public class CustomerListViewCellAppointment extends ListCell<Appointment> {
             // Update the cell content with the customer information
 
             Label dateLabel = (Label) ((VBox) basicInfoHBox.getChildren().get(0)).getChildren().get(0);
-            dateLabel.setText(String.valueOf(appointment.getDate().toLocalDate()));
+            dateLabel.setText(String.valueOf(appointment.getStartDate().toLocalDate()));
 
             Label descriptionLabel = (Label) ((VBox) customerInfoHBox.getChildren().get(1)).getChildren().get(0);
             descriptionLabel.setText(String.valueOf(appointment.getDescription()));
 
 
             // Set cell content
-            
+
             setText(null);
             setGraphic(customerInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 45;");

@@ -1,42 +1,33 @@
 package aniwash.view;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import org.hibernate.annotations.Parent;
-
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
-import com.calendarfx.view.TimeField;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
-
-import aniwash.MainApp;
+import aniwash.dao.*;
 import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
+import aniwash.entity.Product;
 import aniwash.resources.model.Calendars;
 import aniwash.resources.model.CreatePopUp;
+import aniwash.resources.utilities.ControllerUtilities;
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
+import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
 public class NewAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
@@ -71,11 +62,11 @@ public class NewAppoitmentController extends CreatePopUp {
     @FXML
     private Rectangle second;
     @FXML
-    private DatePicker date;
+    private DatePicker date = new DatePicker();
     @FXML
-    private TimeField startTime;
+    private TimeField startTime = new TimeField();
     @FXML
-    private TimeField endTime;
+    private TimeField endTime = new TimeField();
     @FXML
     private Rectangle third;
     private EntryDetailsParameter newEntry;
@@ -83,6 +74,7 @@ public class NewAppoitmentController extends CreatePopUp {
     private int selectedProduc;
     private Customer selectedCustomer;
     private Customer selectedPerson;
+    // Save the selected person and send entry .
 
     public void initialize() {
 
@@ -95,6 +87,7 @@ public class NewAppoitmentController extends CreatePopUp {
         petList.getItems().add("                                   Create new pet  +");
 
         // Initialize datepicker with selected date
+        System.out.println(newEntry.getEntry());
 
         date.setValue(newEntry.getEntry().getStartDate());
         startTime.setValue(newEntry.getEntry().getStartTime());
@@ -108,8 +101,8 @@ public class NewAppoitmentController extends CreatePopUp {
 
         // Add data to the table
 
+        servicesa = new ArrayList<>(products.getCalendars().values());
         ObservableList<Customer> people = getPeople();
-        servicesa = products.getCalendars();
 
         // Add data to the service list
 
@@ -130,12 +123,7 @@ public class NewAppoitmentController extends CreatePopUp {
 
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (person.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                } else if (person.getPhone().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                return false;
+                return person.getName().toLowerCase().contains(lowerCaseFilter);
             });
 
         });
@@ -157,9 +145,9 @@ public class NewAppoitmentController extends CreatePopUp {
                 personView.getSelectionModel().select(0);
                 if (filteredData.isEmpty()) {
                     try {
-                        newCustomer();
+                        // NEW CUSTOMER POPUP
+                        ControllerUtilities.newCustomer();
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 } else {
@@ -167,7 +155,7 @@ public class NewAppoitmentController extends CreatePopUp {
                     items.removeAll(items.subList(1, items.size()));
 
                     selectedPerson.getAnimals().forEach(animal -> {
-                        petList.getItems().addAll(animal.getDescription());
+                        petList.getItems().addAll(animal.getName());
                     });
                 }
             }
@@ -203,31 +191,26 @@ public class NewAppoitmentController extends CreatePopUp {
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.contains("Create new pet")) {
                 try {
-                    newAnimal();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // NEW ANIMAL POPUP
+                    // ControllerUtilities.newAnimal(selectedPerson);
+                } finally {
+                    update();
                 }
             } else {
-                newEntry.getEntry().setLocation(newEntry.getEntry().getLocation() + " " + newValue);
+                newEntry.getEntry().setLocation(newValue);
                 three.styleProperty().set("-fx-fill: #47c496");
             }
         });
 
     }
 
-    // Save the selected person and send entry .
+    // Set entrys "Location" which is used to store customer name and pet.
 
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        if (newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry")
-                || petList.getSelectionModel().getSelectedIndex() == -1) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("TESTI");
-            alert.setHeaderText("CREATE NEW CUSTOMER");
-            alert.setContentText("WOW");
-            alert.showAndWait();
+        if (newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+            System.out.println("Please select Service and Pet");
         } else {
             Stage stage = (Stage) save.getScene().getWindow();
             stage.close();
@@ -235,24 +218,24 @@ public class NewAppoitmentController extends CreatePopUp {
         }
     }
 
-    // Set entrys "Location" which is used to store customer name and pet.
-
-    private void selectCustomer(Customer customer) {
-        selectedCustomer = customer;
-
-        newEntry.getEntry().setLocation(customer.getName());
+    @FXML
+    public void textChanged() {
+        personView.getSelectionModel().clearSelection();
     }
 
     // Set entrys "Title" which is used to store service name.
 
+    private void selectCustomer(Customer customer) {
+        selectedCustomer = customer;
+/*
+        Animal[] animals = selectedCustomer.getAnimals().toArray(new Animal[selectedCustomer.getAnimals().size()]);
+        newEntry.getEntry().setLocation(animals[petList.getSelectionModel().getSelectedIndex() - 1].getName());
+*/
+    }
+
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
             System.out.println("Create new service");
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("TESTI");
-            alert.setHeaderText("CREATE NEW CUSTOMER");
-            alert.setContentText("WOW");
-            alert.showAndWait();
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);
@@ -268,85 +251,49 @@ public class NewAppoitmentController extends CreatePopUp {
         entry.changeStartTime(newEntry.getEntry().getStartTime());
         entry.changeEndDate(newEntry.getEntry().getStartDate());
         entry.changeEndTime(newEntry.getEntry().getEndTime());
+        entry.setId(saveAppointment(newEntry.getEntry().getStartAsZonedDateTime(), newEntry.getEntry().getEndAsZonedDateTime()));
         entry.setLocation(newEntry.getEntry().getLocation());
         entry.setTitle(newEntry.getEntry().getTitle());
-
-        entry.setId(String.valueOf(selectedCustomer.getId()));
         entry.setUserObject(selectedCustomer);
-
-        products.addAppoitmEntry(entry, servicesa.get(selectedProduc - 1));
+        entry.setCalendar(servicesa.get(selectedProduc - 1));
         newEntry.getEntry().removeFromCalendar();
+        products.addAppoitmEntry(entry, servicesa.get(selectedProduc - 1));
+    }
+
+    private String saveAppointment(ZonedDateTime start, ZonedDateTime end) {
+        Animal[] animals = selectedCustomer.getAnimals().toArray(new Animal[selectedCustomer.getAnimals().size()]);
+        IProductDao productDao = new ProductDao();
+        Product product = productDao.findByNameProduct(servicesa.get(selectedProduc - 1).getName());
+
+        Appointment appointment = new Appointment(start, end, selectedCustomer.getName() + " " + product.getName());
+        appointment.addCustomer(selectedCustomer);
+        appointment.addAnimal(animals[petList.getSelectionModel().getSelectedIndex() - 1]);
+        appointment.addProduct(product);
+
+        IAppointmentDao appointmentDao = new AppointmentDao();
+        appointmentDao.addAppointment(appointment);
+        return "id" + appointment.getId();
+    }
+
+    private void update() {
+/*
+        personView.getSelectionModel().select(0);
+        ObservableList<String> items = petList.getItems();
+        items.removeAll(items.subList(1, items.size()));
+
+        selectedPerson.getAnimals().forEach(animal -> {
+            petList.getItems().addAll(animal.getName());
+        });
+*/
     }
 
     // Create some sample data.
     // TODO: Replace with real data.
     private ObservableList<Customer> getPeople() {
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
-
-        customers.add(new Customer("name", "phone", "email"));
-        customers.add(new Customer("asd1", "112", "jonne.borgman@metropolia.if"));
-        customers.add(new Customer("asd2", "112", "jonne.borgman@metropolia.if"));
-        customers.add(new Customer("asd3", "112", "jonne.borgman@metropolia.if"));
-        customers.add(new Customer("asd4", "112", "jonne.borgman@metropolia.if"));
-        customers.add(new Customer("asd5", "112", "jonne.borgman@metropolia.if"));
-        customers.add(new Customer("asd6", "112", "jonne.borgman@metropolia.if"));
-        long id = 0;
-        for (Customer customer : customers) {
-            customer.setId(id);
-            id++;
-        }
-
-        customers.get(0).addAnimal(new Animal("dog", "dog", "dog", 10, "koere"));
-        customers.get(1).addAnimal(new Animal("dog", "dog", "dog", 10, "asd"));
-        customers.get(2).addAnimal(new Animal("dog", "dog", "dog", 10, "dsa"));
-        customers.get(3).addAnimal(new Animal("dog", "dog", "dog", 10, "qew"));
-        customers.get(4).addAnimal(new Animal("dog", "dog", "dog", 10, "qew"));
-        customers.get(5).addAnimal(new Animal("dog", "dog", "dog", 10, "qew"));
+        ICustomerDao customerDao = new CustomerDao();
+        ObservableList<Customer> customers = FXCollections.observableList(customerDao.findAllCustomer());
         return customers;
     }
 
-    @FXML
-    public void textChanged() {
-        personView.getSelectionModel().clearSelection();
-    }
 
-    public void newCustomer() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newCustomerView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Customer");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
-    }
-
-    public void newAnimal() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("createNewAnimalView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Animal");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-        CreateNewAnimalController.setCustomer(selectedPerson);
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
-    }
-
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
-    }
 }
