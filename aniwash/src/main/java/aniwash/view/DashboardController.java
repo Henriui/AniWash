@@ -39,11 +39,11 @@ public class DashboardController {
             int time = LocalDateTime.now().getHour();
             System.out.println(time);
             if (time >= 0 && time < 12) {
-                welcometext.setText("Good morning, " + MainApp.getBiscuit().getUsername() + "!");
+                welcometext.setText("Good morning, " + MainApp.getBiscuit().getUser().getName() + "!");
             } else if (time >= 12 && time < 18) {
-                welcometext.setText("Good afternoon, " + MainApp.getBiscuit().getUsername()+ "!");
+                welcometext.setText("Good afternoon, " + MainApp.getBiscuit().getUser().getName() + "!");
             } else {
-                welcometext.setText("Good evening, " + MainApp.getBiscuit().getUsername()+ "!");
+                welcometext.setText("Good evening, " + MainApp.getBiscuit().getUser().getName() + "!");
             }
         } catch (BiscuitExeption e) {
             System.out.println("Biscuit fuked up");
