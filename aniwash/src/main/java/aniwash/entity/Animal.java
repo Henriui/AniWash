@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Where(clause = "deleted = 0")
+@Where(clause = "DELETED = 0")
 public class Animal {
 
     @Id
@@ -18,7 +18,7 @@ public class Animal {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
     private String type;
@@ -27,7 +27,8 @@ public class Animal {
     private String description;
 
 
-    @ManyToMany(mappedBy = "animals")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "animals_id")}, inverseJoinColumns = @JoinColumn(name = "owner_id"))
     private Set<Customer> owner = new HashSet<>();
 
     @ManyToMany(mappedBy = "animals")
@@ -70,52 +71,52 @@ public class Animal {
         return name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getBreed() {
-        return breed;
-    }
-
-    public int getAnimalAge() {
-        return animalAge;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int isDeleted() {
-        return deleted;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getBreed() {
+        return breed;
     }
 
     public void setBreed(String breed) {
         this.breed = breed;
     }
 
+    public int getAnimalAge() {
+        return animalAge;
+    }
+
     public void setAnimalAge(int animalAge) {
         this.animalAge = animalAge;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int isDeleted() {
+        return deleted;
     }
 
     public void setDeleted() {

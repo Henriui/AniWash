@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Where(clause = "deleted = 0")
+@Where(clause = "DELETED = 0")
 public class Customer {
 
     @Id
@@ -25,14 +25,13 @@ public class Customer {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
     private String address;
     private String postalCode;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "owner_id")}, inverseJoinColumns = @JoinColumn(name = "animals_id"))
+    @ManyToMany(mappedBy = "owner")
     private Set<Animal> animals = new HashSet<>();
 
     @ManyToMany(mappedBy = "customers")
@@ -43,7 +42,6 @@ public class Customer {
     }
 
     public Customer(String name, String phone, String email) {
-
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -102,52 +100,52 @@ public class Customer {
         return name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public int isDeleted() {
-        return deleted;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
 
+    public String getPostalCode() {
+        return postalCode;
+    }
+
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public int isDeleted() {
+        return deleted;
     }
 
     public void setDeleted() {

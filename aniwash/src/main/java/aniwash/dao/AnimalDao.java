@@ -14,33 +14,35 @@ import java.util.function.Consumer;
  */
 public class AnimalDao implements IAnimalDao {
 
-    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-
     @Override
     public boolean addAnimal(Animal animal) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = em.find(Animal.class, animal.getId());
-        if (a != null) {
+        if (em.contains(a)) {
             System.out.println("Animal already exists with id: " + animal.getId());
             return false;
         }
 
-        executeInTransaction(em -> em.persist(animal));
+        executeInTransaction(entityManager -> em.persist(animal), em);
         return true;
     }
 
     @Override
     public List<Animal> findAllAnimal() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT a FROM Animal a", Animal.class).getResultList();
     }
 
 
     @Override
     public Animal findByIdAnimal(long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Animal.class, id);
     }
 
     @Override
     public Animal findByNameAnimal(String name) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal t = null;
         try {
             t = em.createQuery("SELECT a FROM Animal a WHERE a.name = :name", Animal.class).setParameter("name", name).getSingleResult();
@@ -52,8 +54,9 @@ public class AnimalDao implements IAnimalDao {
 
     @Override
     public boolean updateAnimal(Animal animal) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal t = em.find(Animal.class, animal.getId());
-        if (t == null) {
+        if (!em.contains(t)) {
             System.out.println("Animal does not exist in database. Id: " + animal.getId());
             return false;
         }
@@ -71,16 +74,17 @@ public class AnimalDao implements IAnimalDao {
 
     @Override
     public boolean deleteByIdAnimal(long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = em.find(Animal.class, id);
-        if (a != null) {
-            executeInTransaction(em -> em.remove(a));
+        if (em.contains(a)) {
+            executeInTransaction(entityManager -> em.remove(a), em);
             return true;
         }
         System.out.println("Animal does not exist with id: " + id);
         return false;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action) {
+    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

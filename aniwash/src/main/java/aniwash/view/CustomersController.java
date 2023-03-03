@@ -1,20 +1,14 @@
 package aniwash.view;
 
-import java.io.IOException;
-import java.util.function.Predicate;
-
 import aniwash.MainApp;
-import aniwash.entity.Animal;
+import aniwash.dao.CustomerDao;
+import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCell;
-import javafx.beans.binding.Bindings;
+import aniwash.resources.model.CustomListViewCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,47 +24,41 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.function.Predicate;
+
 public class CustomersController {
+    private static Customer selectedCustomer;
     @FXML
     private ListView<Customer> listView;
     @FXML
     private Text customerCount;
     @FXML
     private Button newCustomer;
-    private static Customer selectedCustomer;
-
-    private final ObservableList<Customer> customers = FXCollections.observableArrayList(
-            new Customer("asd1", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"),
-            new Customer("asd2", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd3", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd4", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd5", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd6", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd7", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd8", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd9", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd10", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"));
     @FXML
     private TextField searchField;
 
+/*
     public void test() {
         for (Customer customer : customers) {
-            customer.addAnimal(new Animal("Testi", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
+            customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
+            customer.addAppointment(new Appointment(ZonedDateTime.now(), (ZonedDateTime.now()), "Cancer Treatment"));
+
         }
+    }
+*/
+
+    private static FXMLLoader loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        return fxmlLoader;
     }
 
     public void initialize() {
-        test();
+        //test();
         // Bind the ListView to the ObservableList
 
+        ICustomerDao customerDao = new CustomerDao();
+        ObservableList<Customer> customers = FXCollections.observableList(customerDao.findAllCustomer());
         listView.setItems(customers);
 
         // Bind the customerCount text property to the size of the list
@@ -79,13 +67,12 @@ public class CustomersController {
 
         // Set the cell factory to create custom ListCells
 
-        listView.setCellFactory(listView -> new CustomerListViewCell());
+        listView.setCellFactory(listView -> new CustomListViewCell());
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
 
         // Set the placeholder text for the ListView
 
-        Background background = new Background(
-                new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
         listView.setPlaceholder(new Label("No items") {
             @Override
             protected void updateBounds() {
@@ -126,6 +113,9 @@ public class CustomersController {
                     stage.setTitle("Edit Customer");
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.show();
+                    stage.setOnHidden(view -> {
+                        // TODO: Get customers from database so the listview reloads
+                    });
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -147,10 +137,13 @@ public class CustomersController {
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
+
+        stage.setOnHidden(event -> {
+            // TODO: Get customers from database so the listview reloads
+        });
     }
 
     public Customer getSelectedCustomer() {
-        System.out.println("tissi = " + selectedCustomer);
         return selectedCustomer;
     }
 
@@ -164,8 +157,8 @@ public class CustomersController {
         MainApp.setRoot("mainView");
     }
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
+    @FXML
+    private void products() throws IOException {
+        MainApp.setRoot("productsView");
     }
 }

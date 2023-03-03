@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Where(clause = "deleted = 0")
+@Where(clause = "DELETED = 0")
 public class Appointment {
 
     @Id
@@ -26,7 +26,7 @@ public class Appointment {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -119,28 +119,28 @@ public class Appointment {
         return description;
     }
 
-    public ZonedDateTime getStartDate() {
-        return startDate;
-    }
-
-    public ZonedDateTime getEndDate() {
-        return endDate;
-    }
-
-    public int isDeleted() {
-        return deleted;
-    }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ZonedDateTime getStartDate() {
+        return startDate;
     }
 
     public void setStartDate(ZonedDateTime startDate) {
         this.startDate = startDate;
     }
 
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
     public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public int isDeleted() {
+        return deleted;
     }
 
     public void setDeleted() {

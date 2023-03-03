@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Where(clause = "deleted = 0")
+@Where(clause = "DELETED = 0")
 public class Product {
 
     @Id
@@ -26,7 +26,7 @@ public class Product {
     @Column(nullable = false)
     private String style;
 
-    @Column(nullable = false)
+    @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
     @ManyToMany(mappedBy = "products")

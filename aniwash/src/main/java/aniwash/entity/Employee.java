@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Where(clause = "deleted = 0")
+@Where(clause = "DELETED = 0")
 public class Employee {
 
     @Id
@@ -31,7 +31,7 @@ public class Employee {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
     @ManyToMany(mappedBy = "employees")
@@ -92,6 +92,14 @@ public class Employee {
         this.name = name;
     }
 
+    public int isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted() {
+        this.deleted = 1;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -100,20 +108,12 @@ public class Employee {
         this.email = email;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public int isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted() {
-        this.deleted = 1;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Appointment> getAppointments() {

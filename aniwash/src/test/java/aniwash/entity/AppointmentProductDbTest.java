@@ -30,7 +30,13 @@ public class AppointmentProductDbTest {
 
     @AfterEach
     public void tearDown() {
-        aDao.deleteByIdAppointment(appointment.getId());
+        for (Appointment a : aDao.findAllAppointment()) {
+            aDao.deleteByIdAppointment(a.getId());
+        }
+
+        for (Product p : pDao.findAllProduct()) {
+            pDao.deleteByIdProduct(p.getId());
+        }
     }
 
     @Test

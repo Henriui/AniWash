@@ -1,21 +1,33 @@
 package aniwash.view;
 
+import aniwash.dao.CustomerDao;
+import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomerListViewCellAnimal;
+import aniwash.resources.model.CustomListViewCellAnimal;
+import aniwash.resources.model.CustomListViewCellAppointment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,18 +59,36 @@ public class EditCustomerController {
 
     @FXML
     private Button saveButton;
-    private final ObservableList<Animal> animals = FXCollections.observableArrayList();
+    private static ObservableList<Animal> animals = FXCollections.observableArrayList();
+    private static ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
     @FXML
     private ListView<Animal> listView;
+    @FXML
+    private ListView<Appointment> appointmentListView;
+
     private static Customer customer;
     private CustomersController customersController = new CustomersController();
 
     public void initialize() {
         customer = customersController.getSelectedCustomer();
         animals.addAll(customer.getAnimals());
+        appointmentsList.addAll(customer.getAppointments());
 
+        appointmentListView.setItems(appointmentsList);
         listView.setItems(animals);
-        listView.setCellFactory(listView -> new CustomerListViewCellAnimal());
+        listView.setCellFactory(listView -> new CustomListViewCellAnimal());
+        appointmentListView.setCellFactory(appointmentListView -> new CustomListViewCellAppointment());
+
+        Background background = new Background(
+                new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
+        appointmentListView.setPlaceholder(new Label("No appointments") {
+            @Override
+            protected void updateBounds() {
+                super.updateBounds();
+                setBackground(background);
+            }
+        });
+
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
 
         nameField.setText(customer.getName());
@@ -105,9 +135,9 @@ public class EditCustomerController {
         customer.setPhone(phone);
         customer.setPostalCode(postalCode);
 
-        // TODO: Do something with the customer object
+        ICustomerDao customerDao = new CustomerDao();
+        customerDao.updateCustomer(customer);
 
-        System.out.println("TODO SAVE TO DATABASE: " + customer);
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
@@ -147,10 +177,6 @@ public class EditCustomerController {
         Scene popupScene = new Scene(popupRoot);
         popupStage.setScene(popupScene);
         popupStage.show();
-
-    }
-
-    public void reloadView() {
-        // TODO: Get animals from database again.
+        CreateNewAnimalController.setCustomer(customer);
     }
 }
