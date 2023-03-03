@@ -64,7 +64,6 @@ public class ProductDao implements IProductDao {
         p.setDescription(product.getDescription());
         p.setPrice(product.getPrice());
         p.setStyle(product.getStyle());
-        p.setAppointments(product.getAppointments());
         em.getTransaction().commit();
         return true;
     }
