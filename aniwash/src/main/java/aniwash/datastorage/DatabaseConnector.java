@@ -1,6 +1,12 @@
 package aniwash.datastorage;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class DatabaseConnector {
 
@@ -10,7 +16,14 @@ public class DatabaseConnector {
     public static EntityManager getInstance() {
         if (em == null) {
             if (emf == null) {
-                emf = Persistence.createEntityManagerFactory("com.aniwash");
+                Properties persistenceProperties = new Properties();
+                try {
+                    persistenceProperties.load(new FileInputStream("./aniwash/persistence.properties"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                emf = Persistence.createEntityManagerFactory("com.aniwash", persistenceProperties);
             }
             em = emf.createEntityManager();
         }

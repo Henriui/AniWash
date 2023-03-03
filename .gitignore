@@ -5,3 +5,4 @@ target/
 
 ## Ignore files
 aniwash/aniwash.iml
+aniwash/persistence.properties
