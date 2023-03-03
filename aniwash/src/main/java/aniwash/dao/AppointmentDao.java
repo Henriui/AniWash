@@ -43,7 +43,7 @@ public class AppointmentDao implements IAppointmentDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :date", Appointment.class).setParameter("startDate", date).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :startDate", Appointment.class).setParameter("startDate", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }
