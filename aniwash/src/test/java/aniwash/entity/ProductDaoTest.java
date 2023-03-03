@@ -159,4 +159,12 @@ public class ProductDaoTest {
         assertNotNull(productDao.findByIdProduct(id), "softDeleteProduct(): Product not found.");
         assertEquals(1, productDao.findByIdProduct(id).isDeleted(), "softDeleteProduct(): Product not soft deleted.");
     }
+
+    @Test
+    @Order(14)
+    @DisplayName("Search for nonexistent product should return null")
+    public void testSearchNonExistingProduct() {
+        assertNull(productDao.findByIdProduct(999L), "findByIdProduct(): Found non-existing product.");
+        assertNull(productDao.findByNameProduct("Non-existing product"), "findByNameProduct(): Found non-existing product.");
+    }
 }

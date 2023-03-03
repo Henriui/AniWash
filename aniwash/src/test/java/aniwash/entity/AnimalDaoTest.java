@@ -237,8 +237,16 @@ public class AnimalDaoTest {
     }
 
     @Test
-    @DisplayName("Eläimen pehmeä poistaminen databasesta")
+    @DisplayName("Olemattoman eläimen päivitysyrityksen tulee palauttaa false")
     @Order(16)
+    public void testUpdateAnimal2() {
+        animal.setId(9999L);
+        assertFalse(animalDao.updateAnimal(animal));
+    }
+
+    @Test
+    @DisplayName("Eläimen pehmeä poistaminen databasesta")
+    @Order(17)
     public void testSoftDeleteAnimal() {
         animalDao.addAnimal(animal);
         animal.setDeleted();

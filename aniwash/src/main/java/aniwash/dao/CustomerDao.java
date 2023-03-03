@@ -85,6 +85,11 @@ public class CustomerDao implements ICustomerDao {
         } catch (NoResultException e) {
             System.out.println("No customer found with name: " + name);
         }
+        assert c != null;
+        if (c.isEmpty()) {
+            System.out.println("No customer found with name: " + name);
+            c = null;
+        }
         return c;
     }
 
