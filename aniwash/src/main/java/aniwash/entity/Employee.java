@@ -2,18 +2,20 @@ package aniwash.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Where(clause = "DELETED = 0")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -25,8 +27,12 @@ public class Employee {
 
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String title;
+
+    @Column(name = "DELETED", nullable = false)
+    private int deleted = 0;
 
     @ManyToMany(mappedBy = "employees")
     private Set<Appointment> appointments = new HashSet<>();
@@ -35,7 +41,7 @@ public class Employee {
     }
 
     public Employee(String username, String password, String name, String email, String title) {
-        this.username = username + id;
+        this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -86,6 +92,14 @@ public class Employee {
         this.name = name;
     }
 
+    public int isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted() {
+        this.deleted = 1;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -94,12 +108,12 @@ public class Employee {
         this.email = email;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Appointment> getAppointments() {

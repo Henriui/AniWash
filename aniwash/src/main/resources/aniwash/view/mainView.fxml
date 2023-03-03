@@ -36,7 +36,7 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="250.0" mnemonicParsing="false" prefHeight="13.0" prefWidth="160.0" styleClass="side-bar-button" text="Customers" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
+                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="250.0" mnemonicParsing="false" onAction="#customers" prefHeight="13.0" prefWidth="160.0" styleClass="side-bar-button" text="Customers" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -56,6 +56,11 @@
                                     <Font size="24.0" />
                                  </font>
                               </Text>
+                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="48.0" layoutY="321.0" mnemonicParsing="false" onAction="#products" prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button" text="Products" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Button>
                            </children></AnchorPane>
                      </children>
                      <effect>

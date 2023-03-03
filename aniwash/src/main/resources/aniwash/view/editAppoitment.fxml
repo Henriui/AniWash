@@ -5,24 +5,20 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="aniwash.view.NewAppoitmentController">
+            fx:controller="aniwash.view.EditAppoitmentController">
     <children>
-        <Circle fx:id="one" fill="DODGERBLUE" layoutX="44.0" layoutY="98.0" radius="22.0" stroke="TRANSPARENT"
-                strokeType="INSIDE" style="-fx-fill: #d0d1d4;" AnchorPane.leftAnchor="22.0"/>
-        <Text fill="WHITE" layoutX="39.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+        <Text fill="WHITE" layoutX="87.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
             <font>
                 <Font size="20.0"/>
             </font>
         </Text>
-        <Rectangle fx:id="first" arcHeight="5.0" arcWidth="5.0" height="129.0" layoutX="39.0" layoutY="120.0"
-                   stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-fill: #d0d1d4;" width="11.0"/>
-        <AnchorPane layoutX="95.0" prefHeight="177.0" prefWidth="406.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane layoutX="97.0" layoutY="-2.0" prefHeight="177.0" prefWidth="406.0" AnchorPane.topAnchor="-2.0">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7d7d7" height="163.0" layoutX="-1.0" layoutY="14.0"
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="163.0" layoutX="-1.0" layoutY="14.0"
                            stroke="#ffffff00" strokeType="INSIDE" width="405.0" AnchorPane.bottomAnchor="37.0"
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
                     <effect>
@@ -33,10 +29,11 @@
                         </DropShadow>
                     </effect>
                 </Rectangle>
-                <TableView fx:id="personView" layoutX="26.0" layoutY="88.0" prefHeight="62.0" prefWidth="365.0"
+                <TableView fx:id="personView" layoutX="26.0" layoutY="88.0" prefHeight="72.0" prefWidth="365.0"
                            style="-fx-background-color: #d0d1d4;" stylesheets="@../css/styles.css"/>
-                <TextField fx:id="searchField" layoutX="26.0" layoutY="50.0" prefHeight="38.0" prefWidth="365.0"
-                           promptText="Search..." style="-fx-background-color: #d0d1d4;"/>
+                <TextField fx:id="searchField" layoutX="26.0" layoutY="50.0" onKeyPressed="#modifyEntry"
+                           prefHeight="38.0" prefWidth="365.0" promptText="Search..."
+                           style="-fx-background-color: #d0d1d4;"/>
                 <Text layoutX="26.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select customer"
                       AnchorPane.topAnchor="10.0">
                     <font>
@@ -47,25 +44,14 @@
                            AnchorPane.rightAnchor="20.0"/>
             </children>
         </AnchorPane>
-        <Circle fx:id="two" fill="DODGERBLUE" layoutX="45.0" layoutY="271.0" radius="22.0" stroke="TRANSPARENT"
-                strokeType="INSIDE" style="-fx-fill: #d0d1d4;"/>
-        <Text fill="WHITE" layoutX="40.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
+        <Text fill="WHITE" layoutX="88.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2">
             <font>
                 <Font size="20.0"/>
             </font>
         </Text>
-        <Rectangle fx:id="second" arcHeight="5.0" arcWidth="5.0" height="129.0" layoutX="39.0" layoutY="292.0"
-                   stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-fill: #d0d1d4;" width="11.0"/>
-        <Circle fx:id="three" fill="DODGERBLUE" layoutX="44.0" layoutY="443.0" radius="22.0" stroke="TRANSPARENT"
-                strokeType="INSIDE" style="-fx-fill: #d0d1d4;"/>
-        <Text fill="WHITE" layoutX="39.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
-            <font>
-                <Font size="20.0"/>
-            </font>
-        </Text>
-        <AnchorPane layoutX="96.0" layoutY="535.0" prefHeight="85.0" prefWidth="406.0">
+        <AnchorPane layoutX="98.0" layoutY="538.0" prefHeight="85.0" prefWidth="406.0">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7d7d7" height="129.0" layoutY="-7.0"
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="129.0" layoutY="-7.0"
                            stroke="#ffffff00" strokeType="INSIDE" width="405.0" AnchorPane.bottomAnchor="78.0"
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-7.0">
                     <effect>
@@ -84,7 +70,7 @@
                 </Text>
                 <Separator layoutX="20.0" layoutY="40.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0"
                            AnchorPane.rightAnchor="20.0"/>
-                <DatePicker fx:id="date" layoutX="20.0" layoutY="72.0"/>
+                <DatePicker fx:id="date" layoutX="21.0" layoutY="72.0"/>
                 <TimeField fx:id="startTime" layoutX="269.0" layoutY="58.0"/>
                 <TimeField fx:id="endTime" layoutX="269.0" layoutY="89.0"/>
                 <Text layoutX="219.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start"
@@ -101,22 +87,15 @@
                 </Text>
             </children>
         </AnchorPane>
-        <Circle fill="DODGERBLUE" layoutX="46.0" layoutY="598.0" radius="22.0" stroke="TRANSPARENT" strokeType="INSIDE"
-                style="-fx-fill: #47c496;"/>
-        <Text fill="WHITE" layoutX="41.0" layoutY="606.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
-            <font>
-                <Font size="20.0"/>
-            </font>
-        </Text>
-        <Button fx:id="save" layoutX="516.0" layoutY="661.0" mnemonicParsing="false" onAction="#save" prefHeight="27.0"
+        <Button fx:id="save" layoutX="513.0" layoutY="659.0" mnemonicParsing="false" onAction="#save" prefHeight="27.0"
                 prefWidth="59.0" style="-fx-background-color: #47c496; -fx-background-radius: 20;" text="Save">
             <effect>
                 <DropShadow/>
             </effect>
         </Button>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7d7d7" height="177.0" layoutX="95.0" layoutY="343.0"
-                   stroke="#ffffff00" strokeType="INSIDE" width="405.0" AnchorPane.bottomAnchor="180.0"
-                   AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="343.0">
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="177.0" layoutX="98.0" layoutY="344.0"
+                   stroke="#ffffff00" strokeType="INSIDE" width="405.0" AnchorPane.bottomAnchor="179.0"
+                   AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="344.0">
             <effect>
                 <DropShadow height="220.31" radius="81.0775" width="106.0">
                     <color>
@@ -125,17 +104,17 @@
                 </DropShadow>
             </effect>
         </Rectangle>
-        <Text layoutX="123.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select pet"
-              AnchorPane.topAnchor="356.8134765625">
+        <Text layoutX="126.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select pet"
+              AnchorPane.topAnchor="357.8134765625">
             <font>
                 <Font size="15.0"/>
             </font>
         </Text>
-        <Separator layoutX="119.0" layoutY="384.0" prefHeight="3.0" prefWidth="366.0" AnchorPane.leftAnchor="119.0"
-                   AnchorPane.rightAnchor="115.0"/>
-        <ListView fx:id="petList" disable="true" fixedCellSize="0.0" layoutX="123.0" layoutY="392.0" prefHeight="114.0"
+        <Separator layoutX="122.0" layoutY="385.0" prefHeight="3.0" prefWidth="366.0" AnchorPane.leftAnchor="122.0"
+                   AnchorPane.rightAnchor="112.0"/>
+        <ListView fx:id="petList" fixedCellSize="0.0" layoutX="126.0" layoutY="393.0" prefHeight="114.0"
                   prefWidth="350.0"/>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7d7d7" height="163.0" layoutX="95.0" layoutY="170.0"
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="163.0" layoutX="98.0" layoutY="170.0"
                    stroke="#ffffff00" strokeType="INSIDE" width="405.0">
             <effect>
                 <DropShadow height="220.31" radius="81.0775" width="106.0">
@@ -145,13 +124,13 @@
                 </DropShadow>
             </effect>
         </Rectangle>
-        <Text layoutX="121.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select service">
+        <Text layoutX="124.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select service">
             <font>
                 <Font size="15.0"/>
             </font>
         </Text>
-        <Separator layoutX="115.0" layoutY="217.0" prefWidth="200.0"/>
-        <ListView fx:id="services" disable="true" fixedCellSize="0.0" layoutX="123.0" layoutY="220.0" prefHeight="107.0"
+        <Separator layoutX="118.0" layoutY="217.0" prefWidth="200.0"/>
+        <ListView fx:id="services" fixedCellSize="0.0" layoutX="126.0" layoutY="220.0" prefHeight="107.0"
                   prefWidth="350.0"/>
     </children>
 </AnchorPane>

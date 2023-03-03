@@ -1,6 +1,7 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Where;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Where(clause = "DELETED = 0")
 public class Appointment {
 
     @Id
@@ -16,10 +18,16 @@ public class Appointment {
     private long id;
 
     @Column(nullable = false)
-    private ZonedDateTime date;
+    private ZonedDateTime startDate;
+
+    @Column(nullable = false)
+    private ZonedDateTime endDate;
 
     @Column(nullable = false)
     private String description;
+
+    @Column(name = "DELETED", nullable = false)
+    private int deleted = 0;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
@@ -40,8 +48,9 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(ZonedDateTime date, String description) {
-        this.date = date;
+    public Appointment(ZonedDateTime startDate, ZonedDateTime endDate, String description) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.description = description;
     }
 
@@ -110,16 +119,32 @@ public class Appointment {
         return description;
     }
 
-    public ZonedDateTime getDate() {
-        return date;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public int isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public Set<Employee> getEmployees() {
@@ -158,7 +183,7 @@ public class Appointment {
     public String toString() {
         return getClass().getSimpleName() +
                 "(id=" + id +
-                ", date=" + date +
+                ", date=" + startDate +
                 ", description='" + description + '\'' +
                 ", employees=" + employees +
                 ", customers=" + customers +

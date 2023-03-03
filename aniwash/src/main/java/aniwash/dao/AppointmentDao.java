@@ -2,87 +2,93 @@ package aniwash.dao;
 
 import aniwash.entity.Appointment;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 
+/*
+ * This class is used to access the database and perform CRUD operations on the Appointment table.
+ * @author rasmushy, lassib
+ */
 public class AppointmentDao implements IAppointmentDao {
-
-    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addAppointment(Appointment appointment) {
-        boolean added = true;
-        em.getTransaction().begin();
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
-        if (app != null) {
-            System.out.println("Appointment already exists: " + appointment.getId());
-            added = false;
-        } else {
-            em.persist(appointment);
+        if (em.contains(app)) {
+            System.out.println("Appointment already exists with id: " + appointment.getId());
+            return false;
         }
-        em.getTransaction().commit();
-        return added;
+        executeInTransaction(entityManager -> em.persist(appointment), em);
+        return true;
     }
 
     @Override
     public List<Appointment> findAllAppointment() {
-        em.getTransaction().begin();
-        List<Appointment> appointments = em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
-        em.getTransaction().commit();
-        return appointments;
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
     }
 
     @Override
     public Appointment findByIdAppointment(Long id) {
-        em.getTransaction().begin();
-        Appointment appointment = em.find(Appointment.class, id);
-        em.getTransaction().commit();
-        return appointment;
-
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        return em.find(Appointment.class, id);
     }
 
     @Override
-    public Appointment findByDateAppointment(ZonedDateTime date) {
-        Appointment app = null;
-        em.getTransaction().begin();
+    public Appointment findByStartDateAppointment(ZonedDateTime date) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Appointment a = null;
         try {
-            app = em.createQuery("SELECT a FROM Appointment a WHERE a.date = :date", Appointment.class).setParameter("date", date).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :date", Appointment.class).setParameter("startDate", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }
-
-        em.getTransaction().commit();
-        return app;
-    }
-
-    @Override
-    public boolean deleteByIdAppointment(Long id) {
-        em.getTransaction().begin();
-        boolean deleted = false;
-        Appointment appointment = em.find(Appointment.class, id);
-        if (appointment != null) {
-            em.remove(appointment);
-            deleted = true;
-        }
-        em.getTransaction().commit();
-        return deleted;
+        return a;
     }
 
     @Override
     public boolean updateAppointment(Appointment appointment) {
-        boolean updated = false;
-        em.getTransaction().begin();
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
-        if (app != null) {
-            app.setDate(appointment.getDate());
-            app.setEmployees(appointment.getEmployees());
-            app.setCustomers(appointment.getCustomers());
-            app.setProducts(appointment.getProducts());
-            updated = true;
+        if (!em.contains(app)) {
+            System.out.println("Appointment does not exist in database. Id: " + appointment.getId());
+            return false;
         }
-
+        em.getTransaction().begin();
+        app.setStartDate(appointment.getStartDate());
+        app.setEmployees(appointment.getEmployees());
+        app.setCustomers(appointment.getCustomers());
+        app.setProducts(appointment.getProducts());
         em.getTransaction().commit();
-        return updated;
+        return true;
     }
+
+    @Override
+    public boolean deleteByIdAppointment(Long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Appointment appointment = em.find(Appointment.class, id);
+        if (em.contains(appointment)) {
+            executeInTransaction(entityManager -> em.remove(appointment), em);
+            return true;
+        }
+        System.out.println("No appointment found with id: " + id);
+        return false;
+    }
+
+    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            action.accept(em);
+            tx.commit();
+        } catch (RuntimeException e) {
+            tx.rollback();
+            throw e;
+        }
+    }
+
 }

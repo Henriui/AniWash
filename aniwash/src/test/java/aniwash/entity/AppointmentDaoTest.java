@@ -13,14 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AppointmentDaoTest {
 
     private final IAppointmentDao appointmentDao = new AppointmentDao();
-    private final String date = "2021-12-03T10:15:30+02:00";
+    private final String startDate = "2021-12-03T10:15:30+02:00";
+    private final String endDate = "2021-12-03T11:15:30+02:00";
     private final String description = "Koiran pesu";
 
-    private Appointment appointment = new Appointment(ZonedDateTime.parse(date), description);
+    private Appointment appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
 
     @BeforeEach
     public void setUp() {
-        appointment = new Appointment(ZonedDateTime.parse(date), description);
+        appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
     }
 
     @AfterEach
@@ -35,7 +36,7 @@ public class AppointmentDaoTest {
     public void testAddAppointment() {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         assertNotNull(appointment = appointmentDao.findByIdAppointment(appointment.getId()), "addAppointment(): Cant find added appointment.");
-        assertEquals(appointment.getDate().toString(), date, "addAppointment(): Date of added appointment does not match.");
+        assertEquals(appointment.getStartDate().toString(), startDate, "addAppointment(): Date of added appointment does not match.");
         assertEquals(appointment.getDescription(), description, "addAppointment(): Description of added appointment does not match.");
     }
 
@@ -54,18 +55,18 @@ public class AppointmentDaoTest {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
         assertNotNull(appointment, "findByIdAppointment(): Cant find added appointment.");
-        assertEquals(appointment.getDate(), ZonedDateTime.parse(date), "findByIdAppointment(): Date of found appointment does not match added.");
+        assertEquals(appointment.getStartDate(), ZonedDateTime.parse(startDate), "findByIdAppointment(): Date of found appointment does not match added.");
         assertEquals(appointment.getDescription(), description, "findByIdAppointment(): Description of found appointment does not match added.");
     }
 
     @Test
     @Order(4)
-    @DisplayName("Fetch added appointment by date")
-    public void testFindByDateAppointment() {
+    @DisplayName("Fetch added appointment by start date")
+    public void testFindByStartDateAppointment() {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByDateAppointment(ZonedDateTime.parse(date));
+        appointment = appointmentDao.findByStartDateAppointment(ZonedDateTime.parse(startDate));
         assertNotNull(appointment, "findByDateAppointment(): Cant find added appointment.");
-        assertEquals(appointment.getDate(), ZonedDateTime.parse(date), "findByDateAppointment(): Date of found appointment does not match added.");
+        assertEquals(appointment.getStartDate(), ZonedDateTime.parse(startDate), "findByDateAppointment(): Date of found appointment does not match added.");
         assertEquals(appointment.getDescription(), description, "findByDateAppointment(): Description of found appointment does not match added.");
     }
 
@@ -84,12 +85,12 @@ public class AppointmentDaoTest {
     public void testUpdateAppointment() {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        appointment.setDate(ZonedDateTime.parse("2011-11-09T10:15:30+02:00"));
+        appointment.setStartDate(ZonedDateTime.parse("2011-11-09T10:15:30+02:00"));
         appointment.setDescription("Koiran pesu ja leikkaus");
         assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
         assertEquals(appointment.getDescription(), "Koiran pesu ja leikkaus", "updateAppointment(): Description of updated appointment does not match.");
-        assertEquals(appointment.getDate(), ZonedDateTime.parse("2011-11-09T10:15:30+02:00"), "updateAppointment(): Date of updated appointment does not match.");
+        assertEquals(appointment.getStartDate(), ZonedDateTime.parse("2011-11-09T10:15:30+02:00"), "updateAppointment(): Date of updated appointment does not match.");
     }
 
     @Test
