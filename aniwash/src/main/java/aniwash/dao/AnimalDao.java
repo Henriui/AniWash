@@ -66,8 +66,6 @@ public class AnimalDao implements IAnimalDao {
         t.setAnimalAge(animal.getAnimalAge());
         t.setName(animal.getName());
         t.setDescription(animal.getDescription());
-        t.setOwner(animal.getOwner());
-        t.setAppointments(animal.getAppointments());
         em.getTransaction().commit();
         return true;
     }

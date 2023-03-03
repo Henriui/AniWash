@@ -107,8 +107,6 @@ public class CustomerDao implements ICustomerDao {
         c.setAddress(customer.getAddress());
         c.setPhone(customer.getPhone());
         c.setPostalCode(customer.getPostalCode());
-        c.setAnimals(customer.getAnimals());
-        c.setAppointments(customer.getAppointments());
         em.getTransaction().commit();
         return true;
     }
