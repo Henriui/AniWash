@@ -46,8 +46,6 @@ import javafx.stage.Stage;
 
 public class NewAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
-/*     @FXML
-    private TableColumn personTable; */
     @FXML
     private Button save;
     @FXML
@@ -135,7 +133,7 @@ public class NewAppoitmentController extends CreatePopUp {
             if (newValue == null) {
                 return;
             }
-           
+
             personList.setItems(
                     allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
 
@@ -248,7 +246,6 @@ public class NewAppoitmentController extends CreatePopUp {
 
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
-            System.out.println("Create new service");
             try {
                 // NEW SERVICE POPUP
                 Stage stage = new Stage();
@@ -257,7 +254,11 @@ public class NewAppoitmentController extends CreatePopUp {
                     List<Product> productList = productDao.findAllProduct();
                     ObservableList<String> nameList = FXCollections.observableList(
                             productList.stream().map(Product::getName).collect(Collectors.toList()));
+                    for (int i = services.getItems().size() - 1; i > 0; i--) {
+                        services.getItems().remove(i);
+                    }
                     services.getItems().addAll(nameList);
+                    services.getSelectionModel().selectLast();
                 });
 
                 ControllerUtilities.newProduct(stage);

@@ -1,6 +1,24 @@
 package aniwash.view;
 
-import aniwash.dao.*;
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
+import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.TimeField;
+
+import aniwash.dao.AnimalDao;
+import aniwash.dao.AppointmentDao;
+import aniwash.dao.CustomerDao;
+import aniwash.dao.IAnimalDao;
+import aniwash.dao.IAppointmentDao;
+import aniwash.dao.ICustomerDao;
+import aniwash.dao.IProductDao;
+import aniwash.dao.ProductDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
@@ -9,17 +27,15 @@ import aniwash.resources.model.Calendars;
 import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.CustomListViewCellCustomer;
 import aniwash.resources.utilities.ControllerUtilities;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
-import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -29,12 +45,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class EditAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
@@ -51,28 +61,16 @@ public class EditAppoitmentController extends CreatePopUp {
     @FXML
     private AnchorPane servicePane;
     @FXML
-    private Circle one;
-    @FXML
-    private Circle two;
-    @FXML
-    private Circle three;
-    @FXML
-    private Rectangle first;
-    @FXML
-    private Rectangle second;
-    @FXML
     private DatePicker date = new DatePicker();
     @FXML
     private TimeField startTime = new TimeField();
     @FXML
     private TimeField endTime = new TimeField();
-    @FXML
-    private Rectangle third;
     private EntryDetailsParameter newEntry;
     private ArrayList<Calendar> servicesa;
     private Customer selectedPerson;
     private ObservableList<Customer> allPeople;
-    private IProductDao productDao;
+    private IProductDao productDao = new ProductDao();
 
     public void initialize() {
         setArg();
@@ -88,6 +86,7 @@ public class EditAppoitmentController extends CreatePopUp {
 
         personList.setCellFactory(personList -> new CustomListViewCellCustomer());
         personList.setStyle("-fx-background-color: #f4f4f4; -fx-background: #f4f4f4;");
+
         // Set the placeholder text for the ListView
 
         Background background = new Background(
@@ -99,7 +98,7 @@ public class EditAppoitmentController extends CreatePopUp {
                 setBackground(background);
             }
         });
-        
+
         // Add data to the table
 
         servicesa = new ArrayList<>(products.getCalendarMap().values());
@@ -107,7 +106,6 @@ public class EditAppoitmentController extends CreatePopUp {
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
         });
-
 
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.contains("Create new pet") && selectedPerson != null) {
@@ -231,7 +229,12 @@ public class EditAppoitmentController extends CreatePopUp {
                     List<Product> productList = productDao.findAllProduct();
                     ObservableList<String> nameList = FXCollections.observableList(
                             productList.stream().map(Product::getName).collect(Collectors.toList()));
+                    for (int i = services.getItems().size() - 1; i > 0; i--) {
+                        services.getItems().remove(i);
+                    }
                     services.getItems().addAll(nameList);
+                    services.getSelectionModel().selectLast();
+
                 });
                 ControllerUtilities.newProduct(stage);
             } catch (IOException e) {
