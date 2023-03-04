@@ -60,6 +60,11 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Button>
+                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="48.0" layoutY="316.0" mnemonicParsing="false" onAction="#admin" prefHeight="27.0" prefWidth="160.0" styleClass="side-bar-button" text="Admin" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="330.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </AnchorPane>
                      </children>
@@ -102,12 +107,12 @@
                         <DropShadow blurType="ONE_PASS_BOX" height="5.0" radius="2.0" width="5.0" />
                      </effect>
                   </Button>
-                  <Text fill="#2e3032" layoutX="110.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" AnchorPane.leftAnchor="110.0">
+                  <Text fill="#2e3032" layoutX="124.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" AnchorPane.leftAnchor="124.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="470.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" AnchorPane.leftAnchor="470.0">
+                  <Text fill="#2e3032" layoutX="495.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" AnchorPane.leftAnchor="495.0">
                      <font>
                         <Font size="18.0" />
                      </font>

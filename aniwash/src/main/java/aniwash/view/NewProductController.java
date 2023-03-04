@@ -1,5 +1,7 @@
 package aniwash.view;
 
+import aniwash.dao.IProductDao;
+import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
@@ -54,7 +56,9 @@ public class NewProductController {
 
         // All input values are valid, create the Procuct object
         // TODO: Do something with the product object
-        Product product = new Product(name, description, Integer.valueOf(price), null);
+        Product product = new Product(name, description, Integer.valueOf(price), "style8");
+        IProductDao productDao = new ProductDao();
+        productDao.addProduct(product);
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

@@ -26,6 +26,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NewAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
@@ -73,6 +75,7 @@ public class NewAppoitmentController extends CreatePopUp {
     private Customer selectedCustomer;
     // Save the selected person and send entry .
     private ObservableList<Customer> allPeople;
+    private IProductDao productDao = new ProductDao();
 
     public void initialize() {
 
@@ -232,11 +235,14 @@ public class NewAppoitmentController extends CreatePopUp {
             try {
                 // NEW SERVICE POPUP
                 Stage stage = new Stage();
-                /*
-                 * stage.setOnHidden(event ->
-                 * services.setItems(FXCollections.observableList(productDao.findAllProduct())))
-                 * ;
-                 */
+
+                stage.setOnHidden(event -> {
+                    List<Product> productList = productDao.findAllProduct();
+                    ObservableList<String> nameList = FXCollections.observableList(
+                            productList.stream().map(Product::getName).collect(Collectors.toList()));
+                    services.getItems().addAll(nameList);
+                });
+
                 ControllerUtilities.newProduct(stage);
             } catch (IOException e) {
                 throw new RuntimeException(e);

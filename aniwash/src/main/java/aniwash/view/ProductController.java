@@ -132,5 +132,9 @@ public class ProductController {
     private void customers() throws IOException {
         MainApp.setRoot("customerView");
     }
+    @FXML
+    private void admin() throws IOException {
+        MainApp.setRoot("AdminPanel");
+    }
 
 }

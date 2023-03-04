@@ -27,6 +27,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EditAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
@@ -133,7 +135,9 @@ public class EditAppoitmentController extends CreatePopUp {
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        if (personView.getSelectionModel().getSelectedItem() == null || newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if (personView.getSelectionModel().getSelectedItem() == null || newEntry.getEntry().getLocation() == null
+                || newEntry.getEntry().getTitle().contains("New Entry")
+                || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select a service and a pet");
         } else {
             Stage stage = (Stage) save.getScene().getWindow();
@@ -153,7 +157,8 @@ public class EditAppoitmentController extends CreatePopUp {
                 return;
             }
 
-            personView.setItems(allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
+            personView.setItems(
+                    allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
 
             if (newValue.isEmpty()) {
                 personView.setItems(null);
@@ -167,7 +172,7 @@ public class EditAppoitmentController extends CreatePopUp {
                 if (searchField.getText().isEmpty() || personView.getItems().isEmpty()) {
                     personView.getSelectionModel().clearSelection();
                     try {
-                        //CREATE NEW CUSTOMER
+                        // CREATE NEW CUSTOMER
                         Stage stage = new Stage();
                         stage.setOnHidden(e -> {
                             update();
@@ -215,8 +220,12 @@ public class EditAppoitmentController extends CreatePopUp {
             try {
                 // NEW SERVICE POPUP
                 Stage stage = new Stage();
-                /* stage.setOnHidden(
-                        event -> services.setItems(FXCollections.observableList(productDao.findAllProduct()))); */
+                stage.setOnHidden(event -> {
+                    List<Product> productList = productDao.findAllProduct();
+                    ObservableList<String> nameList = FXCollections.observableList(
+                            productList.stream().map(Product::getName).collect(Collectors.toList()));
+                    services.getItems().addAll(nameList);
+                });
                 ControllerUtilities.newProduct(stage);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -272,15 +281,17 @@ public class EditAppoitmentController extends CreatePopUp {
         entry.setId(newEntry.getEntry().getId());
         entry.setUserObject(selectedPerson);
 
-        updateAppointment(entry.getStartAsZonedDateTime(), entry.getEndAsZonedDateTime(), entry.getId(), selectedPerson, entry.getTitle(), entry.getLocation());
+        updateAppointment(entry.getStartAsZonedDateTime(), entry.getEndAsZonedDateTime(), entry.getId(), selectedPerson,
+                entry.getTitle(), entry.getLocation());
         products.addAppointmentEntry(entry, servicesa.get(services.getSelectionModel().getSelectedIndex() - 1));
         // servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
     }
 
-
-    private void updateAppointment(ZonedDateTime start, ZonedDateTime end, String appointmentId, Customer customer, String productName, String animalName) {
+    private void updateAppointment(ZonedDateTime start, ZonedDateTime end, String appointmentId, Customer customer,
+            String productName, String animalName) {
         IAppointmentDao appointmentDao = new AppointmentDao();
-        Appointment appointment = appointmentDao.findByIdAppointment(ControllerUtilities.longifyStringId(appointmentId));
+        Appointment appointment = appointmentDao
+                .findByIdAppointment(ControllerUtilities.longifyStringId(appointmentId));
 
         if (!appointment.findAllProducts().get(0).getName().equals(productName)) {
             appointment.removeProduct(appointment.findAllProducts().get(0));

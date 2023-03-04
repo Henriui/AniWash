@@ -62,6 +62,11 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Button>
+                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="68.0" layoutY="341.0" mnemonicParsing="false" onAction="#admin" prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button" text="Admin" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="330.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </AnchorPane>
                      </children>
@@ -142,12 +147,12 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="348.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" AnchorPane.leftAnchor="348.0">
+                  <Text fill="#2e3032" layoutX="370.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" AnchorPane.leftAnchor="370.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="679.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" AnchorPane.rightAnchor="357.244140625">
+                  <Text fill="#2e3032" layoutX="668.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" AnchorPane.rightAnchor="368.244140625">
                      <font>
                         <Font size="18.0" />
                      </font>
