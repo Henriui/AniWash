@@ -3,9 +3,7 @@ package aniwash.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Where(clause = "DELETED = 0")
@@ -63,6 +61,14 @@ public class Animal {
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
         appointment.getAnimals().add(this);
+    }
+
+    public List<Customer> findAllOwners() {
+        return new ArrayList<>(getOwner());
+    }
+
+    public List<Appointment> findAllAppointments() {
+        return new ArrayList<>(getAppointments());
     }
 
     // Getters and Setters
@@ -157,6 +163,14 @@ public class Animal {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "type = " + type + ", " + "breed = " + breed + ", " + "animalAge = " + animalAge + ", " + "description = " + description + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", name=" + name +
+                ", type=" + type +
+                ", breed=" + breed +
+                ", animalAge=" + animalAge +
+                ", description=" + description +
+                ", deleted=" + deleted +
+                ")";
     }
 }

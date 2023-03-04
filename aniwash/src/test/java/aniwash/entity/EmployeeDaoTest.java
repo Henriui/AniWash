@@ -1,10 +1,7 @@
 package aniwash.entity;
 
-import aniwash.dao.IEmployeeDao;
 import aniwash.dao.EmployeeDao;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import aniwash.dao.IEmployeeDao;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +36,10 @@ public class EmployeeDaoTest {
     public void createEmployeeTest() {
         assertTrue(eDao.addEmployee(employee), "addEmployee(): Employee was not added");
         assertFalse(eDao.addEmployee(employee), "addEmployee(): Duplicates should not be allowed.");
+
+        employee.setUsername("tim");
+        assertFalse(eDao.addEmployee(employee), "addEmployee(): Duplicates should not be allowed.");
+
         assertNotNull((employee = eDao.findByNameEmployee("Tim")), "addEmployee(): Added employee is null");
         assertEquals(name, employee.getName(), "getName(): Name is invalid");
         assertEquals(email, employee.getEmail(), "getEmail(): Email is invalid.");
@@ -133,4 +134,36 @@ public class EmployeeDaoTest {
     public void deleteEmployeeTest2() {
         assertFalse(eDao.deleteByIdEmployee(employee.getId()), "deleteByIdEmployee(): There was Employee to delete");
     }
+
+    @Test
+    @DisplayName("Employee soft delete test")
+    @Order(11)
+    public void softDeleteEmployeeTest() {
+        assertTrue(eDao.addEmployee(employee), "addEmployee(): Employee was not added");
+        long id = employee.getId();
+        employee.setDeleted();
+        assertTrue(eDao.updateEmployee(employee), "updateEmployee(): Employee was not updated");
+        assertNotNull((employee = eDao.findByIdEmployee(id)), "addEmployee(): Added employee is null");
+        assertEquals(1, employee.isDeleted(), "isDeleted(): Employee is not deleted");
+    }
+
+    @Test
+    @DisplayName("Search for nonexisting employee should return null")
+    @Order(12)
+    public void searchForNonExistingEmployeeTest() {
+        assertNull(eDao.findByIdEmployee(9999L), "findByIdEmployee(): Employee was found");
+        assertNull(eDao.findByUsernameEmployee("nonexisting"), "findByUsernameEmployee(): Employee was found");
+        assertNull(eDao.findByEmailEmployee("nonexisting@mail.com"), "findByEmailEmployee(): Employee was found");
+        assertNull(eDao.findByTitleEmployee("nonexisting"), "findByTitleEmployee(): Employee was found");
+        assertNull(eDao.findByNameEmployee("nonexisting"), "findByNameEmployee(): Employee was found");
+    }
+
+    @Test
+    @DisplayName("Attempting to edit nonexisting employee should return false")
+    @Order(13)
+    public void editNonExistingEmployeeTest() {
+        employee = new Employee("kimmok", "password", "Kimmo Kala", "kimmo.kala@gmail.com", "Manager");
+        assertFalse(eDao.updateEmployee(employee), "updateEmployee(): Employee was updated");
+    }
+
 }
