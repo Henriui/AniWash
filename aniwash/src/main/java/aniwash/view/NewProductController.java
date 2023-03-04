@@ -1,6 +1,7 @@
 package aniwash.view;
 
 import aniwash.entity.Product;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -40,14 +41,14 @@ public class NewProductController {
 
         if (name.isEmpty() || description.isEmpty() || price.isEmpty()) {
             // Show error message if mandatory fields are empty
-            showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
             return;
         }
 
-        if (!isNumeric(price)) {
+        if (!ControllerUtilities.isNumeric(price)) {
             // Show error message if description or postal code fields contain non-numeric
             // characters
-            showAlert("Please enter only numbers in the Price field fields.");
+            ControllerUtilities.showAlert("Please enter only numbers in the Price field fields.");
             return;
         }
 
@@ -58,18 +59,6 @@ public class NewProductController {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-    }
-
-    private void showAlert(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
     }
 
     @FXML

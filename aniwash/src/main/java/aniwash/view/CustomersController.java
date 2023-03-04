@@ -5,7 +5,6 @@ import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCell;
-import aniwash.resources.utilies.ControllerUtilies;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -116,7 +115,8 @@ public class CustomersController {
 
     @FXML
     public void newCustomer() throws IOException {
-        ControllerUtilities.newCustomer();
+        Stage stage = new Stage();
+        ControllerUtilities.newCustomer(stage);
     }
 
     public Customer getSelectedCustomer() {

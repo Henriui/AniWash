@@ -7,7 +7,7 @@ import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCellAnimal;
 import aniwash.resources.model.CustomListViewCellAppointment;
-import aniwash.resources.utilies.ControllerUtilies;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -118,14 +118,14 @@ public class EditCustomerController {
 
         if (name.isEmpty() || phone.isEmpty() || email.isEmpty()) {
             // Show error message if mandatory fields are empty
-            ControllerUtilies.showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
             return;
         }
 
-        if (!ControllerUtilies.isNumeric(phone) || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilies.isNumeric(postalCode)) {
+        if (!ControllerUtilities.isNumeric(phone) || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilities.isNumeric(postalCode)) {
             // Show error message if phone or postal code fields contain non-numeric
             // characters
-            ControllerUtilies.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
             return;
         }
 

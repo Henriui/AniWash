@@ -6,7 +6,7 @@ import aniwash.dao.IAnimalDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
-import aniwash.resources.utilies.ControllerUtilies;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -55,14 +55,14 @@ public class CreateNewAnimalController {
 
         if (petName.isEmpty() || petType.isEmpty() || petBreed.isEmpty() || petAge.isEmpty() || petDescription.isEmpty()) {
             // Show error message if mandatory fields are empty
-            ControllerUtilies.showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
             return;
         }
 
-        if (!ControllerUtilies.isNumeric(petAge)) {
+        if (!ControllerUtilities.isNumeric(petAge)) {
             // Show error message if petAge fields contain non-numeric
             // characters
-            ControllerUtilies.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
             return;
         }
 
