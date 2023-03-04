@@ -34,7 +34,6 @@ public class Customer {
     // Customer is always a customer usertype.
     private UserType userType = UserType.CUSTOMER;
 
-    @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "owner_id")}, inverseJoinColumns = @JoinColumn(name = "animals_id"))
     @ManyToMany(mappedBy = "owner")
     private Set<Animal> animals = new HashSet<>();
 
