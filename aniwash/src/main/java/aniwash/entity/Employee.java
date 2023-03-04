@@ -48,6 +48,7 @@ public class Employee {
         this.email = email;
         this.title = title;
         this.deleted = false;
+        this.userType = userType;
     }
 
     public void addAppointment(Appointment appointment) {

@@ -12,6 +12,8 @@ import java.io.IOException;
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
 import aniwash.resources.model.Calendars;
+import aniwash.dao.EmployeeDao;
+import aniwash.entity.UserType;
 
 public class MainApp extends Application {
 
@@ -20,13 +22,24 @@ public class MainApp extends Application {
     private static Biscuit cookie;
     private static Scene scene;
     private static Stage stage;
-
+    
     @Override
     public void start(Stage stage) throws IOException {
-
-        // FIXME: Delete these two lines after database is implemented
+        
+        // FIXME: Delete these lines after database is implemented
         Calendars calendar = new Calendars();
         calendar.initCalendar();
+        
+        // Add debug employee to database
+        // TODO: Delete this before release.
+        
+        // Employee e = new Employee("tim", "cook","Tim Cook", "tim.cook@lethimcook.com","CEO entrepeneur", UserType.EMPLOYER);
+        // EmployeeDao ed = new EmployeeDao();
+        // try {
+            //     ed.addEmployee(e);
+        // } catch (Exception ex) {
+        //     System.out.println("Error deleting all employees");
+        // }
 
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
