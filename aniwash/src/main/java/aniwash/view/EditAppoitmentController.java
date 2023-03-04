@@ -72,6 +72,7 @@ public class EditAppoitmentController extends CreatePopUp {
     private ArrayList<Calendar> servicesa;
     private Customer selectedPerson;
     private ObservableList<Customer> allPeople;
+    private IProductDao productDao;
 
     public void initialize() {
         setArg();
@@ -211,12 +212,15 @@ public class EditAppoitmentController extends CreatePopUp {
 
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
-            System.out.println("Create new service");
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("TESTI");
-            alert.setHeaderText("CREATE NEW CUSTOMER");
-            alert.setContentText("WOW");
-            alert.showAndWait();
+            try {
+                // NEW SERVICE POPUP
+                Stage stage = new Stage();
+                /* stage.setOnHidden(
+                        event -> services.setItems(FXCollections.observableList(productDao.findAllProduct()))); */
+                ControllerUtilities.newProduct(stage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);

@@ -228,6 +228,17 @@ public class NewAppoitmentController extends CreatePopUp {
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
             System.out.println("Create new service");
+            try {
+                // NEW SERVICE POPUP
+                Stage stage = new Stage();
+                /* stage.setOnHidden(e -> {
+                    update();
+                    selectService(services.getItems().get(services.getItems().size() - 1), services.getItems().size() - 1); */
+              /*   }); */
+                ControllerUtilities.newProduct(stage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);

@@ -109,7 +109,9 @@ public class ProductController {
 
     @FXML
     public void newProduct() throws IOException {
-        ControllerUtilities.newProduct();
+        Stage stage = new Stage();
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(productDao.findAllProduct())));
+        ControllerUtilities.newProduct(stage);
     }
 
     public Product getSelectedCustomer() {

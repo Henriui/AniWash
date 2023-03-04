@@ -62,23 +62,16 @@ public class ControllerUtilities {
          */
     }
 
-    public static void newProduct() throws IOException {
+    public static void newProduct(Stage stage) throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
         loader = loadFXML("newProductView");
         scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Create Product");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-            System.out.println("Hidden " + event.getSource().toString() + " eveny= " + event);
-
-        });
     }
 
     public static long longifyStringId(String id) {
