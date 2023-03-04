@@ -5,6 +5,8 @@ import aniwash.entity.Customer;
 import aniwash.view.CreateNewAnimalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -28,6 +30,17 @@ public class ControllerUtilities {
         stage.show();
     }
 
+    public static void editCustomer(Stage stage) throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("editCustomerView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        stage.setScene(scene);
+        stage.setTitle("Create Customer");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
 
     public static void newAnimal(Customer selectedPerson, Stage stage) throws IOException {
         final FXMLLoader loader;
@@ -41,11 +54,24 @@ public class ControllerUtilities {
         stage.show();
         CreateNewAnimalController.setCustomer(selectedPerson);
 
-/*      TODO: Implement this?
-        stage.setOnHidden(event -> {
-            listView.setItems(FXCollections.observableList(productDao.findAllProduct()));
-        });
-*/
+        /*
+         * TODO: Implement this?
+         * stage.setOnHidden(event -> {
+         * listView.setItems(FXCollections.observableList(productDao.findAllProduct()));
+         * });
+         */
+    }
+
+    public static void newProduct(Stage stage) throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+
+        loader = loadFXML("newProductView");
+        scene = new Scene((javafx.scene.Parent) loader.load());
+        stage.setScene(scene);
+        stage.setTitle("Create Product");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
     }
 
     public static long longifyStringId(String id) {
@@ -53,6 +79,18 @@ public class ControllerUtilities {
         sb.deleteCharAt(0);
         sb.deleteCharAt(0);
         return Long.parseLong(sb.toString());
+    }
+
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");
+    }
+
+    public static void showAlert(String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

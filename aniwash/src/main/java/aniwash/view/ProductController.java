@@ -5,6 +5,7 @@ import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
 import aniwash.resources.model.CustomListViewCellProduct;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,6 +26,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
+
+import org.hibernate.annotations.Parent;
 
 public class ProductController {
     @FXML
@@ -77,7 +80,7 @@ public class ProductController {
 
         // Double click on a customer to open the customer info popup window
 
-        listView.setOnMouseClicked(event -> {
+       /*  listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 selectedProduct = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
@@ -85,8 +88,8 @@ public class ProductController {
                 final FXMLLoader loader;
                 final Scene scene;
                 try {
-                    loader = loadFXML("editProductView");
-                    scene = new Scene(loader.load());
+                    loader = ControllerUtilities.loadFXML("");
+                    scene = new Scene((Parent) loader.load());
                     Stage stage = new Stage();
                     stage.setScene(scene);
                     stage.setTitle("Edit Product");
@@ -100,25 +103,15 @@ public class ProductController {
                     e.printStackTrace();
                 }
             }
-        });
+        }); */
 
     }
 
     @FXML
     public void newProduct() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newProductView");
-        scene = new Scene(loader.load());
         Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Customer");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        // TODO: Should this only be done if change is made?
-        stage.setOnHidden(view -> listView.setItems(FXCollections.observableList(productDao.findAllProduct())));
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(productDao.findAllProduct())));
+        ControllerUtilities.newProduct(stage);
     }
 
     public Product getSelectedCustomer() {
@@ -140,7 +133,4 @@ public class ProductController {
         MainApp.setRoot("customerView");
     }
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-    }
 }

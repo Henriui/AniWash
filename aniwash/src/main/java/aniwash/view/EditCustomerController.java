@@ -7,6 +7,7 @@ import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCellAnimal;
 import aniwash.resources.model.CustomListViewCellAppointment;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,6 +91,7 @@ public class EditCustomerController {
         });
 
         listView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
+        appointmentListView.setStyle("-fx-background-color:  #f2f5f9; -fx-background:  #f2f5f9;");
 
         nameField.setText(customer.getName());
         phoneField.setText(customer.getPhone());
@@ -116,14 +118,14 @@ public class EditCustomerController {
 
         if (name.isEmpty() || phone.isEmpty() || email.isEmpty()) {
             // Show error message if mandatory fields are empty
-            showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
             return;
         }
 
-        if (!isNumeric(phone) || !postalCodeField.getText().trim().isEmpty() && !isNumeric(postalCode)) {
+        if (!ControllerUtilities.isNumeric(phone) || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilities.isNumeric(postalCode)) {
             // Show error message if phone or postal code fields contain non-numeric
             // characters
-            showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
             return;
         }
 
@@ -141,18 +143,6 @@ public class EditCustomerController {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
-    }
-
-    private void showAlert(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
     }
 
     @FXML

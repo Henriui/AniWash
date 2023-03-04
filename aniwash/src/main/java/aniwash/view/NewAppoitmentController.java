@@ -116,7 +116,8 @@ public class NewAppoitmentController extends CreatePopUp {
                 return;
             }
 
-            personView.setItems(allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
+            personView.setItems(
+                    allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
 
             if (newValue.isEmpty()) {
                 personView.setItems(null);
@@ -146,7 +147,6 @@ public class NewAppoitmentController extends CreatePopUp {
                 }
             }
         });
-
 
         personView.setOnMouseClicked(mouseEvent -> {
             selectCustomer(personView.getSelectionModel().getSelectedItem());
@@ -205,7 +205,8 @@ public class NewAppoitmentController extends CreatePopUp {
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        if (newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if (newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry")
+                || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select Service and Pet");
         } else {
             Stage stage = (Stage) save.getScene().getWindow();
@@ -228,6 +229,18 @@ public class NewAppoitmentController extends CreatePopUp {
     private void selectService(String newValue, int selectedIndex) {
         if (newValue.contains("Create new service")) {
             System.out.println("Create new service");
+            try {
+                // NEW SERVICE POPUP
+                Stage stage = new Stage();
+                /*
+                 * stage.setOnHidden(event ->
+                 * services.setItems(FXCollections.observableList(productDao.findAllProduct())))
+                 * ;
+                 */
+                ControllerUtilities.newProduct(stage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             Calendar service = servicesa.get(selectedIndex - 1);
             newEntry.getEntry().setCalendar(service);
@@ -243,7 +256,8 @@ public class NewAppoitmentController extends CreatePopUp {
         entry.changeStartTime(newEntry.getEntry().getStartTime());
         entry.changeEndDate(newEntry.getEntry().getStartDate());
         entry.changeEndTime(newEntry.getEntry().getEndTime());
-        entry.setId(createAppointment(newEntry.getEntry().getStartAsZonedDateTime(), newEntry.getEntry().getEndAsZonedDateTime()));
+        entry.setId(createAppointment(newEntry.getEntry().getStartAsZonedDateTime(),
+                newEntry.getEntry().getEndAsZonedDateTime()));
         entry.setLocation(newEntry.getEntry().getLocation());
         entry.setTitle(newEntry.getEntry().getTitle());
         entry.setUserObject(selectedCustomer);
@@ -288,6 +302,5 @@ public class NewAppoitmentController extends CreatePopUp {
         ICustomerDao customerDao = new CustomerDao();
         return FXCollections.observableList(customerDao.findAllCustomer());
     }
-
 
 }

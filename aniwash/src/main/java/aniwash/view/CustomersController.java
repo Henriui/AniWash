@@ -5,6 +5,7 @@ import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCell;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,26 +41,29 @@ public class CustomersController {
 
     private ICustomerDao customerDao;
 
-/*
-    public void test() {
-        for (Customer customer : customers) {
-            customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
-            customer.addAppointment(new Appointment(ZonedDateTime.now(), (ZonedDateTime.now()), "Cancer Treatment"));
-
-        }
-    }
-*/
+    /*
+     * public void test() {
+     * for (Customer customer : customers) {
+     * customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10,
+     * "Tämä eläin on testi"));
+     * customer.addAppointment(new Appointment(ZonedDateTime.now(),
+     * (ZonedDateTime.now()), "Cancer Treatment"));
+     * 
+     * }
+     * }
+     */
 
     private static FXMLLoader loadFXML(String fxml) throws IOException {
         return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
     }
 
     public void initialize() {
-        //test();
+        // test();
         // Bind the ListView to the ObservableList
 
         customerDao = new CustomerDao();
-        AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(FXCollections.observableList(customerDao.findAllCustomer()));
+        AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(
+                FXCollections.observableList(customerDao.findAllCustomer()));
         listView.setItems(customers.get());
 
         // Bind the customerCount text property to the size of the list
@@ -73,7 +77,8 @@ public class CustomersController {
 
         // Set the placeholder text for the ListView
 
-        Background background = new Background(new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(
+                new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
         listView.setPlaceholder(new Label("No items") {
             @Override
             protected void updateBounds() {
@@ -94,7 +99,6 @@ public class CustomersController {
             };
             ObservableList<Customer> filteredCustomers = customers.get().filtered(filter);
             listView.setItems(filteredCustomers);
-
         });
 
         // Double click on a customer to open the customer info popup window
@@ -104,43 +108,24 @@ public class CustomersController {
                 selectedCustomer = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
                 // Pass the selected customer object to the popup window to display its info
-                final FXMLLoader loader;
-                final Scene scene;
                 try {
-                    loader = loadFXML("editCustomerView");
-                    scene = new Scene(loader.load());
                     Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setTitle("Edit Customer");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.show();
-
-                    // TODO: Should this only be done if change is made?
-                    stage.setOnHidden(view -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+                    stage.setOnHidden(
+                            view -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+                    ControllerUtilities.editCustomer(stage);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     @FXML
     public void newCustomer() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newCustomerView");
-        scene = new Scene(loader.load());
         Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Customer");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        // TODO: Should this only be done if change is made?
         stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+        ControllerUtilities.newCustomer(stage);
     }
 
     public Customer getSelectedCustomer() {
