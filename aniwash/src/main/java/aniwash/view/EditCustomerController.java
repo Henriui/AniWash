@@ -17,18 +17,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -60,18 +55,23 @@ public class EditCustomerController {
 
     @FXML
     private Button saveButton;
-    private static ObservableList<Animal> animals = FXCollections.observableArrayList();
-    private static ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
+    private static final ObservableList<Animal> animals = FXCollections.observableArrayList();
+    private static final ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
     @FXML
     private ListView<Animal> listView;
     @FXML
     private ListView<Appointment> appointmentListView;
 
     private static Customer customer;
-    private CustomersController customersController = new CustomersController();
+    private final CustomersController customersController = new CustomersController();
 
     public void initialize() {
         customer = customersController.getSelectedCustomer();
+
+        //TODO: Purkka?
+        animals.clear();
+        appointmentsList.clear();
+
         animals.addAll(customer.getAnimals());
         appointmentsList.addAll(customer.getAppointments());
 
@@ -166,7 +166,11 @@ public class EditCustomerController {
         Parent popupRoot = FXMLLoader.load(getClass().getResource("createNewAnimalView.fxml"));
         Scene popupScene = new Scene(popupRoot);
         popupStage.setScene(popupScene);
+        popupStage.setTitle("Create Animal");
+        popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.show();
+
+        popupStage.setOnHidden(view -> listView.setItems(FXCollections.observableList(customer.findAllAnimals())));
         CreateNewAnimalController.setCustomer(customer);
     }
 }

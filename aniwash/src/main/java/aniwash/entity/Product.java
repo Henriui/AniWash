@@ -107,6 +107,13 @@ public class Product {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", appointments=" + appointments + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", name=" + name +
+                ", description=" + description +
+                ", price=" + price +
+                ", style=" + style +
+                ", deleted=" + deleted +
+                ")";
     }
 }

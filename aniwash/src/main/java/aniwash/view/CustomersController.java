@@ -11,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,6 +25,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 public class CustomersController {
@@ -39,6 +39,8 @@ public class CustomersController {
     @FXML
     private TextField searchField;
 
+    private ICustomerDao customerDao;
+
 /*
     public void test() {
         for (Customer customer : customers) {
@@ -50,21 +52,20 @@ public class CustomersController {
 */
 
     private static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
+        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
     }
 
     public void initialize() {
         //test();
         // Bind the ListView to the ObservableList
 
-        ICustomerDao customerDao = new CustomerDao();
-        ObservableList<Customer> customers = FXCollections.observableList(customerDao.findAllCustomer());
-        listView.setItems(customers);
+        customerDao = new CustomerDao();
+        AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(FXCollections.observableList(customerDao.findAllCustomer()));
+        listView.setItems(customers.get());
 
         // Bind the customerCount text property to the size of the list
 
-        customerCount.setText(String.valueOf(customers.size()));
+        customerCount.setText(String.valueOf(customers.get().size()));
 
         // Set the cell factory to create custom ListCells
 
@@ -92,7 +93,7 @@ public class CustomersController {
                     return customer.getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
-            ObservableList<Customer> filteredCustomers = customers.filtered(filter);
+            ObservableList<Customer> filteredCustomers = customers.get().filtered(filter);
             listView.setItems(filteredCustomers);
         });
 

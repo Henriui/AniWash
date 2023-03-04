@@ -31,7 +31,6 @@ public class Customer {
     private String address;
     private String postalCode;
 
-
     @ManyToMany(mappedBy = "owner")
     private Set<Animal> animals = new HashSet<>();
 
@@ -171,6 +170,14 @@ public class Customer {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "phone = " + phone + ", " + "email = " + email + ", " + "address = " + address + ", " + "postal code = " + postalCode + ", " + "animals = " + animals + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", name=" + name +
+                ", phone=" + phone +
+                ", email=" + email +
+                ", address=" + address +
+                ", postal code=" + postalCode +
+                ", deleted=" + deleted +
+                ")";
     }
 }

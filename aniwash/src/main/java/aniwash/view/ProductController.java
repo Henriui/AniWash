@@ -1,9 +1,8 @@
 package aniwash.view;
 
-import java.io.IOException;
-import java.util.function.Predicate;
-
 import aniwash.MainApp;
+import aniwash.dao.IProductDao;
+import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
 import aniwash.resources.model.CustomListViewCellProduct;
 import aniwash.resources.utilities.ControllerUtilities;
@@ -12,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,34 +23,28 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+
+import org.hibernate.annotations.Parent;
+
 public class ProductController {
     @FXML
     private ListView<Product> listView;
-    private static ObservableList<Product> customers = FXCollections.observableArrayList(
-            new Product("asd1", "112", 10, null), new Product("asd2", "112", 10, null), new Product("asd3", "112", 10, null),
-            new Product("asd4", "112", 10, null), new Product("asd5", "112", 10, null), new Product("asd6", "112", 10, null),
-            new Product("asd7", "112", 10, null), new Product("asd8", "112", 10, null), new Product("asd9", "112", 10, null),
-            new Product("asd10, null", "112", 10, null), new Product("asd11", "112", 10, null), new Product("asd12", "112", 10, null),
-            new Product("asd13", "112", 10, null), new Product("asd14", "112", 10, null), new Product("asd15", "112", 10, null),
-            new Product("asd16", "112", 10, null), new Product("asd17", "112", 10, null), new Product("asd18", "112", 10, null),
-            new Product("asd19", "112", 10, null), new Product("asd20", "112", 10, null), new Product("asd21", "112", 10, null),
-            new Product("asd22", "112", 10, null), new Product("asd23", "112", 10, null), new Product("asd24", "112", 10, null),
-            new Product("asd25", "112", 10, null), new Product("asd26", "112", 10, null), new Product("asd27", "112", 10, null),
-            new Product("asd28", "112", 10, null), new Product("asd29", "112", 10, null), new Product("asd30", "112", 10, null),
-            new Product("asd31", "112", 10, null), new Product("asd32", "112", 10, null), new Product("asd33", "112", 10, null),
-            new Product("asd34", "112", 10, null), new Product("asd35", "112", 10, null), new Product("asd36", "112", 10, null),
-            new Product("asd37", "112", 10, null), new Product("asd38", "112", 10, null), new Product("asd39", "112", 10, null),
-            new Product("asd40", "112", 10, null), new Product("asd41", "112", 10, null), new Product("asd42", "112", 10, null),
-            new Product("asd43", "112", 10, null), new Product("asd44", "112", 10, null));
     @FXML
     private TextField searchField;
     @FXML
     private Button newProduct;
     private static Product selectedProduct;
 
+    private IProductDao productDao;
+
     public void initialize() {
 
-        listView.setItems(customers);
+        productDao = new ProductDao();
+        AtomicReference<ObservableList<Product>> products = new AtomicReference<>(FXCollections.observableList(productDao.findAllProduct()));
+        listView.setItems(products.get());
 
         // Set the cell factory to create custom ListCells
 
@@ -81,14 +73,14 @@ public class ProductController {
                     return customer.getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
-            ObservableList<Product> filteredCustomers = customers.filtered(filter);
+            ObservableList<Product> filteredCustomers = products.get().filtered(filter);
             listView.setItems(filteredCustomers);
 
         });
 
         // Double click on a customer to open the customer info popup window
 
-        listView.setOnMouseClicked(event -> {
+       /*  listView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 selectedProduct = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
@@ -103,15 +95,15 @@ public class ProductController {
                     stage.setTitle("Edit Product");
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.show();
-                    stage.setOnHidden(view -> {
-                        // TODO: Get customers from database so the listview reloads
-                    });
+
+                    // TODO: Should this only be done if change is made?
+                    stage.setOnHidden(view -> listView.setItems(FXCollections.observableList(productDao.findAllProduct())));
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
-        });
+        }); */
 
     }
 

@@ -126,6 +126,14 @@ public class Employee {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", title=" + title + ", appointments=" + appointments + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", username=" + username +
+                ", password=" + password +
+                ", name=" + name +
+                ", title=" + title +
+                ", email=" + email +
+                ", deleted=" + deleted +
+                ")";
     }
 }

@@ -109,7 +109,8 @@ public class EmployeeDao implements IEmployeeDao {
             return false;
         }
         em.getTransaction().begin();
-        //t.setUsername(employee.getUsername());
+        t.setUsername(employee.getUsername());
+        t.setPassword(employee.getPassword());
         t.setName(employee.getName());
         t.setEmail(employee.getEmail());
         t.setTitle(employee.getTitle());

@@ -23,7 +23,7 @@ public class ControllerUtilities {
         final Scene scene;
 
         loader = loadFXML("newCustomerView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -55,17 +55,16 @@ public class ControllerUtilities {
         final Scene scene;
 
         loader = loadFXML("createNewAnimalView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Animal");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
         CreateNewAnimalController.setCustomer(selectedPerson);
 
-/*
+/*      TODO: Implement this?
         stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-            System.out.println("Closed " + event);
+            listView.setItems(FXCollections.observableList(productDao.findAllProduct()));
         });
 */
     }

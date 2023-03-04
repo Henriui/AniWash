@@ -4,6 +4,9 @@ import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -16,16 +19,13 @@ public class CustomerDaoTest {
     private final String phone = "0401234567";
     private final String email = "john.johna@email.com";
     private final String address = "John street 1";
-    private final String postalcode = "12345";
+    private final String postalCode = "12345";
 
-    private Customer customer = new Customer(name, phone, email);
-
+    private Customer customer = new Customer(name, phone, email, address, postalCode);
 
     @BeforeEach
     public void beforeEach() {
-        customer = new Customer(name, phone, email);
-        customer.setAddress(address);
-        customer.setPostalCode(postalcode);
+        customer = new Customer(name, phone, email, address, postalCode);
     }
 
     @AfterEach
@@ -79,6 +79,15 @@ public class CustomerDaoTest {
 
         // Olemattoman customerin poiston tulee "epäonnistua"
         assertFalse(customerDao.deleteByIdCustomer(id), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
+
+        // Poistetaan kaikki customerit
+        System.out.println("Delete all employees test");
+        List<Customer> customerList = customerDao.findAllCustomer();
+        for (Customer c : customerList) {
+            customerDao.deleteByIdCustomer(c.getId());
+        }
+        assertEquals(0, customerDao.findAllCustomer().size(), "Employee list size should be 0");
+
     }
 
     @Test
@@ -109,6 +118,7 @@ public class CustomerDaoTest {
         long id = customer.getId();
         customer = customerDao.findByIdCustomer(id);
         assertNotNull(customer, "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
+        assertNotNull(customerDao.findByPhoneCustomer("0401234567"), "findByPhoneCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(id, customer.getId(), "getId(): customer id tunnus väärin.");
         assertEquals("john.johna@email.com", customer.getEmail(), "getEmail(): emailarvo väärin.");
         assertEquals("John", customer.getName(), "getName(): customerin nimi väärin.");
@@ -122,6 +132,7 @@ public class CustomerDaoTest {
         assertNull(customerDao.findByNameCustomer("John"), "findByNameCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
         assertNull(customerDao.findByEmailCustomer("john.johna@email.com"), "findByEmailCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
         assertNull(customerDao.findByPhoneCustomer("0401234567"), "findByPhoneCustomer(): Olemattoman asiakkaan haun piti palauttaa false");
+        assertNull(customerDao.findByNameCustomerList("Kimmo Kala"), "findByNameCustomerList(): Olemattoman asiakkaan haun piti palauttaa false");
 
     }
 
@@ -186,7 +197,7 @@ public class CustomerDaoTest {
     @Order(10)
     public void testPostcode2() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
-        assertEquals(postalcode, customer.getPostalCode(), "getPostalcode(): customerin postinumero arvo on väärin.");
+        assertEquals(postalCode, customer.getPostalCode(), "getPostalcode(): customerin postinumero arvo on väärin.");
     }
 
     @Test
@@ -216,6 +227,47 @@ public class CustomerDaoTest {
     @Order(13)
     public void testDeleteCustomer2() {
         assertFalse(customerDao.deleteByIdCustomer(customer.getId()), "deleteCustomer(): Väittää poistaneensa olemattoman customerin.");
+    }
+
+    @Test
+    @DisplayName("Asiakas listan haku nimen perusteella")
+    @Order(14)
+    public void testNameList() {
+        Customer customer2 = new Customer(name, phone, email, "John street 2", postalCode);
+        Customer customer3 = new Customer(name, phone, email, "John street 3", postalCode);
+        assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+        assertTrue(customerDao.addCustomer(customer2), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+        assertTrue(customerDao.addCustomer(customer3), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+
+        List<Customer> customers2 = new ArrayList<>();
+        customers2.add(customer);
+        customers2.add(customer2);
+        customers2.add(customer3);
+
+        List<Customer> customers = customerDao.findByNameCustomerList(name);
+        assertTrue(customers.size() > 0, "findByNameCustomerList(): Asiakas listan haku nimen perusteella ei onnistunut. Lista liian lyhyt.");
+        assertEquals(3, customers.size(), "findByNameCustomerList(): Asiakas listan haku nimen perusteella ei onnistunut. Listan pituus ei täsmää.");
+        assertEquals(customers2, customers, "findByNameCustomerList(): Asiakas listan haku nimen perusteella ei onnistunut. Listat eivät täsmää.");
+    }
+
+    @Test
+    @DisplayName("Olemattoman asikaan päivitys yrityksen pitää palauttaa false")
+    @Order(15)
+    public void testUpdateCustomer2() {
+        customer = new Customer("Kimmo", phone, email, address, postalCode);
+        assertFalse(customerDao.updateCustomer(customer), "updateCustomer(): Väittää päivittäneensä olematonta asiakasta.");
+    }
+
+    @Test
+    @DisplayName("Customer soft delete")
+    @Order(16)
+    public void testSoftDelete() {
+        assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
+        long id = customer.getId();
+        customer.setDeleted();
+        assertTrue(customerDao.updateCustomer(customer), "updateCustomer");
+        assertNotNull(customerDao.findByIdCustomer(id), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
+        assertEquals(1, customerDao.findByIdCustomer(id).isDeleted(), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
     }
 
 }
