@@ -2,9 +2,6 @@ package aniwash.entity;
 
 import aniwash.dao.AnimalDao;
 import aniwash.dao.IAnimalDao;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -239,4 +236,21 @@ public class AnimalDaoTest {
         assertFalse(animalDao.deleteByIdAnimal(0L));
     }
 
+    @Test
+    @DisplayName("Olemattoman eläimen päivitysyrityksen tulee palauttaa false")
+    @Order(16)
+    public void testUpdateAnimal2() {
+        animal.setId(9999L);
+        assertFalse(animalDao.updateAnimal(animal));
+    }
+
+    @Test
+    @DisplayName("Eläimen pehmeä poistaminen databasesta")
+    @Order(17)
+    public void testSoftDeleteAnimal() {
+        animalDao.addAnimal(animal);
+        animal.setDeleted();
+        assertTrue(animalDao.updateAnimal(animal), "Päivitetyn eläimen tallennus ei onnistunut");
+        assertEquals(1, animalDao.findByIdAnimal(animal.getId()).isDeleted(), "Eläimen pehmeä poistaminen ei onnistunut");
+    }
 }

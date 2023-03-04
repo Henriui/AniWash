@@ -1,20 +1,16 @@
 package aniwash.view;
 
-import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.util.function.Predicate;
-
 import aniwash.MainApp;
-import aniwash.entity.Animal;
-import aniwash.entity.Appointment;
+import aniwash.dao.CustomerDao;
+import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
 import aniwash.resources.model.CustomListViewCell;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,54 +24,51 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+
 public class CustomersController {
+    private static Customer selectedCustomer;
     @FXML
     private ListView<Customer> listView;
     @FXML
     private Text customerCount;
     @FXML
     private Button newCustomer;
-    private static Customer selectedCustomer;
-
-    private static ObservableList<Customer> customers = FXCollections.observableArrayList(
-            new Customer("asd1", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"),
-            new Customer("asd2", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd3", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd4", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd5", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd6", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd7", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd8", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd9", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie",
-                    "00960"),
-            new Customer("asd10", "112", "jonne.borgman@metropolia.if", "IsonVillasaarnetie", "00960"));
     @FXML
     private TextField searchField;
 
-    public void test() {
-        for (Customer customer : customers) {
-            customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
-            customer.addAppointment(new Appointment(ZonedDateTime.now(), (ZonedDateTime.now()), "Cancer Treatment"));
+    private ICustomerDao customerDao;
 
-        }
+    /*
+     * public void test() {
+     * for (Customer customer : customers) {
+     * customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10,
+     * "Tämä eläin on testi"));
+     * customer.addAppointment(new Appointment(ZonedDateTime.now(),
+     * (ZonedDateTime.now()), "Cancer Treatment"));
+     * 
+     * }
+     * }
+     */
+
+    private static FXMLLoader loadFXML(String fxml) throws IOException {
+        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
     }
 
     public void initialize() {
-        test();
+        // test();
         // Bind the ListView to the ObservableList
 
-        listView.setItems(customers);
+        customerDao = new CustomerDao();
+        AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(
+                FXCollections.observableList(customerDao.findAllCustomer()));
+        listView.setItems(customers.get());
 
         // Bind the customerCount text property to the size of the list
 
-        customerCount.setText(String.valueOf(customers.size()));
+        customerCount.setText(String.valueOf(customers.get().size()));
 
         // Set the cell factory to create custom ListCells
 
@@ -104,9 +97,8 @@ public class CustomersController {
                     return customer.getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
-            ObservableList<Customer> filteredCustomers = customers.filtered(filter);
+            ObservableList<Customer> filteredCustomers = customers.get().filtered(filter);
             listView.setItems(filteredCustomers);
-
         });
 
         // Double click on a customer to open the customer info popup window
@@ -116,44 +108,24 @@ public class CustomersController {
                 selectedCustomer = listView.getSelectionModel().getSelectedItem();
                 // Create and show the popup window
                 // Pass the selected customer object to the popup window to display its info
-                final FXMLLoader loader;
-                final Scene scene;
                 try {
-                    loader = loadFXML("editCustomerView");
-                    scene = new Scene((Parent) loader.load());
                     Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setTitle("Edit Customer");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.show();
-                    stage.setOnHidden(view -> {
-                        // TODO: Get customers from database so the listview reloads
-                    });
+                    stage.setOnHidden(
+                            view -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+                    ControllerUtilities.editCustomer(stage);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     @FXML
     public void newCustomer() throws IOException {
-        final FXMLLoader loader;
-        final Scene scene;
-
-        loader = loadFXML("newCustomerView");
-        scene = new Scene((Parent) loader.load());
         Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Create Customer");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-        });
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+        ControllerUtilities.newCustomer(stage);
     }
 
     public Customer getSelectedCustomer() {
@@ -173,10 +145,5 @@ public class CustomersController {
     @FXML
     private void products() throws IOException {
         MainApp.setRoot("productsView");
-    }
-
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
     }
 }

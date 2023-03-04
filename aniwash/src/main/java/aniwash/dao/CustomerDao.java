@@ -13,33 +13,36 @@ import java.util.function.Consumer;
  * @author rasmushy
  */
 public class CustomerDao implements ICustomerDao {
-    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
 
     @Override
     public boolean addCustomer(Customer customer) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = em.find(Customer.class, customer.getId());
-        if (c != null) {
+        if (em.contains(c)) {
             System.out.println("Customer already exists with id: " + customer.getId());
             return false;
         }
 
-        executeInTransaction(em -> em.persist(customer));
+        executeInTransaction(entityManager -> em.persist(customer), em);
         return true;
     }
 
 
     @Override
     public List<Customer> findAllCustomer() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
     }
 
     @Override
     public Customer findByIdCustomer(long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Customer.class, id);
     }
 
     @Override
     public Customer findByEmailCustomer(String email) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.email = :email", Customer.class).setParameter("email", email).getSingleResult();
@@ -51,6 +54,7 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public Customer findByPhoneCustomer(String phone) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.phone = :phone", Customer.class).setParameter("phone", phone).getSingleResult();
@@ -62,6 +66,7 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public Customer findByNameCustomer(String name) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name", Customer.class).setParameter("name", name).getSingleResult();
@@ -73,19 +78,26 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public List<Customer> findByNameCustomerList(String name) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         List<Customer> c = null;
         try {
             c = em.createQuery("SELECT a FROM Customer a WHERE a.name = :name order by name desc", Customer.class).setParameter("name", name).getResultList();
         } catch (NoResultException e) {
             System.out.println("No customer found with name: " + name);
         }
+        assert c != null;
+        if (c.isEmpty()) {
+            System.out.println("No customer found with name: " + name);
+            c = null;
+        }
         return c;
     }
 
     @Override
     public boolean updateCustomer(Customer customer) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = em.find(Customer.class, customer.getId());
-        if (c == null) {
+        if (!em.contains(c)) {
             System.out.println("Customer does not exist with id: " + customer.getId());
             return false;
         }
@@ -101,16 +113,17 @@ public class CustomerDao implements ICustomerDao {
 
     @Override
     public boolean deleteByIdCustomer(long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = em.find(Customer.class, id);
-        if (c != null) {
-            executeInTransaction(em -> em.remove(c));
+        if (em.contains(c)) {
+            executeInTransaction(entityManager -> em.remove(c), em);
             return true;
         }
         System.out.println("Customer does not exist with id: " + id);
         return false;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action) {
+    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

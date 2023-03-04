@@ -93,3 +93,67 @@
     -fx-background-color: red;
     -fx-text-background-color: #47c496;
 }
+.list-view .list-cell:even {
+    -fx-background-color: #f2f5f9;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: #f2f5f9;
+}
+* {
+    -style8-color: rgba(255, 0, 0, 0.9);
+    -style9-color: rgba(0, 0, 255, 0.9);
+}
+
+.style8-icon, .style8-icon-small {
+    -fx-fill: -style8-color;
+    -fx-stroke: -style8-color;
+}
+
+.style8-entry {
+    -fx-background-color: derive(-style8-color, 70.0%) !important;
+    -fx-border-color: -style8-color;
+}
+
+.style8-entry:selected {
+    -fx-background-color: -style8-color;
+}
+
+.style8-entry-time-label, .style8-entry-title-label {
+    -fx-text-fill: derive(-style8-color, -30.0%);
+}
+
+.style8-entry-small:selected {
+    -fx-background-color: -style8-color;
+}
+
+.style8-entry-small-full-day {
+    -fx-background-color: derive(-style8-color, 70.0%);
+}
+
+.style8-entry-small-title-label-full-day {
+    -fx-text-fill: derive(-style8-color, -30.0%);
+}
+
+.style8-entry-small-full-day:selected {
+    -fx-background-color: -style8-color;
+}
+
+.style8-visibility-checkbox > .box,
+.style8-source-grid-item-box {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border,
+    -fx-inner-border, derive(-style8-color, 70.0%);
+}
+
+.style8-visibility-checkbox:focused > .box {
+    -fx-background-color: -fx-focus-color, -fx-inner-border, -fx-body-color,
+    -fx-faint-focus-color, derive(-style8-color, 70.0%);
+}
+
+.style8-entry-popover-title {
+    -fx-text-fill: derive(-style8-color, -50.0%) !important;
+}
+
+.style8-calendar-header {
+    -fx-background-color: derive(-style8-color, 70.0%);
+}

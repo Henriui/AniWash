@@ -2,11 +2,13 @@ package aniwash.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.Where;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Where(clause = "DELETED = 0")
 public class Employee {
 
     @Id
@@ -29,8 +31,8 @@ public class Employee {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private boolean deleted;
+    @Column(name = "DELETED", nullable = false)
+    private int deleted = 0;
 
     @Column(nullable = false)
     private UserType userType;
@@ -47,7 +49,6 @@ public class Employee {
         this.name = name;
         this.email = email;
         this.title = title;
-        this.deleted = false;
         this.userType = userType;
     }
 
@@ -91,12 +92,16 @@ public class Employee {
         return name;
     }
 
-    public boolean isDeleted() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int isDeleted() {
         return deleted;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDeleted() {
+        this.deleted = 1;
     }
 
     public String getEmail() {
@@ -107,16 +112,12 @@ public class Employee {
         this.email = email;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Appointment> getAppointments() {
@@ -136,6 +137,14 @@ public class Employee {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email=" + email + ", title=" + title + ", appointments=" + appointments + ")";
+        return getClass().getSimpleName() +
+                "(id=" + id +
+                ", username=" + username +
+                ", password=" + password +
+                ", name=" + name +
+                ", title=" + title +
+                ", email=" + email +
+                ", deleted=" + deleted +
+                ")";
     }
 }

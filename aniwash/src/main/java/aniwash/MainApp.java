@@ -1,19 +1,20 @@
 package aniwash;
 
+import aniwash.resources.model.Calendars;
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
+import javafx.stage.Stage;
 
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
 import aniwash.resources.model.Calendars;
 import aniwash.dao.EmployeeDao;
 import aniwash.entity.UserType;
+import java.io.IOException;
 
 public class MainApp extends Application {
 
@@ -68,17 +69,18 @@ public class MainApp extends Application {
     public static void setRoot(String fxml) throws IOException {
         // Check if user is logged in. Otherwise, redirect to login view.
         if (!cookie.isBiscuitSet() || cookie.isBiscuitExpired()) {
-            scene.setRoot(loadFXML("login"));
+            scene.setRoot(loadParent("login"));
             return;
         }
         cookie.updateLastActivity();
-        scene.setRoot(loadFXML(fxml));
+        scene.setRoot(loadParent(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    private static Parent loadParent(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
+
 
     public static void startSimulation(String[] args) {
         launch();

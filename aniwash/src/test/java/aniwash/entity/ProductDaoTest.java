@@ -140,4 +140,31 @@ public class ProductDaoTest {
     public void testDeleteNonExistingProduct() {
         assertFalse(productDao.deleteByIdProduct(999L), "deleteProductById(): Can delete non-existing product.");
     }
+
+    @Test
+    @Order(12)
+    @DisplayName("Attempting to update non-existing product should return false")
+    public void testUpdateNonExistingProduct() {
+        assertFalse(productDao.updateProduct(product), "updateProduct(): Can update non-existing product.");
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("Product soft delete")
+    public void testSoftDeleteProduct() {
+        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        long id = product.getId();
+        product.setDeleted();
+        assertTrue(productDao.updateProduct(product), "softDeleteProduct(): Can't update product");
+        assertNotNull(productDao.findByIdProduct(id), "softDeleteProduct(): Product not found.");
+        assertEquals(1, productDao.findByIdProduct(id).isDeleted(), "softDeleteProduct(): Product not soft deleted.");
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("Search for nonexistent product should return null")
+    public void testSearchNonExistingProduct() {
+        assertNull(productDao.findByIdProduct(999L), "findByIdProduct(): Found non-existing product.");
+        assertNull(productDao.findByNameProduct("Non-existing product"), "findByNameProduct(): Found non-existing product.");
+    }
 }

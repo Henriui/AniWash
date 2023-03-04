@@ -14,32 +14,34 @@ import java.util.function.Consumer;
  */
 public class ProductDao implements IProductDao {
 
-    private final EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-
     @Override
     public boolean addProduct(Product product) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, product.getId());
-        if (p != null) {
+        if (em.contains(p)) {
             System.out.println("Product already exists with id: " + product.getId());
             return false;
         }
 
-        executeInTransaction(em -> em.persist(product));
+        executeInTransaction(entityManager -> em.persist(product), em);
         return true;
     }
 
     @Override
     public List<Product> findAllProduct() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
     }
 
     @Override
     public Product findByIdProduct(Long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Product.class, id);
     }
 
     @Override
     public Product findByNameProduct(String name) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = null;
         try {
             p = em.createQuery("SELECT p FROM Product p WHERE p.name = :name", Product.class).setParameter("name", name).getSingleResult();
@@ -51,31 +53,34 @@ public class ProductDao implements IProductDao {
 
     @Override
     public boolean updateProduct(Product product) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, product.getId());
-        if (p == null) {
+        if (!em.contains(p)) {
             System.out.println("Product does not exist in database. Id: " + product.getId());
             return false;
         }
         em.getTransaction().begin();
         p.setName(product.getName());
-        p.setPrice(product.getPrice());
         p.setDescription(product.getDescription());
+        p.setPrice(product.getPrice());
+        p.setStyle(product.getStyle());
         em.getTransaction().commit();
         return true;
     }
 
     @Override
     public boolean deleteByIdProduct(Long id) {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, id);
-        if (p != null) {
-            executeInTransaction(em -> em.remove(p));
+        if (em.contains(p)) {
+            executeInTransaction(entityManager -> em.remove(p), em);
             return true;
         }
         System.out.println("Product does not exist for id: " + id);
         return false;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action) {
+    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
