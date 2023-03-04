@@ -41,26 +41,29 @@ public class CustomersController {
 
     private ICustomerDao customerDao;
 
-/*
-    public void test() {
-        for (Customer customer : customers) {
-            customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10, "Tämä eläin on testi"));
-            customer.addAppointment(new Appointment(ZonedDateTime.now(), (ZonedDateTime.now()), "Cancer Treatment"));
-
-        }
-    }
-*/
+    /*
+     * public void test() {
+     * for (Customer customer : customers) {
+     * customer.addAnimal(new Animal("Testi111", "Eläin", "TestiEläin", 10,
+     * "Tämä eläin on testi"));
+     * customer.addAppointment(new Appointment(ZonedDateTime.now(),
+     * (ZonedDateTime.now()), "Cancer Treatment"));
+     * 
+     * }
+     * }
+     */
 
     private static FXMLLoader loadFXML(String fxml) throws IOException {
         return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
     }
 
     public void initialize() {
-        //test();
+        // test();
         // Bind the ListView to the ObservableList
 
         customerDao = new CustomerDao();
-        AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(FXCollections.observableList(customerDao.findAllCustomer()));
+        AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(
+                FXCollections.observableList(customerDao.findAllCustomer()));
         listView.setItems(customers.get());
 
         // Bind the customerCount text property to the size of the list
@@ -74,7 +77,8 @@ public class CustomersController {
 
         // Set the placeholder text for the ListView
 
-        Background background = new Background(new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(
+                new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
         listView.setPlaceholder(new Label("No items") {
             @Override
             protected void updateBounds() {
@@ -105,7 +109,10 @@ public class CustomersController {
                 // Create and show the popup window
                 // Pass the selected customer object to the popup window to display its info
                 try {
-                    ControllerUtilities.editCustomer();
+                    Stage stage = new Stage();
+                    stage.setOnHidden(
+                            view -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+                    ControllerUtilities.editCustomer(stage);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -117,6 +124,7 @@ public class CustomersController {
     @FXML
     public void newCustomer() throws IOException {
         Stage stage = new Stage();
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
         ControllerUtilities.newCustomer(stage);
     }
 

@@ -30,25 +30,17 @@ public class ControllerUtilities {
         stage.show();
     }
 
-    public static void editCustomer() throws IOException {
+    public static void editCustomer(Stage stage) throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
         loader = loadFXML("editCustomerView");
         scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-            System.out.println("Hidden");
-
-        });
     }
-
 
     public static void newAnimal(Customer selectedPerson, Stage stage) throws IOException {
         final FXMLLoader loader;
@@ -62,11 +54,12 @@ public class ControllerUtilities {
         stage.show();
         CreateNewAnimalController.setCustomer(selectedPerson);
 
-/*      TODO: Implement this?
-        stage.setOnHidden(event -> {
-            listView.setItems(FXCollections.observableList(productDao.findAllProduct()));
-        });
-*/
+        /*
+         * TODO: Implement this?
+         * stage.setOnHidden(event -> {
+         * listView.setItems(FXCollections.observableList(productDao.findAllProduct()));
+         * });
+         */
     }
 
     public static void newProduct() throws IOException {
@@ -98,7 +91,6 @@ public class ControllerUtilities {
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
-    
 
     public static void showAlert(String message) {
         Alert alert = new Alert(AlertType.ERROR);
@@ -107,5 +99,5 @@ public class ControllerUtilities {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
 }
