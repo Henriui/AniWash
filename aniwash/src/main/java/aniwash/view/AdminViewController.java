@@ -5,6 +5,7 @@ import aniwash.dao.EmployeeDao;
 import aniwash.datastorage.BiscuitExeption;
 import aniwash.entity.Employee;
 import aniwash.entity.UserType;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -18,16 +19,17 @@ public class AdminViewController {
     @FXML
     private TextField username, password, firstname, lastname, email, title;
 
+    @FXML
     public void initialize() {
         // Set up the toggle group for the radio buttons.
-
+        System.out.println("Admin view controller initialized");
         ToggleGroup grp = new ToggleGroup();
-        employee.setToggleGroup(grp);
-        employer.setToggleGroup(grp);
+        this.employee.setToggleGroup(grp);
+        this.employer.setToggleGroup(grp);
 
         // Set the default radio button to employee.
-
-        employee.setSelected(true);
+        this.employee.setSelected(true);
+        this.employee.setSelected(true);
     }
 
     /**
@@ -35,7 +37,8 @@ public class AdminViewController {
      * 
      * @author henriui
      */
-    public void submit() {
+    @FXML
+    public void submit(ActionEvent event) {
         // Check priviledges.
 
         try {
@@ -44,13 +47,17 @@ public class AdminViewController {
         } catch (BiscuitExeption e) {
             System.out.println("User has no permission or is timed out.");
         }
-
         // Create the employee.
-
-        if (createEmployee())
-            System.out.println("Employee created");
-        else
-            System.out.println("Employee not created");
+        try {
+            if (createEmployee())
+                System.out.println("Employee created");
+            else
+                System.out.println("Employee not created");
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            System.out.println("sum ting wong");
+        }
 
     }
 
@@ -82,7 +89,7 @@ public class AdminViewController {
         // Create the new employee
 
         Employee e = new Employee(username, password, name + " " + lastname, email, title,
-                                  employee.isPressed() ? UserType.EMPLOYEE : UserType.EMPLOYER);
+                employee.isPressed() ? UserType.EMPLOYEE : UserType.EMPLOYER);
 
         // Add the employee to the database.
         try {

@@ -36,19 +36,22 @@ public class MainApp extends Application {
         // Employee e = new Employee("tim", "cook","Tim Cook", "tim.cook@lethimcook.com","CEO entrepeneur", UserType.EMPLOYER);
         // EmployeeDao ed = new EmployeeDao();
         // try {
-            //     ed.addEmployee(e);
+        //         ed.addEmployee(e);
         // } catch (Exception ex) {
         //     System.out.println("Error deleting all employees");
         // }
-
+        
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
 
         // Initialise biscuit
         cookie = new Biscuit();
 
+        // TODO: Delete this before release.
+        // cookie.setBiscuit(e);
+
         // TODO: Change this to the login view when project done.
-        Parent root = FXMLLoader.load(getClass().getResource("view/mainView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/MainView.fxml"));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
