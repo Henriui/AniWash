@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField id="firstname" layoutX="30.0" layoutY="74.0" />
+      <TextField id="lastname" layoutX="265.0" layoutY="72.0" />
+      <TextField id="email" layoutX="27.0" layoutY="271.0" />
+      <ListView id="employeelist" layoutX="558.0" layoutY="45.0" prefHeight="506.0" prefWidth="200.0" />
+      <Text layoutX="69.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First name" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="69.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="53.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email address" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="304.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last name" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <TextField id="username" layoutX="32.0" layoutY="171.0" />
+      <TextField id="jobtitle" layoutX="26.0" layoutY="368.0" />
+      <Text layoutX="81.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Job title" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="50.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employee Type" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <RadioButton id="employee" layoutX="59.0" layoutY="476.0" mnemonicParsing="false" text="Employee" />
+      <RadioButton id="employer" layoutX="59.0" layoutY="511.0" mnemonicParsing="false" text="Employer" />
+      <Button id="createEmployee" layoutX="315.0" layoutY="508.0" mnemonicParsing="false" text="Submit" />
+   </children>
+</AnchorPane>
