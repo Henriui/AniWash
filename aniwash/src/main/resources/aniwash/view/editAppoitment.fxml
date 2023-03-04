@@ -63,11 +63,13 @@
                         <Font size="15.0" />
                     </font>
                 </Text>
-                <Separator layoutX="20.0" layoutY="40.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
-                <DatePicker fx:id="date" layoutX="20.0" layoutY="72.0" />
-                <TimeField fx:id="startTime" layoutX="269.0" layoutY="58.0" />
-                <TimeField fx:id="endTime" layoutX="269.0" layoutY="89.0" />
-                <Text layoutX="219.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" AnchorPane.rightAnchor="156.0185546875">
+                <Separator layoutX="20.0" layoutY="40.0" prefWidth="200.0" AnchorPane.leftAnchor="20.0"
+                           AnchorPane.rightAnchor="20.0"/>
+                <DatePicker fx:id="date" layoutX="21.0" layoutY="72.0"/>
+                <TimeField fx:id="startTime" layoutX="269.0" layoutY="58.0"/>
+                <TimeField fx:id="endTime" layoutX="269.0" layoutY="89.0"/>
+                <Text layoutX="219.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start"
+                      AnchorPane.rightAnchor="156.0185546875">
                     <font>
                         <Font size="15.0" />
                     </font>

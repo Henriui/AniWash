@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 import aniwash.MainApp;
 import aniwash.entity.Product;
 import aniwash.resources.model.CustomListViewCellProduct;
-import aniwash.resources.utilies.ControllerUtilies;
+import aniwash.resources.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -96,7 +96,7 @@ public class ProductController {
                 final FXMLLoader loader;
                 final Scene scene;
                 try {
-                    loader = MainApp.loadFXML("");
+                    loader = ControllerUtilities.loadFXML("");
                     scene = new Scene((Parent) loader.load());
                     Stage stage = new Stage();
                     stage.setScene(scene);
@@ -117,7 +117,7 @@ public class ProductController {
 
     @FXML
     public void newProduct() throws IOException {
-       ControllerUtilies.newProduct();
+        ControllerUtilities.newProduct();
     }
 
     public Product getSelectedCustomer() {

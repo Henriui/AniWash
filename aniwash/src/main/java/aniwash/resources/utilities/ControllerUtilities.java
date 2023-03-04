@@ -1,6 +1,4 @@
-package aniwash.resources.utilies;
-
-import java.io.IOException;
+package aniwash.resources.utilities;
 
 import aniwash.MainApp;
 import aniwash.entity.Customer;
@@ -12,31 +10,31 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ControllerUtilies {
+import java.io.IOException;
 
-    public static void newCustomer() throws IOException {
+public class ControllerUtilities {
+
+    public static FXMLLoader loadFXML(String fxml) throws IOException {
+        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+    }
+
+    public static void newCustomer(Stage stage) throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
-        loader = MainApp.loadFXML("newCustomerView");
+        loader = loadFXML("newCustomerView");
         scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
-
-        stage.setOnHidden(event -> {
-            // TODO: Get customers from database so the listview reloads
-            System.out.println("Hidden");
-
-        });
     }
+
     public static void editCustomer() throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
-        loader = MainApp.loadFXML("editCustomerView");
+        loader = loadFXML("editCustomerView");
         scene = new Scene((javafx.scene.Parent) loader.load());
         Stage stage = new Stage();
         stage.setScene(scene);
@@ -51,30 +49,32 @@ public class ControllerUtilies {
         });
     }
 
-    public static void newAnimal(Customer selectedPerson) throws IOException {
+
+    public static void newAnimal(Customer selectedPerson, Stage stage) throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
-        loader = MainApp.loadFXML("createNewAnimalView");
+        loader = loadFXML("createNewAnimalView");
         scene = new Scene((javafx.scene.Parent) loader.load());
-        Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Create Animal");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
         CreateNewAnimalController.setCustomer(selectedPerson);
 
+/*
         stage.setOnHidden(event -> {
             // TODO: Get customers from database so the listview reloads
-            System.out.println("Hidden");
+            System.out.println("Closed " + event);
         });
+*/
     }
 
     public static void newProduct() throws IOException {
         final FXMLLoader loader;
         final Scene scene;
 
-        loader = MainApp.loadFXML("newProductView");
+        loader = loadFXML("newProductView");
         scene = new Scene((javafx.scene.Parent) loader.load());
         Stage stage = new Stage();
         stage.setScene(scene);
@@ -89,9 +89,17 @@ public class ControllerUtilies {
         });
     }
 
+    public static long longifyStringId(String id) {
+        StringBuilder sb = new StringBuilder(id);
+        sb.deleteCharAt(0);
+        sb.deleteCharAt(0);
+        return Long.parseLong(sb.toString());
+    }
+
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
+    
 
     public static void showAlert(String message) {
         Alert alert = new Alert(AlertType.ERROR);
@@ -100,4 +108,5 @@ public class ControllerUtilies {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
 }

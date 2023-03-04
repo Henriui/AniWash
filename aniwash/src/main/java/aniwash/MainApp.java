@@ -1,15 +1,15 @@
 package aniwash;
 
+import aniwash.resources.model.Calendars;
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
+import javafx.stage.Stage;
 
-import aniwash.resources.model.Calendars;
+import java.io.IOException;
 
 public class MainApp extends Application {
 
@@ -44,10 +44,6 @@ public class MainApp extends Application {
         return fxmlLoader.load();
     }
 
-    public static FXMLLoader loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        return fxmlLoader;
-    }
 
     public static void startSimulation(String[] args) {
         launch();
