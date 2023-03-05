@@ -24,4 +24,5 @@ public interface IEmployeeDao {
 
     boolean updateEmployee(Employee employee);
 
+    Employee findNewestEmployee();
 }

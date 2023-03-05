@@ -82,6 +82,18 @@ public class AnimalDao implements IAnimalDao {
         return false;
     }
 
+    @Override
+    public Animal findNewestAnimal() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Animal a = null;
+        try {
+            a = em.createQuery("SELECT a FROM Animal a ORDER BY a.id DESC", Animal.class).setMaxResults(1).getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No animal found");
+        }
+        return a;
+    }
+
     private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {

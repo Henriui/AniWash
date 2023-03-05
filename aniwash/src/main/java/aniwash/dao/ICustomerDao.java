@@ -22,4 +22,6 @@ public interface ICustomerDao {
     boolean updateCustomer(Customer customer);
 
     boolean deleteByIdCustomer(long id);
+
+    Customer findNewestCustomer();
 }

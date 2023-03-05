@@ -17,4 +17,6 @@ public interface IProductDao {
     boolean deleteByIdProduct(Long id);
 
     boolean updateProduct(Product product);
+
+    Product findNewestProduct();
 }

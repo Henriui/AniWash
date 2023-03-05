@@ -77,6 +77,18 @@ public class AppointmentDao implements IAppointmentDao {
         return false;
     }
 
+    @Override
+    public Appointment findNewestAppointment() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Appointment a = null;
+        try {
+            a = em.createQuery("SELECT a FROM Appointment a ORDER BY a.startDate DESC", Appointment.class).setMaxResults(1).getSingleResult();
+        } catch (Exception e) {
+            System.out.println("No appointment found");
+        }
+        return a;
+    }
+
     private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {

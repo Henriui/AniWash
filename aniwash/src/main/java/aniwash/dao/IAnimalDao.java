@@ -18,4 +18,5 @@ public interface IAnimalDao {
 
     boolean updateAnimal(Animal animal);
 
+    Animal findNewestAnimal();
 }

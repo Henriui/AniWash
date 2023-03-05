@@ -123,6 +123,18 @@ public class CustomerDao implements ICustomerDao {
         return false;
     }
 
+    @Override
+    public Customer findNewestCustomer() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Customer c = null;
+        try {
+            c = em.createQuery("SELECT a FROM Customer a order by id desc", Customer.class).setMaxResults(1).getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No customer found");
+        }
+        return c;
+    }
+
     private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
