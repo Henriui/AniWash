@@ -1,5 +1,7 @@
 package aniwash;
 
+import aniwash.datastorage.Biscuit;
+import aniwash.entity.Employee;
 import aniwash.resources.model.Calendars;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -9,11 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import aniwash.datastorage.Biscuit;
-import aniwash.entity.Employee;
-import aniwash.resources.model.Calendars;
-import aniwash.dao.EmployeeDao;
-import aniwash.entity.UserType;
 import java.io.IOException;
 
 public class MainApp extends Application {
@@ -23,25 +20,27 @@ public class MainApp extends Application {
     private static Biscuit cookie;
     private static Scene scene;
     private static Stage stage;
-    
+
     @Override
     public void start(Stage stage) throws IOException {
-        
+
         // FIXME: Delete these lines after database is implemented
         Calendars calendar = new Calendars();
         calendar.initCalendar();
-        
+
         // Add debug employee to database
         // TODO: Delete this before release.
-        
-        // Employee e = new Employee("tim", "cook","Tim Cook", "tim.cook@lethimcook.com","CEO entrepeneur", UserType.EMPLOYER);
-        // EmployeeDao ed = new EmployeeDao();
-        // try {
-        //         ed.addEmployee(e);
-        // } catch (Exception ex) {
-        //     System.out.println("Error deleting all employees");
-        // }
-        
+
+/*
+        Employee e = new Employee("tim", "cook", "Tim Cook", "tim.cook@lethimcook.com", "CEO entrepeneur", UserType.EMPLOYER);
+        IEmployeeDao ed = new EmployeeDao();
+        try {
+            ed.addEmployee(e);
+        } catch (Exception ex) {
+            System.out.println("Error deleting all employees");
+        }
+*/
+
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
 
@@ -52,7 +51,7 @@ public class MainApp extends Application {
         // cookie.setBiscuit(e);
 
         // TODO: Change this to the login view when project done.
-        Parent root = FXMLLoader.load(getClass().getResource("view/MainView.fxml"));
+        Parent root = loadParent("mainView");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -68,11 +67,13 @@ public class MainApp extends Application {
 
     public static void setRoot(String fxml) throws IOException {
         // Check if user is logged in. Otherwise, redirect to login view.
+/*
         if (!cookie.isBiscuitSet() || cookie.isBiscuitExpired()) {
             scene.setRoot(loadParent("login"));
             return;
         }
         cookie.updateLastActivity();
+*/
         scene.setRoot(loadParent(fxml));
     }
 

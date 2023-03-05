@@ -40,7 +40,7 @@ AppointmentEmployeeDbTest {
     public void testCreateMultipleAppointmentsAndEmployees() {
         for (int i = 1; i < 4; i++) {
             Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
-            Employee e = new Employee("kimmoka" + i, "12345" + i, "Kimmo Kala",  "kimmo.kala" + i + "@gmail.com", "Työntekijä");
+            Employee e = new Employee("kimmoka" + i, "12345" + i, "Kimmo Kala", "kimmo.kala" + i + "@gmail.com", "Työntekijä", UserType.EMPLOYEE);
             aDao.addAppointment(a);
             eDao.addEmployee(e);
             a.addEmployee(e);
@@ -48,7 +48,7 @@ AppointmentEmployeeDbTest {
 
         List<Employee> employees = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
-            Employee e = new Employee("tainatui" + i, "12345" + i, "Taina Tuima",  "taina.tuima" + i + "@gmail.com", "Työntekijä");
+            Employee e = new Employee("tainatui" + i, "12345" + i, "Taina Tuima", "taina.tuima" + i + "@gmail.com", "Työntekijä", UserType.EMPLOYEE);
             employees.add(e);
         }
 
@@ -66,7 +66,7 @@ AppointmentEmployeeDbTest {
     @Test
     @DisplayName("Find all employees from appointment")
     @Order(2)
-    public void findTest(){
+    public void findTest() {
         List<Appointment> appointmentList = aDao.findAllAppointment();
         List<Employee> employeeList = new ArrayList<>();
         for (Appointment a : appointmentList) {

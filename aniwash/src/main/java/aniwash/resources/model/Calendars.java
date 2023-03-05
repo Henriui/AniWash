@@ -120,7 +120,7 @@ public class Calendars {
             Product product = new Product("Product " + i, "Description " + i, 10 + i, "style" + i);
             Animal animal = new Animal("AnimalName" + i, "koiru" + i, "huskie", 1 + i, "Murmur");
             Customer customer = new Customer("Customer " + i, "04012345 " + i, "customer@email.com", "Address " + i, "00123");
-            Employee employee = new Employee("Employee " + i, "passy" + i, "Keijo" + i, "Kekkonen" + i, "Ulisija");
+            Employee employee = new Employee("Employee " + i, "passy" + i, "Keijo" + i, "Kekkonen" + i, "Ulisija", UserType.EMPLOYEE);
             Appointment appointment = new Appointment(startTime, endTime, "Description " + i);
 
             customer.addAnimal(animal);

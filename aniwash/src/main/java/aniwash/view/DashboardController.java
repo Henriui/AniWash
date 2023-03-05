@@ -1,19 +1,16 @@
 package aniwash.view;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-
+import aniwash.MainApp;
+import aniwash.resources.model.Calendars;
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
-
-import aniwash.MainApp;
-import aniwash.datastorage.BiscuitExeption;
-import aniwash.resources.model.Calendars;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 public class DashboardController {
     MainApp mainApp;
@@ -34,6 +31,7 @@ public class DashboardController {
     public void initialize() {
 
         agendaView.getCalendarSources().addAll(calendars.getCalendarss());
+/*
         try {
             // Write welcome text based on time of day (good morning, afternoon, evening)
             int time = LocalDateTime.now().getHour();
@@ -47,8 +45,13 @@ public class DashboardController {
             }
         } catch (BiscuitExeption e) {
             System.out.println("Biscuit fuked up");
-            try {logout();} catch (IOException e1){e1.printStackTrace();}
+            try {
+                logout();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
+*/
         // agendaView.setCalendarSourceFactory(new Calendars());
     }
 

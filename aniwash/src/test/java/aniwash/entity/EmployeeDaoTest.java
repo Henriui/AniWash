@@ -162,7 +162,7 @@ public class EmployeeDaoTest {
     @DisplayName("Attempting to edit nonexisting employee should return false")
     @Order(13)
     public void editNonExistingEmployeeTest() {
-        employee = new Employee("kimmok", "password", "Kimmo Kala", "kimmo.kala@gmail.com", "Manager");
+        employee = new Employee("kimmok", "password", "Kimmo Kala", "kimmo.kala@gmail.com", "Manager", UserType.EMPLOYEE);
         assertFalse(eDao.updateEmployee(employee), "updateEmployee(): Employee was updated");
     }
 
