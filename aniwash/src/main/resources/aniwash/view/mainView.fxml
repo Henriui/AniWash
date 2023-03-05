@@ -61,6 +61,11 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Button>
+                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="58.0" layoutY="331.0" mnemonicParsing="false" onAction="#admin" prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button" text="Admin" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="330.0">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Button>
                            </children></AnchorPane>
                      </children>
                      <effect>

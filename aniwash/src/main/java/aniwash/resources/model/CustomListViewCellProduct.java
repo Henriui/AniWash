@@ -19,9 +19,9 @@ public class CustomListViewCellProduct extends ListCell<Product> {
         Label nameLabel = new Label();
         Label descriptionLabel = new Label();
         nameLabel.setMinWidth(300);
-        nameLabel.fontProperty().set(new javafx.scene.text.Font(20));
+        nameLabel.fontProperty().set(new javafx.scene.text.Font(15));
         descriptionLabel.setMinWidth(300);
-        descriptionLabel.fontProperty().set(new javafx.scene.text.Font(20));
+        descriptionLabel.fontProperty().set(new javafx.scene.text.Font(15));
 
         VBox nameBox = new VBox(nameLabel);
         VBox ageBox = new VBox(descriptionLabel);
@@ -34,7 +34,7 @@ public class CustomListViewCellProduct extends ListCell<Product> {
         Label priceLabel = new Label();
         VBox priceBox = new VBox(priceLabel);
         priceLabel.setMinWidth(100);
-        priceLabel.fontProperty().set(new javafx.scene.text.Font(20));
+        priceLabel.fontProperty().set(new javafx.scene.text.Font(15));
 
         produtInfoHBox = new HBox(produtNameHBox, ageBox, priceBox);
         produtInfoHBox.setSpacing(100);

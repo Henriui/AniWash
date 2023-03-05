@@ -20,7 +20,7 @@ public class CustomListViewCellAnimal extends ListCell<Animal> {
 
         Label nameLabel = new Label();
         Label ageLabel = new Label();
-        ageLabel.setMinWidth(50);
+        nameLabel.setMinWidth(100);
 
         VBox basicInfoBox = new VBox(nameLabel);
         VBox ageBox = new VBox(ageLabel);

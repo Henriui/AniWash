@@ -1,78 +1,76 @@
 package aniwash.view;
 
-import aniwash.dao.*;
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
+import com.calendarfx.view.DateControl.EntryDetailsParameter;
+import com.calendarfx.view.TimeField;
+
+import aniwash.dao.AnimalDao;
+import aniwash.dao.AppointmentDao;
+import aniwash.dao.CustomerDao;
+import aniwash.dao.IAnimalDao;
+import aniwash.dao.IAppointmentDao;
+import aniwash.dao.ICustomerDao;
+import aniwash.dao.IProductDao;
+import aniwash.dao.ProductDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.entity.Product;
 import aniwash.resources.model.Calendars;
 import aniwash.resources.model.CreatePopUp;
+import aniwash.resources.model.CustomListViewCellCustomer;
 import aniwash.resources.utilities.ControllerUtilities;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
-import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-
 public class EditAppoitmentController extends CreatePopUp {
     private Calendars products = new Calendars();
     @FXML
-    private TableColumn personTable;
-    @FXML
     private Button save;
-    @FXML
-    private TableColumn<Customer, String> firstNameColumn = new TableColumn<>("First Name");
-    @FXML
-    private TableColumn<Customer, String> phoneColumn = new TableColumn<>("Phone number");
-    @FXML
-    private TableColumn<Customer, String> emailColumn = new TableColumn<>("Email");
-    @FXML
-    private TableView<Customer> personView;
     @FXML
     private ListView<String> services;
     @FXML
     private ListView<String> petList;
     @FXML
+    private ListView<Customer> personList;
+    @FXML
     private TextField searchField;
     @FXML
     private AnchorPane servicePane;
-    @FXML
-    private Circle one;
-    @FXML
-    private Circle two;
-    @FXML
-    private Circle three;
-    @FXML
-    private Rectangle first;
-    @FXML
-    private Rectangle second;
     @FXML
     private DatePicker date = new DatePicker();
     @FXML
     private TimeField startTime = new TimeField();
     @FXML
     private TimeField endTime = new TimeField();
-    @FXML
-    private Rectangle third;
     private EntryDetailsParameter newEntry;
     private ArrayList<Calendar> servicesa;
     private Customer selectedPerson;
     private ObservableList<Customer> allPeople;
-    private IProductDao productDao;
+    private IProductDao productDao = new ProductDao();
 
     public void initialize() {
         setArg();
@@ -86,9 +84,20 @@ public class EditAppoitmentController extends CreatePopUp {
 
         // Initialize the person table with the three columns.
 
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        personList.setCellFactory(personList -> new CustomListViewCellCustomer());
+        personList.setStyle("-fx-background-color: #f4f4f4; -fx-background: #f4f4f4;");
+
+        // Set the placeholder text for the ListView
+
+        Background background = new Background(
+                new BackgroundFill(Color.web("#f4f4f4"), CornerRadii.EMPTY, Insets.EMPTY));
+        personList.setPlaceholder(new Label("No items") {
+            @Override
+            protected void updateBounds() {
+                super.updateBounds();
+                setBackground(background);
+            }
+        });
 
         // Add data to the table
 
@@ -97,8 +106,6 @@ public class EditAppoitmentController extends CreatePopUp {
         servicesa.forEach(service -> {
             services.getItems().addAll(service.getName());
         });
-
-        personView.getColumns().addAll(firstNameColumn, phoneColumn, emailColumn);
 
         petList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.contains("Create new pet") && selectedPerson != null) {
@@ -133,7 +140,9 @@ public class EditAppoitmentController extends CreatePopUp {
     @FXML
     public void save() {
         newEntry.getEntry().setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        if (personView.getSelectionModel().getSelectedItem() == null || newEntry.getEntry().getLocation() == null || newEntry.getEntry().getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getEntry().getLocation() == null
+                || newEntry.getEntry().getTitle().contains("New Entry")
+                || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select a service and a pet");
         } else {
             Stage stage = (Stage) save.getScene().getWindow();
@@ -145,7 +154,7 @@ public class EditAppoitmentController extends CreatePopUp {
     @FXML
     public void modifyEntry() {
         allPeople = getPeople();
-        personView.setItems(allPeople);
+        personList.setItems(allPeople);
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -153,10 +162,11 @@ public class EditAppoitmentController extends CreatePopUp {
                 return;
             }
 
-            personView.setItems(allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
+            personList.setItems(
+                    allPeople.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
 
             if (newValue.isEmpty()) {
-                personView.setItems(null);
+                personList.setItems(null);
             }
 
         });
@@ -164,14 +174,14 @@ public class EditAppoitmentController extends CreatePopUp {
         // Set the selection model to allow only one row to be selected at a time.
         searchField.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                if (searchField.getText().isEmpty() || personView.getItems().isEmpty()) {
-                    personView.getSelectionModel().clearSelection();
+                if (searchField.getText().isEmpty() || personList.getItems().isEmpty()) {
+                    personList.getSelectionModel().clearSelection();
                     try {
-                        //CREATE NEW CUSTOMER
+                        // CREATE NEW CUSTOMER
                         Stage stage = new Stage();
                         stage.setOnHidden(e -> {
                             update();
-                            selectCustomer(personView.getItems().get(personView.getItems().size() - 1));
+                            selectCustomer(personList.getItems().get(personList.getItems().size() - 1));
                             updatePets();
                         });
                         ControllerUtilities.newCustomer(stage);
@@ -179,14 +189,14 @@ public class EditAppoitmentController extends CreatePopUp {
                         throw new RuntimeException(e);
                     }
                 } else {
-                    personView.getSelectionModel().select(0);
+                    personList.getSelectionModel().select(0);
                     updatePets();
                 }
             }
         });
 
-        personView.setOnMouseClicked(mouseEvent -> {
-            personView.getSelectionModel().getSelectedItem();
+        personList.setOnMouseClicked(mouseEvent -> {
+            personList.getSelectionModel().getSelectedItem();
             ObservableList<String> items = petList.getItems();
             items.removeAll(items.subList(1, items.size()));
 
@@ -195,7 +205,7 @@ public class EditAppoitmentController extends CreatePopUp {
             });
         });
 
-        personView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        personList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 selectCustomer(newValue);
                 services.setDisable(false);
@@ -215,8 +225,17 @@ public class EditAppoitmentController extends CreatePopUp {
             try {
                 // NEW SERVICE POPUP
                 Stage stage = new Stage();
-                /* stage.setOnHidden(
-                        event -> services.setItems(FXCollections.observableList(productDao.findAllProduct()))); */
+                stage.setOnHidden(event -> {
+                    List<Product> productList = productDao.findAllProduct();
+                    ObservableList<String> nameList = FXCollections.observableList(
+                            productList.stream().map(Product::getName).collect(Collectors.toList()));
+                    for (int i = services.getItems().size() - 1; i > 0; i--) {
+                        services.getItems().remove(i);
+                    }
+                    services.getItems().addAll(nameList);
+                    services.getSelectionModel().selectLast();
+
+                });
                 ControllerUtilities.newProduct(stage);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -232,8 +251,8 @@ public class EditAppoitmentController extends CreatePopUp {
         ObservableList<Customer> tempCustomer = FXCollections.observableArrayList();
         selectedPerson = (Customer) newEntry.getEntry().getUserObject();
         tempCustomer.add(0, selectedPerson);
-        personView.setItems(tempCustomer);
-        personView.getSelectionModel().select(0);
+        personList.setItems(tempCustomer);
+        personList.getSelectionModel().select(0);
 
         int indexOfItemToSelect = services.getItems().indexOf(newEntry.getEntry().getCalendar().getName());
 
@@ -272,15 +291,17 @@ public class EditAppoitmentController extends CreatePopUp {
         entry.setId(newEntry.getEntry().getId());
         entry.setUserObject(selectedPerson);
 
-        updateAppointment(entry.getStartAsZonedDateTime(), entry.getEndAsZonedDateTime(), entry.getId(), selectedPerson, entry.getTitle(), entry.getLocation());
+        updateAppointment(entry.getStartAsZonedDateTime(), entry.getEndAsZonedDateTime(), entry.getId(), selectedPerson,
+                entry.getTitle(), entry.getLocation());
         products.addAppointmentEntry(entry, servicesa.get(services.getSelectionModel().getSelectedIndex() - 1));
         // servicesa.get(selectedProduc).removeEntry(newEntry.getEntry());
     }
 
-
-    private void updateAppointment(ZonedDateTime start, ZonedDateTime end, String appointmentId, Customer customer, String productName, String animalName) {
+    private void updateAppointment(ZonedDateTime start, ZonedDateTime end, String appointmentId, Customer customer,
+            String productName, String animalName) {
         IAppointmentDao appointmentDao = new AppointmentDao();
-        Appointment appointment = appointmentDao.findByIdAppointment(ControllerUtilities.longifyStringId(appointmentId));
+        Appointment appointment = appointmentDao
+                .findByIdAppointment(ControllerUtilities.longifyStringId(appointmentId));
 
         if (!appointment.findAllProducts().get(0).getName().equals(productName)) {
             appointment.removeProduct(appointment.findAllProducts().get(0));
@@ -309,12 +330,12 @@ public class EditAppoitmentController extends CreatePopUp {
 
     private void update() {
         allPeople = getPeople();
-        personView.setItems(allPeople);
+        personList.setItems(allPeople);
     }
 
     private void updatePets() {
-        personView.getSelectionModel().select(selectedPerson);
-        personView.setItems(allPeople.filtered(customer -> customer.getName().contains(selectedPerson.getName())));
+        personList.getSelectionModel().select(selectedPerson);
+        personList.setItems(allPeople.filtered(customer -> customer.getName().contains(selectedPerson.getName())));
         ObservableList<String> items = petList.getItems();
         items.removeAll(items.subList(1, items.size()));
 

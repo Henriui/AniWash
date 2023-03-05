@@ -70,4 +70,10 @@ public class DashboardController {
     private void products() throws IOException {
         MainApp.setRoot("productsView");
     }
+
+    @FXML
+    private void admin() throws IOException {
+        MainApp.setRoot("AdminPanel");
+    }
 }
+

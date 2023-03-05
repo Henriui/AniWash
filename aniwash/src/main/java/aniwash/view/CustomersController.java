@@ -1,5 +1,9 @@
 package aniwash.view;
 
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+
 import aniwash.MainApp;
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
@@ -11,7 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -21,12 +24,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
 
 public class CustomersController {
     private static Customer selectedCustomer;
@@ -145,5 +143,10 @@ public class CustomersController {
     @FXML
     private void products() throws IOException {
         MainApp.setRoot("productsView");
+    }
+
+    @FXML
+    private void admin() throws IOException {
+        MainApp.setRoot("AdminPanel");
     }
 }
