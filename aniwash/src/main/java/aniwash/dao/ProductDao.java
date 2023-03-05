@@ -80,6 +80,18 @@ public class ProductDao implements IProductDao {
         return false;
     }
 
+    @Override
+    public Product findNewestProduct() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Product p = null;
+        try {
+            p = em.createQuery("SELECT p FROM Product p ORDER BY p.id DESC", Product.class).setMaxResults(1).getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No product found");
+        }
+        return p;
+    }
+
     private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {

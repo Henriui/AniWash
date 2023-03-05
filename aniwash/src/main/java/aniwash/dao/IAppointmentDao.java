@@ -28,4 +28,5 @@ public interface IAppointmentDao {
 
     boolean updateAppointment(Appointment appointment);
 
+    Appointment findNewestAppointment();
 }

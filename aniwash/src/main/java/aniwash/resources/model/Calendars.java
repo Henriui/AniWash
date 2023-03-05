@@ -22,20 +22,21 @@ import static com.calendarfx.model.CalendarEvent.ENTRY_INTERVAL_CHANGED;
 import static java.lang.String.valueOf;
 
 public class Calendars {
-    private static final Map<String, Calendar> calendarMap = new HashMap<>();
+    private static Map<String, Calendar> calendarMap = new HashMap<>();
     private static final ArrayList<Product> products = new ArrayList<Product>();
-    private static final CalendarSource familyCalendarSource = new CalendarSource("Product");
-    private IProductDao productDao;
-    private IAnimalDao animalDao;
-    private ICustomerDao customerDao;
-    private IAppointmentDao appointmentDao;
-    private IEmployeeDao employeeDao;
-    private final EventHandler<CalendarEvent> eventHandler = calendarEvent -> {
+    private static CalendarSource familyCalendarSource = new CalendarSource("Product");
+    private IProductDao productDao = new ProductDao();
+    private IAnimalDao animalDao = new AnimalDao();
+    private ICustomerDao customerDao = new CustomerDao();
+    private IAppointmentDao appointmentDao = new AppointmentDao();
+    private IEmployeeDao employeeDao = new EmployeeDao();
+    private EventHandler<CalendarEvent> eventHandler = calendarEvent -> {
         System.out.println("Event: " + calendarEvent);
         Calendar calendar = calendarEvent.getEntry().getCalendar();
         System.out.println("Entry: " + calendarEvent.getEntry());
 
         if (!calendarEvent.getEntry().getId().startsWith("id")) {
+            System.out.println("Entry id modified: " + calendarEvent.getEntry().getId());
             return;
         }
 
@@ -47,6 +48,9 @@ public class Calendars {
                 }
             }
         } else if (eventType == ENTRY_INTERVAL_CHANGED) {
+            if (calendar == null) {
+                return;
+            }
             Appointment appointment = appointmentDao.findByIdAppointment(ControllerUtilities.longifyStringId(calendarEvent.getEntry().getId()));
             appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
             appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
@@ -62,11 +66,6 @@ public class Calendars {
     }
 
     public void initCalendar() {
-        productDao = new ProductDao();
-        animalDao = new AnimalDao();
-        customerDao = new CustomerDao();
-        appointmentDao = new AppointmentDao();
-        employeeDao = new EmployeeDao();
 
         createDbDataTest();
 
@@ -101,10 +100,12 @@ public class Calendars {
         return familyCalendarSource;
     }
 
-    public Calendar createCalendar(String name) {
-        Calendar calendar = new Calendar(name);
+    public void createCalendar(Product product) {
+        Calendar calendar = new Calendar(product.getName());
+        calendar.setStyle(product.getStyle());
+        calendar.addEventHandler(eventHandler);
+        calendarMap.put(product.getName(), calendar);
         familyCalendarSource.getCalendars().add(calendar);
-        return calendar;
     }
 
     public Map<String, Calendar> getCalendarMap() {
@@ -113,35 +114,66 @@ public class Calendars {
 
     private void createDbDataTest() {
 
-        for (int i = 1; i < 10; i++) {
-            ZonedDateTime startTime = ZonedDateTime.now();
-            ZonedDateTime endTime = ZonedDateTime.now().plusHours(1);
+        ZonedDateTime startTime = ZonedDateTime.now();
+        ZonedDateTime endTime = ZonedDateTime.now().plusHours(1);
 
-            Product product = new Product("Product " + i, "Description " + i, 10 + i, "style" + i);
-            Animal animal = new Animal("AnimalName" + i, "koiru" + i, "huskie", 1 + i, "Murmur");
-            Customer customer = new Customer("Customer " + i, "04012345 " + i, "customer@email.com", "Address " + i, "00123");
-            Employee employee = new Employee("Employee " + i, "passy" + i, "Keijo" + i, "Kekkonen" + i, "Ulisija", UserType.EMPLOYEE);
-            Appointment appointment = new Appointment(startTime, endTime, "Description " + i);
 
-            customer.addAnimal(animal);
-            appointment.addCustomer(customer);
-            appointment.addEmployee(employee);
-            appointment.addProduct(product);
-            appointment.addAnimal(animal);
+        Product product = new Product("Animal wash", "Washing :) ", 50, "style1");
+        Product product1 = new Product("Fur trimming", "Full fur trimming", 100, "style2");
+        Product product2 = new Product("Nail Clipping", "Clip nails ", 70, "style3");
 
-            productDao.addProduct(product);
-            animalDao.addAnimal(animal);
-            customerDao.addCustomer(customer);
-            employeeDao.addEmployee(employee);
-            appointmentDao.addAppointment(appointment);
-        }
+        Animal animal = new Animal("Pekka", "Kissa", "Maatiainen", 1, "Grau olen lehmäkissa");
+        Animal animal1 = new Animal("Ulla", "Tiikeri", "Tiibetin", 1, "Miau");
+        Animal animal2 = new Animal("Keijo", "Koira", "Husky", 1, "Wuff");
+        Animal animal3 = new Animal("Urpo", "Koira", "Seinään juossut", 3, "Very lyttä yes");
+        Animal animal4 = new Animal("Ransu", "Koira", "Amstaff", 9, "Uli uli");
 
-        Customer customer = customerDao.findByIdCustomer(1);
-        for (int i = 0; i < 5; ++i) {
-            Animal animal = new Animal("c1EXTRAANIMAL" + i, "doggo" + i, "sekarekku", 1 + i, "uliuli");
-            customer.addAnimal(animal);
-            animalDao.addAnimal(animal);
-        }
+        Customer customer = new Customer("Rasmus", "04012346", "rasmus@metropolia.fi", "Oikeekatu 5", "00565");
+        Customer customer1 = new Customer("Lassi", "04012345", "lassi@metropolia.fi", "Jokutie 5", "00123");
+        Customer customer2 = new Customer("Henri", "04012345", "henri@metropolia.fi", "Vakavapolku 8", "00144");
+        Customer customer4 = new Customer("Jonne", "04012345", "jonne@metropolia.fi", "Pallotie 2", "00444");
+        Customer customer3 = new Customer("Martti", "04012345", "masa@metropolia.fi", "Märinäkatu 9", "00666");
+        Employee employee = new Employee("giga", "passy", "Gigachad", "Kekkonen@lepposa.fi", "Manageri", UserType.EMPLOYEE);
+        Appointment appointment = new Appointment(startTime, endTime, "Hullingolla");
+        Appointment appointment1 = new Appointment(startTime.plusDays(1), endTime.plusDays(1), "On");
+        Appointment appointment2 = new Appointment(startTime.plusDays(2), endTime.plusDays(2), "Kiva olla");
+
+
+        customer.addAnimal(animal);
+        appointment.addCustomer(customer);
+        appointment.addEmployee(employee);
+        appointment.addProduct(product);
+        appointment.addAnimal(animal);
+        customer1.addAnimal(animal1);
+        appointment1.addCustomer(customer1);
+        appointment1.addEmployee(employee);
+        appointment1.addProduct(product1);
+        appointment1.addAnimal(animal1);
+        customer2.addAnimal(animal2);
+        appointment2.addCustomer(customer2);
+        appointment2.addEmployee(employee);
+        appointment2.addProduct(product2);
+        appointment2.addAnimal(animal2);
+
+        productDao.addProduct(product);
+        productDao.addProduct(product1);
+        productDao.addProduct(product2);
+
+        animalDao.addAnimal(animal);
+        animalDao.addAnimal(animal1);
+        animalDao.addAnimal(animal2);
+        animalDao.addAnimal(animal3);
+        animalDao.addAnimal(animal4);
+        customerDao.addCustomer(customer);
+        customerDao.addCustomer(customer1);
+        customerDao.addCustomer(customer2);
+        customerDao.addCustomer(customer3);
+        customerDao.addCustomer(customer4);
+
+        employeeDao.addEmployee(employee);
+        appointmentDao.addAppointment(appointment);
+        appointmentDao.addAppointment(appointment1);
+        appointmentDao.addAppointment(appointment2);
     }
 
     private void addEntriesToCalendar() {

@@ -103,17 +103,17 @@ public class EmployeeDao implements IEmployeeDao {
     @Override
     public boolean updateEmployee(Employee employee) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        Employee t = em.find(Employee.class, employee.getId());
-        if (t == null) {
-            System.out.println("Employee does not exist: " + employee.getId());
+        Employee emp = em.find(Employee.class, employee.getId());
+        if (emp == null) {
+            System.out.println("Employee does not exist: " + employee.getName());
             return false;
         }
         em.getTransaction().begin();
-        t.setUsername(employee.getUsername());
-        t.setPassword(employee.getPassword());
-        t.setName(employee.getName());
-        t.setEmail(employee.getEmail());
-        t.setTitle(employee.getTitle());
+        emp.setUsername(emp.getUsername());
+        emp.setPassword(emp.getPassword());
+        emp.setName(emp.getName());
+        emp.setEmail(emp.getEmail());
+        emp.setTitle(emp.getTitle());
         em.getTransaction().commit();
         return true;
     }
@@ -128,6 +128,18 @@ public class EmployeeDao implements IEmployeeDao {
         }
         System.out.println("Employee does not exist with id: " + id);
         return false;
+    }
+
+    @Override
+    public Employee findNewestEmployee() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        Employee employee = null;
+        try {
+            employee = em.createQuery("SELECT a FROM Employee a ORDER BY a.id DESC", Employee.class).setMaxResults(1).getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No Employee found");
+        }
+        return employee;
     }
 
     private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
