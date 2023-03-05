@@ -143,7 +143,7 @@
                               </NumberAxis>
                           </yAxis>
                         </BarChart>
-                        <Text fill="WHITE" layoutX="37.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Morning, Henri. " textAlignment="CENTER">
+                        <Text fx:id="welcometext" fill="WHITE" layoutX="37.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER">
                            <font>
                               <Font name="Ikonli" size="28.0" />
                            </font>

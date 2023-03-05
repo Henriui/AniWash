@@ -31,6 +31,9 @@ public class Customer {
     private String address;
     private String postalCode;
 
+    // Customer is always a customer usertype.
+    private UserType userType = UserType.CUSTOMER;
+
     @ManyToMany(mappedBy = "owner")
     private Set<Animal> animals = new HashSet<>();
 
@@ -166,6 +169,10 @@ public class Customer {
 
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public UserType getUserType() {
+        return userType;
     }
 
     @Override

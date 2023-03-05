@@ -45,7 +45,10 @@ public class LoginController {
             if (e.getPassword().equals(password)) {
                 System.out.println("Login successful");
                 try {
-                    // Set mainView scene.
+    
+                    //Check biscuit and set mainView scene.
+
+                    MainApp.setBiscuit(e);
                     MainApp.setRoot("mainView");
                     MainApp.changeStageSize(1300, 800);
                     return;

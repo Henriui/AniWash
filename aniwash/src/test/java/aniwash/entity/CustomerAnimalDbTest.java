@@ -58,7 +58,7 @@ public class CustomerAnimalDbTest {
         }
 
         for (int i = 0; i < 10; i++) {
-            Employee e = new Employee("John" + i, "password", "John" + i, "john" + i + "@gmail.com", "Employee");
+            Employee e = new Employee("John" + i, "password", "John" + i, "john" + i + "@gmail.com", "Employee", UserType.EMPLOYEE);
             eDao.addEmployee(e);
         }
 
