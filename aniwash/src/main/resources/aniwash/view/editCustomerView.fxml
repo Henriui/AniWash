@@ -31,7 +31,7 @@
                         <Image url="@../images/user.png" />
                      </image>
                   </ImageView>
-                  <Separator layoutX="12.0" layoutY="347.0" prefHeight="7.0" prefWidth="854.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="434.0" />
+                  <Separator layoutX="14.0" layoutY="321.0" prefHeight="7.0" prefWidth="854.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="432.0" />
                   <Text fill="#2e3032" layoutX="450.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PostalCode" AnchorPane.rightAnchor="760.4130859375">
                      <font>
                         <Font size="18.0" />
@@ -102,7 +102,7 @@
                         </DropShadow>
                      </effect>
                   </TextField>
-                  <Text layoutX="27.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pets">
+                  <Text layoutX="27.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pets">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -124,7 +124,7 @@
                      </effect>
                   </Button>
                   <ListView fx:id="listView" layoutX="51.0" layoutY="415.0" prefHeight="210.0" prefWidth="814.0" style="-fx-background-color: #f2f5f9;" styleClass="list-cell" />
-                  <Button layoutX="823.0" layoutY="363.0" mnemonicParsing="false" onAction="#createNewAnimal" prefHeight="37.0" prefWidth="41.0" style="-fx-background-radius: 100; -fx-background-color: #1485ff;" text="+" textFill="WHITE">
+                  <Button layoutX="822.0" layoutY="332.0" mnemonicParsing="false" onAction="#createNewAnimal" prefHeight="37.0" prefWidth="41.0" style="-fx-background-radius: 100; -fx-background-color: #1485ff;" text="+" textFill="WHITE">
                      <font>
                         <Font name="Ikonli" size="17.0" />
                      </font>
@@ -132,27 +132,27 @@
                         <DropShadow blurType="ONE_PASS_BOX" height="5.0" radius="2.0" width="5.0" />
                      </effect>
                   </Button>
-                  <Text fill="#2e3032" layoutX="96.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" AnchorPane.leftAnchor="96.0">
+                  <Text fill="#2e3032" layoutX="119.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" AnchorPane.leftAnchor="119.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="191.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age" AnchorPane.leftAnchor="246.0">
+                  <Text fill="#2e3032" layoutX="317.0" layoutY="405.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age" AnchorPane.leftAnchor="317.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="297.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" AnchorPane.leftAnchor="396.0">
+                  <Text fill="#2e3032" layoutX="431.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" AnchorPane.leftAnchor="431.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="500.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Breed" AnchorPane.leftAnchor="550.0">
+                  <Text fill="#2e3032" layoutX="575.0" layoutY="405.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Breed" AnchorPane.leftAnchor="575.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Text fill="#2e3032" layoutX="626.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" AnchorPane.leftAnchor="700.0">
+                  <Text fill="#2e3032" layoutX="711.0" layoutY="405.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" AnchorPane.leftAnchor="711.0">
                      <font>
                         <Font size="18.0" />
                      </font>
