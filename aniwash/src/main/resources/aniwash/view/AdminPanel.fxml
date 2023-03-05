@@ -21,7 +21,8 @@ fx:controller="aniwash.view.AdminViewController">
       <RadioButton fx:id="employee" layoutX="59.0" layoutY="476.0" mnemonicParsing="false" text="Employee" />
       <RadioButton fx:id="employer" layoutX="59.0" layoutY="511.0" mnemonicParsing="false" text="Employer" />
       <Button fx:id="createEmployee" layoutX="315.0" layoutY="508.0" mnemonicParsing="false" text="Submit" onAction="#submit" />
-      <ListView id="employeelist" layoutX="558.0" layoutY="45.0" prefHeight="506.0" prefWidth="200.0" />
+      <Button fx:id="back" layoutX="550" layoutY="60.0" mnemonicParsing="false" text="Back" onAction="#back" />
+      <!-- <ListView id="employeelist" layoutX="558.0" layoutY="45.0" prefHeight="506.0" prefWidth="200.0" /> -->
       <Text layoutX="69.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First name" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
