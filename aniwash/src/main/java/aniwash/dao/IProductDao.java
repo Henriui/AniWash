@@ -5,7 +5,7 @@ import aniwash.entity.Product;
 import java.util.List;
 
 
-public interface IProductDao {
+public interface IProductDao extends IDao {
     boolean addProduct(Product product);
 
     List<Product> findAllProduct();
