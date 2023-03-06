@@ -54,9 +54,7 @@ public class NewProductController {
 
         // All input values are valid, create the Procuct object
         Product product = new Product(name, description, Integer.valueOf(price), "style8");
-        IProductDao productDao = new ProductDao();
         Calendars calendars = new Calendars();
-        productDao.addProduct(product);
         calendars.createCalendar(product);
 
         Node source = (Node) event.getSource();
