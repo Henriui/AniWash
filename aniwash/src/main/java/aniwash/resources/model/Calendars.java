@@ -101,6 +101,7 @@ public class Calendars {
     }
 
     public void createCalendar(Product product) {
+        productDao.addProduct(product);
         Calendar calendar = new Calendar(product.getName());
         calendar.setStyle(product.getStyle());
         calendar.addEventHandler(eventHandler);
