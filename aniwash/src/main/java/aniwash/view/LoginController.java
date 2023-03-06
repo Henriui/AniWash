@@ -50,7 +50,7 @@ public class LoginController {
 
                     MainApp.setBiscuit(e);
                     MainApp.setRoot("mainView");
-                    MainApp.changeStageSize(1300, 800);
+                    MainApp.changeStageSize(1300, 700);
                     return;
                 } catch (Exception ee) {
                     System.out.println("Error loading mainView");

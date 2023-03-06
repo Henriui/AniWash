@@ -1,7 +1,10 @@
 package aniwash;
 
+import aniwash.dao.EmployeeDao;
+import aniwash.dao.IEmployeeDao;
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
+import aniwash.entity.UserType;
 import aniwash.resources.model.Calendars;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -31,15 +34,15 @@ public class MainApp extends Application {
         // Add debug employee to database
         // TODO: Delete this before release.
 
-/*
-        Employee e = new Employee("tim", "cook", "Tim Cook", "tim.cook@lethimcook.com", "CEO entrepeneur", UserType.EMPLOYER);
+
+        Employee e = new Employee("admin", "admin", "Jonne", "tim.cook@lethimcook.com", "CEO entrepeneur", UserType.EMPLOYER);
         IEmployeeDao ed = new EmployeeDao();
         try {
             ed.addEmployee(e);
         } catch (Exception ex) {
             System.out.println("Error deleting all employees");
         }
-*/
+
 
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
@@ -51,7 +54,7 @@ public class MainApp extends Application {
         // cookie.setBiscuit(e);
 
         // TODO: Change this to the login view when project done.
-        Parent root = loadParent("mainView");
+        Parent root = loadParent("login");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
