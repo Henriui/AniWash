@@ -1,20 +1,18 @@
 package aniwash.view;
 
-import aniwash.dao.AnimalDao;
-import aniwash.dao.CustomerDao;
-import aniwash.dao.IAnimalDao;
-import aniwash.dao.ICustomerDao;
+import aniwash.dao.*;
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
+import aniwash.resources.model.Calendars;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.Map;
 
 public class NewCustomerController {
     // Create text fields for Customer section
@@ -81,10 +79,12 @@ public class NewCustomerController {
 
         // All input values are valid, create the Customer object
         Customer customer = new Customer(name, phone, email, address, postalCode);
-        Animal animal = new Animal(petName, petType, petBreed, Integer.valueOf(petAge), petDescription);
+        Animal animal = new Animal(petName, petType, petBreed, Integer.parseInt(petAge), petDescription);
 
-        ICustomerDao customerDao = new CustomerDao();
-        IAnimalDao animalDao = new AnimalDao();
+        Calendars calendar = new Calendars();
+        Map<String, IDao> daoMap = calendar.getDaoMap();
+        ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
+        IAnimalDao animalDao = (AnimalDao) daoMap.get("animal");
         customerDao.addCustomer(customer);
         animalDao.addAnimal(animal);
         customer.addAnimal(animal);

@@ -4,7 +4,7 @@ import aniwash.entity.Employee;
 
 import java.util.List;
 
-public interface IEmployeeDao {
+public interface IEmployeeDao extends IDao {
 
     boolean addEmployee(Employee employee);
 

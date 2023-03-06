@@ -30,7 +30,7 @@ public class DashboardController {
 
     public void initialize() {
 
-        agendaView.getCalendarSources().addAll(calendars.getCalendarss());
+        agendaView.getCalendarSources().addAll(calendars.getFamilyCalendar());
 /*
         try {
             // Write welcome text based on time of day (good morning, afternoon, evening)

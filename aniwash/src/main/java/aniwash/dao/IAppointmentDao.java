@@ -5,7 +5,7 @@ import aniwash.entity.Appointment;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public interface IAppointmentDao {
+public interface IAppointmentDao extends IDao {
     boolean addAppointment(Appointment appointment);
 
     List<Appointment> findAllAppointment();

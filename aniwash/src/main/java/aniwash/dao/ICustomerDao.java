@@ -4,7 +4,7 @@ import aniwash.entity.Customer;
 
 import java.util.List;
 
-public interface ICustomerDao {
+public interface ICustomerDao extends IDao {
     boolean addCustomer(Customer customer);
 
     List<Customer> findAllCustomer();

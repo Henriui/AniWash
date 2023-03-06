@@ -5,7 +5,7 @@ import aniwash.entity.Customer;
 
 import java.util.List;
 
-public interface IAnimalDao {
+public interface IAnimalDao extends IDao {
     boolean addAnimal(Animal animal);
 
     List<Animal> findAllAnimal();
