@@ -29,7 +29,7 @@ public class ScheduleController {
     private Calendars calendars = new Calendars();
 
     public void initialize() {
-        calendarView.getCalendarSources().addAll(calendars.getCalendarss());
+        calendarView.getCalendarSources().addAll(calendars.getFamilyCalendar());
         calendarView.setEntryDetailsCallback(new CreatePopUp());
     }
 

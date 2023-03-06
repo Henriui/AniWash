@@ -23,14 +23,14 @@ import static com.calendarfx.model.CalendarEvent.ENTRY_CALENDAR_CHANGED;
 import static com.calendarfx.model.CalendarEvent.ENTRY_INTERVAL_CHANGED;
 
 public class Calendars {
-    private static Map<String, Calendar> calendarMap = new HashMap<>();
+    private static Map<String, Calendar<Product>> calendarMap = new HashMap<>();
     private static Map<String, IDao> daoMap;
     private static CalendarSource familyCalendarSource = new CalendarSource("Product");
     private IProductDao productDao = new ProductDao();
     private IAnimalDao animalDao = new AnimalDao();
     private ICustomerDao customerDao = new CustomerDao();
     private IAppointmentDao appointmentDao = new AppointmentDao();
-    private EventHandler<CalendarEvent> eventHandler = calendarEvent -> {
+    private final EventHandler<CalendarEvent> eventHandler = calendarEvent -> {
         System.out.println("Event: " + calendarEvent);
         Calendar calendar = calendarEvent.getEntry().getCalendar();
         System.out.println("Entry: " + calendarEvent.getEntry());
@@ -77,27 +77,28 @@ public class Calendars {
         // CalendarSource is a mother to all the calendars
     }
 
-    public void addAppointmentEntry(Entry<Appointment> entry, Calendar calendar) {
+    public void addAppointmentEntry(Entry<Appointment> entry, Calendar<Product> calendar) {
         System.out.println("addAppointmentEntry " + entry.getTitle() + ", location " + entry.getLocation() + " " + calendar.getName() + " " + entry.getUserObject());
         calendar.addEntry(entry);
     }
 
     // This is a test method, it will be removed later
 
-    public CalendarSource getCalendarss() {
+    public CalendarSource getFamilyCalendar() {
         return familyCalendarSource;
     }
 
     public void createCalendar(Product product) {
         productDao.addProduct(product);
-        Calendar calendar = new Calendar(product.getName());
+        Calendar<Product> calendar = new Calendar<>(product.getName());
+        calendar.setUserObject(product);
         calendar.setStyle(product.getStyle());
         calendar.addEventHandler(eventHandler);
         calendarMap.put(product.getName(), calendar);
         familyCalendarSource.getCalendars().add(calendarMap.get(product.getName()));
     }
 
-    public Map<String, Calendar> getCalendarMap() {
+    public Map<String, Calendar<Product>> getCalendarMap() {
         return calendarMap;
     }
 
@@ -183,7 +184,7 @@ public class Calendars {
             entry.getProperties().put("customer", appointment.findAllCustomers().get(0));
             entry.getProperties().put("product", appointment.findAllProducts().get(0));
             entry.getProperties().put("animal", appointment.findAllAnimals().get(0));
-            addAppointmentEntry(entry, entry.getCalendar());
+            addAppointmentEntry(entry, calendarMap.get(appointment.findAllProducts().get(0).getName()));
         }
     }
 

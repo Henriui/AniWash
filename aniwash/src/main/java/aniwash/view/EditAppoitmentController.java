@@ -11,7 +11,6 @@ import aniwash.resources.model.CustomListViewCellCustomer;
 import aniwash.resources.utilities.ControllerUtilities;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
 import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +30,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 
 public class EditAppoitmentController extends CreatePopUp {
-    private Calendars modelViewController = new Calendars();
+    private final Calendars modelViewController = new Calendars();
     @FXML
     private Button save;
     @FXML
@@ -50,20 +49,20 @@ public class EditAppoitmentController extends CreatePopUp {
     private TimeField startTime = new TimeField();
     @FXML
     private TimeField endTime = new TimeField();
-    private Entry<Appointment> editEntry;
-    private ObservableList<Calendar> calendarObservableList;
+    private Entry<Appointment> newEntry;
+    private ObservableList<Calendar<Product>> calendarObservableList;
     private ObservableList<Customer> customerObservableList;
     private final Map<String, IDao> daoMap = modelViewController.getDaoMap();
 
     public void initialize() {
-        setArg();
+        newEntry = (Entry<Appointment>) getArg();
 
         services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
 
-        date.setValue(editEntry.getStartDate());
-        startTime.setValue(editEntry.getStartTime());
-        endTime.setValue(editEntry.getEndTime());
+        date.setValue(newEntry.getStartDate());
+        startTime.setValue(newEntry.getStartTime());
+        endTime.setValue(newEntry.getEndTime());
 
         // Initialize the person table with the three columns.
         personList.setCellFactory(personList -> new CustomListViewCellCustomer());
@@ -110,9 +109,7 @@ public class EditAppoitmentController extends CreatePopUp {
                 try {
                     // NEW SERVICE POPUP
                     Stage stage = new Stage();
-                    stage.setOnHidden(e -> {
-                        updateServices();
-                    });
+                    stage.setOnHidden(e -> updateServices());
                     ControllerUtilities.newProduct(stage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -131,7 +128,7 @@ public class EditAppoitmentController extends CreatePopUp {
                     // NEW ANIMAL POPUP
                     Stage stage = new Stage();
                     stage.setOnHidden(event1 -> updatePets());
-                    ControllerUtilities.newAnimal((Customer) editEntry.getProperties().get("customer"), stage);
+                    ControllerUtilities.newAnimal((Customer) newEntry.getProperties().get("customer"), stage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -150,7 +147,7 @@ public class EditAppoitmentController extends CreatePopUp {
 
     @FXML
     public void save() {
-        if (personList.getSelectionModel().getSelectedItem() == null || editEntry.getLocation() == null || editEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select a service and a pet");
             // TODO: Alert popup for missing fields ;)
         } else {
@@ -204,48 +201,43 @@ public class EditAppoitmentController extends CreatePopUp {
     private void selectCustomer(Customer customer) {
         personList.getSelectionModel().select(customer);
         personList.scrollTo(customer);
-        editEntry.getProperties().replace("customer", customer);
-        editEntry.getProperties().putIfAbsent("customer", customer);
+        newEntry.getProperties().replace("customer", customer);
+        newEntry.getProperties().putIfAbsent("customer", customer);
     }
 
     private void selectPet(String newValue) {
-        editEntry.setLocation(newValue); // TODO: muuta käyttöä locationille
+        newEntry.setLocation(newValue); // TODO: muuta käyttöä locationille
         petList.getSelectionModel().select(newValue);
         petList.scrollTo(newValue);
-        Customer customer = (Customer) editEntry.getProperties().get("customer");
+        Customer customer = (Customer) newEntry.getProperties().get("customer");
         int index = petList.getSelectionModel().getSelectedIndex() - 1;
         if (index >= 0) {
-            editEntry.getProperties().putIfAbsent("animal", customer.findAllAnimals().get(index));
-            editEntry.getProperties().replace("animal", customer.findAllAnimals().get(index));
+            newEntry.getProperties().putIfAbsent("animal", customer.findAllAnimals().get(index));
+            newEntry.getProperties().replace("animal", customer.findAllAnimals().get(index));
         }
     }
 
     private void selectService(String newValue) {
-        Calendar service = calendarObservableList.get(services.getSelectionModel().getSelectedIndex() - 1);
-        editEntry.setCalendar(service);
-        editEntry.setTitle(service.getName()); // TODO: muuta käyttöä titlelle
+        Calendar<Product> service = calendarObservableList.get(services.getSelectionModel().getSelectedIndex() - 1);
+        newEntry.setCalendar(service);
+        newEntry.setTitle(service.getName()); // TODO: muuta käyttöä titlelle
         services.scrollTo(newValue);
     }
 
     public void getCurrentAppointment() {
         customerObservableList = getPeople();
-        Customer customer = (Customer) editEntry.getProperties().get("customer");
+        Customer customer = (Customer) newEntry.getProperties().get("customer");
         personList.setItems(customerObservableList.filtered(person -> person.getName().equals(customer.getName())));
         personList.getSelectionModel().select(customer);
-        services.getSelectionModel().select(editEntry.getCalendar().getName());
-        services.scrollTo(editEntry.getCalendar().getName());
+        services.getSelectionModel().select(newEntry.getCalendar().getName());
+        services.scrollTo(newEntry.getCalendar().getName());
         customer.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
-        petList.getSelectionModel().select(((Animal) editEntry.getProperties().get("animal")).getName());
-    }
-
-    public void setArg() {
-        EntryDetailsParameter arg0 = getArg();
-        editEntry = (Entry<Appointment>) arg0.getEntry();
+        petList.getSelectionModel().select(((Animal) newEntry.getProperties().get("animal")).getName());
     }
 
     public void sendEntry() {
-        editEntry.setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
-        updateAppointment(editEntry.getStartAsZonedDateTime(), editEntry.getEndAsZonedDateTime(), editEntry.getUserObject());
+        newEntry.setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
+        updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(), newEntry.getUserObject());
     }
 
     private void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment) {
@@ -253,16 +245,16 @@ public class EditAppoitmentController extends CreatePopUp {
         appointment.setStartDate(zdtStart);
         appointment.setEndDate(zdtEnd);
 
-        String productName = ((Product) editEntry.getProperties().get("product")).getName();
-        if (!(productName.equals(editEntry.getCalendar().getName()))) {
+        String productName = ((Product) newEntry.getProperties().get("product")).getName();
+        if (!(productName.equals(newEntry.getCalendar().getName()))) {
             appointment.removeProduct(appointment.findAllProducts().get(0));
             IProductDao productDao = (ProductDao) daoMap.get("product");
-            Product product = productDao.findByNameProduct(editEntry.getCalendar().getName());
+            Product product = productDao.findByNameProduct(newEntry.getCalendar().getName());
             appointment.addProduct(product);
-            editEntry.getProperties().replace("product", product);
+            newEntry.getProperties().replace("product", product);
         }
 
-        Customer c = ((Customer) editEntry.getProperties().get("customer"));
+        Customer c = ((Customer) newEntry.getProperties().get("customer"));
         if (!(appointment.findAllCustomers().get(0) == c)) {
             appointment.removeCustomer(appointment.findAllCustomers().get(0));
             ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
@@ -270,7 +262,7 @@ public class EditAppoitmentController extends CreatePopUp {
             appointment.addCustomer(customer);
         }
 
-        Animal a = ((Animal) editEntry.getProperties().get("animal"));
+        Animal a = ((Animal) newEntry.getProperties().get("animal"));
         if (!(appointment.findAllAnimals().get(0) == a)) {
             appointment.removeAnimal(appointment.findAllAnimals().get(0));
             IAnimalDao animalDao = (AnimalDao) daoMap.get("animal");
@@ -290,7 +282,7 @@ public class EditAppoitmentController extends CreatePopUp {
     }
 
     private void updatePets() {
-        Customer c = (Customer) editEntry.getProperties().get("customer");
+        Customer c = (Customer) newEntry.getProperties().get("customer");
         personList.setItems(customerObservableList.filtered(customer -> customer.getName().contains(c.getName())));
         petList.getItems().removeAll(petList.getItems());
         petList.getItems().add("                                   Create new pet  +");
@@ -300,8 +292,8 @@ public class EditAppoitmentController extends CreatePopUp {
         Animal animal = animalDao.findNewestAnimal();
         petList.getSelectionModel().select(animal.getName());
 
-        editEntry.setLocation(animal.getName()); // TODO: muuta käyttöä locationille
-        editEntry.getProperties().replace("animal", animal);
+        newEntry.setLocation(animal.getName()); // TODO: muuta käyttöä locationille
+        newEntry.getProperties().replace("animal", animal);
     }
 
     private void updateServices() {
@@ -314,8 +306,8 @@ public class EditAppoitmentController extends CreatePopUp {
         Product product = productDao.findNewestProduct();
         services.getSelectionModel().select(product.getName());
 
-        editEntry.setCalendar(calendarObservableList.get(services.getSelectionModel().getSelectedIndex() - 1));
-        editEntry.setTitle(product.getName()); // TODO: muuta käyttöä titlelle
+        newEntry.setCalendar(calendarObservableList.get(services.getSelectionModel().getSelectedIndex() - 1));
+        newEntry.setTitle(product.getName()); // TODO: muuta käyttöä titlelle
     }
 
     private ObservableList<Customer> getPeople() {

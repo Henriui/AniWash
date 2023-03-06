@@ -1,7 +1,5 @@
 package aniwash.view;
 
-import aniwash.dao.IProductDao;
-import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
 import aniwash.resources.model.Calendars;
 import aniwash.resources.utilities.ControllerUtilities;
@@ -53,7 +51,7 @@ public class NewProductController {
         }
 
         // All input values are valid, create the Procuct object
-        Product product = new Product(name, description, Integer.valueOf(price), "style8");
+        Product product = new Product(name, description, Integer.parseInt(price), "style8");
         Calendars calendars = new Calendars();
         calendars.createCalendar(product);
 

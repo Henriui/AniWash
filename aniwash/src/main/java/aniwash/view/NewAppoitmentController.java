@@ -11,7 +11,6 @@ import aniwash.resources.model.CustomListViewCellCustomer;
 import aniwash.resources.utilities.ControllerUtilities;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
-import com.calendarfx.view.DateControl.EntryDetailsParameter;
 import com.calendarfx.view.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +32,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 
 public class NewAppoitmentController extends CreatePopUp {
-    private Calendars modelViewController = new Calendars();
+    private final Calendars modelViewController = new Calendars();
     @FXML
     private Button save;
     @FXML
@@ -65,15 +64,14 @@ public class NewAppoitmentController extends CreatePopUp {
     @FXML
     private Rectangle third;
     private Entry<Appointment> newEntry;
-    private ObservableList<Calendar> calendarObservableList;
+    private ObservableList<Calendar<Product>> calendarObservableList;
     private ObservableList<Customer> customerObservableList;
     private Map<String, IDao> daoMap;
 
     public void initialize() {
 
         // Get the created entry from the calendar view.
-        EntryDetailsParameter arg0 = getArg();
-        newEntry = (Entry<Appointment>) arg0.getEntry();
+        newEntry = (Entry<Appointment>) getArg();
 
         services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
@@ -163,9 +161,7 @@ public class NewAppoitmentController extends CreatePopUp {
                 try {
                     // NEW SERVICE POPUP
                     Stage stage = new Stage();
-                    stage.setOnHidden(e -> {
-                        updateServices();
-                    });
+                    stage.setOnHidden(e -> updateServices());
                     ControllerUtilities.newProduct(stage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -200,6 +196,7 @@ public class NewAppoitmentController extends CreatePopUp {
     public void save() {
         if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select Service and Pet");
+            // TODO: Alert popup for missing fields ;)
         } else {
             Stage stage = (Stage) save.getScene().getWindow();
             stage.close();
@@ -232,7 +229,7 @@ public class NewAppoitmentController extends CreatePopUp {
     }
 
     private void selectService(String newValue) {
-        Calendar service = calendarObservableList.get(services.getSelectionModel().getSelectedIndex() - 1);
+        Calendar<Product> service = calendarObservableList.get(services.getSelectionModel().getSelectedIndex() - 1);
         newEntry.setCalendar(service);
         newEntry.setTitle(service.getName()); // TODO: muuta käyttöä titlelle
         services.scrollTo(newValue);
