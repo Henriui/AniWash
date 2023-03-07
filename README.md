@@ -19,6 +19,13 @@
 *
     * [Explanation](#explanation)
 
+## Authors
+
+Henri Uimonewn
+Jonne Borgman
+Rasmus Hyyppä
+Lassi Bågman
+
 ## Introduction
 
 Aniwash is a software for customer management and pet care scheduling.
