@@ -57,7 +57,7 @@ public class LoginController {
                 }
             }
         }
-        System.out.println("Wrong username or password");
+        System.out.println("Wrong username or password!");
     }
 
 }
