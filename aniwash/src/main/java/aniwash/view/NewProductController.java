@@ -1,7 +1,7 @@
 package aniwash.view;
 
 import aniwash.entity.Product;
-import aniwash.resources.model.Calendars;
+import aniwash.resources.model.ModelViewViewmodel;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,8 +52,8 @@ public class NewProductController {
 
         // All input values are valid, create the Procuct object
         Product product = new Product(name, description, Integer.parseInt(price), "style8");
-        Calendars calendars = new Calendars();
-        calendars.createCalendar(product);
+        ModelViewViewmodel modelViewViewmodel = new ModelViewViewmodel();
+        modelViewViewmodel.createCalendar(product);
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

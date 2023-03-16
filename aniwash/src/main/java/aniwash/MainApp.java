@@ -2,7 +2,7 @@ package aniwash;
 
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
-import aniwash.resources.model.Calendars;
+import aniwash.resources.model.ModelViewViewmodel;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws IOException {
 
         // FIXME: Delete these lines after database is implemented
-        Calendars calendar = new Calendars();
+        ModelViewViewmodel calendar = new ModelViewViewmodel();
         calendar.initCalendar();
 
         // Add debug employee to database

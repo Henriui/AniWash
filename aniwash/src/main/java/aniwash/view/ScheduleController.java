@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.calendarfx.view.CalendarView;
 
 import aniwash.MainApp;
-import aniwash.resources.model.Calendars;
+import aniwash.resources.model.ModelViewViewmodel;
 import aniwash.resources.model.CreatePopUp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,10 +26,10 @@ public class ScheduleController {
     private Button listButton;
     @FXML
     private Button monthButton;
-    private Calendars calendars = new Calendars();
+    private ModelViewViewmodel modelViewViewmodel = new ModelViewViewmodel();
 
     public void initialize() {
-        calendarView.getCalendarSources().addAll(calendars.getFamilyCalendar());
+        calendarView.getCalendarSources().addAll(modelViewViewmodel.getFamilyCalendar());
         calendarView.setEntryDetailsCallback(new CreatePopUp());
     }
 

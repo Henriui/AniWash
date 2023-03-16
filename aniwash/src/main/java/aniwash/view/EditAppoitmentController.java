@@ -5,7 +5,7 @@ import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.entity.Product;
-import aniwash.resources.model.Calendars;
+import aniwash.resources.model.ModelViewViewmodel;
 import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.CustomListViewCellCustomer;
 import aniwash.resources.utilities.ControllerUtilities;
@@ -30,7 +30,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 
 public class EditAppoitmentController extends CreatePopUp {
-    private final Calendars modelViewController = new Calendars();
+    private final ModelViewViewmodel modelViewController = new ModelViewViewmodel();
     @FXML
     private Button save;
     @FXML
