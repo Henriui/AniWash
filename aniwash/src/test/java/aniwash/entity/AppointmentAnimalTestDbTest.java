@@ -27,7 +27,9 @@ public class AppointmentAnimalTestDbTest {
 
     @AfterEach
     public void tearDown() {
-        aDao.deleteByIdAppointment(appointment.getId());
+        for (Appointment a : aDao.findAllAppointments()) {
+            aDao.deleteByIdAppointment(a.getId());
+        }
     }
 
     @Test
@@ -41,33 +43,30 @@ public class AppointmentAnimalTestDbTest {
             anDao.addAnimal(an);
             a.addAnimal(an);
         }
-
         List<Animal> animals = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
             Animal an = new Animal("Elmo" + i, "Koira", "Labradori", i, "Rauhallinen ja kiltti");
             animals.add(an);
         }
-
         for (Animal an : animals) {
             Appointment a = aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00"));
             anDao.addAnimal(an);
             a.addAnimal(an);
         }
-
-        assertEquals(3, aDao.findAllAppointment().size(), "Appointment list size count should be 3");
-        assertEquals(4, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00")).findAllAnimals().size(), "Appointment animal list size count should be 4");
+        assertEquals(3, aDao.findAllAppointments().size(), "Appointment list size count should be 3");
+        assertEquals(4, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00")).getAnimalList().size(), "Appointment animal list size count should be 4");
         assertEquals(6, anDao.findAllAnimal().size(), "Animal list size count should be 6");
     }
 
     @Test
     @DisplayName("Find all animals from appointment test")
     @Order(2)
-    public void findTest(){
+    public void findTest() {
         System.out.println("Find test");
-        List<Appointment> appointmentList = aDao.findAllAppointment();
+        List<Appointment> appointmentList = aDao.findAllAppointments();
         List<Animal> animalList = new ArrayList<>();
         for (Appointment a : appointmentList) {
-            animalList.addAll(a.findAllAnimals());
+            animalList.addAll(a.getAnimalList());
         }
         assertEquals(6, animalList.size(), "Animal list size count should be 6");
         for (Animal an : animalList) {
@@ -78,19 +77,19 @@ public class AppointmentAnimalTestDbTest {
     @Test
     @DisplayName("Delete all appointments test")
     @Order(3)
-    public void deleteAllAppointmentsTest(){
+    public void deleteAllAppointmentsTest() {
         System.out.println("Delete all appointments test");
-        List<Appointment> appointmentList = aDao.findAllAppointment();
+        List<Appointment> appointmentList = aDao.findAllAppointments();
         for (Appointment a : appointmentList) {
             aDao.deleteByIdAppointment(a.getId());
         }
-        assertEquals(0, aDao.findAllAppointment().size(), "Appointment list size count should be 0");
+        assertEquals(0, aDao.findAllAppointments().size(), "Appointment list size count should be 0");
     }
 
     @Test
     @DisplayName("Delete all animals test")
     @Order(4)
-    public void deleteAllAnimalsTest(){
+    public void deleteAllAnimalsTest() {
         System.out.println("Delete all animals test");
         List<Animal> animalList = anDao.findAllAnimal();
         for (Animal an : animalList) {

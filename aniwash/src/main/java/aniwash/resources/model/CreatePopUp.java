@@ -4,7 +4,6 @@ import aniwash.resources.utilities.ControllerUtilities;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -15,7 +14,6 @@ import java.io.IOException;
 public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
 
     static EntryDetailsParameter savedArg0;
-
     // This method is called when the user double clicks on a calendar entry or an
     // empty space in calendar.
 
@@ -24,17 +22,18 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
         final FXMLLoader loader;
         final Scene scene;
         savedArg0 = arg0;
-        if (arg0.getEntry().getTitle().equals("New Entry")) try {
-            loader = ControllerUtilities.loadFXML("createAppoitment");
-            scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Create Appointment");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (arg0.getEntry().getTitle().equals("New Entry"))
+            try {
+                loader = ControllerUtilities.loadFXML("createAppoitment");
+                scene = new Scene(loader.load());
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("Create Appointment");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         else {
             try {
                 loader = ControllerUtilities.loadFXML("editAppoitment");

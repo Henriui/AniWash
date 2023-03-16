@@ -18,7 +18,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -170,7 +169,7 @@ public class EditCustomerController {
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.show();
 
-        popupStage.setOnHidden(view -> listView.setItems(FXCollections.observableList(customer.findAllAnimals())));
+        popupStage.setOnHidden(view -> listView.setItems(FXCollections.observableList(customer.getAnimalList())));
         CreateNewAnimalController.setCustomer(customer);
     }
 }

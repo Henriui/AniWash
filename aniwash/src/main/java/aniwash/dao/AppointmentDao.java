@@ -3,6 +3,10 @@ package aniwash.dao;
 import aniwash.entity.Appointment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -27,9 +31,18 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public List<Appointment> findAllAppointment() {
+    public List<Appointment> findAllAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
+        Root<Appointment> rootEntry = cq.from(Appointment.class);
+        rootEntry.fetch("customers", JoinType.INNER);
+        rootEntry.fetch("animals", JoinType.INNER);
+        rootEntry.fetch("products", JoinType.INNER);
+        cq.select(rootEntry);
+        cq.where(cb.equal(rootEntry.get("deleted"), 0));
+        return em.createQuery(cq).getResultList();
+        //return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
     }
 
     @Override

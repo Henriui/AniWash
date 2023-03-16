@@ -8,7 +8,7 @@ import java.util.List;
 public interface IAppointmentDao extends IDao {
     boolean addAppointment(Appointment appointment);
 
-    List<Appointment> findAllAppointment();
+    List<Appointment> findAllAppointments();
 
     Appointment findByIdAppointment(Long id);
 

@@ -223,8 +223,8 @@ public class NewAppoitmentController extends CreatePopUp {
         Customer customer = (Customer) newEntry.getProperties().get("customer");
         int index = petList.getSelectionModel().getSelectedIndex() - 1;
         if (index >= 0) {
-            newEntry.getProperties().putIfAbsent("animal", customer.findAllAnimals().get(index));
-            newEntry.getProperties().replace("animal", customer.findAllAnimals().get(index));
+            newEntry.getProperties().putIfAbsent("animal", customer.getAnimalList().get(index));
+            newEntry.getProperties().replace("animal", customer.getAnimalList().get(index));
         }
     }
 

@@ -27,7 +27,9 @@ public class EmployeeDaoTest {
 
     @AfterEach
     public void tearDown() {
-        eDao.deleteByIdEmployee(employee.getId());
+        for (Employee e : eDao.findAllEmployee()) {
+            eDao.deleteByIdEmployee(e.getId());
+        }
     }
 
     @Test
@@ -36,10 +38,8 @@ public class EmployeeDaoTest {
     public void createEmployeeTest() {
         assertTrue(eDao.addEmployee(employee), "addEmployee(): Employee was not added");
         assertFalse(eDao.addEmployee(employee), "addEmployee(): Duplicates should not be allowed.");
-
         employee.setUsername("tim");
         assertFalse(eDao.addEmployee(employee), "addEmployee(): Duplicates should not be allowed.");
-
         assertNotNull((employee = eDao.findByNameEmployee("Tim")), "addEmployee(): Added employee is null");
         assertEquals(name, employee.getName(), "getName(): Name is invalid");
         assertEquals(email, employee.getEmail(), "getEmail(): Email is invalid.");
