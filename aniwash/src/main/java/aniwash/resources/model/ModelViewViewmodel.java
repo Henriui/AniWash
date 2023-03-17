@@ -8,12 +8,14 @@ import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarEvent;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 
+import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.calendarfx.model.CalendarEvent.ENTRY_CALENDAR_CHANGED;
@@ -23,6 +25,7 @@ public class ModelViewViewmodel {
     private static Map<String, Calendar<Product>> calendarMap = new HashMap<>();
     private static Map<String, IDao> daoMap = new HashMap<>();
     private static CalendarSource familyCalendarSource = new CalendarSource("Product");
+    private static ObservableList<Appointment> appointmentList;
 
     public ModelViewViewmodel() {
         daoMap.put("product", new ProductDao());
@@ -44,7 +47,7 @@ public class ModelViewViewmodel {
     }
 
     public void addAppointmentEntry(Entry<Appointment> entry, Calendar<Product> calendar) {
-        System.out.println("addAppointmentEntry " + entry.getTitle() + ", location " + entry.getLocation() + " " + calendar.getName() + " " + entry.getUserObject());
+        System.out.println("addAppointmentE: " + calendar.getName() + " " + entry.getTitle() + " " + entry.getInterval() + " " + entry.getId() + " \n");
         calendar.addEntry(entry);
     }
     // This is a test method, it will be removed later
@@ -67,8 +70,8 @@ public class ModelViewViewmodel {
     private static EventHandler<CalendarEvent> getEventHandler() {
         EventHandler<CalendarEvent> eventHandler = calendarEvent -> {
             Calendar calendar = calendarEvent.getEntry().getCalendar();
-            System.out.println("Entry: " + calendarEvent.getEntry() + "\n");
             if (!calendarEvent.getEntry().getId().startsWith("id")) {
+                System.out.println(LocalTime.now().toString() + " " + calendarEvent.getEntry() + " \n");
                 return;
             }
             IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
@@ -76,7 +79,7 @@ public class ModelViewViewmodel {
             if (eventType == ENTRY_CALENDAR_CHANGED) {
                 if (calendar == null) {
                     if (appointmentDao.deleteByIdAppointment(ControllerUtilities.longifyStringId(calendarEvent.getEntry().getId()))) {
-                        System.out.println("Appointment id deleted: " + calendarEvent.getEntry().getId());
+                        System.out.println(LocalTime.now().toString() + " Appointment deleted: " + calendarEvent.getEntry().getId() + "\n");
                     }
                 }
             } else if (eventType == ENTRY_INTERVAL_CHANGED) {
@@ -87,7 +90,7 @@ public class ModelViewViewmodel {
                 appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
                 appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
                 if (appointmentDao.updateAppointment(appointment)) {
-                    System.out.println("Appointment date updated: " + appointment.getStartDate() + " - " + appointment.getEndDate());
+                    System.out.println(LocalTime.now().toString() + " Appointment date updated");
                 }
             }
         };
@@ -103,8 +106,8 @@ public class ModelViewViewmodel {
     }
 
     private void addEntriesToCalendar() {
-        IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
-        List<Appointment> appointmentList = appointmentDao.findAllAppointments();
+        IAppointmentDao aDao = (AppointmentDao) daoMap.get("appointment");
+        appointmentList = FXCollections.observableArrayList(aDao.findAllAppointments());
         for (Appointment appointment : appointmentList) {
             Entry<Appointment> entry = new Entry<>();
             entry.setInterval(appointment.getStartDate(), appointment.getEndDate());
@@ -118,9 +121,17 @@ public class ModelViewViewmodel {
             entry.setCalendar(calendarMap.get(appointment.getProductList().get(0).getName()));
             // userObject = appointment, so we can get the appointment from the calendar
             entry.setUserObject(appointment);
-            // add customer, product and animal to the entry, as properties
+            entry.userObjectProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("\n\nuserObjectProperty changed");
+            });
             addAppointmentEntry(entry, calendarMap.get(appointment.getProductList().get(0).getName()));
         }
+    }
+
+    public void updateCalendar() {
+        familyCalendarSource.getCalendars().clear();
+        addCalendarsToCalendarSource();
+        addEntriesToCalendar();
     }
 
     private void addCalendarsToCalendarSource() {

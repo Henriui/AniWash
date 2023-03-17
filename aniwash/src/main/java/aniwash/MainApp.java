@@ -15,6 +15,10 @@ import java.io.IOException;
 
 public class MainApp extends Application {
 
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
+
     @FXML
     private AnchorPane a;
     private static Biscuit cookie;
@@ -23,11 +27,8 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
-        // FIXME: Delete these lines after database is implemented
         ModelViewViewmodel calendar = new ModelViewViewmodel();
         calendar.initCalendar();
-
         // Add debug employee to database
         // TODO: Delete this before release.
 
@@ -40,16 +41,12 @@ public class MainApp extends Application {
             System.out.println("Error deleting all employees");
         }
 */
-
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
-
         // Initialise biscuit
         cookie = new Biscuit();
-
         // TODO: Delete this before release.
         // cookie.setBiscuit(e);
-
         // TODO: Change this to the login view when project done.
         Parent root = loadParent("mainView");
         scene = new Scene(root);
@@ -82,9 +79,8 @@ public class MainApp extends Application {
         return fxmlLoader.load();
     }
 
-
     public static void startSimulation(String[] args) {
-        launch();
+        launch(args);
     }
 
     // Method to change stage size.

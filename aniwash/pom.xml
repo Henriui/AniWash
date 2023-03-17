@@ -22,25 +22,25 @@
         <dependency>
             <groupId>com.calendarfx</groupId>
             <artifactId>view</artifactId>
-            <version>11.12.4</version>
+            <version>11.12.5</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>19</version>
+            <version>19.0.2.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>19</version>
+            <version>19.0.2.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.1.6.Final</version>
+            <version>6.1.7.Final</version>
         </dependency>
 
         <dependency>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.30</version>
+            <version>8.0.32</version>
         </dependency>
 
         <dependency>
@@ -76,6 +76,16 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.6</version>
         </dependency>
     </dependencies>
 
@@ -131,7 +141,7 @@
                             <!-- Usage: mvn clean javafx:run -->
                             <id>default-cli</id>
                             <configuration>
-                                <mainClass>com.project.Main</mainClass>
+                                <mainClass>aniwash.App</mainClass>
                             </configuration>
                         </execution>
                     </executions>
