@@ -1,5 +1,6 @@
 package aniwash.dao;
 
+import aniwash.datastorage.DatabaseConnector;
 import aniwash.entity.Appointment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -65,16 +66,20 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public boolean updateAppointment(Appointment appointment) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        EntityManager em = DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (!em.contains(app)) {
             System.out.println("Appointment does not exist in database. Id: " + appointment.getId());
             return false;
         }
-        em.getTransaction().begin();
-        app.setStartDate(appointment.getStartDate());
-        app.setEndDate(appointment.getEndDate());
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.merge(appointment);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
         return true;
     }
 

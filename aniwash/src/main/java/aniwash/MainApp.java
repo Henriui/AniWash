@@ -2,7 +2,6 @@ package aniwash;
 
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
-import aniwash.resources.model.ModelViewViewmodel;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +14,6 @@ import java.io.IOException;
 
 public class MainApp extends Application {
 
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
-
     @FXML
     private AnchorPane a;
     private static Biscuit cookie;
@@ -27,8 +22,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        ModelViewViewmodel calendar = new ModelViewViewmodel();
-        calendar.initCalendar();
         // Add debug employee to database
         // TODO: Delete this before release.
 

@@ -3,7 +3,7 @@ package aniwash.view;
 import aniwash.dao.*;
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
-import aniwash.resources.model.ModelViewViewmodel;
+import aniwash.resources.model.MainViewModel;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,7 +81,7 @@ public class NewCustomerController {
         Customer customer = new Customer(name, phone, email, address, postalCode);
         Animal animal = new Animal(petName, petType, petBreed, Integer.parseInt(petAge), petDescription);
 
-        ModelViewViewmodel calendar = new ModelViewViewmodel();
+        MainViewModel calendar = new MainViewModel();
         Map<String, IDao> daoMap = calendar.getDaoMap();
         ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
         IAnimalDao animalDao = (AnimalDao) daoMap.get("animal");
