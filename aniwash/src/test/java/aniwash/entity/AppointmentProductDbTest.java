@@ -30,7 +30,7 @@ public class AppointmentProductDbTest {
 
     @AfterEach
     public void tearDown() {
-        for (Appointment a : aDao.findAllAppointment()) {
+        for (Appointment a : aDao.findAllAppointments()) {
             aDao.deleteByIdAppointment(a.getId());
         }
 
@@ -64,9 +64,9 @@ public class AppointmentProductDbTest {
             a.addProduct(p);
         }
 
-        assertEquals(3, aDao.findAllAppointment().size(), "findAllAppointments(): Wrong amount of appointments. Should be 3.");
-        assertEquals(4, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00")).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 4.");
-        assertEquals(1, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-02-03T10:15:30+02:00")).findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+        assertEquals(3, aDao.findAllAppointments().size(), "findAllAppointments(): Wrong amount of appointments. Should be 3.");
+        assertEquals(4, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00")).getProductList().size(), "findAllProducts(): Wrong amount of products. Should be 4.");
+        assertEquals(1, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-02-03T10:15:30+02:00")).getProductList().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
         assertEquals(6, pDao.findAllProduct().size(), "findAllProducts(): Wrong amount of products. Should be 6.");
 
     }
@@ -76,7 +76,7 @@ public class AppointmentProductDbTest {
     @Order(2)
     public void findAllProductsFromAppointment() {
         System.out.println("Find test");
-        List<Appointment> appointmentsList = aDao.findAllAppointment();
+        List<Appointment> appointmentsList = aDao.findAllAppointments();
         List<Product> productsList = new ArrayList<>();
         for (Appointment a : appointmentsList) {
             productsList.addAll(a.getProducts());
@@ -92,11 +92,11 @@ public class AppointmentProductDbTest {
     @Order(3)
     public void deleteAllAppointments() {
         System.out.println("Delete all appointments test");
-        List<Appointment> appointmentsList = aDao.findAllAppointment();
+        List<Appointment> appointmentsList = aDao.findAllAppointments();
         for (Appointment a : appointmentsList) {
             aDao.deleteByIdAppointment(a.getId());
         }
-        appointmentsList = aDao.findAllAppointment();
+        appointmentsList = aDao.findAllAppointments();
         assertEquals(0, appointmentsList.size(), "findAllAppointments(): Wrong amount of appointments. Should be 0.");
     }
 

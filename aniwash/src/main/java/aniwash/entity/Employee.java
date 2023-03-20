@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Where;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Where(clause = "DELETED = 0")
 public class Employee {
@@ -37,8 +34,10 @@ public class Employee {
     @Column(nullable = false)
     private UserType userType;
 
+/*
     @ManyToMany(mappedBy = "employees")
     private Set<Appointment> appointments = new HashSet<>();
+*/
 
     public Employee() {
     }
@@ -52,6 +51,7 @@ public class Employee {
         this.userType = userType;
     }
 
+/*
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
         appointment.getEmployees().add(this);
@@ -61,7 +61,7 @@ public class Employee {
         appointments.remove(appointment);
         appointment.getEmployees().remove(this);
     }
-
+*/
     // Getters and Setters
 
     public long getId() {
@@ -120,6 +120,7 @@ public class Employee {
         this.title = title;
     }
 
+/*
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -127,6 +128,7 @@ public class Employee {
     public void setAppointments(Set<Appointment> appointments) {
         this.appointments = appointments;
     }
+*/
 
     public UserType getUserType() {
         return userType;
@@ -138,13 +140,13 @@ public class Employee {
     @Override
     public String toString() {
         return getClass().getSimpleName() +
-                "(id=" + id +
-                ", username=" + username +
-                ", password=" + password +
-                ", name=" + name +
-                ", title=" + title +
-                ", email=" + email +
-                ", deleted=" + deleted +
-                ")";
+               "(id=" + id +
+               ", username=" + username +
+               ", password=" + password +
+               ", name=" + name +
+               ", title=" + title +
+               ", email=" + email +
+               ", deleted=" + deleted +
+               ")";
     }
 }

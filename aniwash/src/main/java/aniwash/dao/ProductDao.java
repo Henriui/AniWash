@@ -22,7 +22,6 @@ public class ProductDao implements IProductDao {
             System.out.println("Product already exists with id: " + product.getId());
             return false;
         }
-
         executeInTransaction(entityManager -> em.persist(product), em);
         return true;
     }
@@ -30,7 +29,7 @@ public class ProductDao implements IProductDao {
     @Override
     public List<Product> findAllProduct() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+        return em.createQuery("SELECT p FROM Product p WHERE p.deleted = 0", Product.class).getResultList();
     }
 
     @Override

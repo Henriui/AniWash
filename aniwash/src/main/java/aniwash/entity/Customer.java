@@ -80,10 +80,10 @@ public class Customer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (!(o instanceof Customer)) return false;
-
+        if (this == o)
+            return true;
+        if (!(o instanceof Customer))
+            return false;
         Long cId = id;
         return cId.equals(((Customer) o).getId());
     }
@@ -93,10 +93,9 @@ public class Customer {
         return getClass().hashCode();
     }
 
-    public List<Animal> findAllAnimals() {
+    public List<Animal> getAnimalList() {
         return new ArrayList<>(getAnimals());
     }
-
     // Getters and Setters
 
     public String getName() {
@@ -178,13 +177,13 @@ public class Customer {
     @Override
     public String toString() {
         return getClass().getSimpleName() +
-                "(id=" + id +
-                ", name=" + name +
-                ", phone=" + phone +
-                ", email=" + email +
-                ", address=" + address +
-                ", postal code=" + postalCode +
-                ", deleted=" + deleted +
-                ")";
+               "(id=" + id +
+               ", name=" + name +
+               ", phone=" + phone +
+               ", email=" + email +
+               ", address=" + address +
+               ", postal code=" + postalCode +
+               ", deleted=" + deleted +
+               ")";
     }
 }

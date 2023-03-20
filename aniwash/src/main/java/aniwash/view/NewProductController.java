@@ -1,9 +1,7 @@
 package aniwash.view;
 
-import aniwash.dao.IProductDao;
-import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
-import aniwash.resources.model.Calendars;
+import aniwash.resources.model.MainViewModel;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +21,6 @@ public class NewProductController {
     @FXML
     private Button saveButton;
 
-
     public void initialize() {
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
@@ -38,25 +35,22 @@ public class NewProductController {
         String name = nameField.getText().trim();
         String description = decriptionField.getText().trim();
         String price = priceField.getText().trim();
-
         if (name.isEmpty() || description.isEmpty() || price.isEmpty()) {
             // Show error message if mandatory fields are empty
             ControllerUtilities.showAlert("Please fill in all mandatory fields.");
             return;
         }
-
         if (!ControllerUtilities.isNumeric(price)) {
             // Show error message if description or postal code fields contain non-numeric
             // characters
             ControllerUtilities.showAlert("Please enter only numbers in the Price field fields.");
             return;
         }
-
+        int styleInt = (int) (Math.random() * 8 - 1) + 1;
         // All input values are valid, create the Procuct object
-        Product product = new Product(name, description, Integer.valueOf(price), "style8");
-        Calendars calendars = new Calendars();
-        calendars.createCalendar(product);
-
+        Product product = new Product(name, description, Integer.parseInt(price), "style" + styleInt);
+        MainViewModel mainViewModel = new MainViewModel();
+        mainViewModel.createCalendar(product);
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();

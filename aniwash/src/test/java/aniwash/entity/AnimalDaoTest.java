@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @DisplayName("AnimalDAO: tietokantatoimintojen (CRUD) testaus")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AnimalDaoTest {
@@ -29,21 +28,20 @@ public class AnimalDaoTest {
 
     @AfterEach
     public void tearDown() {
-        animalDao.deleteByIdAnimal(animal.getId());
+        for (Animal animal : animalDao.findAllAnimal()) {
+            animalDao.deleteByIdAnimal(animal.getId());
+        }
     }
-
 
     @Test
     @DisplayName("Tässä kaikki testit yhdessä metodissa.")
     public void testDAOAnimal() {
         // Jos joku testi ei mene läpi, tämän metodin suoritus päättyy heti.
-
         // Lisää animal
         assertTrue(animalDao.addAnimal(animal), "addCustomer(): Uuden customerin lisääminen ei onnistu.");
         assertFalse(animalDao.addAnimal(animal), "addCustomer(): Saman customerin pystyy lisäämään kahteen kertaan.");
         long id = animal.getId();
         assertTrue(animalDao.findAllAnimal().size() > 0, "findAllCustomer(): Ei löydy yhtään asiakasta.");
-
         // Nyt haun tulee onnistua ja kenttien tulee tietenkin olla asetettu oikein
         assertNotNull((animal = animalDao.findByIdAnimal(id)), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(id, animal.getId(), "getId(): animal id tunnus väärin.");
@@ -52,37 +50,30 @@ public class AnimalDaoTest {
         assertEquals(aTyyppi, animal.getType(), "getType(): animal tyyppi väärin.");
         assertEquals(aRotu, animal.getBreed(), "getBreed(): animalin rotu väärin.");
         assertEquals(aDescription, animal.getDescription(), "getDescription(): animalin kuvaus on virheellinen.");
-
         // animalUpdate() muutoksen tulee onnistua
         animal.setName("Maukku");
         assertTrue(animalDao.updateAnimal(animal));
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("Maukku", animal.getName(), "getName(): Eläimen nimi päivitys ei onnistunut.");
-
         animal.setType("Kissa");
         assertTrue(animalDao.updateAnimal(animal));
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("Kissa", animal.getType(), "getType(): Eläimen tyyppi päivitys ei onnistunut.");
-
         animal.setBreed("Villikissa");
         assertTrue(animalDao.updateAnimal(animal));
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("Villikissa", animal.getBreed(), "getBreed(): Eläimen rodun päivittäminen ei onnistunut.");
-
         animal.setAnimalAge(4);
         assertTrue(animalDao.updateAnimal(animal));
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals(4, animal.getAnimalAge(), "getAnimalAge(): Eläimen iän päivitys ei onnistunut.");
-
         animal.setDescription("mjäyy");
         assertTrue(animalDao.updateAnimal(animal));
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("mjäyy", animal.getDescription(), "getDescription(): Eläimen kuvaus kentän päivitys ei onnistunut.");
-
         // Testissä lisätyn customerin poiston tulee onnistua
         assertTrue(animalDao.deleteByIdAnimal(animal.getId()), "deleteCustomerById(): Asiakkaan poisto ei onnistunut.");
         assertNull(animalDao.findByIdAnimal(animal.getId()), "deleteCustomerById(): Asiakkaan poisto ei onnistunut - asiakan voitiin hakea tietokannasta.");
-
         // Olemattoman valuutan poiston tulee "epäonnistua"
         assertFalse(animalDao.deleteByIdAnimal(0L), "deleteCustomerById(): Väittää poistaneensa olemattoman asiakkaan.");
     }
@@ -131,7 +122,6 @@ public class AnimalDaoTest {
         assertTrue(animalDao.findAllAnimal().size() > 0);
     }
 
-
     @Test
     @Order(6)
     @DisplayName("Etsitään kaikki eläimet - tietokannassa ei ole eläimiä")
@@ -141,7 +131,6 @@ public class AnimalDaoTest {
         for (Animal a : animals) {
             animalDao.deleteByIdAnimal(a.getId());
         }
-
         assertEquals(0, animalDao.findAllAnimal().size());
     }
 
@@ -163,7 +152,6 @@ public class AnimalDaoTest {
         animalDao.addAnimal(animal);
         animal.setType("Kissa");
         assertTrue(animalDao.updateAnimal(animal));
-
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("Kissa", animal.getType(), "getType(): Eläimen tyypin päivitys ei onnistunut.");
     }
@@ -175,7 +163,6 @@ public class AnimalDaoTest {
         animalDao.addAnimal(animal);
         animal.setBreed("Villikissa");
         assertTrue(animalDao.updateAnimal(animal));
-
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals("Villikissa", animal.getBreed(), "getBreed(): Eläimen rodun päivittäminen ei onnistunut.");
     }
@@ -187,7 +174,6 @@ public class AnimalDaoTest {
         animalDao.addAnimal(animal);
         animal.setAnimalAge(4);
         assertTrue(animalDao.updateAnimal(animal));
-
         animal = animalDao.findByIdAnimal(animal.getId());
         assertEquals(4, animal.getAnimalAge(), "getAnimalAge(): Eläimen iän päivitys ei onnistunut.");
     }

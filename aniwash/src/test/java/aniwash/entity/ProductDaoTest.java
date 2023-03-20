@@ -26,7 +26,9 @@ public class ProductDaoTest {
 
     @AfterEach
     public void tearDown() {
-        productDao.deleteByIdProduct(product.getId());
+        for (Product p : productDao.findAllProduct()) {
+            productDao.deleteByIdProduct(p.getId());
+        }
     }
 
     @Test

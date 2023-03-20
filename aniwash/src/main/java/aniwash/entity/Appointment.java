@@ -29,9 +29,11 @@ public class Appointment {
     @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
+/*
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private Set<Employee> employees = new HashSet<>();
+*/
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_customer", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
@@ -54,6 +56,7 @@ public class Appointment {
         this.description = description;
     }
 
+/*
     public void addEmployee(Employee employee) {
         employees.add(employee);
         employee.getAppointments().add(this);
@@ -63,6 +66,7 @@ public class Appointment {
         employees.remove(employee);
         employee.getAppointments().remove(this);
     }
+*/
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
@@ -94,19 +98,21 @@ public class Appointment {
         product.getAppointments().remove(this);
     }
 
-    public List<Employee> findAllEmployees() {
+/*
+    public List<Employee> getEmployeeList() {
         return new ArrayList<>(getEmployees());
     }
+*/
 
-    public List<Customer> findAllCustomers() {
+    public List<Customer> getCustomerList() {
         return new ArrayList<>(getCustomers());
     }
 
-    public List<Animal> findAllAnimals() {
+    public List<Animal> getAnimalList() {
         return new ArrayList<>(getAnimals());
     }
 
-    public List<Product> findAllProducts() {
+    public List<Product> getProductList() {
         return new ArrayList<>(getProducts());
     }
 
@@ -147,6 +153,7 @@ public class Appointment {
         this.deleted = 1;
     }
 
+/*
     public Set<Employee> getEmployees() {
         return employees;
     }
@@ -154,6 +161,7 @@ public class Appointment {
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
     }
+*/
 
     public Set<Customer> getCustomers() {
         return customers;
@@ -182,12 +190,12 @@ public class Appointment {
     @Override
     public String toString() {
         return getClass().getSimpleName() +
-                "(id=" + id +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", description='" + description +
-                "', deleted=" + deleted +
-                ")";
+               "(id=" + id +
+               ", startDate=" + startDate +
+               ", endDate=" + endDate +
+               ", description='" + description +
+               "', deleted=" + deleted +
+               ")";
     }
 
 }

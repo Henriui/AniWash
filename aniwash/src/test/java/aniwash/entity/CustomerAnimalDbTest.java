@@ -1,14 +1,12 @@
 package aniwash.entity;
 
 import aniwash.dao.*;
-
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Customer and Animal class CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -29,7 +27,9 @@ public class CustomerAnimalDbTest {
 
     @AfterEach
     public void afterEach() {
-        cDao.deleteByIdCustomer(customer.getId());
+        for (Customer c : cDao.findAllCustomer()) {
+            cDao.deleteByIdCustomer(c.getId());
+        }
     }
 
     @Test
@@ -44,29 +44,24 @@ public class CustomerAnimalDbTest {
             aDao.addAnimal(a);
             c.addAnimal(a);
         }
-
         List<Animal> animals = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Animal a = new Animal("Rohmu" + i, "Cat", "Meow", 1 + i, "Maukuva nakki");
             animals.add(a);
         }
-
         for (Animal a : animals) {
             Customer c = cDao.findByNameCustomer("John1");
             aDao.addAnimal(a);
             c.addAnimal(a);
         }
-
         for (int i = 0; i < 10; i++) {
             Employee e = new Employee("John" + i, "password", "John" + i, "john" + i + "@gmail.com", "Employee", UserType.EMPLOYEE);
             eDao.addEmployee(e);
         }
-
         assertEquals(10, cDao.findAllCustomer().size(), "Customer list size is not 10");
-        assertEquals(11, cDao.findByEmailCustomer("rammus1@gmail.com").findAllAnimals().size(), "Customer 1 animal list size is not 11");
+        assertEquals(11, cDao.findByEmailCustomer("rammus1@gmail.com").getAnimalList().size(), "Customer 1 animal list size is not 11");
         assertEquals(20, aDao.findAllAnimal().size(), "Animal list size is not 21");
     }
-
 
     @Test
     @Order(2)

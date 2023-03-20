@@ -1,8 +1,13 @@
 package aniwash.dao;
 
+import aniwash.datastorage.DatabaseConnector;
 import aniwash.entity.Appointment;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Root;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -27,9 +32,18 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public List<Appointment> findAllAppointment() {
+    public List<Appointment> findAllAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
+        Root<Appointment> rootEntry = cq.from(Appointment.class);
+        rootEntry.fetch("customers", JoinType.INNER);
+        rootEntry.fetch("animals", JoinType.INNER);
+        rootEntry.fetch("products", JoinType.INNER);
+        cq.select(rootEntry);
+        cq.where(cb.equal(rootEntry.get("deleted"), 0));
+        return em.createQuery(cq).getResultList();
+        //return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
     }
 
     @Override
@@ -52,16 +66,20 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public boolean updateAppointment(Appointment appointment) {
-        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        EntityManager em = DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (!em.contains(app)) {
             System.out.println("Appointment does not exist in database. Id: " + appointment.getId());
             return false;
         }
-        em.getTransaction().begin();
-        app.setStartDate(appointment.getStartDate());
-        app.setEndDate(appointment.getEndDate());
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.merge(appointment);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            em.getTransaction().rollback();
+            throw e;
+        }
         return true;
     }
 

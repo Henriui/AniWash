@@ -26,9 +26,10 @@ public class AppointmentDaoTest {
 
     @AfterEach
     public void tearDown() {
-        appointmentDao.deleteByIdAppointment(appointment.getId());
+        for (Appointment a : appointmentDao.findAllAppointments()) {
+            appointmentDao.deleteByIdAppointment(a.getId());
+        }
     }
-
 
     @Test
     @Order(1)

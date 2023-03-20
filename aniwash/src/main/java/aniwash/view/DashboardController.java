@@ -1,7 +1,7 @@
 package aniwash.view;
 
 import aniwash.MainApp;
-import aniwash.resources.model.Calendars;
+import aniwash.resources.model.MainViewModel;
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
 import javafx.fxml.FXML;
@@ -24,13 +24,13 @@ public class DashboardController {
     private Button scheduleButton;
     @FXML
     private BarChart barChart;
-    private Calendars calendars = new Calendars();
+    private MainViewModel mainViewModel = new MainViewModel();
     @FXML
     private Text welcometext;
 
     public void initialize() {
 
-        agendaView.getCalendarSources().addAll(calendars.getCalendarss());
+        agendaView.getCalendarSources().addAll(mainViewModel.getFamilyCalendar());
 /*
         try {
             // Write welcome text based on time of day (good morning, afternoon, evening)
