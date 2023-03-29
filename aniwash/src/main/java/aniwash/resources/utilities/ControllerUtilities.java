@@ -4,6 +4,10 @@ import aniwash.MainApp;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.entity.Product;
+import aniwash.entity.ShoppingCart;
+import aniwash.resources.model.CustomListViewCellCustomer;
+import aniwash.resources.model.CustomListViewCellExtraProduct;
+import aniwash.resources.model.CustomListViewCellProduct;
 import aniwash.resources.model.MainViewModel;
 import aniwash.view.CreateNewAnimalController;
 import com.calendarfx.model.Calendar;
@@ -11,14 +15,23 @@ import com.calendarfx.model.Entry;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -26,6 +39,8 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 
 public class ControllerUtilities {
+    private static ObservableList<Product> extraProductObservableList;
+    private static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
         return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
@@ -95,14 +110,17 @@ public class ControllerUtilities {
         alert.showAndWait();
     }
 
-    public static void updateAnimals(Customer c, ListView<String> petList, ListView<Customer> personList, ObservableList<Customer> customerObservableList) {
+    public static void updateAnimals(Customer c, ListView<String> petList, ListView<Customer> personList,
+            ObservableList<Customer> customerObservableList) {
         personList.setItems(customerObservableList.filtered(customer -> customer.getName().contains(c.getName())));
         petList.getItems().clear();
         petList.getItems().add("                                   Create new pet  +");
         c.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
     }
 
-    public static EventHandler<WindowEvent> getCustomerEvent(MainViewModel mainViewModel, ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList, Entry<Appointment> newEntry) {
+    public static EventHandler<WindowEvent> getCustomerEvent(MainViewModel mainViewModel,
+            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+            Entry<Appointment> newEntry) {
         return customerEvent -> {
             Customer c = mainViewModel.newestCustomer();
             customerObservableList.add(c);
@@ -110,13 +128,16 @@ public class ControllerUtilities {
             personList.getSelectionModel().select(c);
             personList.scrollTo(c);
             String newAnimal = mainViewModel.newestPet().getName();
-            ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList, personList, customerObservableList);
+            ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList, personList,
+                    customerObservableList);
             petList.getSelectionModel().select(newAnimal);
-            newEntry.setLocation(personList.getSelectionModel().getSelectedItem().getName()); // TODO: muuta käyttöä titlelle
+            newEntry.setLocation(personList.getSelectionModel().getSelectedItem().getName()); // TODO: muuta käyttöä
+                                                                                              // titlelle
         };
     }
 
-    public static EventHandler<WindowEvent> getProductEvent(MainViewModel mainViewModel, ListView<String> services, Entry<Appointment> newEntry) {
+    public static EventHandler<WindowEvent> getProductEvent(MainViewModel mainViewModel, ListView<String> services,
+            Entry<Appointment> newEntry) {
         return productEvent -> {
             services.getItems().clear();
             services.getItems().add("                                   Create new service  +");
@@ -124,26 +145,32 @@ public class ControllerUtilities {
             String newProduct = mainViewModel.newestProduct().getName();
             services.getSelectionModel().select(newProduct);
             services.scrollTo(newProduct);
-            Calendar<Product> productCalendar = mainViewModel.getCalendarMap().get(services.getSelectionModel().getSelectedItem());
+            Calendar<Product> productCalendar = mainViewModel.getCalendarMap()
+                    .get(services.getSelectionModel().getSelectedItem());
             newEntry.setCalendar(productCalendar);
             newEntry.setTitle(productCalendar.getName()); // TODO: muuta käyttöä titlelle
         };
     }
-    public static EventHandler<KeyEvent> getSearchFieldKeyEvent(MainViewModel mainViewModel, TextField searchField, ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList, ListView<String> services, Entry<Appointment> newEntry) {
+
+    public static EventHandler<KeyEvent> getSearchFieldKeyEvent(MainViewModel mainViewModel, TextField searchField,
+            ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList,
+            ListView<String> services, Entry<Appointment> newEntry) {
         return event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (searchField.getText().isEmpty() || personList.getItems().isEmpty()) {
                     try {
                         // CREATE NEW CUSTOMER FROM SEARCH FIELD
                         Stage stage = new Stage();
-                        stage.setOnHidden(getCustomerEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
+                        stage.setOnHidden(
+                                getCustomerEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
                         ControllerUtilities.newCustomer(stage);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 } else {
                     personList.getSelectionModel().select(0);
-                    ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList, personList, customerObservableList);
+                    ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList,
+                            personList, customerObservableList);
                     if (petList.getSelectionModel().getSelectedItem() != null) {
                         String newAnimal = petList.getSelectionModel().getSelectedItem();
                         newEntry.setLocation(newAnimal); // TODO: muuta käyttöä locationille
@@ -155,8 +182,23 @@ public class ControllerUtilities {
             }
         };
     }
-    public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services, Entry<Appointment> newEntry, ListView<String> petList) {
+
+    public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
+            Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
+            Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
+            Button deleteSelectedProduct, ListView extraProducts) {
         return mouseEvent -> {
+            extraProducts.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
+            // Set the placeholder text for the ListView
+            Background background = new Background(
+                    new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY));
+            extraProducts.setPlaceholder(new Label("No items") {
+                @Override
+                protected void updateBounds() {
+                    super.updateBounds();
+                    setBackground(background);
+                }
+            });
             if (services.getSelectionModel().getSelectedItem().contains("+")) {
                 try {
                     // NEW SERVICE POPUP
@@ -168,23 +210,43 @@ public class ControllerUtilities {
                 }
             } else {
                 if (services.getSelectionModel().getSelectedItem() != null) {
-                    Calendar<Product> productCalendar = mainViewModel.getCalendarMap().get(services.getSelectionModel().getSelectedItem());
+                    Calendar<Product> productCalendar = mainViewModel.getCalendarMap()
+                            .get(services.getSelectionModel().getSelectedItem());
                     newEntry.setCalendar(productCalendar);
                     newEntry.setTitle(productCalendar.getName()); // TODO: muuta käyttöä titlelle
                     services.scrollTo(services.getSelectionModel().getSelectedItem());
                     petList.setDisable(false);
+                    if (selectedProductPane.isVisible() == false) {
+                        selectedProductLabel.setText(services.getSelectionModel().getSelectedItem());
+                        selectedProductPriceLabel.setText(productCalendar.getUserObject().getPrice() + " €");
+
+                        services.getItems().remove(services.getSelectionModel().getSelectedItem());
+                        services.getSelectionModel().clearSelection();
+                        selectedProductPane.setVisible(true);
+                    } else {
+                        // extraProductObservableList.add(productCalendar.getUserObject());
+                        Product asd = productCalendar.getUserObject();
+                        shoppingCart.addProduct(asd, "10");;
+                        extraProducts.getItems().add(asd);
+                        services.getItems().remove(services.getSelectionModel().getSelectedItem());
+                        services.getSelectionModel().clearSelection();
+                    }
                 }
             }
         };
     }
-    public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel, ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList, Entry<Appointment> newEntry) {
+
+    public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
+            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+            Entry<Appointment> newEntry) {
         return mouseEvent -> {
             if (petList.getSelectionModel().getSelectedItem().contains("+")) {
                 try {
                     // NEW ANIMAL POPUP
                     Stage stage = new Stage();
                     stage.setOnHidden(e -> {
-                        ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList, personList, customerObservableList);
+                        ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList,
+                                personList, customerObservableList);
                         String newAnimal = mainViewModel.newestPet().getName();
                         newEntry.setLocation(newAnimal); // TODO: muuta käyttöä locationille
                         petList.getSelectionModel().select(newAnimal);
@@ -204,13 +266,17 @@ public class ControllerUtilities {
             }
         };
     }
-    public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel, ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList, Entry<Appointment> newEntry, ListView<String> services) {
+
+    public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel,
+            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+            Entry<Appointment> newEntry, ListView<String> services) {
         return mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
                 try {
                     // NEW CUSTOMER POPUP
                     Stage stage = new Stage();
-                    stage.setOnHidden(getCustomerEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
+                    stage.setOnHidden(
+                            getCustomerEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
                     ControllerUtilities.newCustomer(stage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -220,7 +286,8 @@ public class ControllerUtilities {
                     Customer customer = personList.getSelectionModel().getSelectedItem();
                     personList.getSelectionModel().select(customer);
                     personList.scrollTo(customer);
-                    ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList, personList, customerObservableList);
+                    ControllerUtilities.updateAnimals(personList.getSelectionModel().getSelectedItem(), petList,
+                            personList, customerObservableList);
                     services.setDisable(false);
                 }
             }

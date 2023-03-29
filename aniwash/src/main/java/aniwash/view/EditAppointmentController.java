@@ -71,7 +71,7 @@ public class EditAppointmentController extends CreatePopUp {
         calendarObservableList = FXCollections.observableArrayList(mainViewModel.getCalendarMap().values());
         calendarObservableList.forEach(service -> services.getItems().addAll(service.getName()));
         personList.setOnMouseClicked(getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
-        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList));
+        //services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList));
         petList.setOnMouseClicked(getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
         getCurrentAppointment();
     }
