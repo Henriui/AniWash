@@ -27,8 +27,8 @@ public class Appointment {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private HashMap<Product, Discount> discount;
+    @Column(nullable = true)
+    private HashMap<Long, Double> discount;
 
     @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
@@ -191,12 +191,16 @@ public class Appointment {
         this.products = products;
     }
 
-    public HashMap<Product, Discount> getDiscount() {
+    public HashMap<Long, Double> getDiscounts() {
         return discount;
     }
 
-    public void setDiscount(Product product, Discount discount) {
-        this.discount.put(product, discount);
+    public double getDiscount(long productId) {
+        return discount.get(productId);
+    }
+
+    public void setDiscount(long productId, double discount) {
+        this.discount.put(productId, discount);
     }
 
     @Override
