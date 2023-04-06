@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -12,9 +13,10 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
 
     private HBox produtInfoHBox;
     private HBox produtNameHBox;
-
-    public CustomListViewCellExtraProduct() {
+    private ListView listView;
+    public CustomListViewCellExtraProduct(ListView listView) {
         super();
+        this.listView = listView;
         // Create the customer info HBox once
 
         Label nameLabel = new Label();
@@ -68,6 +70,7 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
             deleteButton.setText("X");
             deleteButton.setOnAction(event -> {
                 getListView().getItems().remove(product);
+                listView.getItems().add(product.getName());
             });
 
             // Set cell content

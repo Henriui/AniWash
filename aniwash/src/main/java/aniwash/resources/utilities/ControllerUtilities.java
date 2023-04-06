@@ -40,7 +40,7 @@ import java.io.IOException;
 
 public class ControllerUtilities {
     private static ObservableList<Product> extraProductObservableList;
-    private static ShoppingCart shoppingCart = new ShoppingCart();
+    public static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
         return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
@@ -219,21 +219,25 @@ public class ControllerUtilities {
                     if (selectedProductPane.isVisible() == false) {
                         selectedProductLabel.setText(services.getSelectionModel().getSelectedItem());
                         selectedProductPriceLabel.setText(productCalendar.getUserObject().getPrice() + " €");
-
+                        shoppingCart.addProduct(productCalendar.getUserObject(), "");
                         services.getItems().remove(services.getSelectionModel().getSelectedItem());
                         services.getSelectionModel().clearSelection();
                         selectedProductPane.setVisible(true);
                     } else {
                         // extraProductObservableList.add(productCalendar.getUserObject());
-                        Product asd = productCalendar.getUserObject();
-                        shoppingCart.addProduct(asd, "10");;
-                        extraProducts.getItems().add(asd);
+                        shoppingCart.addProduct(productCalendar.getUserObject(), "");
+                        extraProducts.getItems().add(productCalendar.getUserObject());
+                        System.out.println(shoppingCart.getDiscount(productCalendar.getUserObject()) + " " + shoppingCart.getTotalDiscountedPrice());
                         services.getItems().remove(services.getSelectionModel().getSelectedItem());
                         services.getSelectionModel().clearSelection();
                     }
                 }
             }
         };
+    }
+
+    public static ShoppingCart getShoppingCart(){
+        return shoppingCart;
     }
 
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
@@ -278,6 +282,7 @@ public class ControllerUtilities {
                     stage.setOnHidden(
                             getCustomerEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
                     ControllerUtilities.newCustomer(stage);
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -293,4 +298,5 @@ public class ControllerUtilities {
             }
         };
     }
+
 }

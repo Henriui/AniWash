@@ -4,6 +4,7 @@ import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.entity.Product;
+import aniwash.entity.ShoppingCart;
 import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.CustomListViewCellCustomer;
 import aniwash.resources.model.CustomListViewCellExtraProduct;
@@ -12,9 +13,12 @@ import aniwash.resources.model.MainViewModel;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -30,59 +34,32 @@ import static aniwash.resources.utilities.ControllerUtilities.*;
 public class NewAppointmentController extends CreatePopUp {
     private final MainViewModel mainViewModel = new MainViewModel();
     @FXML
-    private TextArea description;
+    private TextArea description, servicePane;
     @FXML
     private AnchorPane selectedProductPane;
     @FXML
-    private Text selectedProductTitle;
+    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount,
+            extraProductTitle, priceText, setDiscountTitle;
     @FXML
-    private Text selectedProduct;
+    private TextField setDiscount, searchField;
     @FXML
-    private Text selectedProductCost;
-    @FXML
-    private Text selectedProductCostDiscount;
-    @FXML
-    private Text extraProductTitle;
-    @FXML
-    private Text priceText;
-    @FXML
-    private Text setDiscountTitle;
+    private Button deleteSelectedProductBtn, saveBtn, applyBtn;
     @FXML
     private ListView<Product> extraProducts;
     @FXML
-    private TextField setDiscount;
-    @FXML
-    private Button deleteSelectedProduct;
-    @FXML
-    private Button save;
-    @FXML
-    private ListView<String> services;
-    @FXML
-    private ListView<String> petList;
+    private ListView<String> services, petList;
     @FXML
     private ListView<Customer> personList;
     @FXML
-    private TextField searchField;
+    private Circle one, two, three;
     @FXML
-    private AnchorPane servicePane;
-    @FXML
-    private Circle one;
-    @FXML
-    private Circle two;
-    @FXML
-    private Circle three;
-    @FXML
-    private Rectangle first;
-    @FXML
-    private Rectangle second;
+    private Rectangle first, second, third, mainProductRect;
     @FXML
     private DatePicker date = new DatePicker();
     @FXML
     private TimeField startTime = new TimeField();
     @FXML
     private TimeField endTime = new TimeField();
-    @FXML
-    private Rectangle third;
     private Entry<Appointment> newEntry;
     private ObservableList<Customer> customerObservableList;
 
@@ -99,7 +76,7 @@ public class NewAppointmentController extends CreatePopUp {
         // Initialize the person table with the three columns.
         personList.setCellFactory(personList -> new CustomListViewCellCustomer());
         // Initialize the extra product table.
-        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct());
+        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services));
 
         personList.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
         // Set the placeholder text for the ListView
@@ -129,10 +106,30 @@ public class NewAppointmentController extends CreatePopUp {
         personList.setOnMouseClicked(
                 getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
         services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
-                selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProduct, extraProducts));
+                selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
+                extraProducts));
         petList.setOnMouseClicked(
                 getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
+        deleteSelectedProductBtn.setOnAction(deleteMainProduct());
+        applyBtn.setOnAction(applyDiscount());
+        extraProducts.setOnMouseClicked(selectExtraProduct());
+        mainProductRect.setOnMousePressed(selectMainProduct());
     }
+
+    private EventHandler<? super MouseEvent> selectExtraProduct() {
+        return event -> {
+            selectedProduct.setFill(Color.web("#000000"));
+        };
+    }
+
+    private EventHandler<? super MouseEvent> selectMainProduct() {
+        return event -> {
+            selectedProduct.setFill(Color.web("#47c496"));
+            extraProducts.getSelectionModel().clearSelection();
+        };
+    }
+
+    
 
     @FXML
     public void save() {
@@ -141,7 +138,7 @@ public class NewAppointmentController extends CreatePopUp {
             System.out.println("Please select Service and Pet");
             // TODO: Alert popup for missing fields ;)
         } else {
-            Stage stage = (Stage) save.getScene().getWindow();
+            Stage stage = (Stage) saveBtn.getScene().getWindow();
             stage.close();
             sendEntry();
         }
@@ -162,5 +159,37 @@ public class NewAppointmentController extends CreatePopUp {
                         selectedCustomer, animal, (Product) newEntry.getCalendar().getUserObject()));
         newEntry.setId("id" + newEntry.getUserObject().getId());
         newEntry.setHidden(false);
+    }
+
+    public EventHandler<ActionEvent> applyDiscount() {
+        return event -> {
+            if (setDiscount.getText().isEmpty()) {
+                selectedProductCost.setText(selectedProductCost.getText());
+            } else {
+       /*          double discount = Double.parseDouble(setDiscount.getText());
+                System.out.println("olen tässä hei");
+                double price = Double.parseDouble(selectedProductCost.getText().substring(1));
+                double newPrice = price - (price * (discount / 100));
+                selectedProductCost.underlineProperty().set(true);
+                selectedProductCostDiscount.setText(String.format("%.2f", newPrice)); */
+                ShoppingCart cart = getShoppingCart();
+                Product mainProduct = cart.getMainProduct();
+                String discount = setDiscount.getText();
+                double newPrice = mainProduct.getPrice() * (0.01 * Double.parseDouble(discount));
+                selectedProductCost.strikethroughProperty().set(true);
+                selectedProductCostDiscount.setVisible(true);
+                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");
+                cart.editDiscount(cart.getMainProduct(), discount);
+            }
+        };
+    }
+
+    public EventHandler<ActionEvent> deleteMainProduct() {
+        return event -> {
+            services.getItems().addAll(selectedProduct.getText());
+            newEntry.setCalendar(null);
+            selectedProductPane.setVisible(false);
+        };
+
     }
 }

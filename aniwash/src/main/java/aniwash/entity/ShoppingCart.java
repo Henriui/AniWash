@@ -15,11 +15,13 @@ public class ShoppingCart {
         productsMap.put(product, discount);
     }
 
-    public void editDiscount(Product product, double percentage) {
-        String discount = productsMap.get(product);
-        if (discount != null) {
-            discount = Integer.toString((int) (percentage * 100)) + "%";
-        }
+    public void editDiscount(Product product, String discount) {
+        productsMap.put(product, discount);
+    }
+
+    public Product getMainProduct(){
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + productsMap.keySet().iterator().next().getName());
+        return productsMap.keySet().iterator().next();
     }
 
     public Product removeProduct(Product product) {
@@ -40,7 +42,7 @@ public class ShoppingCart {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
             Product product = entry.getKey();
             String discount = entry.getValue();
-            totalDiscountedPrice += product.getPrice() * Double.parseDouble(discount);
+            totalDiscountedPrice += product.getPrice() * (0.01 * Double.parseDouble(discount));
         }
         return totalDiscountedPrice;
     }

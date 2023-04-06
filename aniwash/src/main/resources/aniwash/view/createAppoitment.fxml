@@ -98,7 +98,7 @@
                 <Font size="20.0" />
             </font>
         </Text>
-        <Button fx:id="save" layoutX="898.0" layoutY="638.0" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="97.0" style="-fx-background-color: #47c496; -fx-background-radius: 20;" text="Save">
+        <Button fx:id="saveBtn" layoutX="898.0" layoutY="638.0" mnemonicParsing="false" onAction="#save" prefHeight="38.0" prefWidth="97.0" style="-fx-background-color: #47c496; -fx-background-radius: 20;" text="Save">
             <effect>
                 <DropShadow />
             </effect>
@@ -193,7 +193,7 @@
             </DropShadow>
          </effect>
       </Rectangle>
-      <TextField fx:id="setDiscount" layoutX="600.0" layoutY="549.0" prefHeight="44.0" prefWidth="257.0" promptText="0 %">
+      <TextField fx:id="setDiscount" layoutX="600.0" layoutY="549.0" prefHeight="44.0" prefWidth="206.0" promptText="0 %">
          <font>
             <Font size="15.0" />
          </font>
@@ -211,11 +211,6 @@
       <AnchorPane fx:id="selectedProductPane" layoutX="561.0" layoutY="181.0" prefHeight="76.0" prefWidth="365.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="53.0" layoutX="84.0" layoutY="8.0" stroke="#a4a4a4" strokeType="INSIDE" width="358.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="10.0" />
-            <Button fx:id="deleteSelectedProduct" layoutX="317.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: #ebebeb; -fx-background-radius: 100;" text="X">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
             <Text fx:id="selectedProduct" layoutX="13.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="181.24365234375">
                <font>
                   <Font size="15.0" />
@@ -226,12 +221,19 @@
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text fx:id="selectedProductCostDiscount" layoutX="183.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="90€" visible="false">
+            <Text fx:id="selectedProductCostDiscount" layoutX="200.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="90€" visible="false">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
+            <Rectangle fx:id="mainProductRect" arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="53.0" layoutY="9.0" opacity="0.0" stroke="#a4a4a4" strokeType="INSIDE" width="358.0" />
+            <Button fx:id="deleteSelectedProductBtn" layoutX="317.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: #ebebeb; -fx-background-radius: 100;" text="X">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
+      <Button fx:id="applyBtn" layoutX="828.0" layoutY="552.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="82.0" style="-fx-background-color: #47c496; -fx-background-radius: 20;" text="Apply" />
     </children>
 </AnchorPane>
