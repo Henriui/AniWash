@@ -19,7 +19,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -199,44 +201,52 @@ public class ControllerUtilities {
                     setBackground(background);
                 }
             });
-            if (services.getSelectionModel().getSelectedItem().contains("+")) {
-                try {
-                    // NEW SERVICE POPUP
-                    Stage stage = new Stage();
-                    stage.setOnHidden(getProductEvent(mainViewModel, services, newEntry));
-                    ControllerUtilities.newProduct(stage);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                if (services.getSelectionModel().getSelectedItem() != null) {
-                    Calendar<Product> productCalendar = mainViewModel.getCalendarMap()
-                            .get(services.getSelectionModel().getSelectedItem());
+
+            if (services.getSelectionModel().getSelectedItem() != null) {
+                Calendar<Product> productCalendar = mainViewModel.getCalendarMap()
+                        .get(services.getSelectionModel().getSelectedItem());
+
+                // Main product
+
+                if (selectedProductPane.isVisible() == false) {
+
                     newEntry.setCalendar(productCalendar);
                     newEntry.setTitle(productCalendar.getName()); // TODO: muuta käyttöä titlelle
                     services.scrollTo(services.getSelectionModel().getSelectedItem());
                     petList.setDisable(false);
-                    if (selectedProductPane.isVisible() == false) {
-                        selectedProductLabel.setText(services.getSelectionModel().getSelectedItem());
-                        selectedProductPriceLabel.setText(productCalendar.getUserObject().getPrice() + " €");
-                        shoppingCart.addProduct(productCalendar.getUserObject(), "");
-                        services.getItems().remove(services.getSelectionModel().getSelectedItem());
-                        services.getSelectionModel().clearSelection();
-                        selectedProductPane.setVisible(true);
-                    } else {
-                        // extraProductObservableList.add(productCalendar.getUserObject());
-                        shoppingCart.addProduct(productCalendar.getUserObject(), "");
-                        extraProducts.getItems().add(productCalendar.getUserObject());
-                        System.out.println(shoppingCart.getDiscount(productCalendar.getUserObject()) + " " + shoppingCart.getTotalDiscountedPrice());
-                        services.getItems().remove(services.getSelectionModel().getSelectedItem());
-                        services.getSelectionModel().clearSelection();
-                    }
+
+                    selectedProductLabel.setText(services.getSelectionModel().getSelectedItem());
+                    selectedProductPriceLabel.setText(productCalendar.getUserObject().getPrice() + " €");
+                    shoppingCart.addProduct(productCalendar.getUserObject(), "0");
+                    services.getItems().remove(services.getSelectionModel().getSelectedItem());
+                    services.getSelectionModel().clearSelection();
+                    selectedProductPane.setVisible(true);
+                } else {
+
+                    // extraProductObservableList.add(productCalendar.getUserObject());
+                    shoppingCart.addProduct(productCalendar.getUserObject(), "0");
+
+                    ListCell<Product> selectedCell = (ListCell<Product>) extraProducts.getCellFactory()
+                            .call(extraProducts);
+                    System.out.println("selectedCell" + selectedCell);
+                    selectedCell.getProperties().put("price", productCalendar.getUserObject().getPrice());
+                    System.out.println(selectedCell.getProperties());
+
+                    extraProducts.getItems().add((Product) productCalendar.getUserObject());
+                    // newEntry.getCalendar().getUserObject();
+                    // Cell<Product> cellprod =
+                    // extraProducts.getItems().indexOf(productCalendar.getUserObject()); //
+                    // valitsee juuri lisätyn?
+                    System.out.println(shoppingCart.getDiscount(productCalendar.getUserObject()) + " "
+                            + shoppingCart.getTotalDiscountedPrice());
+                    services.getItems().remove(services.getSelectionModel().getSelectedItem());
+                    services.getSelectionModel().clearSelection();
                 }
             }
         };
     }
 
-    public static ShoppingCart getShoppingCart(){
+    public static ShoppingCart getShoppingCart() {
         return shoppingCart;
     }
 

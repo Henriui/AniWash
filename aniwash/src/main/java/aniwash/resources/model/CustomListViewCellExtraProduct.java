@@ -14,6 +14,8 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
     private HBox produtInfoHBox;
     private HBox produtNameHBox;
     private ListView listView;
+    private Label priceLabel;
+
     public CustomListViewCellExtraProduct(ListView listView) {
         super();
         this.listView = listView;
@@ -63,8 +65,11 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
             Label nameLabel = (Label) ((VBox) produtNameHBox.getChildren().get(0)).getChildren().get(0);
             nameLabel.setText(product.getName());
 
+            if (this.getProperties().get("price") == null)
+                this.getProperties().put("price", product.getPrice());
+
             Label priceLabel = (Label) ((VBox) produtInfoHBox.getChildren().get(1)).getChildren().get(0);
-            priceLabel.setText(String.valueOf(product.getPrice() + "€"));
+            priceLabel.setText(String.valueOf(this.getProperties().get("price")) + "€");
 
             Button deleteButton = (Button) ((VBox) produtInfoHBox.getChildren().get(2)).getChildren().get(0);
             deleteButton.setText("X");
@@ -75,9 +80,20 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
 
             // Set cell content
 
-            setText(null);
             setGraphic(produtInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 55;");
         }
     }
+
+    public void setDiscountedPrice(String newValue) {
+        System.out.println("Enpäs ookkaa" + newValue);
+        this.getProperties().put("price", newValue);
+        System.out.println(String.valueOf(this.getProperties().get("price")));
+        Label priceLabel = (Label) ((VBox) produtInfoHBox.getChildren().get(1)).getChildren().get(0);
+        System.out.println(priceLabel.getText());
+
+        // priceLabel.setText(String.valueOf(newValue )+ "€");
+        // System.out.println(priceLabel.getText());
+    }
+
 }

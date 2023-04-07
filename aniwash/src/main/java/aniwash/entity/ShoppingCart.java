@@ -1,6 +1,7 @@
 package aniwash.entity;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class ShoppingCart {
@@ -19,9 +20,10 @@ public class ShoppingCart {
         productsMap.put(product, discount);
     }
 
-    public Product getMainProduct(){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + productsMap.keySet().iterator().next().getName());
-        return productsMap.keySet().iterator().next();
+
+    public void removeMainProduct(Product mainProduct){
+        productsMap.remove(mainProduct);
+        // FOR TESTING PUPROSES getSelectedProducts();
     }
 
     public Product removeProduct(Product product) {
