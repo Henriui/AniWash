@@ -50,7 +50,7 @@ public class CustomListViewCellAppointment extends ListCell<Appointment> {
             dateLabel.setText(String.valueOf(appointment.getStartDate().toLocalDate()));
 
             Label descriptionLabel = (Label) ((VBox) animalInfoHBox.getChildren().get(1)).getChildren().get(0);
-            descriptionLabel.setText(String.valueOf(appointment.getDescription()));
+            //descriptionLabel.setText(String.valueOf(appointment.getDescription()));
 
             // Set cell content
 
@@ -59,4 +59,5 @@ public class CustomListViewCellAppointment extends ListCell<Appointment> {
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 45;");
         }
     }
+
 }

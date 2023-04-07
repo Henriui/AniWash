@@ -64,7 +64,7 @@ public class CustomListViewCellAnimal extends ListCell<Animal> {
             nameLabel.setText(animal.getName());
 
             Label ageLabel = (Label) ((VBox) animalInfoHBox.getChildren().get(1)).getChildren().get(0);
-            ageLabel.setText(String.valueOf(animal.getAnimalAge()));
+            ageLabel.setText(String.valueOf(1));
 
             Label typeLabel = (Label) (typeBox.getChildren().get(0));
             typeLabel.setText(animal.getType());
@@ -82,4 +82,5 @@ public class CustomListViewCellAnimal extends ListCell<Animal> {
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 45;");
         }
     }
+
 }

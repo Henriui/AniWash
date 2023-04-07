@@ -10,13 +10,12 @@ import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class CreateNewAnimalController {
+
     @FXML
     private TextField petNameField;
     @FXML
@@ -68,13 +67,12 @@ public class CreateNewAnimalController {
 
         // All input values are valid, create the Customer object
 
-        Animal animal = new Animal(petName, petType, petBreed, Integer.valueOf(petAge), petDescription);
+        Animal animal = new Animal(petName, petType, petBreed, petDescription);
         ICustomerDao customerDao = new CustomerDao();
         IAnimalDao animalDao = new AnimalDao();
         animalDao.addAnimal(animal); // add the animal to the database
         customer.addAnimal(animal); // add the animal to the customer
         customerDao.updateCustomer(customer); // update the customer in the database
-
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
@@ -87,4 +85,5 @@ public class CreateNewAnimalController {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+
 }

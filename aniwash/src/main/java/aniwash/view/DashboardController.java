@@ -1,7 +1,7 @@
 package aniwash.view;
 
 import aniwash.MainApp;
-import aniwash.resources.model.MainViewModel;
+import aniwash.viewmodels.MainViewModel;
 import com.calendarfx.view.AgendaView;
 import com.calendarfx.view.CalendarView;
 import javafx.fxml.FXML;

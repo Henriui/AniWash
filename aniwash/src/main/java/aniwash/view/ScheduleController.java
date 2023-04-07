@@ -2,16 +2,14 @@ package aniwash.view;
 
 import aniwash.MainApp;
 import aniwash.resources.model.CreatePopUp;
-import aniwash.resources.model.MainViewModel;
+import aniwash.viewmodels.MainViewModel;
 import com.calendarfx.view.CalendarView;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ScheduleController {
@@ -35,6 +33,7 @@ public class ScheduleController {
         calendarView.setShowDeveloperConsole(true);
         calendarView.setRequestedTime(LocalTime.now());
         calendarView.setEntryDetailsCallback(new CreatePopUp());
+/*
         Thread updateTimeThread = new Thread("Calendar: Update Time Thread") {
             @Override
             public void run() {
@@ -57,6 +56,7 @@ public class ScheduleController {
         updateTimeThread.setPriority(Thread.MIN_PRIORITY);
         updateTimeThread.setDaemon(true);
         updateTimeThread.start();
+*/
     }
 
     @FXML
@@ -80,7 +80,9 @@ public class ScheduleController {
     @FXML
     private void testWeekView() {
         calendarView.showWeekPage();
+/*
         mainViewModel.updateCalendar(true);
+*/
         Color selected = new Color(1, 1, 1, 1).rgb(255, 255, 255);
         testbutton.setTextFill(selected);
         testbutton.styleProperty().set("-fx-background-color: #1485ff");
@@ -95,7 +97,9 @@ public class ScheduleController {
     @FXML
     private void testListView() {
         calendarView.showDayPage();
+/*
         mainViewModel.updateCalendar(true);
+*/
         Color selected = new Color(1, 1, 1, 1).rgb(255, 255, 255);
         listButton.setTextFill(selected);
         listButton.styleProperty().set("-fx-background-color: #1485ff");
@@ -109,7 +113,9 @@ public class ScheduleController {
     @FXML
     private void testMonthlyView() {
         calendarView.showMonthPage();
+/*
         mainViewModel.updateCalendar(true);
+*/
         Color selected = new Color(1, 1, 1, 1).rgb(255, 255, 255);
         monthButton.styleProperty().set("-fx-background-color: #1485ff");
         monthButton.setTextFill(selected);

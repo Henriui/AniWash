@@ -3,7 +3,7 @@ package aniwash.view;
 import aniwash.dao.*;
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
-import aniwash.resources.model.MainViewModel;
+import aniwash.viewmodels.MainViewModel;
 import aniwash.resources.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.util.Map;
 
 public class NewCustomerController {
+
     // Create text fields for Customer section
     @FXML
     private TextField nameField;
@@ -79,7 +80,7 @@ public class NewCustomerController {
 
         // All input values are valid, create the Customer object
         Customer customer = new Customer(name, phone, email, address, postalCode);
-        Animal animal = new Animal(petName, petType, petBreed, Integer.parseInt(petAge), petDescription);
+        Animal animal = new Animal(petName, petType, petBreed, petDescription);
 
         MainViewModel calendar = new MainViewModel();
         Map<String, IDao> daoMap = calendar.getDaoMap();
@@ -99,4 +100,5 @@ public class NewCustomerController {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+
 }

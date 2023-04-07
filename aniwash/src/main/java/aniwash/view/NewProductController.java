@@ -1,8 +1,10 @@
 package aniwash.view;
 
 import aniwash.entity.Product;
-import aniwash.resources.model.MainViewModel;
+import aniwash.localization.LocalizedId;
+import aniwash.localization.LocalizedProduct;
 import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.viewmodels.MainViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class NewProductController {
+
     // Create text fields for Customer section
     @FXML
     private TextField nameField;
@@ -49,6 +52,9 @@ public class NewProductController {
         int styleInt = (int) (Math.random() * 8 - 1) + 1;
         // All input values are valid, create the Procuct object
         Product product = new Product(name, description, Integer.parseInt(price), "style" + styleInt);
+        LocalizedProduct localizedProduct = new LocalizedProduct(product, name, description);
+        localizedProduct.setId(new LocalizedId("en"));
+        product.getLocalizations().put("en", localizedProduct);
         MainViewModel mainViewModel = new MainViewModel();
         mainViewModel.createCalendar(product);
         Node source = (Node) event.getSource();
@@ -62,4 +68,5 @@ public class NewProductController {
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
+
 }

@@ -8,9 +8,10 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.function.Consumer;
 
 /*
@@ -32,7 +33,7 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public List<Appointment> findAllAppointments() {
+    public ObservableList<Appointment> findAllAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
@@ -42,7 +43,7 @@ public class AppointmentDao implements IAppointmentDao {
         rootEntry.fetch("products", JoinType.INNER);
         cq.select(rootEntry);
         cq.where(cb.equal(rootEntry.get("deleted"), 0));
-        return em.createQuery(cq).getResultList();
+        return FXCollections.observableList(em.createQuery(cq).getResultList());
         //return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
     }
 

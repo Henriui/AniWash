@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("AppointmentAnimalDAO: CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppointmentAnimalTestDbTest {
+
     private final IAppointmentDao aDao = new AppointmentDao();
     private final IAnimalDao anDao = new AnimalDao();
 
@@ -38,14 +39,14 @@ public class AppointmentAnimalTestDbTest {
     public void testCreateMultipleAppointmentsAndAnimals() {
         for (int i = 1; i < 4; i++) {
             Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
-            Animal an = new Animal("Milla" + i, "Kissa", "Miaw", i, "Vilkas, mutta kiltti");
+            Animal an = new Animal("Milla" + i, "Kissa", "Miaw", "Vilkas, mutta kiltti");
             aDao.addAppointment(a);
             anDao.addAnimal(an);
             a.addAnimal(an);
         }
         List<Animal> animals = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
-            Animal an = new Animal("Elmo" + i, "Koira", "Labradori", i, "Rauhallinen ja kiltti");
+            Animal an = new Animal("Elmo" + i, "Koira", "Labradori", "Rauhallinen ja kiltti");
             animals.add(an);
         }
         for (Animal an : animals) {
@@ -97,4 +98,5 @@ public class AppointmentAnimalTestDbTest {
         }
         assertEquals(0, anDao.findAllAnimal().size(), "Animal list size count should be 0");
     }
+
 }

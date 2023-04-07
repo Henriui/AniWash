@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 public class ProductController {
+
     @FXML
     private ListView<Product> listView;
     @FXML
@@ -48,8 +49,7 @@ public class ProductController {
 
         // Set the placeholder text for the ListView
 
-        Background background = new Background(
-                new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(new BackgroundFill(Color.web("#f2f5f9"), CornerRadii.EMPTY, Insets.EMPTY));
         listView.setPlaceholder(new Label("No products") {
             @Override
             protected void updateBounds() {
@@ -61,14 +61,14 @@ public class ProductController {
         // Bind the searchField text property to the filter predicate property.
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            Predicate<Product> filter = customer -> {
+            Predicate<Product> productFilter = product -> {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 } else {
-                    return customer.getName().toLowerCase().contains(newValue.toLowerCase());
+                    return product.getLocalizations().get("en").getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
-            ObservableList<Product> filteredCustomers = products.get().filtered(filter);
+            ObservableList<Product> filteredCustomers = products.get().filtered(productFilter);
             listView.setItems(filteredCustomers);
 
         });

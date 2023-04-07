@@ -1,13 +1,11 @@
 package aniwash.entity;
 
+import aniwash.localization.LocalizedAppointment;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Where(clause = "DELETED = 0")
@@ -17,23 +15,17 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Version
+    private int version;
+
     @Column(nullable = false)
     private ZonedDateTime startDate;
 
     @Column(nullable = false)
     private ZonedDateTime endDate;
 
-    @Column(nullable = false)
-    private String description;
-
     @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
-
-/*
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    private Set<Employee> employees = new HashSet<>();
-*/
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_customer", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
@@ -47,26 +39,17 @@ public class Appointment {
     @JoinTable(name = "appointment_product", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
+    @OneToMany(mappedBy = "appointment", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
+    @MapKey(name = "localizedId.locale")
+    private Map<String, LocalizedAppointment> localizations = new HashMap<>();
+
     public Appointment() {
     }
 
     public Appointment(ZonedDateTime startDate, ZonedDateTime endDate, String description) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.description = description;
     }
-
-/*
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
-        employee.getAppointments().add(this);
-    }
-
-    public void removeEmployee(Employee employee) {
-        employees.remove(employee);
-        employee.getAppointments().remove(this);
-    }
-*/
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
@@ -98,12 +81,6 @@ public class Appointment {
         product.getAppointments().remove(this);
     }
 
-/*
-    public List<Employee> getEmployeeList() {
-        return new ArrayList<>(getEmployees());
-    }
-*/
-
     public List<Customer> getCustomerList() {
         return new ArrayList<>(getCustomers());
     }
@@ -116,17 +93,17 @@ public class Appointment {
         return new ArrayList<>(getProducts());
     }
 
+    public Map<String, LocalizedAppointment> getLocalizations() {
+        return localizations;
+    }
+
     // Getters and Setters
     public long getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public String getDescription(String locale) {
+        return localizations.get(locale).getDescription();
     }
 
     public ZonedDateTime getStartDate() {
@@ -153,16 +130,6 @@ public class Appointment {
         this.deleted = 1;
     }
 
-/*
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
-*/
-
     public Set<Customer> getCustomers() {
         return customers;
     }
@@ -185,17 +152,6 @@ public class Appointment {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() +
-               "(id=" + id +
-               ", startDate=" + startDate +
-               ", endDate=" + endDate +
-               ", description='" + description +
-               "', deleted=" + deleted +
-               ")";
     }
 
 }

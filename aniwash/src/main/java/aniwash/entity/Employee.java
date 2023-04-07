@@ -12,6 +12,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Version
+    private int version;
+
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -133,6 +136,7 @@ public class Employee {
     public UserType getUserType() {
         return userType;
     }
+
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
@@ -149,4 +153,5 @@ public class Employee {
                ", deleted=" + deleted +
                ")";
     }
+
 }

@@ -15,7 +15,7 @@ public class CustomListViewCellProduct extends ListCell<Product> {
     public CustomListViewCellProduct() {
         super();
         // Create the customer info HBox once
-
+        this.itemProperty().get();
         Label nameLabel = new Label();
         Label descriptionLabel = new Label();
         nameLabel.setMinWidth(300);
@@ -55,13 +55,13 @@ public class CustomListViewCellProduct extends ListCell<Product> {
             // Update the cell content with the customer information
 
             Label nameLabel = (Label) ((VBox) produtNameHBox.getChildren().get(0)).getChildren().get(0);
-            nameLabel.setText(product.getName());
+            nameLabel.setText(product.getLocalizations().get("en").getName());
 
             Label priceLabel = (Label) ((VBox) produtInfoHBox.getChildren().get(2)).getChildren().get(0);
             priceLabel.setText(String.valueOf(product.getPrice() + "€"));
 
             Label descriptionLabel = (Label) ((VBox) produtInfoHBox.getChildren().get(1)).getChildren().get(0);
-            descriptionLabel.setText(product.getDescription());
+            descriptionLabel.setText(product.getLocalizations().get("en").getDescription());
 
             // Set cell content
 
@@ -70,4 +70,5 @@ public class CustomListViewCellProduct extends ListCell<Product> {
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 60;");
         }
     }
+
 }

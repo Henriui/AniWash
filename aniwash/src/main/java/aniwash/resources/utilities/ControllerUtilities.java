@@ -4,8 +4,8 @@ import aniwash.MainApp;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.entity.Product;
-import aniwash.resources.model.MainViewModel;
 import aniwash.view.CreateNewAnimalController;
+import aniwash.viewmodels.MainViewModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import javafx.collections.ObservableList;
@@ -120,8 +120,8 @@ public class ControllerUtilities {
         return productEvent -> {
             services.getItems().clear();
             services.getItems().add("                                   Create new service  +");
-            mainViewModel.getCalendarMap().values().forEach(service -> services.getItems().addAll(service.getName()));
-            String newProduct = mainViewModel.newestProduct().getName();
+            String newProduct = mainViewModel.newestProduct().getLocalizations().get("en").getName();
+            mainViewModel.getCalendarMap().values().forEach(service -> services.getItems().add(service.getName()));
             services.getSelectionModel().select(newProduct);
             services.scrollTo(newProduct);
             Calendar<Product> productCalendar = mainViewModel.getCalendarMap().get(services.getSelectionModel().getSelectedItem());
@@ -129,6 +129,7 @@ public class ControllerUtilities {
             newEntry.setTitle(productCalendar.getName()); // TODO: muuta käyttöä titlelle
         };
     }
+
     public static EventHandler<KeyEvent> getSearchFieldKeyEvent(MainViewModel mainViewModel, TextField searchField, ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList, ListView<String> services, Entry<Appointment> newEntry) {
         return event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
@@ -155,8 +156,10 @@ public class ControllerUtilities {
             }
         };
     }
+
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services, Entry<Appointment> newEntry, ListView<String> petList) {
         return mouseEvent -> {
+/*
             if (services.getSelectionModel().getSelectedItem().contains("+")) {
                 try {
                     // NEW SERVICE POPUP
@@ -168,15 +171,21 @@ public class ControllerUtilities {
                 }
             } else {
                 if (services.getSelectionModel().getSelectedItem() != null) {
-                    Calendar<Product> productCalendar = mainViewModel.getCalendarMap().get(services.getSelectionModel().getSelectedItem());
-                    newEntry.setCalendar(productCalendar);
-                    newEntry.setTitle(productCalendar.getName()); // TODO: muuta käyttöä titlelle
-                    services.scrollTo(services.getSelectionModel().getSelectedItem());
-                    petList.setDisable(false);
-                }
+*/
+            //String selectedProduct = services.getSelectionModel().getSelectedItem();
+            Calendar<Product> productCalendar = mainViewModel.getCalendarMap().get(services.getSelectionModel().getSelectedItem());
+            newEntry.setCalendar(productCalendar);
+/*
+            if (selectedProduct != null) {
+                services.getItems().remove(selectedProduct);
             }
+*/
+            newEntry.setTitle(productCalendar.getName()); // TODO: muuta käyttöä titlelle
+            services.scrollTo(services.getSelectionModel().getSelectedItem());
+            petList.setDisable(false);
         };
     }
+
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel, ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList, Entry<Appointment> newEntry) {
         return mouseEvent -> {
             if (petList.getSelectionModel().getSelectedItem().contains("+")) {
@@ -204,6 +213,7 @@ public class ControllerUtilities {
             }
         };
     }
+
     public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel, ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList, Entry<Appointment> newEntry, ListView<String> services) {
         return mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
@@ -226,4 +236,5 @@ public class ControllerUtilities {
             }
         };
     }
+
 }

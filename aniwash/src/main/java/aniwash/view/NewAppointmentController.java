@@ -6,7 +6,7 @@ import aniwash.entity.Customer;
 import aniwash.entity.Product;
 import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.CustomListViewCellCustomer;
-import aniwash.resources.model.MainViewModel;
+import aniwash.viewmodels.MainViewModel;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import javafx.collections.ObservableList;
@@ -25,13 +25,12 @@ import javafx.stage.Stage;
 import static aniwash.resources.utilities.ControllerUtilities.*;
 
 public class NewAppointmentController extends CreatePopUp {
+
     private final MainViewModel mainViewModel = new MainViewModel();
     @FXML
     private Button save;
     @FXML
-    private ListView<String> services;
-    @FXML
-    private ListView<String> petList;
+    private ListView<String> services, petList;
     @FXML
     private ListView<Customer> personList;
     @FXML
@@ -39,23 +38,13 @@ public class NewAppointmentController extends CreatePopUp {
     @FXML
     private AnchorPane servicePane;
     @FXML
-    private Circle one;
+    private Circle one, two, three;
     @FXML
-    private Circle two;
+    private Rectangle first, second, third;
     @FXML
-    private Circle three;
+    private DatePicker date;
     @FXML
-    private Rectangle first;
-    @FXML
-    private Rectangle second;
-    @FXML
-    private DatePicker date = new DatePicker();
-    @FXML
-    private TimeField startTime = new TimeField();
-    @FXML
-    private TimeField endTime = new TimeField();
-    @FXML
-    private Rectangle third;
+    private TimeField startTime, endTime;
     private Entry<Appointment> newEntry;
     private ObservableList<Customer> customerObservableList;
 
@@ -63,10 +52,13 @@ public class NewAppointmentController extends CreatePopUp {
         // Get the created entry from the calendar view.
         newEntry = (Entry<Appointment>) getArg();
         newEntry.setHidden(true);
-        services.getItems().add("                                   Create new service  +");
+        //services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
         // Initialize datepicker with selected date
+        date = new DatePicker();
         date.setValue(newEntry.getStartDate());
+        startTime = new TimeField();
+        endTime = new TimeField();
         startTime.setValue(newEntry.getStartTime());
         endTime.setValue(newEntry.getEndTime().plusMinutes(30));
         // Initialize the person table with the three columns.
@@ -82,6 +74,8 @@ public class NewAppointmentController extends CreatePopUp {
             }
         });
         mainViewModel.getCalendarMap().values().forEach(service -> services.getItems().addAll(service.getName()));
+        services.getSelectionModel().select(0);
+        // String name = ((Product) newEntry.getCalendar().getUserObject()).getName();
         customerObservableList = mainViewModel.getPeople();
         personList.setItems(null);
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -122,4 +116,5 @@ public class NewAppointmentController extends CreatePopUp {
         newEntry.setId("id" + newEntry.getUserObject().getId());
         newEntry.setHidden(false);
     }
+
 }

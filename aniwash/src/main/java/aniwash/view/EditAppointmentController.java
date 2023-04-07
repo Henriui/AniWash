@@ -6,7 +6,7 @@ import aniwash.entity.Customer;
 import aniwash.entity.Product;
 import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.CustomListViewCellCustomer;
-import aniwash.resources.model.MainViewModel;
+import aniwash.viewmodels.MainViewModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
@@ -50,7 +50,7 @@ public class EditAppointmentController extends CreatePopUp {
 
     public void initialize() {
         newEntry = (Entry<Appointment>) getArg();
-        services.getItems().add("                                   Create new service  +");
+        //services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
         date.setValue(newEntry.getStartDate());
         startTime.setValue(newEntry.getStartTime());

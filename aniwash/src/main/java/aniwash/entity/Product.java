@@ -1,9 +1,12 @@
 package aniwash.entity;
 
+import aniwash.localization.LocalizedProduct;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -14,11 +17,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String description;
+    @Version
+    private int version;
 
     @Column(nullable = false)
     private double price;
@@ -32,12 +32,14 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private Set<Appointment> appointments = new HashSet<>();
 
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
+    @MapKey(name = "localizedId.locale")
+    private Map<String, LocalizedProduct> localizations = new HashMap<>();
+
     public Product() {
     }
 
     public Product(String name, String description, double price, String style) {
-        this.name = name;
-        this.description = description;
         this.price = price;
         this.style = style;
     }
@@ -57,20 +59,16 @@ public class Product {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getName(String locale) {
+        return localizations.get(locale).getName();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getDescription(String locale) {
+        return localizations.get(locale).getDescription();
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public Map<String, LocalizedProduct> getLocalizations() {
+        return localizations;
     }
 
     public double getPrice() {
@@ -105,15 +103,4 @@ public class Product {
         this.appointments = appointments;
     }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() +
-                "(id=" + id +
-                ", name=" + name +
-                ", description=" + description +
-                ", price=" + price +
-                ", style=" + style +
-                ", deleted=" + deleted +
-                ")";
-    }
 }

@@ -16,6 +16,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Version
+    private int version;
+
     @Column(nullable = false)
     private String name;
 
@@ -186,4 +189,5 @@ public class Customer {
                ", deleted=" + deleted +
                ")";
     }
+
 }

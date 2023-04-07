@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Customer and Animal class CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerAnimalDbTest {
+
     private final IAnimalDao aDao = new AnimalDao();
     private final ICustomerDao cDao = new CustomerDao();
 
@@ -39,14 +40,14 @@ public class CustomerAnimalDbTest {
         System.out.println("Rammus is the best");
         for (int i = 0; i < 10; i++) {
             Customer c = new Customer("John" + i, "+358 - 0" + i, "rammus" + i + "@gmail.com");
-            Animal a = new Animal("Uli" + i, "Dog", "Husky", 1 + i, "Uliseva rakki");
+            Animal a = new Animal("Uli" + i, "Dog", "Husky", "Uliseva rakki");
             cDao.addCustomer(c);
             aDao.addAnimal(a);
             c.addAnimal(a);
         }
         List<Animal> animals = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Animal a = new Animal("Rohmu" + i, "Cat", "Meow", 1 + i, "Maukuva nakki");
+            Animal a = new Animal("Rohmu" + i, "Cat", "Meow", "Maukuva nakki");
             animals.add(a);
         }
         for (Animal a : animals) {
@@ -116,4 +117,5 @@ public class CustomerAnimalDbTest {
         employeeList = eDao.findAllEmployee();
         assertEquals(0, employeeList.size(), "Employee list size is not 0");
     }
+
 }
