@@ -3,6 +3,7 @@ package aniwash.view;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
+import aniwash.entity.DiscountProduct;
 import aniwash.entity.Product;
 import aniwash.entity.ShoppingCart;
 import aniwash.resources.model.CreatePopUp;
@@ -47,7 +48,7 @@ public class NewAppointmentController extends CreatePopUp {
     @FXML
     private Button deleteSelectedProductBtn, saveBtn, applyBtn;
     @FXML
-    private ListView<Product> extraProducts;
+    private ListView<DiscountProduct> extraProducts;
     @FXML
     private ListView<String> services, petList;
     @FXML
@@ -71,7 +72,6 @@ public class NewAppointmentController extends CreatePopUp {
         cart = getShoppingCart();
         newEntry = (Entry<Appointment>) getArg();
         newEntry.setHidden(true);
-        services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
         // Initialize datepicker with selected date
         date.setValue(newEntry.getStartDate());
@@ -80,7 +80,7 @@ public class NewAppointmentController extends CreatePopUp {
         // Initialize the person table with the three columns.
         personList.setCellFactory(personList -> new CustomListViewCellCustomer());
         // Initialize the extra product table.
-        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services));
+        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart));
         personList.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
         // Set the placeholder text for the ListView
         Background background = new Background(
@@ -110,28 +110,16 @@ public class NewAppointmentController extends CreatePopUp {
                 getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
         services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
                 selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
-                extraProducts));
+                extraProducts, priceText));
         petList.setOnMouseClicked(
                 getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
-        deleteSelectedProductBtn.setOnAction(deleteMainProduct());
-        applyBtn.setOnAction(applyDiscount());
-        extraProducts.setOnMouseClicked(selectExtraProduct());
-        mainProductRect.setOnMousePressed(selectMainProduct());
+        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
+                selectedProductCost, selectedProductCostDiscount, priceText));
+        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
+                newEntry, selectedProduct, priceText));
+        extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
+        mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
     }
-
-    private EventHandler<? super MouseEvent> selectExtraProduct() {
-        return event -> {
-            selectedProduct.setFill(Color.web("#000000"));
-        };
-    }
-
-    private EventHandler<? super MouseEvent> selectMainProduct() {
-        return event -> {
-            selectedProduct.setFill(Color.web("#47c496"));
-            extraProducts.getSelectionModel().clearSelection();
-        };
-    }
-
 
     @FXML
     public void save() {
@@ -154,7 +142,7 @@ public class NewAppointmentController extends CreatePopUp {
     public void sendEntry() {
         newEntry.setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
         Customer selectedCustomer = personList.getSelectionModel().getSelectedItem();
-        Animal animal = selectedCustomer.getAnimals() 
+        Animal animal = selectedCustomer.getAnimals()
                 .toArray(new Animal[0])[petList.getSelectionModel().getSelectedIndex() - 1];
         newEntry.setUserObject(
                 mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
@@ -163,74 +151,4 @@ public class NewAppointmentController extends CreatePopUp {
         newEntry.setHidden(false);
     }
 
-    public EventHandler<ActionEvent> applyDiscount() {
-        return event -> {
-            if (!setDiscount.getText().isEmpty() && extraProducts.getSelectionModel().getSelectedItem() == null) {
-                Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
-                String discount = setDiscount.getText();
-                double newPrice = mainProduct.getPrice() * (0.01 * Double.parseDouble(discount));
-
-                selectedProductCost.strikethroughProperty().set(true);
-                selectedProductCostDiscount.setVisible(true);
-                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");
-
-                cart.editDiscount(mainProduct, discount);
-            } else {
-                System.out.println("Please select a product" +   extraProducts.getSelectionModel().getSelectedIndex());
-                Product product = extraProducts.getSelectionModel().getSelectedItem();
-                String discount = setDiscount.getText();
-                double newPrice = product.getPrice() * (0.01 * Double.parseDouble(discount));
-                System.out.println("!?!?!?!?!?!??!?!?!" + newPrice); 
-                //extraProducts.getItems().get(extraProducts.getSelectionModel().getSelectedIndex()).setPrice(newPrice);
-                cart.editDiscount(product, discount);
-                
-                // Get the selected index in the ListView
-                //int selectedIndex = extraProducts.getSelectionModel().getSelectedIndex();
-                
-                //ListCell<Product> seleCell = extraProducts.getSelectionModel().getSelectedItem();
-                //seleCell.
-                
-                // Get a reference to the ListCell that represents the selected item
-                //ListCell<Product> selectedCell = extraProducts;
-
-                //ListCell<Product> selectedCell = extraProducts.getCellFactory().call(extraProducts);
-                //System.out.println("selectedCell" + selectedCell.getItem()); //antaako ulos productin?
-                //selectedCell.getProperties().put("price", newPrice);
-                //System.out.println(selectedCell.getProperties());
-                
-                //((CustomListViewCellExtraProduct) selectedCell).setDiscountedPrice(String.valueOf(newPrice));
-                // selectedCellCustomListViewCellExtraProduct@ed347e1[styleClass=cell indexed-cell list-cell]'null'
-                // {}
-
-                extraProducts.refresh(); // Should update all the cells in the ListView
-
-
-
-
-
-
-
-
-                // If the selected cell is not null, call the setDiscountedPrice method on it
-              /*   if (selectedCell != null) {
-                    ((CustomListViewCellExtraProduct) selectedCell).setDiscountedPrice(newPrice);
-                } */
-                // Store the discount for the selected product in the cart
-
-            }
-        };
-    }
-
-    public EventHandler<ActionEvent> deleteMainProduct() {
-        return event -> {
-            services.getItems().addAll(selectedProduct.getText());
-            selectedProductPane.setVisible(false);
-            System.out.println("deleteMainProduct" + newEntry.getCalendar().getUserObject());
-            cart.removeMainProduct((Product) newEntry.getCalendar().getUserObject());
-            selectedProductCost.strikethroughProperty().set(false);
-            selectedProductCostDiscount.setVisible(false);
-            newEntry.setCalendar(null);
-        };
-
-    }
 }

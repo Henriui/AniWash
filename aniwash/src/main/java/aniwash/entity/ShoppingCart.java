@@ -16,12 +16,31 @@ public class ShoppingCart {
         productsMap.put(product, discount);
     }
 
+    public void editDiscountString(String product, String discount) {
+        for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
+            if (entry.getKey().getName() == product) {
+                System.out.println("herehere");
+                productsMap.put(entry.getKey(), discount);
+            }
+        }
+    }
+
+    public Product getProduct(String product) {
+        for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
+            if (entry.getKey().getName() == product) {
+                System.out.println("herehere");
+                return entry.getKey();
+            }
+
+        }
+        return null;
+    }
+
     public void editDiscount(Product product, String discount) {
         productsMap.put(product, discount);
     }
 
-
-    public void removeMainProduct(Product mainProduct){
+    public void removeMainProduct(Product mainProduct) {
         productsMap.remove(mainProduct);
         // FOR TESTING PUPROSES getSelectedProducts();
     }
@@ -29,6 +48,15 @@ public class ShoppingCart {
     public Product removeProduct(Product product) {
         productsMap.remove(product);
         return product;
+    }
+
+    public void removeProductString(String product) {
+        for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
+            if (entry.getKey().getName() == product) {
+                productsMap.remove(entry.getKey());
+                break;
+            }
+        }
     }
 
     public double getTotalPrice() {
@@ -44,7 +72,7 @@ public class ShoppingCart {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
             Product product = entry.getKey();
             String discount = entry.getValue();
-            totalDiscountedPrice += product.getPrice() * (0.01 * Double.parseDouble(discount));
+            totalDiscountedPrice += product.getPrice() - (product.getPrice() * (0.01 * Double.parseDouble(discount)));
         }
         return totalDiscountedPrice;
     }

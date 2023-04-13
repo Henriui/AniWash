@@ -1,6 +1,8 @@
 package aniwash.resources.model;
 
+import aniwash.entity.DiscountProduct;
 import aniwash.entity.Product;
+import aniwash.entity.ShoppingCart;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,17 +10,21 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
-public class CustomListViewCellExtraProduct extends ListCell<Product> {
+public class CustomListViewCellExtraProduct extends ListCell<DiscountProduct> {
 
     private HBox produtInfoHBox;
     private HBox produtNameHBox;
     private ListView listView;
-    private Label priceLabel;
+    private Text totalPrice;
+    private ShoppingCart cart;
 
-    public CustomListViewCellExtraProduct(ListView listView) {
+    public CustomListViewCellExtraProduct(ListView listView, Text totalPrice, ShoppingCart cart) {
         super();
         this.listView = listView;
+        this.totalPrice = totalPrice;
+        this.cart = cart;
         // Create the customer info HBox once
 
         Label nameLabel = new Label();
@@ -52,7 +58,7 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
     }
 
     @Override
-    protected void updateItem(Product product, boolean empty) {
+    protected void updateItem(DiscountProduct product, boolean empty) {
         super.updateItem(product, empty);
 
         if (empty || product == null) {
@@ -65,17 +71,18 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
             Label nameLabel = (Label) ((VBox) produtNameHBox.getChildren().get(0)).getChildren().get(0);
             nameLabel.setText(product.getName());
 
-            if (this.getProperties().get("price") == null)
-                this.getProperties().put("price", product.getPrice());
-
             Label priceLabel = (Label) ((VBox) produtInfoHBox.getChildren().get(1)).getChildren().get(0);
-            priceLabel.setText(String.valueOf(this.getProperties().get("price")) + "€");
+            priceLabel.setText(String.format("%.2f", product.getPrice()) + "€");
 
             Button deleteButton = (Button) ((VBox) produtInfoHBox.getChildren().get(2)).getChildren().get(0);
             deleteButton.setText("X");
             deleteButton.setOnAction(event -> {
                 getListView().getItems().remove(product);
                 listView.getItems().add(product.getName());
+                System.out.println("NYT POISTETAAN " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
+                cart.removeProductString(product.getName());
+                totalPrice.setText("Price " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
+
             });
 
             // Set cell content
@@ -83,17 +90,6 @@ public class CustomListViewCellExtraProduct extends ListCell<Product> {
             setGraphic(produtInfoHBox);
             setStyle("-fx-background-color: #f2f5f9; -fx-pref-height: 55;");
         }
-    }
-
-    public void setDiscountedPrice(String newValue) {
-        System.out.println("Enpäs ookkaa" + newValue);
-        this.getProperties().put("price", newValue);
-        System.out.println(String.valueOf(this.getProperties().get("price")));
-        Label priceLabel = (Label) ((VBox) produtInfoHBox.getChildren().get(1)).getChildren().get(0);
-        System.out.println(priceLabel.getText());
-
-        // priceLabel.setText(String.valueOf(newValue )+ "€");
-        // System.out.println(priceLabel.getText());
     }
 
 }
