@@ -148,6 +148,7 @@ public class NewAppointmentController extends CreatePopUp {
                 mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
                         selectedCustomer, animal, (Product) newEntry.getCalendar().getUserObject()));
         newEntry.setId("id" + newEntry.getUserObject().getId());
+        newEntry.setLocation(null);
         newEntry.setHidden(false);
     }
 

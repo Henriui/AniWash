@@ -179,7 +179,7 @@
             </DropShadow>
          </effect>
       </Rectangle>
-      <Text fx:id="priceText" layoutX="620.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price 120€" textAlignment="CENTER" wrappingWidth="224.3603515625">
+      <Text fx:id="priceText" layoutX="620.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price 0€" textAlignment="CENTER" wrappingWidth="224.3603515625">
          <font>
             <Font size="17.0" />
          </font>

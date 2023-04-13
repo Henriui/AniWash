@@ -82,7 +82,6 @@ public class CustomListViewCellExtraProduct extends ListCell<DiscountProduct> {
                 System.out.println("NYT POISTETAAN " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
                 cart.removeProductString(product.getName());
                 totalPrice.setText("Price " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
-
             });
 
             // Set cell content

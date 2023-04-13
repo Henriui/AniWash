@@ -303,7 +303,7 @@ public class ControllerUtilities {
             else if (!setDiscount.getText().isEmpty() && extraProducts.getSelectionModel().getSelectedItem() == null
                     && !selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
                 System.out.println("nothing selected");
-                // TODO: add dicount to current price.
+                // TODO: add dicount to current price (To all items).
             }
 
             // If discount is applied and extraProduct is selected.
@@ -418,7 +418,7 @@ public class ControllerUtilities {
 
             // Set Calendar to null.
 
-            newEntry.setCalendar(null);
+            //newEntry.setCalendar(null);
 
             // Set totalPrice text to match all selected product price.
 
