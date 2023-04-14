@@ -5,7 +5,6 @@ import org.hibernate.annotations.Where;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +25,6 @@ public class Appointment {
 
     @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
-    private HashMap<Product, Discount> discount;
 
     @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
@@ -189,14 +185,6 @@ public class Appointment {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
-    }
-
-    public HashMap<Product, Discount> getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Product product, Discount discount) {
-        this.discount.put(product, discount);
     }
 
     @Override
