@@ -3,9 +3,12 @@ package aniwash.view;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
+import aniwash.entity.DiscountProduct;
 import aniwash.entity.Product;
+import aniwash.entity.ShoppingCart;
 import aniwash.resources.model.CreatePopUp;
 import aniwash.resources.model.CustomListViewCellCustomer;
+import aniwash.resources.model.CustomListViewCellExtraProduct;
 import aniwash.resources.model.MainViewModel;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
@@ -20,24 +23,34 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import static aniwash.resources.utilities.ControllerUtilities.*;
 
 public class EditAppointmentController extends CreatePopUp {
     private final MainViewModel mainViewModel = new MainViewModel();
+
     @FXML
-    private Button save;
+    private TextArea description, servicePane;
     @FXML
-    private ListView<String> services;
+    private AnchorPane selectedProductPane;
     @FXML
-    private ListView<String> petList;
+    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount,
+            extraProductTitle, priceText, setDiscountTitle;
+    @FXML
+    private TextField setDiscount, searchField;
+    @FXML
+    private Button deleteSelectedProductBtn, saveBtn, applyBtn;
+    @FXML
+    private ListView<DiscountProduct> extraProducts;
+    @FXML
+    private ListView<String> services, petList;
     @FXML
     private ListView<Customer> personList;
     @FXML
-    private TextField searchField;
-    @FXML
-    private AnchorPane servicePane;
+    private Rectangle mainProductRect;
     @FXML
     private DatePicker date = new DatePicker();
     @FXML
@@ -47,8 +60,10 @@ public class EditAppointmentController extends CreatePopUp {
     private Entry<Appointment> newEntry;
     private ObservableList<Calendar<Product>> calendarObservableList;
     private ObservableList<Customer> customerObservableList;
+    private ShoppingCart cart;
 
     public void initialize() {
+        cart = getShoppingCart();
         newEntry = (Entry<Appointment>) getArg();
         services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
@@ -57,6 +72,7 @@ public class EditAppointmentController extends CreatePopUp {
         endTime.setValue(newEntry.getEndTime());
         // Initialize the person table with the three columns.
         personList.setCellFactory(personList -> new CustomListViewCellCustomer());
+        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart));
         personList.setStyle("-fx-background-color: #f4f4f4; -fx-background: #f4f4f4;");
         // Set the placeholder text for the ListView
         Background background = new Background(new BackgroundFill(Color.web("#f4f4f4"), CornerRadii.EMPTY, Insets.EMPTY));
@@ -71,9 +87,19 @@ public class EditAppointmentController extends CreatePopUp {
         calendarObservableList = FXCollections.observableArrayList(mainViewModel.getCalendarMap().values());
         calendarObservableList.forEach(service -> services.getItems().addAll(service.getName()));
         personList.setOnMouseClicked(getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
-        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList));
+        //services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList));
         petList.setOnMouseClicked(getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
         getCurrentAppointment();
+
+        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
+                selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
+                extraProducts, priceText));
+        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
+                selectedProductCost, selectedProductCostDiscount, priceText));
+        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
+                newEntry, selectedProduct, priceText));
+        extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
+        mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
     }
     // Save the selected person and send entry .
 
@@ -83,7 +109,7 @@ public class EditAppointmentController extends CreatePopUp {
             System.out.println("Please select a service and a pet");
             // TODO: Alert popup for missing fields ;)
         } else {
-            Stage stage = (Stage) save.getScene().getWindow();
+            Stage stage = (Stage) saveBtn.getScene().getWindow();
             stage.close();
             sendEntry();
         }
@@ -111,9 +137,15 @@ public class EditAppointmentController extends CreatePopUp {
         Animal a = appointment.getAnimalList().get(0);
         personList.setItems(customerObservableList.filtered(person -> person.getName().equals(customer.getName())));
         personList.getSelectionModel().select(customer);
-        services.getSelectionModel().select(newEntry.getCalendar().getName());
+        services.getItems().remove(newEntry.getCalendar().getName());
+        
+        selectedProduct.setText(newEntry.getCalendar().getName());
+        selectedProductCost.setText(((Product) newEntry.getCalendar().getUserObject()).getPrice() + " €");
+
         customer.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
         petList.getSelectionModel().select(a.getName());
+        priceText.setText("Price: " + ((Product) newEntry.getCalendar().getUserObject()).getPrice() + " €");
+        selectedProductPane.setVisible(true);
     }
 
     public void sendEntry() {
