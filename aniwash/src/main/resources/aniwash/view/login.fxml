@@ -6,42 +6,39 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
+<?import javafx.scene.text.*?>
 <AnchorPane maxHeight="466.0" maxWidth="555.0" minHeight="466.0" minWidth="555.0"
-    xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="aniwash.view.LoginController">
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="aniwash.view.LoginController">
     <children>
         <Text layoutX="208.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AniWash">
             <font>
-                <Font name="System Bold" size="33.0" />
+                <Font name="System Bold" size="33.0"/>
             </font>
         </Text>
-        <ImageView fitHeight="88.0" fitWidth="115.0" layoutX="233.0" layoutY="111.0"
-            pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="88.0" fitWidth="115.0" layoutX="233.0" layoutY="111.0" pickOnBounds="true"
+                   preserveRatio="true">
             <image>
-                <Image url="@../images/what.png" />
+                <Image url="@../images/what.png"/>
             </image>
         </ImageView>
-        <Text layoutX="238.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username"
-            textAlignment="CENTER">
+        <Text layoutX="238.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%usernameLabel"
+              textAlignment="CENTER">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Text>
-        <TextField fx:id="username" layoutX="203.0" layoutY="240.0" maxHeight="25.0"
-            maxWidth="149.0" />
-        <Text layoutX="240.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password"
-            textAlignment="CENTER">
+        <TextField fx:id="username" layoutX="203.0" layoutY="240.0" maxHeight="25.0" maxWidth="149.0"
+                   promptText="%usernameLabel"/>
+        <Text layoutX="240.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="%passwordLabel"
+              textAlignment="CENTER">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Text>
-        <PasswordField fx:id="password" layoutX="203.0" layoutY="310.0" maxHeight="25.0"
-            maxWidth="149.0" />
-        <Button layoutX="250.0" layoutY="400.0" maxHeight="25.0" maxWidth="55.0"
-            mnemonicParsing="false" prefHeight="25.0" prefWidth="55.0" text="Login"
-            onAction="#loginButton" />
+        <PasswordField fx:id="password" layoutX="203.0" layoutY="310.0" maxHeight="25.0" maxWidth="149.0"
+                       promptText="%passwordLabel"/>
+        <Button layoutX="250.0" layoutY="400.0" maxHeight="25.0" maxWidth="55.0" mnemonicParsing="false"
+                onAction="#loginButton" prefHeight="25.0" prefWidth="55.0" text="%loginButton"/>
     </children>
 </AnchorPane>

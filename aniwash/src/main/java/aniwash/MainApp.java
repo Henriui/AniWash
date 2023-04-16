@@ -11,6 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainApp extends Application {
 
@@ -69,6 +71,8 @@ public class MainApp extends Application {
 
     private static Parent loadParent(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        Locale locale = new Locale("en", "US"); //Change language here to fr_FR for French or en_US for English
+        fxmlLoader.setResources(ResourceBundle.getBundle("aniwash.languages.Resources", locale));
         return fxmlLoader.load();
     }
 

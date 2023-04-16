@@ -1,172 +1,223 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" style="-fx-background-color: #f2f5f9;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aniwash.view.CustomersController">
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="1300.0" style="-fx-background-color: #f2f5f9;" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="aniwash.view.CustomersController">
     <children>
-        <BorderPane layoutX="-14.0" prefHeight="602.0" prefWidth="890.0" stylesheets="@../css/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="0.0">
-         <left>
-                <AnchorPane prefHeight="700.0" prefWidth="200.0" style="-fx-background-color: #E3D5CA; -fx-background-radius: 10; -fx-border-radius: 20; -fx-border-width: 5;" BorderPane.alignment="CENTER">
-               <children>
-                  <VBox prefHeight="700.0" prefWidth="193.0" spacing="10.0" styleClass="side-bar">
-                     <children>
-                        <AnchorPane prefHeight="700.0" prefWidth="193.0" scaleZ="1" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="159.0" mnemonicParsing="false" onAction="#mySchedule" prefHeight="34.0" prefWidth="160.0" styleClass="side-bar-button" text="My Schedule" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="130.0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutY="77.0" mnemonicParsing="false" onAction="#dashBoard" prefHeight="18.0" prefWidth="160.0" styleClass="side-bar-button" text="Dashboard" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0" layoutY="238.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" style="-fx-background-color: #1485ff;" styleClass="side-bar-button" text="Customers" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="38.0" layoutY="306.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" styleClass="side-bar-button" text="Records" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="230.0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                              <ImageView fitHeight="50.0" fitWidth="46.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="-7.0">
-                                 <image>
-                                    <Image url="@../images/what.png" />
-                                 </image>
-                              </ImageView>
-                              <Text layoutX="71.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AniWash" AnchorPane.leftAnchor="65.26953125" AnchorPane.rightAnchor="0.73046875" AnchorPane.topAnchor="0.0">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="58.0" layoutY="331.0" mnemonicParsing="false" onAction="#products" prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button" text="Products" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                              <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="68.0" layoutY="341.0" mnemonicParsing="false" onAction="#admin" prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button" text="Admin" textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="330.0">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </VBox>
-               </children>
+        <BorderPane layoutX="-14.0" prefHeight="602.0" prefWidth="890.0" stylesheets="@../css/styles.css"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="14.0"
+                    AnchorPane.topAnchor="0.0">
+            <left>
+                <AnchorPane prefHeight="700.0" prefWidth="200.0"
+                            style="-fx-background-color: #E3D5CA; -fx-background-radius: 10; -fx-border-radius: 20; -fx-border-width: 5;"
+                            BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox prefHeight="700.0" prefWidth="193.0" spacing="10.0" styleClass="side-bar">
+                            <children>
+                                <AnchorPane prefHeight="700.0" prefWidth="193.0" scaleZ="1" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0"
+                                                layoutY="159.0" mnemonicParsing="false" onAction="#mySchedule"
+                                                prefHeight="34.0" prefWidth="160.0" styleClass="side-bar-button"
+                                                text="%myScheduleButton" textAlignment="CENTER"
+                                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                AnchorPane.topAnchor="130.0">
+                                            <font>
+                                                <Font name="System Bold" size="20.0"/>
+                                            </font>
+                                        </Button>
+                                        <Button alignment="CENTER" contentDisplay="BOTTOM" layoutY="77.0"
+                                                mnemonicParsing="false" onAction="#dashBoard" prefHeight="18.0"
+                                                prefWidth="160.0" styleClass="side-bar-button" text="%dashboardButton"
+                                                textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0"
+                                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                                            <font>
+                                                <Font name="System Bold" size="20.0"/>
+                                            </font>
+                                        </Button>
+                                        <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="33.0"
+                                                layoutY="238.0" mnemonicParsing="false" prefHeight="25.0"
+                                                prefWidth="160.0" style="-fx-background-color: #1485ff;"
+                                                styleClass="side-bar-button" text="%customersButton"
+                                                textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0"
+                                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
+                                            <font>
+                                                <Font name="System Bold" size="20.0"/>
+                                            </font>
+                                        </Button>
+                                        <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="38.0"
+                                                layoutY="306.0" mnemonicParsing="false" prefHeight="27.0"
+                                                prefWidth="160.0" styleClass="side-bar-button" text="%recordsButton"
+                                                textAlignment="CENTER" textFill="#282828" AnchorPane.leftAnchor="0.0"
+                                                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="230.0">
+                                            <font>
+                                                <Font name="System Bold" size="20.0"/>
+                                            </font>
+                                        </Button>
+                                        <ImageView fitHeight="50.0" fitWidth="46.0" layoutY="-7.0" pickOnBounds="true"
+                                                   preserveRatio="true" AnchorPane.topAnchor="-7.0">
+                                            <image>
+                                                <Image url="@../images/what.png"/>
+                                            </image>
+                                        </ImageView>
+                                        <Text layoutX="71.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                              text="AniWash" AnchorPane.leftAnchor="65.26953125"
+                                              AnchorPane.rightAnchor="0.73046875" AnchorPane.topAnchor="0.0">
+                                            <font>
+                                                <Font size="24.0"/>
+                                            </font>
+                                        </Text>
+                                        <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="58.0"
+                                                layoutY="331.0" mnemonicParsing="false" onAction="#products"
+                                                prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button"
+                                                text="%productsButton" textAlignment="CENTER" textFill="#282828"
+                                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                AnchorPane.topAnchor="280.0">
+                                            <font>
+                                                <Font name="System Bold" size="20.0"/>
+                                            </font>
+                                        </Button>
+                                        <Button alignment="CENTER" contentDisplay="BOTTOM" layoutX="68.0"
+                                                layoutY="341.0" mnemonicParsing="false" onAction="#admin"
+                                                prefHeight="42.0" prefWidth="104.0" styleClass="side-bar-button"
+                                                text="%adminButton" textAlignment="CENTER" textFill="#282828"
+                                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                AnchorPane.topAnchor="330.0">
+                                            <font>
+                                                <Font name="System Bold" size="20.0"/>
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                            <effect>
+                                <DropShadow/>
+                            </effect>
+                        </VBox>
+                    </children>
                 </AnchorPane>
-         </left>
-         <center>
-            <AnchorPane prefHeight="700.0" prefWidth="903.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ListView fx:id="listView" layoutX="14.0" layoutY="164.0" prefHeight="532.0" prefWidth="1080.0" style="-fx-background-color: #f2f5f9;" styleClass="list-cell" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="5.0" />
-                  <Separator layoutX="14.0" layoutY="51.0" prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                  <Text layoutX="60.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customers">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Text>
-                  <ImageView fitHeight="32.0" fitWidth="71.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/user.png" />
-                     </image>
-                  </ImageView>
-                  <TextField fx:id="searchField" layoutX="799.0" layoutY="70.0" prefHeight="34.0" prefWidth="239.0" promptText="Search" style="-fx-background-radius: 15;">
-                     <effect>
-                        <DropShadow offsetY="5.0">
-                           <color>
-                              <Color red="0.7105262875556946" green="0.7105262875556946" blue="0.7105262875556946" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </TextField>
-                  <Separator layoutX="14.0" layoutY="119.0" prefWidth="200.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                  <Text fx:id="customerCount" fill="#1485ff" layoutX="60.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="76" AnchorPane.leftAnchor="60.0">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8b96a0" layoutX="117.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="customer">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-                  <Separator layoutX="205.0" layoutY="59.0" orientation="VERTICAL" prefHeight="56.0" prefWidth="0.0" />
-                  <Button fx:id="newCustomer" layoutX="1047.0" layoutY="67.0" mnemonicParsing="false" onAction="#newCustomer" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 100; -fx-background-color: #1485ff;" text="+" textFill="WHITE">
-                     <font>
-                        <Font name="Ikonli" size="19.0" />
-                     </font>
-                     <effect>
-                        <DropShadow blurType="ONE_PASS_BOX" height="5.0" radius="2.0" width="5.0" />
-                     </effect>
-                  </Button>
-                  <Text fill="#545454" layoutX="219.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sort by:">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-                  <MenuButton layoutX="294.0" layoutY="67.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="166.0" style="-fx-background-color: #fafafa; -fx-background-radius: 15;" text="Name">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="XD" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                     <effect>
-                        <DropShadow height="9.28" offsetY="5.0" radius="3.405" width="6.34">
-                           <color>
-                              <Color red="0.8026315569877625" green="0.8026315569877625" blue="0.8026315569877625" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </MenuButton>
-                  <Text fill="#2e3032" layoutX="109.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Basic info" AnchorPane.leftAnchor="109.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#2e3032" layoutX="370.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" AnchorPane.leftAnchor="370.0">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#2e3032" layoutX="668.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" AnchorPane.rightAnchor="368.244140625">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#2e3032" layoutX="948.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PostalCode" AnchorPane.rightAnchor="62.4130859375">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Text>
-               </children></AnchorPane>
-         </center>
+            </left>
+            <center>
+                <AnchorPane prefHeight="700.0" prefWidth="903.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <ListView fx:id="listView" layoutX="14.0" layoutY="164.0" prefHeight="532.0" prefWidth="1080.0"
+                                  style="-fx-background-color: #f2f5f9;" styleClass="list-cell"
+                                  AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="5.0"/>
+                        <Separator layoutX="14.0" layoutY="51.0" prefWidth="200.0" AnchorPane.leftAnchor="5.0"
+                                   AnchorPane.rightAnchor="5.0"/>
+                        <Text layoutX="60.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%customersLabel">
+                            <font>
+                                <Font size="21.0"/>
+                            </font>
+                        </Text>
+                        <ImageView fitHeight="32.0" fitWidth="71.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../images/user.png"/>
+                            </image>
+                        </ImageView>
+                        <TextField fx:id="searchField" layoutX="799.0" layoutY="70.0" prefHeight="34.0"
+                                   prefWidth="239.0" promptText="%searchLabel" style="-fx-background-radius: 15;">
+                            <effect>
+                                <DropShadow offsetY="5.0">
+                                    <color>
+                                        <Color red="0.7105262875556946" green="0.7105262875556946"
+                                               blue="0.7105262875556946"/>
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                        </TextField>
+                        <Separator layoutX="14.0" layoutY="119.0" prefWidth="200.0" AnchorPane.leftAnchor="5.0"
+                                   AnchorPane.rightAnchor="5.0"/>
+                        <Text fx:id="customerCount" fill="#1485ff" layoutX="60.0" layoutY="99.0" strokeType="OUTSIDE"
+                              strokeWidth="0.0" text="76" AnchorPane.leftAnchor="60.0">
+                            <font>
+                                <Font name="System Bold" size="30.0"/>
+                            </font>
+                        </Text>
+                        <Text fill="#8b96a0" layoutX="117.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%customersLabel">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Text>
+                        <Separator layoutX="205.0" layoutY="59.0" orientation="VERTICAL" prefHeight="56.0"
+                                   prefWidth="0.0"/>
+                        <Button fx:id="newCustomer" layoutX="1047.0" layoutY="67.0" mnemonicParsing="false"
+                                onAction="#newCustomer" prefHeight="40.0" prefWidth="40.0"
+                                style="-fx-background-radius: 100; -fx-background-color: #1485ff;" text="+"
+                                textFill="WHITE">
+                            <font>
+                                <Font name="Ikonli" size="19.0"/>
+                            </font>
+                            <effect>
+                                <DropShadow blurType="ONE_PASS_BOX" height="5.0" radius="2.0" width="5.0"/>
+                            </effect>
+                        </Button>
+                        <Text fill="#545454" layoutX="219.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%sortBy:Label">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Text>
+                        <MenuButton layoutX="294.0" layoutY="67.0" mnemonicParsing="false" prefHeight="39.0"
+                                    prefWidth="166.0" style="-fx-background-color: #fafafa; -fx-background-radius: 15;"
+                                    text="%nameLabel">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="XD"/>
+                                <MenuItem mnemonicParsing="false" text="Action 2"/>
+                            </items>
+                            <effect>
+                                <DropShadow height="9.28" offsetY="5.0" radius="3.405" width="6.34">
+                                    <color>
+                                        <Color red="0.8026315569877625" green="0.8026315569877625"
+                                               blue="0.8026315569877625"/>
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </MenuButton>
+                        <Text fill="#2e3032" layoutX="109.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%basicInfoLabel" AnchorPane.leftAnchor="109.0">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Text>
+                        <Text fill="#2e3032" layoutX="370.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%phoneNumberLabel" AnchorPane.leftAnchor="370.0">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Text>
+                        <Text fill="#2e3032" layoutX="668.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%addressLabel" AnchorPane.rightAnchor="368.244140625">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Text>
+                        <Text fill="#2e3032" layoutX="948.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="%postalCodeLabel" AnchorPane.rightAnchor="62.4130859375">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Text>
+                    </children>
+                </AnchorPane>
+            </center>
         </BorderPane>
     </children>
     <stylesheets>
-        <URL value="@../css/styles.css" />
+        <URL value="@../css/styles.css"/>
     </stylesheets>
 </AnchorPane>
