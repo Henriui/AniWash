@@ -21,6 +21,7 @@ public class MainApp extends Application {
     private static Biscuit cookie;
     private static Scene scene;
     private static Stage stage;
+    private static Locale locale;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -42,6 +43,7 @@ public class MainApp extends Application {
         cookie = new Biscuit();
         // TODO: Delete this before release.
         // cookie.setBiscuit(e);
+        locale = new Locale.Builder().setLanguage("en").setRegion("US").build(); //Change language here to fr_FR for French or en_US for English
         // TODO: Change this to the login view when project done.
         Parent root = loadParent("mainView");
         scene = new Scene(root);
@@ -69,9 +71,16 @@ public class MainApp extends Application {
         scene.setRoot(loadParent(fxml));
     }
 
+    public static void setLocale(Locale locale) {
+        MainApp.locale = locale;
+    }
+
+    public static Locale getLocale() {
+        return locale;
+    }
+
     private static Parent loadParent(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        Locale locale = new Locale("en", "US"); //Change language here to fr_FR for French or en_US for English
         fxmlLoader.setResources(ResourceBundle.getBundle("aniwash.languages.Resources", locale));
         return fxmlLoader.load();
     }
