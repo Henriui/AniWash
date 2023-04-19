@@ -116,6 +116,7 @@ public class MainViewModel {
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
         appointment.addProduct(product);
+        appointment.setDescription("null");
         appointmentDao.addAppointment(appointment);
         System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " + product.getName() + " " + appointment.getId() + " \n");
         updateCalendar(true);
