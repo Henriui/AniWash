@@ -11,9 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class DashboardController {
-    MainApp mainApp;
     @FXML
     private AnchorPane backGround;
     @FXML
@@ -24,7 +24,7 @@ public class DashboardController {
     private Button scheduleButton;
     @FXML
     private BarChart barChart;
-    private MainViewModel mainViewModel = new MainViewModel();
+    private final MainViewModel mainViewModel = new MainViewModel();
     @FXML
     private Text welcometext;
 
@@ -77,6 +77,16 @@ public class DashboardController {
     @FXML
     private void admin() throws IOException {
         MainApp.setRoot("AdminPanel");
+    }
+
+    @FXML
+    private void changeLanguage() throws IOException {
+        if (MainApp.getLocale().getLanguage().equals("en")) {
+            MainApp.setLocale(new Locale.Builder().setLanguage("fr").setRegion("FR").build());
+        } else {
+            MainApp.setLocale(new Locale.Builder().setLanguage("en").setRegion("US").build());
+        }
+        MainApp.setRoot("mainView");
     }
 }
 
