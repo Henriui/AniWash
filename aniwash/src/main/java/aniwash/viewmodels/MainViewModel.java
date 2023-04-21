@@ -35,6 +35,7 @@ public class MainViewModel {
     private static boolean updateTrigger = false;
 
     public MainViewModel() {
+        // TODO: Test db connection, will be removed later
         DatabaseConnector.openDbConnection("com.aniwash.test");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
@@ -46,7 +47,7 @@ public class MainViewModel {
     public void updateCalendar(boolean isInterAction) {
         if (!updateTrigger && !isInterAction) {
             updateTrigger = true;
-            System.out.println("updateTrigger = true, updateCalendar is skipped");
+            // System.out.println("updateTrigger = true, updateCalendar is skipped");
             return;
         }
         familyCalendarSource.getCalendars().clear();
@@ -176,7 +177,7 @@ public class MainViewModel {
         return calendarEvent -> {
             Calendar calendar = calendarEvent.getEntry().getCalendar();
             if (!calendarEvent.getEntry().getId().startsWith("id")) {
-                System.out.println(LocalTime.now().toString() + " " + calendarEvent.getEntry() + " \n");
+                //System.out.println(LocalTime.now().toString() + " " + calendarEvent.getEntry() + " \n");
                 return;
             }
             IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
@@ -195,7 +196,7 @@ public class MainViewModel {
                 appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
                 appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
                 if (appointmentDao.updateAppointment(appointment)) {
-                    System.out.println(LocalTime.now().toString() + " Appointment date updated");
+                    //   System.out.println(LocalTime.now().toString() + " Appointment date updated");
                 }
             }
         };
