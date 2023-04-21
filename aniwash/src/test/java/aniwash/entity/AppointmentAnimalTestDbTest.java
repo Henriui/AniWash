@@ -22,7 +22,7 @@ public class AppointmentAnimalTestDbTest {
     private static IAppointmentDao aDao;
     private static IAnimalDao anDao;
 
-    private Appointment appointment = new Appointment(ZonedDateTime.parse("2021-12-03T10:15:30+02:00"), ZonedDateTime.parse("2021-12-03T11:15:30+02:00"), "Elmo koiran pesu");
+    private Appointment appointment = new Appointment(ZonedDateTime.parse("2021-12-03T10:15:30+02:00"), ZonedDateTime.parse("2021-12-03T11:15:30+02:00"));
 
     @BeforeAll
     public static void initAll() {
@@ -33,7 +33,7 @@ public class AppointmentAnimalTestDbTest {
 
     @BeforeEach
     public void setUp() {
-        appointment = new Appointment(ZonedDateTime.parse("2021-12-03T10:15:30+02:00"), ZonedDateTime.parse("2021-12-03T11:15:30+02:00"), "Elmo koiran pesu");
+        appointment = new Appointment(ZonedDateTime.parse("2021-12-03T10:15:30+02:00"), ZonedDateTime.parse("2021-12-03T11:15:30+02:00"));
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, "Elmo koiran pesu");
         localAppointment.setId(new LocalizedId("en"));
         appointment.getLocalizations().put("en", localAppointment);
@@ -58,7 +58,7 @@ public class AppointmentAnimalTestDbTest {
     @Order(1)
     public void testCreateMultipleAppointmentsAndAnimals() {
         for (int i = 1; i < 4; i++) {
-            Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
+            Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"));
             LocalizedAppointment localAppointment = new LocalizedAppointment(a, "Elmo koiran pesu" + i);
             localAppointment.setId(new LocalizedId("en"));
             a.getLocalizations().put("en", localAppointment);

@@ -24,6 +24,7 @@ public class AppointmentDao implements IAppointmentDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (em.contains(app)) {
+
             System.out.println("Appointment already exists with id: " + appointment.getId());
             return false;
         }

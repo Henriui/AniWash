@@ -24,6 +24,12 @@ public class Appointment {
     @Column(nullable = false)
     private ZonedDateTime endDate;
 
+    @Column(nullable = false)
+    private long mainProductId;
+
+    @Column(nullable = false)
+    private double totalPrice;
+
     @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
 
@@ -40,13 +46,17 @@ public class Appointment {
     private Set<Product> products = new HashSet<>();
 
     @OneToMany(mappedBy = "appointment", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
+    @MapKey(name = "id")
+    private Set<Discount> discounts = new HashSet<>();
+
+    @OneToMany(mappedBy = "appointment", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
     @MapKey(name = "localizedId.locale")
     private Map<String, LocalizedAppointment> localizations = new HashMap<>();
 
     public Appointment() {
     }
 
-    public Appointment(ZonedDateTime startDate, ZonedDateTime endDate, String description) {
+    public Appointment(ZonedDateTime startDate, ZonedDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -71,14 +81,50 @@ public class Appointment {
         animal.getAppointments().remove(this);
     }
 
+    public void addDiscount(Discount discount) {
+        discounts.add(discount);
+        discount.setAppointment(this);
+    }
+
+    public void removeDiscount(Discount discount) {
+        discounts.remove(discount);
+        discount.setAppointment(null);
+    }
+
     public void addProduct(Product product) {
+        if (products.isEmpty()) {
+            mainProductId = product.getId();
+        }
+
         products.add(product);
         product.getAppointments().add(this);
+
+    }
+
+    public void addProduct(Product product, Discount discount) {
+        if (products.isEmpty()) {
+            mainProductId = product.getId();
+        }
+        addProduct(product);
+        addDiscount(discount);
     }
 
     public void removeProduct(Product product) {
+        if (product.getId() == mainProductId) {
+            mainProductId = products.stream().findFirst().get().getId();
+        }
         products.remove(product);
         product.getAppointments().remove(this);
+    }
+
+    public void removeProduct(Product product, Discount discount) {
+        if (product.getId() == mainProductId) {
+            mainProductId = products.stream().findFirst().get().getId();
+        }
+        products.remove(product);
+        product.getAppointments().remove(this);
+        discounts.remove(discount);
+        discount.setAppointment(null);
     }
 
     public List<Customer> getCustomerList() {
@@ -93,6 +139,10 @@ public class Appointment {
         return new ArrayList<>(getProducts());
     }
 
+    public List<Discount> getDiscountList() {
+        return new ArrayList<>(getDiscounts());
+    }
+
     public Map<String, LocalizedAppointment> getLocalizations() {
         return localizations;
     }
@@ -100,6 +150,30 @@ public class Appointment {
     // Getters and Setters
     public long getId() {
         return id;
+    }
+
+    public long getMainProductId() {
+        return mainProductId;
+    }
+
+    public void setMainProductId(long mainProductId) {
+        this.mainProductId = mainProductId;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getVersions() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public String getDescription(String locale) {
@@ -152,6 +226,22 @@ public class Appointment {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public Discount getDiscount(Product p) {
+        return discounts.stream().filter(d -> d.getProductId() == p.getId()).findFirst().get();
+    }
+
+    public Discount getDiscount(long productId) {
+        return discounts.stream().filter(d -> d.getProductId() == productId).findFirst().get();
+    }
+
+    public Set<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Set<Discount> discounts) {
+        this.discounts = discounts;
     }
 
 }

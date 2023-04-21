@@ -1,15 +1,12 @@
 package aniwash.view.controllers;
 
-import aniwash.entity.Animal;
-import aniwash.entity.Appointment;
-import aniwash.entity.Customer;
-import aniwash.viewmodels.DiscountProduct;
-import aniwash.entity.Product;
-import aniwash.viewmodels.ShoppingCart;
+import aniwash.entity.*;
 import aniwash.view.model.CreatePopUp;
 import aniwash.view.model.CustomListViewCellCustomer;
-import aniwash.viewmodels.MainViewModel;
 import aniwash.view.model.CustomListViewCellExtraProduct;
+import aniwash.viewmodels.DiscountProduct;
+import aniwash.viewmodels.MainViewModel;
+import aniwash.viewmodels.ShoppingCart;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
@@ -27,9 +24,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static aniwash.view.utilities.ControllerUtilities.*;
 
 public class EditAppointmentController extends CreatePopUp {
+
     private final MainViewModel mainViewModel = new MainViewModel();
 
     @FXML
@@ -37,8 +38,7 @@ public class EditAppointmentController extends CreatePopUp {
     @FXML
     private AnchorPane selectedProductPane;
     @FXML
-    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount,
-            extraProductTitle, priceText, setDiscountTitle;
+    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount, extraProductTitle, priceText, setDiscountTitle;
     @FXML
     private TextField setDiscount, searchField;
     @FXML
@@ -91,13 +91,9 @@ public class EditAppointmentController extends CreatePopUp {
         petList.setOnMouseClicked(getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
         getCurrentAppointment();
 
-        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
-                selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
-                extraProducts, priceText));
-        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
-                selectedProductCost, selectedProductCostDiscount, priceText));
-        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
-                newEntry, selectedProduct, priceText));
+        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane, selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn, extraProducts, priceText));
+        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct, selectedProductCost, selectedProductCostDiscount, priceText));
+        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount, newEntry, selectedProduct, priceText));
         extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
         mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
     }
@@ -153,7 +149,14 @@ public class EditAppointmentController extends CreatePopUp {
         Appointment appointment = newEntry.getUserObject();
         Customer customer = appointment.getCustomerList().get(0);
         Animal a = appointment.getAnimalList().get(0);
-        Product p = (Product) newEntry.getCalendar().getUserObject();
+
+        //MainProductId
+        appointment.setMainProductId(((Product) newEntry.getCalendar().getUserObject()).getId());
+        /*TODO: Use this map to get the discount for the product
+            new Discount(long productId, double amount); */
+        Map<Product, Discount> p = new HashMap<>();
+        p.put((Product) newEntry.getCalendar().getUserObject(), new Discount(((Product) newEntry.getCalendar().getUserObject()).getId(), 0));
         mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(), newEntry.getUserObject(), customer, a, p);
     }
+
 }

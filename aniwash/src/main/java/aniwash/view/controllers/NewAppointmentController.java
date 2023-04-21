@@ -1,15 +1,12 @@
 package aniwash.view.controllers;
 
-import aniwash.entity.Animal;
-import aniwash.entity.Appointment;
-import aniwash.entity.Customer;
-import aniwash.viewmodels.DiscountProduct;
-import aniwash.entity.Product;
-import aniwash.viewmodels.ShoppingCart;
+import aniwash.entity.*;
 import aniwash.view.model.CreatePopUp;
 import aniwash.view.model.CustomListViewCellCustomer;
-import aniwash.viewmodels.MainViewModel;
 import aniwash.view.model.CustomListViewCellExtraProduct;
+import aniwash.viewmodels.DiscountProduct;
+import aniwash.viewmodels.MainViewModel;
+import aniwash.viewmodels.ShoppingCart;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import javafx.collections.ObservableList;
@@ -26,6 +23,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static aniwash.view.utilities.ControllerUtilities.*;
 
 public class NewAppointmentController extends CreatePopUp {
@@ -36,8 +36,7 @@ public class NewAppointmentController extends CreatePopUp {
     @FXML
     private AnchorPane selectedProductPane;
     @FXML
-    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount,
-            extraProductTitle, priceText, setDiscountTitle;
+    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount, extraProductTitle, priceText, setDiscountTitle;
     @FXML
     private TextField setDiscount, searchField;
     @FXML
@@ -83,8 +82,7 @@ public class NewAppointmentController extends CreatePopUp {
         extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart));
         personList.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
         // Set the placeholder text for the ListView
-        Background background = new Background(
-                new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(new BackgroundFill(Color.web("#d7d7d7"), CornerRadii.EMPTY, Insets.EMPTY));
         personList.setPlaceholder(new Label("No items") {
             @Override
             protected void updateBounds() {
@@ -101,32 +99,23 @@ public class NewAppointmentController extends CreatePopUp {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null)
                 return;
-            personList.setItems(customerObservableList
-                    .filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
+            personList.setItems(customerObservableList.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
             if (newValue.isEmpty())
                 personList.setItems(null);
         });
-        searchField.setOnKeyPressed(getSearchFieldKeyEvent(mainViewModel, searchField, personList,
-                customerObservableList, petList, services, newEntry));
-        personList.setOnMouseClicked(
-                getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
-        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
-                selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
-                extraProducts, priceText));
-        petList.setOnMouseClicked(
-                getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
-        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
-                selectedProductCost, selectedProductCostDiscount, priceText));
-        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
-                newEntry, selectedProduct, priceText));
+        searchField.setOnKeyPressed(getSearchFieldKeyEvent(mainViewModel, searchField, personList, customerObservableList, petList, services, newEntry));
+        personList.setOnMouseClicked(getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
+        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane, selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn, extraProducts, priceText));
+        petList.setOnMouseClicked(getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
+        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct, selectedProductCost, selectedProductCostDiscount, priceText));
+        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount, newEntry, selectedProduct, priceText));
         extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
         mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
     }
 
     @FXML
     public void save() {
-        if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null
-                || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
             System.out.println("Please select Service and Pet");
             // TODO: Alert popup for missing fields ;)
         } else {
@@ -144,11 +133,14 @@ public class NewAppointmentController extends CreatePopUp {
     public void sendEntry() {
         newEntry.setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
         Customer selectedCustomer = personList.getSelectionModel().getSelectedItem();
-        Animal animal = selectedCustomer.getAnimals()
-                .toArray(new Animal[0])[petList.getSelectionModel().getSelectedIndex() - 1];
-        newEntry.setUserObject(
-                mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
-                        selectedCustomer, animal, (Product) newEntry.getCalendar().getUserObject()));
+        Animal animal = selectedCustomer.getAnimals().toArray(new Animal[0])[petList.getSelectionModel().getSelectedIndex() - 1];
+        /* TODO: Add products and discounts to the appointment with this map
+             new Discount(long productId, double amount);
+         */
+        Map<Product, Discount> productMap = new HashMap<>();
+        productMap.put((Product) newEntry.getCalendar().getUserObject(), new Discount(((Product) newEntry.getCalendar().getUserObject()).getId(), 0));
+
+        newEntry.setUserObject(mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(), selectedCustomer, animal, ((Product) newEntry.getCalendar().getUserObject()).getId(), productMap));
         newEntry.setId("id" + newEntry.getUserObject().getId());
         newEntry.setLocation(null);
         newEntry.setHidden(false);

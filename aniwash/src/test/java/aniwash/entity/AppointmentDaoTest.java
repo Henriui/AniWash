@@ -30,7 +30,7 @@ public class AppointmentDaoTest {
 
     @BeforeEach
     public void setUp() {
-        appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
+        appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate));
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, description);
         localAppointment.setId(new LocalizedId("en"));
         appointment.getLocalizations().put("en", localAppointment);

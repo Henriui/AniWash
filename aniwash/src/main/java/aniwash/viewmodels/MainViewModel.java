@@ -2,10 +2,7 @@ package aniwash.viewmodels;
 
 import aniwash.dao.*;
 import aniwash.datastorage.DatabaseConnector;
-import aniwash.entity.Animal;
-import aniwash.entity.Appointment;
-import aniwash.entity.Customer;
-import aniwash.entity.Product;
+import aniwash.entity.*;
 import aniwash.entity.localization.LocalizedAppointment;
 import aniwash.entity.localization.LocalizedId;
 import aniwash.view.utilities.ControllerUtilities;
@@ -47,7 +44,7 @@ public class MainViewModel {
     public void updateCalendar(boolean isInterAction) {
         if (!updateTrigger && !isInterAction) {
             updateTrigger = true;
-            // System.out.println("updateTrigger = true, updateCalendar is skipped");
+            System.out.println("updateTrigger = true, updateCalendar is skipped");
             return;
         }
         familyCalendarSource.getCalendars().clear();
@@ -101,30 +98,30 @@ public class MainViewModel {
         IAppointmentDao aDao = (AppointmentDao) daoMap.get("appointment");
         List<Appointment> appointmentList = new ArrayList<>(aDao.fetchAppointments());
         for (Appointment appointment : appointmentList) {
-            Entry<Appointment> entry = new Entry<>(appointment.getProductList().get(0).getName("en"), new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
+            Product mainProduct = getMainProduct(appointment.getMainProductId(), appointment.getProductList());
+            assert mainProduct != null;
+            Entry<Appointment> entry = new Entry<>(mainProduct.getName("en"), new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
             entry.setLocation(appointment.getAnimalList().get(0).getName());
-            entry.setCalendar(calendarMap.get(appointment.getProductList().get(0).getName("en")));
+            entry.setCalendar(calendarMap.get(mainProduct.getName("en")));
             entry.setUserObject(appointment);
-/*
-            entry.userObjectProperty().addListener((observable, oldValue, newValue) -> {
-                System.out.println("\n\nuserObjectProperty changed"); //useless atm
-            });
-*/
-/*
-            Calendar<Product> calendar = calendarMap.get(appointment.getProductList().get(0).getName());
-            calendar.addEntry(entry);
-*/
         }
     }
 
-    public Appointment createAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Customer selectedCustomer, Animal animal, Product product) {
+    public Appointment createAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Customer selectedCustomer, Animal animal, long mainProductId, Map<Product, Discount> p) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
-        Appointment appointment = new Appointment(zdtStart, zdtEnd, selectedCustomer.getName());
+        Appointment appointment = new Appointment(zdtStart, zdtEnd);
+        appointment.setMainProductId(mainProductId);
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, "Appointment for " + selectedCustomer.getName());
         localAppointment.setId(new LocalizedId("en"));
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
-        appointment.addProduct(product);
+        // Add all products prices together
+        double totalPrice = 0;
+        for (Product product : p.keySet()) {
+            appointment.addProduct(product, p.get(product));
+            totalPrice += product.getPrice();
+        }
+        appointment.setTotalPrice(totalPrice);
         appointment.getLocalizations().put("en", localAppointment);
         appointmentDao.addAppointment(appointment);
         //System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " + product.getName("en") + " " + appointment.getId() + " \n");
@@ -132,14 +129,20 @@ public class MainViewModel {
         return appointment;
     }
 
-    public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c, Animal a, Product p) {
+    public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c, Animal a, Map<Product, Discount> p) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         appointment.setStartDate(zdtStart);
         appointment.setEndDate(zdtEnd);
-        if (!(appointment.getProducts().contains(p))) {
-            appointment.removeProduct(appointment.getProductList().get(0));
-            appointment.addProduct(p);
+
+        for (Product product : p.keySet()) {
+            if (!(appointment.getProductList().contains(product))) {
+                appointment.addProduct(product, p.get(product));
+            } else if (appointment.getProductList().contains(product)) {
+                appointment.removeProduct(product, appointment.getDiscount(product));
+                appointment.addProduct(product, p.get(product));
+            }
         }
+
         if (!(appointment.getCustomers().contains(c))) {
             appointment.removeCustomer(appointment.getCustomerList().get(0));
             appointment.addCustomer(c);
@@ -166,6 +169,15 @@ public class MainViewModel {
     public Product newestProduct() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
         return productDao.findNewestProduct();
+    }
+
+    private Product getMainProduct(long id, List<Product> productList) {
+        for (Product product : productList) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
+        return null;
     }
 
     public ObservableList<Customer> getPeople() {

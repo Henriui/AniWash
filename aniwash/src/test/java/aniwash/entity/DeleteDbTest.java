@@ -75,7 +75,7 @@ public class DeleteDbTest {
         }
 
         for (int i = 1; i < 9; i++) {
-            Appointment ap = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
+            Appointment ap = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"));
             LocalizedAppointment localAppointment = new LocalizedAppointment(ap, "Elmo koiran pesu" + i);
             localAppointment.setId(new LocalizedId("en"));
             ap.getLocalizations().put("en", localAppointment);

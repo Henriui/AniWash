@@ -42,7 +42,7 @@ public class AppointmentCustomerDbTest {
     public void testCreateMultipleAppointmentsAndProducts() {
         System.out.println("Cutomers: " + cDao.findAllCustomer().size());
         for (int i = 1; i < 4; i++) {
-            Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
+            Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"));
             LocalizedAppointment localAppointment = new LocalizedAppointment(a, "Elmo koiran pesu" + i);
             localAppointment.setId(new LocalizedId("en"));
             a.getLocalizations().put("en", localAppointment);
