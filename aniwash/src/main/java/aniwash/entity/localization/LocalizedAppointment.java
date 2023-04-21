@@ -1,4 +1,4 @@
-package aniwash.localization;
+package aniwash.entity.localization;
 
 import aniwash.entity.Appointment;
 import jakarta.persistence.*;

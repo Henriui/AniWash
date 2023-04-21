@@ -1,6 +1,6 @@
-package aniwash.resources.model;
+package aniwash.view.model;
 
-import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.view.utilities.ControllerUtilities;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
 import javafx.fxml.FXMLLoader;

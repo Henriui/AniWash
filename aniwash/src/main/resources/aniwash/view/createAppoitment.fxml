@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
             prefWidth="1019.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="aniwash.view.NewAppointmentController">
+            fx:controller="aniwash.view.controllers.NewAppointmentController">
     <children>
         <Circle fx:id="one" fill="DODGERBLUE" layoutX="44.0" layoutY="98.0" radius="22.0" stroke="TRANSPARENT"
                 strokeType="INSIDE" style="-fx-fill: #d0d1d4;" AnchorPane.leftAnchor="22.0"/>

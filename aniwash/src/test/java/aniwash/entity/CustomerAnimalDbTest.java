@@ -1,5 +1,6 @@
 package aniwash.entity;
 
+import aniwash.enums.UserType;
 import aniwash.dao.*;
 import org.junit.jupiter.api.*;
 

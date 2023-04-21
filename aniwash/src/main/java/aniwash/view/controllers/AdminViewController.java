@@ -1,4 +1,4 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import aniwash.MainApp;
 import aniwash.dao.EmployeeDao;
 import aniwash.datastorage.BiscuitExeption;
 import aniwash.entity.Employee;
-import aniwash.entity.UserType;
+import aniwash.enums.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
@@ -35,7 +35,7 @@ public class AdminViewController {
     }
     @FXML
     public void back(ActionEvent event) {
-        
+
         try {
             MainApp.setRoot("mainView");
         } catch (IOException e) {
@@ -45,7 +45,7 @@ public class AdminViewController {
     }
     /**
      * Submits the form to create and employee.
-     * 
+     *
      * @author henriui
      */
     @FXML
@@ -74,10 +74,11 @@ public class AdminViewController {
 
     /**
      * Creates an employee when form is submitted.
-     * 
+     *
      * @return true if employee is created, false otherwise.
      * @author henriui
      */
+    @FXML
     private boolean createEmployee() {
         String username = this.username.getText();
         String password = this.password.getText();

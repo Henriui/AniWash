@@ -1,4 +1,4 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -8,8 +8,8 @@ import aniwash.MainApp;
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomListViewCell;
-import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.view.model.CustomListViewCell;
+import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +46,7 @@ public class CustomersController {
      * "Tämä eläin on testi"));
      * customer.addAppointment(new Appointment(ZonedDateTime.now(),
      * (ZonedDateTime.now()), "Cancer Treatment"));
-     * 
+     *
      * }
      * }
      */

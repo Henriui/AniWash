@@ -1,4 +1,4 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.dao.AnimalDao;
 import aniwash.dao.CustomerDao;
@@ -6,7 +6,7 @@ import aniwash.dao.IAnimalDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
-import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.view.utilities.ControllerUtilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

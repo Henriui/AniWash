@@ -1,4 +1,4 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.MainApp;
 import aniwash.viewmodels.MainViewModel;

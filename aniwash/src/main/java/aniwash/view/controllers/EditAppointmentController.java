@@ -1,15 +1,15 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.entity.DiscountProduct;
+import aniwash.viewmodels.DiscountProduct;
 import aniwash.entity.Product;
-import aniwash.entity.ShoppingCart;
-import aniwash.resources.model.CreatePopUp;
-import aniwash.resources.model.CustomListViewCellCustomer;
+import aniwash.viewmodels.ShoppingCart;
+import aniwash.view.model.CreatePopUp;
+import aniwash.view.model.CustomListViewCellCustomer;
 import aniwash.viewmodels.MainViewModel;
-import aniwash.resources.model.CustomListViewCellExtraProduct;
+import aniwash.view.model.CustomListViewCellExtraProduct;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
@@ -27,7 +27,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import static aniwash.resources.utilities.ControllerUtilities.*;
+import static aniwash.view.utilities.ControllerUtilities.*;
 
 public class EditAppointmentController extends CreatePopUp {
     private final MainViewModel mainViewModel = new MainViewModel();
@@ -138,7 +138,7 @@ public class EditAppointmentController extends CreatePopUp {
         personList.setItems(customerObservableList.filtered(person -> person.getName().equals(customer.getName())));
         personList.getSelectionModel().select(customer);
         services.getItems().remove(newEntry.getCalendar().getName());
-        
+
         selectedProduct.setText(newEntry.getCalendar().getName());
         selectedProductCost.setText(((Product) newEntry.getCalendar().getUserObject()).getPrice() + " €");
 

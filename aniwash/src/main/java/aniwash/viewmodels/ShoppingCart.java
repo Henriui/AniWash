@@ -1,4 +1,6 @@
-package aniwash.entity;
+package aniwash.viewmodels;
+
+import aniwash.entity.Product;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,25 +1,21 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.entity.DiscountProduct;
+import aniwash.viewmodels.DiscountProduct;
 import aniwash.entity.Product;
-import aniwash.entity.ShoppingCart;
-import aniwash.resources.model.CreatePopUp;
-import aniwash.resources.model.CustomListViewCellCustomer;
+import aniwash.viewmodels.ShoppingCart;
+import aniwash.view.model.CreatePopUp;
+import aniwash.view.model.CustomListViewCellCustomer;
 import aniwash.viewmodels.MainViewModel;
-import aniwash.resources.model.CustomListViewCellExtraProduct;
-import aniwash.resources.model.CustomListViewCellProduct;
+import aniwash.view.model.CustomListViewCellExtraProduct;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -30,9 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import static aniwash.resources.utilities.ControllerUtilities.*;
-
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
+import static aniwash.view.utilities.ControllerUtilities.*;
 
 public class NewAppointmentController extends CreatePopUp {
 

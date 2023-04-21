@@ -1,4 +1,4 @@
-package aniwash.entity;
+package aniwash.viewmodels;
 
 public class DiscountProduct {
     private double price;

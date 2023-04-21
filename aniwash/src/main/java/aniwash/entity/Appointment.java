@@ -1,6 +1,6 @@
 package aniwash.entity;
 
-import aniwash.localization.LocalizedAppointment;
+import aniwash.entity.localization.LocalizedAppointment;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 

@@ -1,6 +1,6 @@
 package aniwash.entity;
 
-import aniwash.localization.LocalizedProduct;
+import aniwash.entity.localization.LocalizedProduct;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 

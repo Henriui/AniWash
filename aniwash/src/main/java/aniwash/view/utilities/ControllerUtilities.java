@@ -1,9 +1,13 @@
-package aniwash.resources.utilities;
+package aniwash.view.utilities;
 
 import aniwash.MainApp;
-import aniwash.entity.*;
-import aniwash.view.CreateNewAnimalController;
+import aniwash.entity.Appointment;
+import aniwash.entity.Customer;
+import aniwash.entity.Product;
+import aniwash.view.controllers.CreateNewAnimalController;
+import aniwash.viewmodels.DiscountProduct;
 import aniwash.viewmodels.MainViewModel;
+import aniwash.viewmodels.ShoppingCart;
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Entry;
 import javafx.collections.ObservableList;
@@ -28,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class ControllerUtilities {
 
@@ -35,7 +40,11 @@ public class ControllerUtilities {
     public static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
-        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        ResourceBundle bundle;
+        bundle = ResourceBundle.getBundle("aniwash.languages.Resources", MainApp.getLocale());
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        fxmlLoader.setResources(bundle);
+        return fxmlLoader;
     }
 
     public static void newCustomer(Stage stage) throws IOException {

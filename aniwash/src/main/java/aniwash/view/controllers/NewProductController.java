@@ -1,9 +1,9 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.entity.Product;
-import aniwash.localization.LocalizedId;
-import aniwash.localization.LocalizedProduct;
-import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.entity.localization.LocalizedId;
+import aniwash.entity.localization.LocalizedProduct;
+import aniwash.view.utilities.ControllerUtilities;
 import aniwash.viewmodels.MainViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

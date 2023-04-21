@@ -1,7 +1,7 @@
 package aniwash.dao;
 
 import aniwash.entity.Product;
-import aniwash.localization.LocalizedProduct;
+import aniwash.entity.localization.LocalizedProduct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;

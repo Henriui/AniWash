@@ -1,4 +1,4 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.MainApp;
 import aniwash.dao.EmployeeDao;
@@ -45,7 +45,7 @@ public class LoginController {
             if (e.getPassword().equals(password)) {
                 System.out.println("Login successful");
                 try {
-    
+
                     //Check biscuit and set mainView scene.
 
                     MainApp.setBiscuit(e);

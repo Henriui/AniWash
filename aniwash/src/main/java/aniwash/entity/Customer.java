@@ -1,5 +1,6 @@
 package aniwash.entity;
 
+import aniwash.enums.UserType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 

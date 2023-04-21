@@ -1,11 +1,11 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.MainApp;
 import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
-import aniwash.resources.model.CustomListViewCellProduct;
-import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.view.model.CustomListViewCellProduct;
+import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

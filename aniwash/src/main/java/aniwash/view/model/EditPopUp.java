@@ -1,4 +1,4 @@
-package aniwash.resources.model;
+package aniwash.view.model;
 
 public class EditPopUp {
 

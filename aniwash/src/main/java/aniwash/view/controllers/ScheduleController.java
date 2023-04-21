@@ -1,7 +1,7 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.MainApp;
-import aniwash.resources.model.CreatePopUp;
+import aniwash.view.model.CreatePopUp;
 import aniwash.viewmodels.MainViewModel;
 import com.calendarfx.view.CalendarView;
 import javafx.fxml.FXML;

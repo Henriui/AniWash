@@ -1,4 +1,4 @@
-package aniwash.localization;
+package aniwash.entity.localization;
 
 import jakarta.persistence.Embeddable;
 

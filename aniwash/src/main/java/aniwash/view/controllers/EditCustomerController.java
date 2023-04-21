@@ -1,13 +1,13 @@
-package aniwash.view;
+package aniwash.view.controllers;
 
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.resources.model.CustomListViewCellAnimal;
-import aniwash.resources.model.CustomListViewCellAppointment;
-import aniwash.resources.utilities.ControllerUtilities;
+import aniwash.view.model.CustomListViewCellAnimal;
+import aniwash.view.model.CustomListViewCellAppointment;
+import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

@@ -1,4 +1,4 @@
-package aniwash.resources.model;
+package aniwash.view.model;
 
 import aniwash.entity.Product;
 import javafx.geometry.Insets;

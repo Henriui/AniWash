@@ -1,5 +1,6 @@
 package aniwash.entity;
 
+import aniwash.enums.UserType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Where;
@@ -37,11 +38,6 @@ public class Employee {
     @Column(nullable = false)
     private UserType userType;
 
-/*
-    @ManyToMany(mappedBy = "employees")
-    private Set<Appointment> appointments = new HashSet<>();
-*/
-
     public Employee() {
     }
 
@@ -54,17 +50,6 @@ public class Employee {
         this.userType = userType;
     }
 
-/*
-    public void addAppointment(Appointment appointment) {
-        appointments.add(appointment);
-        appointment.getEmployees().add(this);
-    }
-
-    public void removeAppointment(Appointment appointment) {
-        appointments.remove(appointment);
-        appointment.getEmployees().remove(this);
-    }
-*/
     // Getters and Setters
 
     public long getId() {
@@ -122,16 +107,6 @@ public class Employee {
     public void setTitle(String title) {
         this.title = title;
     }
-
-/*
-    public Set<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(Set<Appointment> appointments) {
-        this.appointments = appointments;
-    }
-*/
 
     public UserType getUserType() {
         return userType;

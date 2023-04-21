@@ -1,8 +1,7 @@
-package aniwash.resources.model;
+package aniwash.view.model;
 
-import aniwash.entity.DiscountProduct;
-import aniwash.entity.Product;
-import aniwash.entity.ShoppingCart;
+import aniwash.viewmodels.DiscountProduct;
+import aniwash.viewmodels.ShoppingCart;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

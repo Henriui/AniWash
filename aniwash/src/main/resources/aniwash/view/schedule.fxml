@@ -10,7 +10,7 @@
 <AnchorPane fx:id="backGround" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="700.0" prefWidth="1300.0" style="-fx-background-color: #e7e8eb;"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="aniwash.view.ScheduleController">
+            fx:controller="aniwash.view.controllers.ScheduleController">
     <children>
         <BorderPane layoutX="-14.0" prefHeight="602.0" prefWidth="890.0" stylesheets="@../css/styles.css"
                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="14.0"
