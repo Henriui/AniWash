@@ -8,10 +8,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.function.Consumer;
 
 /*
@@ -32,8 +31,15 @@ public class AppointmentDao implements IAppointmentDao {
         return true;
     }
 
+    /**
+     * Eager fetches all appointments from the database.
+     * Includes all customers, animals and products.
+     *
+     * @return List of appointments.
+     * @author rasmushy
+     */
     @Override
-    public ObservableList<Appointment> findAllAppointments() {
+    public List<Appointment> fetchAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
@@ -43,8 +49,20 @@ public class AppointmentDao implements IAppointmentDao {
         rootEntry.fetch("products", JoinType.INNER);
         cq.select(rootEntry);
         cq.where(cb.equal(rootEntry.get("deleted"), 0));
-        return FXCollections.observableList(em.createQuery(cq).getResultList());
-        //return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
+        return em.createQuery(cq).getResultList();
+    }
+
+    /**
+     * Lazy fetches all appointments from the database.
+     * Customer, animal and product are not fetched, and are lazy initialized.
+     *
+     * @return List of appointments.
+     * @author rasmushy
+     */
+    @Override
+    public List<Appointment> findAllAppointments() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        return em.createQuery("SELECT a FROM Appointment a WHERE a.deleted = 0", Appointment.class).getResultList();
     }
 
     @Override

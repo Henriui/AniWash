@@ -28,9 +28,9 @@ public class AnimalDao implements IAnimalDao {
     }
 
     @Override
-    public List<Animal> findAllAnimal() {
+    public List<Animal> findAllAnimals() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT a FROM Animal a", Animal.class).getResultList();
+        return em.createQuery("SELECT a FROM Animal a WHERE a.deleted = 0", Animal.class).getResultList();
     }
 
     @Override

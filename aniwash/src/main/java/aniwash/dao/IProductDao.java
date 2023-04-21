@@ -8,7 +8,7 @@ import java.util.List;
 public interface IProductDao extends IDao {
     boolean addProduct(Product product);
 
-    List<Product> findAllProduct();
+    List<Product> findAllProducts();
 
     Product findByIdProduct(Long id);
 

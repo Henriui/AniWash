@@ -2,6 +2,7 @@ package aniwash.entity;
 
 import aniwash.dao.AnimalDao;
 import aniwash.dao.IAnimalDao;
+import aniwash.datastorage.DatabaseConnector;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -12,12 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AnimalDaoTest {
 
-    private final IAnimalDao animalDao = new AnimalDao();
+    private static IAnimalDao animalDao;
 
     private final String aNimi = "Haukku";
     private final String aTyyppi = "Koira";
     private final String aRotu = "Sekarotu";
     private final String aDescription = "Värikäs ja iloinen koira, joka rakastaa ihmisiä ja leikkejä - sietäisi laittaa piikille.";
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        animalDao = new AnimalDao();
+    }
 
     private Animal animal = new Animal(aNimi, aTyyppi, aRotu, aDescription);
 
@@ -28,10 +35,17 @@ public class AnimalDaoTest {
 
     @AfterEach
     public void tearDown() {
-        for (Animal animal : animalDao.findAllAnimal()) {
+        for (Animal animal : animalDao.findAllAnimals()) {
             animalDao.deleteByIdAnimal(animal.getId());
         }
     }
+
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
 
     @Test
     @DisplayName("Tässä kaikki testit yhdessä metodissa.")
@@ -41,7 +55,7 @@ public class AnimalDaoTest {
         assertTrue(animalDao.addAnimal(animal), "addCustomer(): Uuden customerin lisääminen ei onnistu.");
         assertFalse(animalDao.addAnimal(animal), "addCustomer(): Saman customerin pystyy lisäämään kahteen kertaan.");
         long id = animal.getId();
-        assertTrue(animalDao.findAllAnimal().size() > 0, "findAllCustomer(): Ei löydy yhtään asiakasta.");
+        assertTrue(animalDao.findAllAnimals().size() > 0, "findAllCustomer(): Ei löydy yhtään asiakasta.");
         // Nyt haun tulee onnistua ja kenttien tulee tietenkin olla asetettu oikein
         assertNotNull((animal = animalDao.findByIdAnimal(id)), "findCustomerById(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(id, animal.getId(), "getId(): animal id tunnus väärin.");
@@ -116,7 +130,7 @@ public class AnimalDaoTest {
     @DisplayName("Etsitään kaikki eläimet - tietokannassa on yksi eläin")
     public void testFindAllAnimal() {
         animalDao.addAnimal(animal);
-        assertTrue(animalDao.findAllAnimal().size() > 0);
+        assertTrue(animalDao.findAllAnimals().size() > 0);
     }
 
     @Test
@@ -124,11 +138,11 @@ public class AnimalDaoTest {
     @DisplayName("Etsitään kaikki eläimet - tietokannassa ei ole eläimiä")
     public void testFindAllAnimal2() {
         animalDao.addAnimal(animal);
-        List<Animal> animals = animalDao.findAllAnimal();
+        List<Animal> animals = animalDao.findAllAnimals();
         for (Animal a : animals) {
             animalDao.deleteByIdAnimal(a.getId());
         }
-        assertEquals(0, animalDao.findAllAnimal().size());
+        assertEquals(0, animalDao.findAllAnimals().size());
     }
 
     @Test

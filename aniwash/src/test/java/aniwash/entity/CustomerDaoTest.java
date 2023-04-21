@@ -2,6 +2,7 @@ package aniwash.entity;
 
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
+import aniwash.datastorage.DatabaseConnector;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("CustomerDAO: tietokantatoimintojen (CRUD) testaus")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerDaoTest {
-    private final ICustomerDao customerDao = new CustomerDao();
 
+    private static ICustomerDao customerDao;
     private final String name = "John";
     private final String phone = "0401234567";
     private final String email = "john.johna@email.com";
@@ -21,6 +22,12 @@ public class CustomerDaoTest {
     private final String postalCode = "12345";
 
     private Customer customer = new Customer(name, phone, email, address, postalCode);
+
+    @BeforeAll
+    public static void beforeAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        customerDao = new CustomerDao();
+    }
 
     @BeforeEach
     public void beforeEach() {
@@ -33,6 +40,13 @@ public class CustomerDaoTest {
             customerDao.deleteByIdCustomer(c.getId());
         }
     }
+
+/*
+    @AfterAll
+    public static void afterAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
 
     /*
     ================================================================================================================
@@ -91,7 +105,7 @@ public class CustomerDaoTest {
     public void testAddCustomer() {
         assertTrue(customerDao.addCustomer(customer), "addCustomer(): Uuden asiakkaan lisääminen ei onnistu.");
         // Nyt haun tulee onnistua ja jokaisen kentän tulee tietenkin olla asetettu oikein
-        assertNotNull((customer = customerDao.findByNameCustomer("John")), "addCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
+        assertNotNull((customer = customerDao.findNewestCustomer()), "addCustomer(): Juuri lisätyn asiakkaan hakeminen ei onnistunut");
         assertEquals(name, customer.getName(), "getName(): Asiakkaan nimi on väärin.");
         assertEquals(email, customer.getEmail(), "getEmail(): Email on väärin.");
     }

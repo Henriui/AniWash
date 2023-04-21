@@ -2,6 +2,9 @@ package aniwash.entity;
 
 import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.entity.localization.LocalizedId;
+import aniwash.entity.localization.LocalizedProduct;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -12,25 +15,41 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProductDaoTest {
 
-    private final IProductDao productDao = new ProductDao();
+    private static IProductDao productDao;
 
     private final String Nimi = "Pesu pieni";
     private final String Description = "Pienen eläimen pesu";
     private final double Price = 30.00;
 
-    private Product product = new Product(Nimi, Description, Price, "basic");
+    private Product product;
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        productDao = new ProductDao();
+    }
 
     @BeforeEach
     public void setUp() {
-        product = new Product(Nimi, Description, Price, "basic");
+        product = new Product(Nimi, Description, Price, "style1");
+        LocalizedProduct localizedProduct = new LocalizedProduct(product, Nimi, Description);
+        localizedProduct.setId(new LocalizedId("en"));
+        product.getLocalizations().put("en", localizedProduct);
     }
 
     @AfterEach
     public void tearDown() {
-        for (Product p : productDao.findAllProduct()) {
+        for (Product p : productDao.findAllProducts()) {
             productDao.deleteByIdProduct(p.getId());
         }
     }
+
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
 
     @Test
     @Order(1)
@@ -74,11 +93,11 @@ public class ProductDaoTest {
     @DisplayName("Fetch all products - one products in database")
     public void testFindAllProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
-        assertTrue(productDao.findAllProduct().size() > 0, "findAllProduct(): No products found.");
-        assertEquals(1, productDao.findAllProduct().size(), "findAllProduct(): Number of products does not match.");
+        assertTrue(productDao.findAllProducts().size() > 0, "findAllProduct(): No products found.");
+        assertEquals(1, productDao.findAllProducts().size(), "findAllProduct(): Number of products does not match.");
         Product product2 = new Product("Pesu iso", "Ison eläimen pesu", 50.00, "basic");
         assertTrue(productDao.addProduct((product2)), "addProduct(): Can't add new product.");
-        assertEquals(2, productDao.findAllProduct().size(), "findAllProduct(): Number of products does not match.");
+        assertEquals(2, productDao.findAllProducts().size(), "findAllProduct(): Number of products does not match.");
 
     }
 
@@ -87,11 +106,11 @@ public class ProductDaoTest {
     @DisplayName("Fetch all products - no products in database")
     public void testFindAllProductEmpty() {
         productDao.addProduct((product));
-        List<Product> products = productDao.findAllProduct();
+        List<Product> products = productDao.findAllProducts();
         for (Product p : products) {
             productDao.deleteByIdProduct(p.getId());
         }
-        assertEquals(0, productDao.findAllProduct().size(), "findAllProduct(): Products found.");
+        assertEquals(0, productDao.findAllProducts().size(), "findAllProduct(): Products found.");
     }
 
     @Test

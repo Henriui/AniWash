@@ -80,7 +80,7 @@ public class MainViewModel {
 
     private void addCalendarsToCalendarSource() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        for (Product product : productDao.findAllProduct()) {
+        for (Product product : productDao.findAllProducts()) {
             Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
             calendar.setStyle(product.getStyle());
             calendar.addEventHandler(getEventHandler());
@@ -99,7 +99,7 @@ public class MainViewModel {
      */
     private void addEntriesToCalendar() {
         IAppointmentDao aDao = (AppointmentDao) daoMap.get("appointment");
-        List<Appointment> appointmentList = new ArrayList<>(aDao.findAllAppointments());
+        List<Appointment> appointmentList = new ArrayList<>(aDao.fetchAppointments());
         for (Appointment appointment : appointmentList) {
             Entry<Appointment> entry = new Entry<>(appointment.getProductList().get(0).getName("en"), new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
             entry.setLocation(appointment.getAnimalList().get(0).getName());

@@ -47,4 +47,16 @@ public class DatabaseConnector {
         }
     }
 
+    public static void flush() {
+        em.flush();
+    }
+
+    public static void clear() {
+        em.clear();
+    }
+
+    public static void refresh(Object o) {
+        em.refresh(o);
+    }
+
 }

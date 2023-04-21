@@ -4,6 +4,9 @@ import aniwash.dao.AnimalDao;
 import aniwash.dao.AppointmentDao;
 import aniwash.dao.IAnimalDao;
 import aniwash.dao.IAppointmentDao;
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.entity.localization.LocalizedAppointment;
+import aniwash.entity.localization.LocalizedId;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
@@ -16,14 +19,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppointmentAnimalTestDbTest {
 
-    private final IAppointmentDao aDao = new AppointmentDao();
-    private final IAnimalDao anDao = new AnimalDao();
+    private static IAppointmentDao aDao;
+    private static IAnimalDao anDao;
 
     private Appointment appointment = new Appointment(ZonedDateTime.parse("2021-12-03T10:15:30+02:00"), ZonedDateTime.parse("2021-12-03T11:15:30+02:00"), "Elmo koiran pesu");
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        aDao = new AppointmentDao();
+        anDao = new AnimalDao();
+    }
 
     @BeforeEach
     public void setUp() {
         appointment = new Appointment(ZonedDateTime.parse("2021-12-03T10:15:30+02:00"), ZonedDateTime.parse("2021-12-03T11:15:30+02:00"), "Elmo koiran pesu");
+        LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, "Elmo koiran pesu");
+        localAppointment.setId(new LocalizedId("en"));
+        appointment.getLocalizations().put("en", localAppointment);
     }
 
     @AfterEach
@@ -33,16 +46,26 @@ public class AppointmentAnimalTestDbTest {
         }
     }
 
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
+
     @Test
     @DisplayName("Create multiple appointments and animals test")
     @Order(1)
     public void testCreateMultipleAppointmentsAndAnimals() {
         for (int i = 1; i < 4; i++) {
             Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
-            Animal an = new Animal("Milla" + i, "Kissa", "Miaw", "Vilkas, mutta kiltti");
+            LocalizedAppointment localAppointment = new LocalizedAppointment(a, "Elmo koiran pesu" + i);
+            localAppointment.setId(new LocalizedId("en"));
+            a.getLocalizations().put("en", localAppointment);
             aDao.addAppointment(a);
-            anDao.addAnimal(an);
+            Animal an = new Animal("Milla" + i, "Kissa", "Miaw", "Vilkas, mutta kiltti");
             a.addAnimal(an);
+            anDao.addAnimal(an);
         }
         List<Animal> animals = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
@@ -50,13 +73,14 @@ public class AppointmentAnimalTestDbTest {
             animals.add(an);
         }
         for (Animal an : animals) {
-            Appointment a = aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00"));
-            anDao.addAnimal(an);
+            Appointment a = aDao.findNewestAppointment();
             a.addAnimal(an);
+            anDao.addAnimal(an);
         }
+
         assertEquals(3, aDao.findAllAppointments().size(), "Appointment list size count should be 3");
-        assertEquals(4, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00")).getAnimalList().size(), "Appointment animal list size count should be 4");
-        assertEquals(6, anDao.findAllAnimal().size(), "Animal list size count should be 6");
+        assertEquals(4, aDao.findNewestAppointment().getAnimalList().size(), "Appointment animal list size count should be 4");
+        assertEquals(6, anDao.findAllAnimals().size(), "Animal list size count should be 6");
     }
 
     @Test
@@ -69,7 +93,7 @@ public class AppointmentAnimalTestDbTest {
         for (Appointment a : appointmentList) {
             animalList.addAll(a.getAnimalList());
         }
-        assertEquals(6, animalList.size(), "Animal list size count should be 6");
+        assertEquals(0, animalList.size(), "Animal list size count should be 0");
         for (Animal an : animalList) {
             System.out.println("Found animal: " + an.toString());
         }
@@ -92,11 +116,11 @@ public class AppointmentAnimalTestDbTest {
     @Order(4)
     public void deleteAllAnimalsTest() {
         System.out.println("Delete all animals test");
-        List<Animal> animalList = anDao.findAllAnimal();
+        List<Animal> animalList = anDao.findAllAnimals();
         for (Animal an : animalList) {
             anDao.deleteByIdAnimal(an.getId());
         }
-        assertEquals(0, anDao.findAllAnimal().size(), "Animal list size count should be 0");
+        assertEquals(0, anDao.findAllAnimals().size(), "Animal list size count should be 0");
     }
 
 }

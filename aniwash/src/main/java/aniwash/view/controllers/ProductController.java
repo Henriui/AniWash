@@ -39,7 +39,7 @@ public class ProductController {
     public void initialize() {
 
         productDao = new ProductDao();
-        AtomicReference<ObservableList<Product>> products = new AtomicReference<>(FXCollections.observableList(productDao.findAllProduct()));
+        AtomicReference<ObservableList<Product>> products = new AtomicReference<>(FXCollections.observableList(productDao.findAllProducts()));
         listView.setItems(products.get());
 
         // Set the cell factory to create custom ListCells
@@ -105,7 +105,7 @@ public class ProductController {
     @FXML
     public void newProduct() throws IOException {
         Stage stage = new Stage();
-        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(productDao.findAllProduct())));
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(productDao.findAllProducts())));
         ControllerUtilities.newProduct(stage);
     }
 

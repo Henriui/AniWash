@@ -28,7 +28,7 @@ public class ProductDao implements IProductDao {
     }
 
     @Override
-    public List<Product> findAllProduct() {
+    public List<Product> findAllProducts() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT p FROM Product p WHERE p.deleted = 0", Product.class).getResultList();
     }

@@ -2,6 +2,9 @@ package aniwash.entity;
 
 import aniwash.dao.AppointmentDao;
 import aniwash.dao.IAppointmentDao;
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.entity.localization.LocalizedAppointment;
+import aniwash.entity.localization.LocalizedId;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
@@ -12,16 +15,25 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppointmentDaoTest {
 
-    private final IAppointmentDao appointmentDao = new AppointmentDao();
+    private static IAppointmentDao appointmentDao;
     private final String startDate = "2021-12-03T10:15:30+02:00";
     private final String endDate = "2021-12-03T11:15:30+02:00";
     private final String description = "Koiran pesu";
 
-    private Appointment appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
+    private Appointment appointment;
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        appointmentDao = new AppointmentDao();
+    }
 
     @BeforeEach
     public void setUp() {
         appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
+        LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, description);
+        localAppointment.setId(new LocalizedId("en"));
+        appointment.getLocalizations().put("en", localAppointment);
     }
 
     @AfterEach
@@ -30,6 +42,13 @@ public class AppointmentDaoTest {
             appointmentDao.deleteByIdAppointment(a.getId());
         }
     }
+
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
 
     @Test
     @Order(1)
