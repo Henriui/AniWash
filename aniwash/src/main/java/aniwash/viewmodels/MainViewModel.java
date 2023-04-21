@@ -71,21 +71,21 @@ public class MainViewModel {
     public void createCalendar(Product product) {
         IProductDao productDao = (ProductDao) daoMap.get("product");
         productDao.addProduct(product);
-        Calendar<Product> calendar = new Calendar<>(product.getLocalizations().get("en").getName(), product);
+        Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
         calendar.setStyle(product.getStyle());
         calendar.addEventHandler(getEventHandler());
-        calendarMap.put(product.getLocalizations().get("en").getName(), calendar);
-        familyCalendarSource.getCalendars().add(calendarMap.get(product.getLocalizations().get("en").getName()));
+        calendarMap.put(product.getName("en"), calendar);
+        familyCalendarSource.getCalendars().add(calendarMap.get(product.getName("en")));
     }
 
     private void addCalendarsToCalendarSource() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
         for (Product product : productDao.findAllProduct()) {
-            Calendar<Product> calendar = new Calendar<>(product.getLocalizations().get("en").getName(), product);
+            Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
             calendar.setStyle(product.getStyle());
             calendar.addEventHandler(getEventHandler());
-            calendarMap.put(product.getLocalizations().get("en").getName(), calendar);
-            familyCalendarSource.getCalendars().add(calendarMap.get(product.getLocalizations().get("en").getName()));
+            calendarMap.put(product.getName("en"), calendar);
+            familyCalendarSource.getCalendars().add(calendarMap.get(product.getName("en")));
         }
 
     }
@@ -101,9 +101,9 @@ public class MainViewModel {
         IAppointmentDao aDao = (AppointmentDao) daoMap.get("appointment");
         List<Appointment> appointmentList = new ArrayList<>(aDao.findAllAppointments());
         for (Appointment appointment : appointmentList) {
-            Entry<Appointment> entry = new Entry<>(appointment.getProductList().get(0).getLocalizations().get("en").getName(), new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
+            Entry<Appointment> entry = new Entry<>(appointment.getProductList().get(0).getName("en"), new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
             entry.setLocation(appointment.getAnimalList().get(0).getName());
-            entry.setCalendar(calendarMap.get(appointment.getProductList().get(0).getLocalizations().get("en").getName()));
+            entry.setCalendar(calendarMap.get(appointment.getProductList().get(0).getName("en")));
             entry.setUserObject(appointment);
 /*
             entry.userObjectProperty().addListener((observable, oldValue, newValue) -> {

@@ -1,7 +1,6 @@
 package aniwash.entity;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class ShoppingCart {
@@ -18,7 +17,7 @@ public class ShoppingCart {
 
     public void editDiscountString(String product, String discount) {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
-            if (entry.getKey().getName() == product) {
+            if (entry.getKey().getName("en") == product) {
                 System.out.println("herehere");
                 productsMap.put(entry.getKey(), discount);
             }
@@ -27,7 +26,7 @@ public class ShoppingCart {
 
     public Product getProduct(String product) {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
-            if (entry.getKey().getName() == product) {
+            if (entry.getKey().getName("en") == product) {
                 System.out.println("herehere");
                 return entry.getKey();
             }
@@ -52,7 +51,7 @@ public class ShoppingCart {
 
     public void removeProductString(String product) {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
-            if (entry.getKey().getName() == product) {
+            if (entry.getKey().getName("en") == product) {
                 productsMap.remove(entry.getKey());
                 break;
             }
@@ -87,7 +86,7 @@ public class ShoppingCart {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
             Product product = entry.getKey();
             String discount = entry.getValue();
-            System.out.println(product.getName() + " " + discount);
+            System.out.println(product.getName("en") + " " + discount);
         }
     }
 
