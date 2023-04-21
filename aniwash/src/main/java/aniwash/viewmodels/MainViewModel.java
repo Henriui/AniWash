@@ -208,7 +208,7 @@ public class MainViewModel {
                 appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
                 appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
                 if (appointmentDao.updateAppointment(appointment)) {
-                    //   System.out.println(LocalTime.now().toString() + " Appointment date updated");
+                    System.out.println(LocalTime.now().toString() + " Appointment date updated");
                 }
             }
         };
