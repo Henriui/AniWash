@@ -126,6 +126,7 @@
                                         <Font size="49.0"/>
                                     </font>
                                 </Text>
+                                <!-- Year cuhtomer -->
                                 <Text layoutX="14.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0"
                                       text="%totalCustomersYearLabel" wrappingWidth="281.9775390625"
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="131.10799980163574">
@@ -141,6 +142,7 @@
                                         <Font size="49.0"/>
                                     </font>
                                 </Text>
+                                <!-- month cuhtomer -->
                                 <Button layoutX="14.0" layoutY="218.0" mnemonicParsing="false" prefHeight="31.0"
                                         prefWidth="126.0"
                                         style="-fx-background-color: #f0f1f6; -fx-background-radius: 30;"
@@ -162,6 +164,7 @@
                                     style="-fx-background-color: #fffdfd; -fx-background-radius: 30;"
                                     AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="35.0">
                             <children>
+                            <!-- Month mony -->
                                 <Text fill="#868686" layoutX="14.0" layoutY="93.0" strokeType="OUTSIDE"
                                       strokeWidth="0.0" text="%incomeThisMonthLabel" wrappingWidth="281.9775390625"
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="74.0">
@@ -175,6 +178,7 @@
                                         <Font size="49.0"/>
                                     </font>
                                 </Text>
+                                <!-- last month mony -->
                                 <Text fill="#868686" layoutX="14.0" layoutY="193.0" strokeType="OUTSIDE"
                                       strokeWidth="0.0" text="%incomeLastMonthLabel" wrappingWidth="281.9775390625"
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="174.0">
