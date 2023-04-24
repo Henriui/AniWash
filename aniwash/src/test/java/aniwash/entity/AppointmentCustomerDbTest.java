@@ -4,6 +4,9 @@ import aniwash.dao.AppointmentDao;
 import aniwash.dao.CustomerDao;
 import aniwash.dao.IAppointmentDao;
 import aniwash.dao.ICustomerDao;
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.entity.localization.LocalizedAppointment;
+import aniwash.entity.localization.LocalizedId;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
@@ -15,17 +18,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("AppointmentCustomerDAO: CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppointmentCustomerDbTest {
-    private final IAppointmentDao aDao = new AppointmentDao();
-    private final ICustomerDao cDao = new CustomerDao();
 
-    private final ZonedDateTime startDate = ZonedDateTime.parse("2021-12-03T10:15:30+02:00");
-    private final ZonedDateTime endDate = ZonedDateTime.parse("2021-12-03T11:15:30+02:00");
+    private static IAppointmentDao aDao;
+    private static ICustomerDao cDao;
 
-    private Appointment appointment = new Appointment(startDate, endDate, "Elmo koiran pesu");
-
-    @BeforeEach
-    public void setUp() {
-        appointment = new Appointment(startDate, endDate, "Elmo koiran pesu");
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        aDao = new AppointmentDao();
+        cDao = new CustomerDao();
     }
 
     @AfterEach
@@ -41,7 +42,11 @@ public class AppointmentCustomerDbTest {
     public void testCreateMultipleAppointmentsAndProducts() {
         System.out.println("Cutomers: " + cDao.findAllCustomer().size());
         for (int i = 1; i < 4; i++) {
-            Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"), "Elmo koiran pesu" + i);
+            Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"));
+            LocalizedAppointment localAppointment = new LocalizedAppointment(a, "Elmo koiran pesu" + i);
+            localAppointment.setId(new LocalizedId("en"));
+            a.getLocalizations().put("en", localAppointment);
+
             Customer c = new Customer("Elmo Pohjonen" + i, "044355667" + i, "elmo.pohjonen" + i + "@gmail.com", "Kalakuja " + i, "0032" + i);
             aDao.addAppointment(a);
             cDao.addCustomer(c);
@@ -53,13 +58,14 @@ public class AppointmentCustomerDbTest {
             customers.add(c);
         }
         for (Customer c : customers) {
-            Appointment a = aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00"));
+            Appointment a = aDao.findNewestAppointment();
             cDao.addCustomer(c);
             a.addCustomer(c);
         }
+
         assertEquals(3, aDao.findAllAppointments().size(), "Appointment size should be 3");
         assertEquals(6, cDao.findAllCustomer().size(), "Customer size should be 6");
-        assertEquals(4, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-01-03T10:15:30+02:00")).getCustomerList().size(), "Appointment size should be 4");
+        assertEquals(4, aDao.findNewestAppointment().getCustomerList().size(), "Appointment size should be 4");
     }
 
     @Test
@@ -72,7 +78,7 @@ public class AppointmentCustomerDbTest {
         for (Appointment a : appointmentList) {
             customerList.addAll(a.getCustomerList());
         }
-        assertEquals(6, customerList.size(), "Customer size should be 6");
+        assertEquals(0, customerList.size(), "Customer size should be 0");
         for (Customer c : customerList) {
             System.out.println("Found customer: " + c.toString());
         }

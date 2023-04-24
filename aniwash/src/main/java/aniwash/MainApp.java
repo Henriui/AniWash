@@ -2,7 +2,7 @@ package aniwash;
 
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
-import aniwash.resources.utilities.LanguageSave;
+import aniwash.view.utilities.LanguageSave;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -112,4 +112,5 @@ public class MainApp extends Application {
         stage.setWidth(width);
         stage.setHeight(height);
     }
+
 }

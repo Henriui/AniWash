@@ -1,13 +1,11 @@
 package aniwash.entity;
 
+import aniwash.entity.localization.LocalizedAppointment;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Where(clause = "DELETED = 0")
@@ -17,6 +15,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Version
+    private int version;
+
     @Column(nullable = false)
     private ZonedDateTime startDate;
 
@@ -24,16 +25,13 @@ public class Appointment {
     private ZonedDateTime endDate;
 
     @Column(nullable = false)
-    private String description;
+    private long mainProductId;
+
+    @Column(nullable = false)
+    private double totalPrice;
 
     @Column(name = "DELETED", nullable = false)
     private int deleted = 0;
-
-/*
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "appointment_employee", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    private Set<Employee> employees = new HashSet<>();
-*/
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "appointment_customer", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "customer_id"))
@@ -47,26 +45,21 @@ public class Appointment {
     @JoinTable(name = "appointment_product", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
+    @OneToMany(mappedBy = "appointment", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
+    @MapKey(name = "id")
+    private Set<Discount> discounts = new HashSet<>();
+
+    @OneToMany(mappedBy = "appointment", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
+    @MapKey(name = "localizedId.locale")
+    private Map<String, LocalizedAppointment> localizations = new HashMap<>();
+
     public Appointment() {
     }
 
-    public Appointment(ZonedDateTime startDate, ZonedDateTime endDate, String description) {
+    public Appointment(ZonedDateTime startDate, ZonedDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.description = description;
     }
-
-/*
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
-        employee.getAppointments().add(this);
-    }
-
-    public void removeEmployee(Employee employee) {
-        employees.remove(employee);
-        employee.getAppointments().remove(this);
-    }
-*/
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
@@ -88,21 +81,51 @@ public class Appointment {
         animal.getAppointments().remove(this);
     }
 
+    public void addDiscount(Discount discount) {
+        discounts.add(discount);
+        discount.setAppointment(this);
+    }
+
+    public void removeDiscount(Discount discount) {
+        discounts.remove(discount);
+        discount.setAppointment(null);
+    }
+
     public void addProduct(Product product) {
+        if (products.isEmpty()) {
+            mainProductId = product.getId();
+        }
+
         products.add(product);
         product.getAppointments().add(this);
+
+    }
+
+    public void addProduct(Product product, Discount discount) {
+        if (products.isEmpty()) {
+            mainProductId = product.getId();
+        }
+        addProduct(product);
+        addDiscount(discount);
     }
 
     public void removeProduct(Product product) {
+        if (product.getId() == mainProductId) {
+            mainProductId = products.stream().findFirst().get().getId();
+        }
         products.remove(product);
         product.getAppointments().remove(this);
     }
 
-/*
-    public List<Employee> getEmployeeList() {
-        return new ArrayList<>(getEmployees());
+    public void removeProduct(Product product, Discount discount) {
+        if (product.getId() == mainProductId) {
+            mainProductId = products.stream().findFirst().get().getId();
+        }
+        products.remove(product);
+        product.getAppointments().remove(this);
+        discounts.remove(discount);
+        discount.setAppointment(null);
     }
-*/
 
     public List<Customer> getCustomerList() {
         return new ArrayList<>(getCustomers());
@@ -116,17 +139,45 @@ public class Appointment {
         return new ArrayList<>(getProducts());
     }
 
+    public List<Discount> getDiscountList() {
+        return new ArrayList<>(getDiscounts());
+    }
+
+    public Map<String, LocalizedAppointment> getLocalizations() {
+        return localizations;
+    }
+
     // Getters and Setters
     public long getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public long getMainProductId() {
+        return mainProductId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMainProductId(long mainProductId) {
+        this.mainProductId = mainProductId;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getVersions() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getDescription(String locale) {
+        return localizations.get(locale).getDescription();
     }
 
     public ZonedDateTime getStartDate() {
@@ -153,16 +204,6 @@ public class Appointment {
         this.deleted = 1;
     }
 
-/*
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
-*/
-
     public Set<Customer> getCustomers() {
         return customers;
     }
@@ -187,15 +228,20 @@ public class Appointment {
         this.products = products;
     }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() +
-               "(id=" + id +
-               ", startDate=" + startDate +
-               ", endDate=" + endDate +
-               ", description='" + description +
-               "', deleted=" + deleted +
-               ")";
+    public Discount getDiscount(Product p) {
+        return discounts.stream().filter(d -> d.getProductId() == p.getId()).findFirst().get();
+    }
+
+    public Discount getDiscount(long productId) {
+        return discounts.stream().filter(d -> d.getProductId() == productId).findFirst().get();
+    }
+
+    public Set<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Set<Discount> discounts) {
+        this.discounts = discounts;
     }
 
 }

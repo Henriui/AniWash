@@ -11,7 +11,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
             prefWidth="1019.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="aniwash.view.EditAppointmentController">
+            fx:controller="aniwash.view.controllers.EditAppointmentController">
     <children>
         <Text fill="WHITE" layoutX="87.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
             <font>

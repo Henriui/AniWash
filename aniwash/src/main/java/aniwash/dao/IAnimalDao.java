@@ -1,14 +1,13 @@
 package aniwash.dao;
 
 import aniwash.entity.Animal;
-import aniwash.entity.Customer;
 
 import java.util.List;
 
 public interface IAnimalDao extends IDao {
     boolean addAnimal(Animal animal);
 
-    List<Animal> findAllAnimal();
+    List<Animal> findAllAnimals();
 
     Animal findByIdAnimal(long id);
 

@@ -24,6 +24,7 @@ public class AppointmentDao implements IAppointmentDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (em.contains(app)) {
+
             System.out.println("Appointment already exists with id: " + appointment.getId());
             return false;
         }
@@ -31,8 +32,15 @@ public class AppointmentDao implements IAppointmentDao {
         return true;
     }
 
+    /**
+     * Eager fetches all appointments from the database.
+     * Includes all customers, animals and products.
+     *
+     * @return List of appointments.
+     * @author rasmushy
+     */
     @Override
-    public List<Appointment> findAllAppointments() {
+    public List<Appointment> fetchAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Appointment> cq = cb.createQuery(Appointment.class);
@@ -43,7 +51,19 @@ public class AppointmentDao implements IAppointmentDao {
         cq.select(rootEntry);
         cq.where(cb.equal(rootEntry.get("deleted"), 0));
         return em.createQuery(cq).getResultList();
-        //return em.createQuery("SELECT a FROM Appointment a", Appointment.class).getResultList();
+    }
+
+    /**
+     * Lazy fetches all appointments from the database.
+     * Customer, animal and product are not fetched, and are lazy initialized.
+     *
+     * @return List of appointments.
+     * @author rasmushy
+     */
+    @Override
+    public List<Appointment> findAllAppointments() {
+        EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
+        return em.createQuery("SELECT a FROM Appointment a WHERE a.deleted = 0", Appointment.class).getResultList();
     }
 
     @Override
