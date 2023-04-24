@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
@@ -115,6 +116,7 @@ public class DashboardController {
         Calendar cal = Calendar.getInstance();
         AppointmentDao apptDao = new AppointmentDao();
         Hashtable<Month, Double> monthlyDataMap = new Hashtable<>();
+        int custMo = 0, custYear = 0;
         Month m;
 
         // Fill in the months that have no data with 0.
@@ -137,6 +139,11 @@ public class DashboardController {
             if (appt.getEndDate().getYear() != cal.get(Calendar.YEAR))
                 break;
             m = appt.getEndDate().getMonth();
+            // if the month is the current month, add to customer count.
+            if (m == Month.of(cal.get(Calendar.MONTH) + 1))
+                custMo++;
+            
+            custYear++;
 
             // go through this years appointments products and calculate monthly revenue.
             for (Product p : appt.getProducts()) {
@@ -171,7 +178,10 @@ public class DashboardController {
         // set text of revenue from this and last month.
         thisMonth.setText(String.valueOf(monthlyDataMap.get(Month.of(mo + 1))));
         
-
         lastMonth.setText(String.valueOf(monthlyDataMap.get(Month.of(mo))));
+
+        // set text of customer counts.
+        customersThisMo.setText(String.valueOf(custMo));
+        customersThisYear.setText(String.valueOf(custYear));
     }
 }
