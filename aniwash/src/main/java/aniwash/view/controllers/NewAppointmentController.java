@@ -151,7 +151,7 @@ public class NewAppointmentController extends CreatePopUp {
 		 * TODO: Add products and discounts to the appointment with this map
 		 * new Discount(long productId, double amount);
 		 */
-
+		System.out.println("ANAALI SAATANA \n\n" + ((Product) newEntry.getCalendar().getUserObject()).getId());
 		newEntry.setUserObject(mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(),
 				newEntry.getEndAsZonedDateTime(), selectedCustomer, animal,
 				((Product) newEntry.getCalendar().getUserObject()).getId(), cart.getProductList()));

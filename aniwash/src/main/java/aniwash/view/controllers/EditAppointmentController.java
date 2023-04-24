@@ -156,14 +156,21 @@ public class EditAppointmentController extends CreatePopUp {
         description.setText(appointment.getDescription("en"));
 
         appointment.getProducts().forEach(product -> {
-            Discount discount = new Discount(product.getId(), 0);
-            cart.addProduct(product, discount);
+            cart.addProduct(product, appointment.getDiscount(product.getId()));
             services.getItems().remove(product.getName("en"));
             if (product != newEntry.getCalendar().getUserObject()) {
                 extraProducts.getItems().add(new DiscountProduct(product.getName("en"), product.getPrice()));
             }
+            else if ( appointment.getDiscount(((Product)newEntry.getCalendar().getUserObject())) != null ){
+                Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
+                double newPrice = mainProduct.getPrice()
+                        - (mainProduct.getPrice() * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                selectedProductCost.strikethroughProperty().set(true);
+                selectedProductCostDiscount.setVisible(true);
+                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");
+            }
         });
-
+        priceText.setText("Price " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
         selectedProductPane.setVisible(true);
     }
 

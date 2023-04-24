@@ -115,9 +115,8 @@ public class MainViewModel {
             Animal animal, long mainProductId, Map<Product, Discount> p) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         Appointment appointment = new Appointment(zdtStart, zdtEnd);
-        appointment.setMainProductId(mainProductId);
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment,
-                "Appointment for " + selectedCustomer.getName());
+        "Appointment for " + selectedCustomer.getName());
         localAppointment.setId(new LocalizedId("en"));
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
@@ -132,6 +131,8 @@ public class MainViewModel {
         appointmentDao.addAppointment(appointment);
         // System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " +
         // product.getName("en") + " " + appointment.getId() + " \n");
+        appointment.setMainProductId(mainProductId);
+        System.out.println("addAppointmentE: \n\n\n\n\n" + " " + zdtStart.toString() + " " + appointment.getMainProductId() + " \n");
         updateCalendar(true);
         return appointment;
     }
