@@ -36,7 +36,7 @@ public class MainViewModel {
 
     public MainViewModel() {
         // TODO: Test db connection, will be removed later
-        DatabaseConnector.openDbConnection("com.aniwash.test");
+        DatabaseConnector.openDbConnection("com.aniwash");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
         daoMap.put("animal", new AnimalDao());
@@ -132,7 +132,8 @@ public class MainViewModel {
         return appointment;
     }
 
-    public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c, Animal a, Map<Product, Discount> p) {
+    public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c, Animal a, Map<Product, Discount> p, 
+            Product mainProduct) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         appointment.setStartDate(zdtStart);
         appointment.setEndDate(zdtEnd);
@@ -156,6 +157,7 @@ public class MainViewModel {
         }
         // Database update for appointment
         appointmentDao.updateAppointment(appointment);
+        System.out.println("updateAppointmentE: " + " "  + " " + appointment.getMainProductId() + " " + appointment.getId() + " \n");
         updateCalendar(true);
     }
 

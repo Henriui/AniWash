@@ -151,17 +151,19 @@ public class EditAppointmentController extends CreatePopUp {
 
         customer.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
         petList.getSelectionModel().select(a.getName());
-        priceText.setText("Price: " + ((Product) newEntry.getCalendar().getUserObject()).getPrice() + " €");
+        priceText.setText("Price: " + (newEntry.getUserObject().getTotalPrice()) + " €");
 
-        // FIXME: Locale
-        description.setText(appointment.getDescription(""));
+        description.setText(appointment.getDescription("en"));
 
         appointment.getProducts().forEach(product -> {
+            Discount discount = new Discount(product.getId(), 0);
+            cart.addProduct(product, discount);
+            services.getItems().remove(product.getName("en"));
             if (product != newEntry.getCalendar().getUserObject()) {
-                extraProducts.getItems().add(new DiscountProduct(product.getName(""), product.getPrice()));
+                extraProducts.getItems().add(new DiscountProduct(product.getName("en"), product.getPrice()));
             }
         });
-
+        
         selectedProductPane.setVisible(true);
     }
 
@@ -173,15 +175,14 @@ public class EditAppointmentController extends CreatePopUp {
 
         // MainProductId
         appointment.setMainProductId(((Product) newEntry.getCalendar().getUserObject()).getId());
+        System.out.println("MainProductId: \n\n\n " + ((Product) newEntry.getCalendar().getUserObject()).getId());
         /*
          * TODO: Use this map to get the discount for the product
          * new Discount(long productId, double amount);
          */
-        Map<Product, Discount> p = new HashMap<>();
-        p.put((Product) newEntry.getCalendar().getUserObject(),
-                new Discount(((Product) newEntry.getCalendar().getUserObject()).getId(), 0));
+       
         mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
-                newEntry.getUserObject(), customer, a, p);
+                newEntry.getUserObject(), customer, a, cart.getProductList(), ((Product)newEntry.getCalendar().getUserObject()));
     }
 
 }

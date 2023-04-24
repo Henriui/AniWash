@@ -151,13 +151,10 @@ public class NewAppointmentController extends CreatePopUp {
 		 * TODO: Add products and discounts to the appointment with this map
 		 * new Discount(long productId, double amount);
 		 */
-		Map<Product, Discount> productMap = new HashMap<>();
-		productMap.put((Product) newEntry.getCalendar().getUserObject(),
-				new Discount(((Product) newEntry.getCalendar().getUserObject()).getId(), 0));
 
 		newEntry.setUserObject(mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(),
 				newEntry.getEndAsZonedDateTime(), selectedCustomer, animal,
-				((Product) newEntry.getCalendar().getUserObject()).getId(), productMap));
+				((Product) newEntry.getCalendar().getUserObject()).getId(), cart.getProductList()));
 		newEntry.setId("id" + newEntry.getUserObject().getId());
 		newEntry.setLocation(null);
 		newEntry.setHidden(false);

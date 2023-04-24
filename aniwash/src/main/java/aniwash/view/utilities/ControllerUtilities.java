@@ -8,6 +8,7 @@ import com.calendarfx.model.Entry;
 import aniwash.MainApp;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
+import aniwash.entity.Discount;
 import aniwash.entity.Product;
 import aniwash.view.controllers.CreateNewAnimalController;
 import aniwash.viewmodels.DiscountProduct;
@@ -37,6 +38,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class ControllerUtilities {
@@ -227,20 +229,23 @@ public class ControllerUtilities {
 
                     // Adds mainProduct to shopping cart with default discount.
 
-                    shoppingCart.addProduct(productCalendar.getUserObject(), "0");
-
+                    Discount basicDiscount = new Discount(productCalendar.getUserObject().getId(), 0.0);
+                    
+                    shoppingCart.addProduct(productCalendar.getUserObject(), basicDiscount);
+                    
                     // Removes selected product from the product listview and sets mainProduct
                     // AnchorPane to visible.
-
+                    
                     services.getItems().remove(services.getSelectionModel().getSelectedItem());
                     services.getSelectionModel().clearSelection();
                     selectedProductPane.setVisible(true);
                 } else {
-
+                    
                     // All other items selected from the product listView are extra products.
                     // Adds selected product to the shopping cart with default discount.
-
-                    shoppingCart.addProduct(productCalendar.getUserObject(), "0");
+                    
+                    Discount extraDiscount = new Discount(productCalendar.getUserObject().getId(), 0.0);
+                    shoppingCart.addProduct(productCalendar.getUserObject(), extraDiscount);
 
                     // Make "adapter" product so discount price can be directly be added to the
                     // product, so view is showing correct price.
@@ -297,7 +302,9 @@ public class ControllerUtilities {
 
                 // Edit discount to the shopping cart.
 
-                shoppingCart.editDiscount(mainProduct, discount);
+                Discount editDiscount = new Discount(mainProduct.getId(), Double.parseDouble(discount));
+
+                shoppingCart.editDiscount(mainProduct, editDiscount);
             }
 
             // If discount is applied and nothing is selected.
@@ -318,6 +325,9 @@ public class ControllerUtilities {
                 DiscountProduct product = extraProducts.getSelectionModel().getSelectedItem();
                 String discount = setDiscount.getText();
                 Product original = shoppingCart.getProduct(product.getName());
+                System.out.println("Original price " + original.getPrice());
+                System.out.println("product product " + product.getPrice());
+                System.out.println("discount price " + discount);
                 double newPrice = original.getPrice() - (original.getPrice() * (0.01 * Double.parseDouble(discount)));
 
                 System.out.println("Please select a product what is in entry" + original.getPrice());
@@ -327,7 +337,9 @@ public class ControllerUtilities {
                 // discounted %.
 
                 extraProducts.getItems().get(extraProducts.getSelectionModel().getSelectedIndex()).setPrice(newPrice);
-                shoppingCart.editDiscountString(product.getName(), discount);
+
+                Discount editDiscount = new Discount(original.getId(), Double.parseDouble(discount));
+                shoppingCart.editDiscountString(product.getName(), editDiscount);
 
                 // Refresh the listview to show new price for discounted product.
 
@@ -339,6 +351,10 @@ public class ControllerUtilities {
             // Set totalPrice text to match all selected product price.
 
             totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            Map <Product, Discount> asd = shoppingCart.getProductList();
+            for (Product product : asd.keySet()) {
+                System.out.println(product.getName("en") + " " + asd.get(product).getDiscount());
+            }
         };
     }
 
