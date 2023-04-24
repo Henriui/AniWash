@@ -13,6 +13,9 @@ public class Animal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Version
+    private int version;
+
     @Column(nullable = false)
     private String name;
 
@@ -21,9 +24,7 @@ public class Animal {
 
     private String type;
     private String breed;
-    private int animalAge;
     private String description;
-
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "customer_animal", joinColumns = {@JoinColumn(name = "animals_id")}, inverseJoinColumns = @JoinColumn(name = "owner_id"))
@@ -35,11 +36,10 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(String name, String type, String breed, int animalAge, String description) {
+    public Animal(String name, String type, String breed, String description) {
         this.name = name;
         this.type = type;
         this.breed = breed;
-        this.animalAge = animalAge;
         this.description = description;
     }
 
@@ -105,14 +105,6 @@ public class Animal {
         this.breed = breed;
     }
 
-    public int getAnimalAge() {
-        return animalAge;
-    }
-
-    public void setAnimalAge(int animalAge) {
-        this.animalAge = animalAge;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -147,9 +139,11 @@ public class Animal {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o)
+            return true;
 
-        if (!(o instanceof Animal)) return false;
+        if (!(o instanceof Animal))
+            return false;
 
         Animal a = (Animal) o;
 
@@ -164,13 +158,13 @@ public class Animal {
     @Override
     public String toString() {
         return getClass().getSimpleName() +
-                "(id=" + id +
-                ", name=" + name +
-                ", type=" + type +
-                ", breed=" + breed +
-                ", animalAge=" + animalAge +
-                ", description=" + description +
-                ", deleted=" + deleted +
-                ")";
+               "(id=" + id +
+               ", name=" + name +
+               ", type=" + type +
+               ", breed=" + breed +
+               ", description=" + description +
+               ", deleted=" + deleted +
+               ")";
     }
+
 }

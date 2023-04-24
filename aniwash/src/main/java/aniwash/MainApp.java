@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static java.lang.System.getProperty;
+
 public class MainApp extends Application {
 
     @FXML
@@ -82,10 +84,6 @@ public class MainApp extends Application {
         return locale;
     }
 
-    public static ResourceBundle getBundle() {
-        return bundle;
-    }
-
     private static Parent loadParent(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
         fxmlLoader.setResources(bundle);
@@ -101,4 +99,5 @@ public class MainApp extends Application {
         stage.setWidth(width);
         stage.setHeight(height);
     }
+
 }

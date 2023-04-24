@@ -1,6 +1,7 @@
 package aniwash.dao;
 
 import aniwash.entity.Product;
+import aniwash.entity.localization.LocalizedProduct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
@@ -27,7 +28,7 @@ public class ProductDao implements IProductDao {
     }
 
     @Override
-    public List<Product> findAllProduct() {
+    public List<Product> findAllProducts() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT p FROM Product p WHERE p.deleted = 0", Product.class).getResultList();
     }
@@ -43,7 +44,8 @@ public class ProductDao implements IProductDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = null;
         try {
-            p = em.createQuery("SELECT p FROM Product p WHERE p.name = :name", Product.class).setParameter("name", name).getSingleResult();
+            LocalizedProduct lp = em.createQuery("SELECT lp FROM LocalizedProduct lp WHERE lp.name = :name", LocalizedProduct.class).setParameter("name", name).getSingleResult();
+            p = lp.getProduct();
         } catch (NoResultException e) {
             System.out.println("No product found with name: " + name);
         }
@@ -59,8 +61,6 @@ public class ProductDao implements IProductDao {
             return false;
         }
         em.getTransaction().begin();
-        p.setName(product.getName());
-        p.setDescription(product.getDescription());
         p.setPrice(product.getPrice());
         p.setStyle(product.getStyle());
         em.getTransaction().commit();

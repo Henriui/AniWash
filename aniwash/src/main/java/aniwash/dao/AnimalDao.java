@@ -28,11 +28,10 @@ public class AnimalDao implements IAnimalDao {
     }
 
     @Override
-    public List<Animal> findAllAnimal() {
+    public List<Animal> findAllAnimals() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT a FROM Animal a", Animal.class).getResultList();
+        return em.createQuery("SELECT a FROM Animal a WHERE a.deleted = 0", Animal.class).getResultList();
     }
-
 
     @Override
     public Animal findByIdAnimal(long id) {
@@ -63,7 +62,6 @@ public class AnimalDao implements IAnimalDao {
         em.getTransaction().begin();
         t.setBreed(animal.getBreed());
         t.setType(animal.getType());
-        t.setAnimalAge(animal.getAnimalAge());
         t.setName(animal.getName());
         t.setDescription(animal.getDescription());
         em.getTransaction().commit();

@@ -27,11 +27,10 @@ public class CustomerDao implements ICustomerDao {
         return true;
     }
 
-
     @Override
     public List<Customer> findAllCustomer() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT c FROM Customer c", Customer.class).getResultList();
+        return em.createQuery("SELECT c FROM Customer c WHERE c.deleted = 0", Customer.class).getResultList();
     }
 
     @Override
@@ -146,4 +145,5 @@ public class CustomerDao implements ICustomerDao {
             throw e;
         }
     }
+
 }

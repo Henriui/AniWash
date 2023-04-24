@@ -2,6 +2,9 @@ package aniwash.entity;
 
 import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.entity.localization.LocalizedId;
+import aniwash.entity.localization.LocalizedProduct;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -11,25 +14,42 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("ProductDAO: CRUD testings")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProductDaoTest {
-    private final IProductDao productDao = new ProductDao();
+
+    private static IProductDao productDao;
 
     private final String Nimi = "Pesu pieni";
     private final String Description = "Pienen eläimen pesu";
     private final double Price = 30.00;
 
-    private Product product = new Product(Nimi, Description, Price, "basic");
+    private Product product;
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        productDao = new ProductDao();
+    }
 
     @BeforeEach
     public void setUp() {
-        product = new Product(Nimi, Description, Price, "basic");
+        product = new Product(Nimi, Description, Price, "style1");
+        LocalizedProduct localizedProduct = new LocalizedProduct(product, Nimi, Description);
+        localizedProduct.setId(new LocalizedId("en"));
+        product.getLocalizations().put("en", localizedProduct);
     }
 
     @AfterEach
     public void tearDown() {
-        for (Product p : productDao.findAllProduct()) {
+        for (Product p : productDao.findAllProducts()) {
             productDao.deleteByIdProduct(p.getId());
         }
     }
+
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
 
     @Test
     @Order(1)
@@ -37,8 +57,8 @@ public class ProductDaoTest {
     public void testAddProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
         assertNotNull(product = productDao.findByIdProduct(product.getId()), "addProduct(): Can't find added product.");
-        assertEquals(product.getName(), Nimi, "addProduct(): Name of added product does not match.");
-        assertEquals(product.getDescription(), Description, "addProduct(): Description of added product does not match.");
+        assertEquals(product.getName("en"), Nimi, "addProduct(): Name of added product does not match.");
+        assertEquals(product.getDescription("en"), Description, "addProduct(): Description of added product does not match.");
         assertEquals(product.getPrice(), Price, "addProduct(): Price of added product does not match.");
     }
 
@@ -64,7 +84,7 @@ public class ProductDaoTest {
     @DisplayName("Fetch added product by name")
     public void testFindByNameProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
-        String name = product.getName();
+        String name = product.getName("en");
         assertNotNull((product = productDao.findByNameProduct(name)), "findProductByName(): Search for added product failed.");
     }
 
@@ -73,11 +93,11 @@ public class ProductDaoTest {
     @DisplayName("Fetch all products - one products in database")
     public void testFindAllProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
-        assertTrue(productDao.findAllProduct().size() > 0, "findAllProduct(): No products found.");
-        assertEquals(1, productDao.findAllProduct().size(), "findAllProduct(): Number of products does not match.");
+        assertTrue(productDao.findAllProducts().size() > 0, "findAllProduct(): No products found.");
+        assertEquals(1, productDao.findAllProducts().size(), "findAllProduct(): Number of products does not match.");
         Product product2 = new Product("Pesu iso", "Ison eläimen pesu", 50.00, "basic");
         assertTrue(productDao.addProduct((product2)), "addProduct(): Can't add new product.");
-        assertEquals(2, productDao.findAllProduct().size(), "findAllProduct(): Number of products does not match.");
+        assertEquals(2, productDao.findAllProducts().size(), "findAllProduct(): Number of products does not match.");
 
     }
 
@@ -86,11 +106,11 @@ public class ProductDaoTest {
     @DisplayName("Fetch all products - no products in database")
     public void testFindAllProductEmpty() {
         productDao.addProduct((product));
-        List<Product> products = productDao.findAllProduct();
+        List<Product> products = productDao.findAllProducts();
         for (Product p : products) {
             productDao.deleteByIdProduct(p.getId());
         }
-        assertEquals(0, productDao.findAllProduct().size(), "findAllProduct(): Products found.");
+        assertEquals(0, productDao.findAllProducts().size(), "findAllProduct(): Products found.");
     }
 
     @Test
@@ -99,9 +119,9 @@ public class ProductDaoTest {
     public void testUpdateNameProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
         String newName = "Pesu iso";
-        product.setName(newName);
+        product.getLocalizations().get("en").setName(newName);
         assertTrue(productDao.updateProduct(product), "updateProduct(): Can't update product.");
-        assertEquals(newName, productDao.findByIdProduct(product.getId()).getName(), "updateProduct(): Name of product not updated.");
+        assertEquals(newName, productDao.findByIdProduct(product.getId()).getName("en"), "updateProduct(): Name of product not updated.");
     }
 
     @Test
@@ -110,9 +130,9 @@ public class ProductDaoTest {
     public void testUpdateDescriptionProduct() {
         assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
         String newDescription = "Ison eläimen pesu";
-        product.setDescription(newDescription);
+        product.getLocalizations().get("en").setDescription(newDescription);
         assertTrue(productDao.updateProduct(product), "updateProduct(): Can't update product.");
-        assertEquals(newDescription, productDao.findByIdProduct(product.getId()).getDescription(), "updateProduct(): Description of product not updated.");
+        assertEquals(newDescription, productDao.findByIdProduct(product.getId()).getDescription("en"), "updateProduct(): Description of product not updated.");
     }
 
     @Test
@@ -169,4 +189,5 @@ public class ProductDaoTest {
         assertNull(productDao.findByIdProduct(999L), "findByIdProduct(): Found non-existing product.");
         assertNull(productDao.findByNameProduct("Non-existing product"), "findByNameProduct(): Found non-existing product.");
     }
+
 }
