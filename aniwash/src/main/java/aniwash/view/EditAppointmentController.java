@@ -63,7 +63,7 @@ public class EditAppointmentController extends CreatePopUp {
     private ShoppingCart cart;
 
     public void initialize() {
-        cart = getShoppingCart();
+        cart = new ShoppingCart();
         newEntry = (Entry<Appointment>) getArg();
         services.getItems().add("                                   Create new service  +");
         petList.getItems().add("                                   Create new pet  +");
@@ -93,11 +93,11 @@ public class EditAppointmentController extends CreatePopUp {
 
         services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
                 selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
-                extraProducts, priceText));
+                extraProducts, priceText, cart));
         deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
-                selectedProductCost, selectedProductCostDiscount, priceText));
+                selectedProductCost, selectedProductCostDiscount, priceText, cart));
         applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
-                newEntry, selectedProduct, priceText));
+                newEntry, selectedProduct, priceText, cart));
         extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
         mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
     }
@@ -145,6 +145,15 @@ public class EditAppointmentController extends CreatePopUp {
         customer.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
         petList.getSelectionModel().select(a.getName());
         priceText.setText("Price: " + ((Product) newEntry.getCalendar().getUserObject()).getPrice() + " €");
+
+        description.setText(appointment.getDescription());
+
+        appointment.getProducts().forEach(product -> {
+            if (product != newEntry.getCalendar().getUserObject()) {
+                extraProducts.getItems().add(new DiscountProduct(product.getName(), product.getPrice()));
+            }
+        });
+
         selectedProductPane.setVisible(true);
     }
 

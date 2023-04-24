@@ -3,36 +3,25 @@ package aniwash.entity;
 public class DiscountProduct {
     private double price;
     private String name;
-    private String description;
-    private String style;
-    public DiscountProduct(String name, String description, double price, String style){
+
+    public DiscountProduct(String name, double price) {
         this.price = price;
         this.name = name;
-        this.description = description;
-        this.style = style;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public String getDescription(){
-        return this.description;
-    }
-
-    public String getStyle(){
-        return this.style;
-    }
-
-    public double getPrice(){
+    public double getPrice() {
         return this.price;
     }
 
-    public void setName(String newName){
+    public void setName(String newName) {
         this.name = newName;
     }
 
-    public void setPrice(double newPrice){
+    public void setPrice(double newPrice) {
         this.price = newPrice;
     }
 }

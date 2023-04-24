@@ -19,7 +19,6 @@ public class ShoppingCart {
     public void editDiscountString(String product, String discount) {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
             if (entry.getKey().getName() == product) {
-                System.out.println("herehere");
                 productsMap.put(entry.getKey(), discount);
             }
         }
@@ -28,10 +27,8 @@ public class ShoppingCart {
     public Product getProduct(String product) {
         for (Map.Entry<Product, String> entry : productsMap.entrySet()) {
             if (entry.getKey().getName() == product) {
-                System.out.println("herehere");
                 return entry.getKey();
             }
-
         }
         return null;
     }
@@ -40,10 +37,6 @@ public class ShoppingCart {
         productsMap.put(product, discount);
     }
 
-    public void removeMainProduct(Product mainProduct) {
-        productsMap.remove(mainProduct);
-        // FOR TESTING PUPROSES getSelectedProducts();
-    }
 
     public Product removeProduct(Product product) {
         productsMap.remove(product);
@@ -89,6 +82,10 @@ public class ShoppingCart {
             String discount = entry.getValue();
             System.out.println(product.getName() + " " + discount);
         }
+    }
+
+    public Map<Product, String> getProductList() {
+        return productsMap;
     }
 
 }

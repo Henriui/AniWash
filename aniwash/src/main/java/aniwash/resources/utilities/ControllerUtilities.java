@@ -1,18 +1,18 @@
 package aniwash.resources.utilities;
 
+import java.io.IOException;
+
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Entry;
+
 import aniwash.MainApp;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
 import aniwash.entity.DiscountProduct;
 import aniwash.entity.Product;
 import aniwash.entity.ShoppingCart;
-import aniwash.resources.model.CustomListViewCellCustomer;
-import aniwash.resources.model.CustomListViewCellExtraProduct;
-import aniwash.resources.model.CustomListViewCellProduct;
 import aniwash.resources.model.MainViewModel;
 import aniwash.view.CreateNewAnimalController;
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,11 +20,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -40,14 +38,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.IOException;
-
 public class ControllerUtilities {
     private static ObservableList<Product> extraProductObservableList;
-    public static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
-        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        fxmlLoader.setResources(MainApp.getBundle());
+        return fxmlLoader;
     }
 
     public static void newCustomer(Stage stage) throws IOException {
@@ -189,7 +186,7 @@ public class ControllerUtilities {
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
             Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
             Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
-            Button deleteSelectedProduct, ListView extraProducts, Text totalPrice) {
+            Button deleteSelectedProduct, ListView extraProducts, Text totalPrice, ShoppingCart shoppingCart) {
         return mouseEvent -> {
             extraProducts.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
             // Set the placeholder text for the ListView
@@ -244,8 +241,7 @@ public class ControllerUtilities {
                     // product, so view is showing correct price.
 
                     DiscountProduct discountProduct = new DiscountProduct(productCalendar.getUserObject().getName(),
-                            productCalendar.getUserObject().getDescription(),
-                            productCalendar.getUserObject().getPrice(), productCalendar.getUserObject().getStyle());
+                            productCalendar.getUserObject().getPrice());
 
                     // Add product to the extra product listView.
 
@@ -271,7 +267,7 @@ public class ControllerUtilities {
 
     public static EventHandler<ActionEvent> applyDiscount(TextField setDiscount,
             ListView<DiscountProduct> extraProducts, Text selectedProductCost,
-            Text selectedProductCostDiscount, Entry newEntry, Text selectedProduct, Text totalPrice) {
+            Text selectedProductCostDiscount, Entry newEntry, Text selectedProduct, Text totalPrice, ShoppingCart shoppingCart) {
         return event -> {
 
             // If discount is applied and MainProduct is selected.
@@ -340,10 +336,6 @@ public class ControllerUtilities {
         };
     }
 
-    public static ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
             ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
             Entry<Appointment> newEntry) {
@@ -397,7 +389,7 @@ public class ControllerUtilities {
 
     public static EventHandler<ActionEvent> deleteMainProduct(ListView<String> services, AnchorPane selectedProductPane,
             Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
-            Text selectedProductCostDiscount, Text totalPrice) {
+            Text selectedProductCostDiscount, Text totalPrice, ShoppingCart shoppingCart) {
         return event -> {
 
             // Add MainProduct back to the product ListView and hide the MainProduct
@@ -409,7 +401,7 @@ public class ControllerUtilities {
 
             // Remove product from the shopping cart.
 
-            shoppingCart.removeMainProduct((Product) newEntry.getCalendar().getUserObject());
+            shoppingCart.removeProduct((Product) newEntry.getCalendar().getUserObject());
 
             // Set strike text to false and hide the discount text.
 
@@ -418,7 +410,7 @@ public class ControllerUtilities {
 
             // Set Calendar to null.
 
-            //newEntry.setCalendar(null);
+            // newEntry.setCalendar(null);
 
             // Set totalPrice text to match all selected product price.
 
