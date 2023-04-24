@@ -1,14 +1,7 @@
 package aniwash.resources.utilities;
 
 import aniwash.MainApp;
-import aniwash.entity.Appointment;
-import aniwash.entity.Customer;
-import aniwash.entity.DiscountProduct;
-import aniwash.entity.Product;
-import aniwash.entity.ShoppingCart;
-import aniwash.resources.model.CustomListViewCellCustomer;
-import aniwash.resources.model.CustomListViewCellExtraProduct;
-import aniwash.resources.model.CustomListViewCellProduct;
+import aniwash.entity.*;
 import aniwash.resources.model.MainViewModel;
 import aniwash.view.CreateNewAnimalController;
 import com.calendarfx.model.Calendar;
@@ -19,14 +12,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -47,7 +34,9 @@ public class ControllerUtilities {
     public static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
-        return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
+        fxmlLoader.setResources(MainApp.getBundle());
+        return fxmlLoader;
     }
 
     public static void newCustomer(Stage stage) throws IOException {
@@ -65,7 +54,7 @@ public class ControllerUtilities {
         final FXMLLoader loader;
         final Scene scene;
         loader = loadFXML("editCustomerView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -88,7 +77,7 @@ public class ControllerUtilities {
         final FXMLLoader loader;
         final Scene scene;
         loader = loadFXML("newProductView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Product");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -115,7 +104,7 @@ public class ControllerUtilities {
     }
 
     public static void updateAnimals(Customer c, ListView<String> petList, ListView<Customer> personList,
-            ObservableList<Customer> customerObservableList) {
+                                     ObservableList<Customer> customerObservableList) {
         personList.setItems(customerObservableList.filtered(customer -> customer.getName().contains(c.getName())));
         petList.getItems().clear();
         petList.getItems().add("                                   Create new pet  +");
@@ -123,8 +112,8 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<WindowEvent> getCustomerEvent(MainViewModel mainViewModel,
-            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
-            Entry<Appointment> newEntry) {
+                                                             ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+                                                             Entry<Appointment> newEntry) {
         return customerEvent -> {
             Customer c = mainViewModel.newestCustomer();
             customerObservableList.add(c);
@@ -136,12 +125,12 @@ public class ControllerUtilities {
                     customerObservableList);
             petList.getSelectionModel().select(newAnimal);
             newEntry.setLocation(personList.getSelectionModel().getSelectedItem().getName()); // TODO: muuta käyttöä
-                                                                                              // titlelle
+            // titlelle
         };
     }
 
     public static EventHandler<WindowEvent> getProductEvent(MainViewModel mainViewModel, ListView<String> services,
-            Entry<Appointment> newEntry) {
+                                                            Entry<Appointment> newEntry) {
         return productEvent -> {
             services.getItems().clear();
             mainViewModel.getCalendarMap().values().forEach(service -> services.getItems().addAll(service.getName()));
@@ -156,8 +145,8 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<KeyEvent> getSearchFieldKeyEvent(MainViewModel mainViewModel, TextField searchField,
-            ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList,
-            ListView<String> services, Entry<Appointment> newEntry) {
+                                                                ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList,
+                                                                ListView<String> services, Entry<Appointment> newEntry) {
         return event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (searchField.getText().isEmpty() || personList.getItems().isEmpty()) {
@@ -187,9 +176,9 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
-            Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
-            Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
-            Button deleteSelectedProduct, ListView extraProducts, Text totalPrice) {
+                                                                Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
+                                                                Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
+                                                                Button deleteSelectedProduct, ListView extraProducts, Text totalPrice) {
         return mouseEvent -> {
             extraProducts.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
             // Set the placeholder text for the ListView
@@ -209,7 +198,7 @@ public class ControllerUtilities {
 
                 // Main product
 
-                if (selectedProductPane.isVisible() == false) {
+                if (!selectedProductPane.isVisible()) {
 
                     // Set title and set petList to enabled
 
@@ -261,17 +250,17 @@ public class ControllerUtilities {
 
                 }
             }
-            System.out.println("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            System.out.println("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
 
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
     }
 
     public static EventHandler<ActionEvent> applyDiscount(TextField setDiscount,
-            ListView<DiscountProduct> extraProducts, Text selectedProductCost,
-            Text selectedProductCostDiscount, Entry newEntry, Text selectedProduct, Text totalPrice) {
+                                                          ListView<DiscountProduct> extraProducts, Text selectedProductCost,
+                                                          Text selectedProductCostDiscount, Entry newEntry, Text selectedProduct, Text totalPrice) {
         return event -> {
 
             // If discount is applied and MainProduct is selected.
@@ -332,11 +321,11 @@ public class ControllerUtilities {
                 extraProducts.refresh(); // Should update all the cells in the ListView
 
             }
-            System.out.println("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            System.out.println("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
 
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
     }
 
@@ -345,8 +334,8 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
-            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
-            Entry<Appointment> newEntry) {
+                                                               ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+                                                               Entry<Appointment> newEntry) {
         return mouseEvent -> {
             if (petList.getSelectionModel().getSelectedItem().contains("+")) {
                 try {
@@ -385,7 +374,7 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<? super MouseEvent> selectMainProduct(Text selectedProduct,
-            ListView<DiscountProduct> extraProducts) {
+                                                                     ListView<DiscountProduct> extraProducts) {
         return event -> {
 
             // Set MainProduct text light green, to showcase that it has been selected.
@@ -396,8 +385,8 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<ActionEvent> deleteMainProduct(ListView<String> services, AnchorPane selectedProductPane,
-            Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
-            Text selectedProductCostDiscount, Text totalPrice) {
+                                                              Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
+                                                              Text selectedProductCostDiscount, Text totalPrice) {
         return event -> {
 
             // Add MainProduct back to the product ListView and hide the MainProduct
@@ -422,14 +411,14 @@ public class ControllerUtilities {
 
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
 
     }
 
     public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel,
-            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
-            Entry<Appointment> newEntry, ListView<String> services) {
+                                                               ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+                                                               Entry<Appointment> newEntry, ListView<String> services) {
         return mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
                 try {
