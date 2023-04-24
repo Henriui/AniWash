@@ -1,5 +1,6 @@
 package aniwash.entity;
 
+import aniwash.enums.UserType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Where;
 
@@ -15,6 +16,9 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Version
+    private int version;
 
     @Column(nullable = false)
     private String name;
@@ -186,4 +190,5 @@ public class Customer {
                ", deleted=" + deleted +
                ")";
     }
+
 }

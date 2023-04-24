@@ -1,7 +1,7 @@
 package aniwash.datastorage;
 
 import aniwash.entity.Employee;
-import aniwash.entity.UserType;
+import aniwash.enums.UserType;
 
 // Biscuit class is like cookies in html. It stores the user's information
 // so that it can be accessed from other classes.
@@ -9,7 +9,7 @@ import aniwash.entity.UserType;
 /**
  * Biscuit class is like cookies in html. It stores the user's information
  * so that it can be accessed from other classes.
- * 
+ *
  * @author henriui
  * @version 1.0
  * @since 2020-11-20
@@ -25,7 +25,7 @@ public class Biscuit {
 
     /**
      * Set the logged in user and update last activity time.
-     * 
+     *
      * @author henriui
      * @param employee Employee object to set as logged in user.
      */
@@ -37,7 +37,7 @@ public class Biscuit {
 
     /**
      * Check if there is a logged in user.
-     * 
+     *
      * @return True if there is a logged in user, false otherwise.
      * @author henriui
      */
@@ -48,7 +48,7 @@ public class Biscuit {
 
     /**
      * Update last activity time.
-     * 
+     *
      * @author henriui
      */
     public void updateLastActivity() {
@@ -58,7 +58,7 @@ public class Biscuit {
 
     /**
      * Check if the user has been inactive for more than 30 minutes.
-     * 
+     *
      * @author henriui
      * @return True if the user has been inactive for more than 30 minutes, false
      *         otherwise.
@@ -74,7 +74,7 @@ public class Biscuit {
 
     /**
      * Get the logged in user.
-     * 
+     *
      * @return Logged in user object.
      * @throws BiscuitExeption If there is no logged in user.
      * @author henriui
@@ -91,7 +91,7 @@ public class Biscuit {
 
     /**
      * Get the name of the logged in user.
-     * 
+     *
      * @return Name of the logged in user.
      * @throws BiscuitExeption If there is no logged in user.
      * @author henriui

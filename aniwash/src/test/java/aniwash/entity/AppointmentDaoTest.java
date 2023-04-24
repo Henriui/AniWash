@@ -2,6 +2,9 @@ package aniwash.entity;
 
 import aniwash.dao.AppointmentDao;
 import aniwash.dao.IAppointmentDao;
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.entity.localization.LocalizedAppointment;
+import aniwash.entity.localization.LocalizedId;
 import org.junit.jupiter.api.*;
 
 import java.time.ZonedDateTime;
@@ -12,16 +15,25 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppointmentDaoTest {
 
-    private final IAppointmentDao appointmentDao = new AppointmentDao();
+    private static IAppointmentDao appointmentDao;
     private final String startDate = "2021-12-03T10:15:30+02:00";
     private final String endDate = "2021-12-03T11:15:30+02:00";
     private final String description = "Koiran pesu";
 
-    private Appointment appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
+    private Appointment appointment;
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        appointmentDao = new AppointmentDao();
+    }
 
     @BeforeEach
     public void setUp() {
-        appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate), description);
+        appointment = new Appointment(ZonedDateTime.parse(startDate), ZonedDateTime.parse(endDate));
+        LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, description);
+        localAppointment.setId(new LocalizedId("en"));
+        appointment.getLocalizations().put("en", localAppointment);
     }
 
     @AfterEach
@@ -31,6 +43,13 @@ public class AppointmentDaoTest {
         }
     }
 
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
+
     @Test
     @Order(1)
     @DisplayName("Add new appointment")
@@ -38,7 +57,7 @@ public class AppointmentDaoTest {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         assertNotNull(appointment = appointmentDao.findByIdAppointment(appointment.getId()), "addAppointment(): Cant find added appointment.");
         assertEquals(appointment.getStartDate().toString(), startDate, "addAppointment(): Date of added appointment does not match.");
-        assertEquals(appointment.getDescription(), description, "addAppointment(): Description of added appointment does not match.");
+        assertEquals(appointment.getDescription("en"), description, "addAppointment(): Description of added appointment does not match.");
     }
 
     @Test
@@ -57,7 +76,7 @@ public class AppointmentDaoTest {
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
         assertNotNull(appointment, "findByIdAppointment(): Cant find added appointment.");
         assertEquals(appointment.getStartDate(), ZonedDateTime.parse(startDate), "findByIdAppointment(): Date of found appointment does not match added.");
-        assertEquals(appointment.getDescription(), description, "findByIdAppointment(): Description of found appointment does not match added.");
+        assertEquals(appointment.getDescription("en"), description, "findByIdAppointment(): Description of found appointment does not match added.");
     }
 
     @Test
@@ -68,7 +87,7 @@ public class AppointmentDaoTest {
         appointment = appointmentDao.findByStartDateAppointment(ZonedDateTime.parse(startDate));
         assertNotNull(appointment, "findByDateAppointment(): Cant find added appointment.");
         assertEquals(appointment.getStartDate(), ZonedDateTime.parse(startDate), "findByDateAppointment(): Date of found appointment does not match added.");
-        assertEquals(appointment.getDescription(), description, "findByDateAppointment(): Description of found appointment does not match added.");
+        assertEquals(appointment.getDescription("en"), description, "findByDateAppointment(): Description of found appointment does not match added.");
     }
 
     @Test
@@ -87,10 +106,10 @@ public class AppointmentDaoTest {
         assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
         appointment.setStartDate(ZonedDateTime.parse("2011-11-09T10:15:30+02:00"));
-        appointment.setDescription("Koiran pesu ja leikkaus");
+        appointment.getLocalizations().get("en").setDescription("Koiran pesu ja leikkaus");
         assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
         appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        assertEquals(appointment.getDescription(), "Koiran pesu ja leikkaus", "updateAppointment(): Description of updated appointment does not match.");
+        assertEquals(appointment.getDescription("en"), "Koiran pesu ja leikkaus", "updateAppointment(): Description of updated appointment does not match.");
         assertEquals(appointment.getStartDate(), ZonedDateTime.parse("2011-11-09T10:15:30+02:00"), "updateAppointment(): Date of updated appointment does not match.");
     }
 
@@ -156,4 +175,5 @@ public class AppointmentDaoTest {
         assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
         assertEquals(1, appointmentDao.findByIdAppointment(appointment.getId()).isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
     }
+
 }

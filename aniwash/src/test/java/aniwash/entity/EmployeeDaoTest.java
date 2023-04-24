@@ -1,5 +1,7 @@
 package aniwash.entity;
 
+import aniwash.datastorage.DatabaseConnector;
+import aniwash.enums.UserType;
 import aniwash.dao.EmployeeDao;
 import aniwash.dao.IEmployeeDao;
 import org.junit.jupiter.api.*;
@@ -10,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EmployeeDaoTest {
 
-    private final IEmployeeDao eDao = new EmployeeDao();
+    private static IEmployeeDao eDao;
 
     private final String username = "ani";
     private final String password = "password";
@@ -19,6 +21,12 @@ public class EmployeeDaoTest {
     private final String title = "Manager";
 
     private Employee employee = new Employee(username, password, name, email, title, UserType.EMPLOYEE);
+
+    @BeforeAll
+    public static void initAll() {
+        DatabaseConnector.openDbConnection("com.aniwash.test");
+        eDao = new EmployeeDao();
+    }
 
     @BeforeEach
     public void init() {
@@ -31,6 +39,13 @@ public class EmployeeDaoTest {
             eDao.deleteByIdEmployee(e.getId());
         }
     }
+
+/*
+    @AfterAll
+    public static void tearDownAll() {
+        DatabaseConnector.closeDbConnection();
+    }
+*/
 
     @Test
     @DisplayName("Create employee test")
