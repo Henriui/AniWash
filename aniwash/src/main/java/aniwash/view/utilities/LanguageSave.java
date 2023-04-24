@@ -1,4 +1,4 @@
-package aniwash.resources.utilities;
+package aniwash.view.utilities;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
