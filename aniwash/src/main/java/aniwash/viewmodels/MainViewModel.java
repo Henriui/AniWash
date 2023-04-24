@@ -155,6 +155,7 @@ public class MainViewModel {
             appointment.removeAnimal(appointment.getAnimalList().get(0));
             appointment.addAnimal(a);
         }
+        appointment.setMainProductId(mainProduct.getId());
         // Database update for appointment
         appointmentDao.updateAppointment(appointment);
         System.out.println("updateAppointmentE: " + " "  + " " + appointment.getMainProductId() + " " + appointment.getId() + " \n");
