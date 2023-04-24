@@ -11,8 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.Month;
@@ -20,6 +22,8 @@ import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+
+import javax.swing.event.ChangeListener;
 
 public class DashboardController {
     @FXML
@@ -31,7 +35,7 @@ public class DashboardController {
     @FXML
     private Button scheduleButton;
     @FXML
-    private BarChart<Month, Double> barChart;
+    private BarChart<String, Double> barChart;
     @FXML
     private Text thisMonth;
     @FXML
@@ -125,7 +129,7 @@ public class DashboardController {
         }
 
         // Create series for monthly data
-        XYChart.Series<Month, Double> monthlyData = new XYChart.Series<Month, Double>();
+        XYChart.Series<String, Double> monthlyData = new XYChart.Series<String, Double>();
 
         // Set chart name to current year
         monthlyData.setName(String.valueOf(cal.get(Calendar.YEAR)));
@@ -163,7 +167,7 @@ public class DashboardController {
         // Add data to series in order of months.
         for (int i = 0; i < 12; i++) {
             m = Month.of(i + 1);
-            monthlyData.getData().add(new XYChart.Data(m.toString(), monthlyDataMap.get(m)));
+            monthlyData.getData().add(new XYChart.Data<>(m.toString(), monthlyDataMap.get(m)));
         }
 
         // print out the data for debugging.
@@ -173,6 +177,25 @@ public class DashboardController {
 
         // Add series to chart.
         barChart.getData().add(monthlyData);
+
+        // Add tooltip to every node in the chart.
+        for(XYChart.Series<String, Double> s : barChart.getData()){
+            for (XYChart.Data<String, Double> data : s.getData()) {
+            // If value is greater than 0, add a label to the bar.
+            Tooltip tt = new Tooltip(data.getYValue().toString());
+            tt.setShowDelay(Duration.ZERO);
+            tt.setHideDelay(Duration.ZERO);
+                Tooltip.install(data.getNode(), tt);
+
+                //Adding class on hover
+                data.getNode().setOnMouseEntered(event -> data.getNode().getStyleClass().add("onHover"));
+
+                //Removing class on exit
+                data.getNode().setOnMouseExited(event -> data.getNode().getStyleClass().remove("onHover"));
+ 
+        }
+    }
+
         int mo = cal.get(Calendar.MONTH);
         // set text of revenue from this and last month.
         thisMonth.setText(String.valueOf(monthlyDataMap.get(Month.of(mo + 1))));
