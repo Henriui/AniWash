@@ -39,7 +39,6 @@ public class ShoppingCart {
         productsMap.put(product, discount);
     }
 
-
     public Product removeProduct(Product product) {
         productsMap.remove(product);
         return product;

@@ -189,7 +189,6 @@ public class ControllerUtilities {
         };
     }
 
-
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
             Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
             Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
@@ -230,20 +229,20 @@ public class ControllerUtilities {
                     // Adds mainProduct to shopping cart with default discount.
 
                     Discount basicDiscount = new Discount(productCalendar.getUserObject().getId(), 0.0);
-                    
+
                     shoppingCart.addProduct(productCalendar.getUserObject(), basicDiscount);
-                    
+
                     // Removes selected product from the product listview and sets mainProduct
                     // AnchorPane to visible.
-                    
+
                     services.getItems().remove(services.getSelectionModel().getSelectedItem());
                     services.getSelectionModel().clearSelection();
                     selectedProductPane.setVisible(true);
                 } else {
-                    
+
                     // All other items selected from the product listView are extra products.
                     // Adds selected product to the shopping cart with default discount.
-                    
+
                     Discount extraDiscount = new Discount(productCalendar.getUserObject().getId(), 0.0);
                     shoppingCart.addProduct(productCalendar.getUserObject(), extraDiscount);
 
@@ -351,7 +350,7 @@ public class ControllerUtilities {
             // Set totalPrice text to match all selected product price.
 
             totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
-            Map <Product, Discount> asd = shoppingCart.getProductList();
+            Map<Product, Discount> asd = shoppingCart.getProductList();
             for (Product product : asd.keySet()) {
                 System.out.println(product.getName("en") + " " + asd.get(product).getDiscount());
             }

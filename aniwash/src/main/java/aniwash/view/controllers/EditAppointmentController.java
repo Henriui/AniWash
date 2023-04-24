@@ -163,7 +163,7 @@ public class EditAppointmentController extends CreatePopUp {
                 extraProducts.getItems().add(new DiscountProduct(product.getName("en"), product.getPrice()));
             }
         });
-        
+
         selectedProductPane.setVisible(true);
     }
 
@@ -180,9 +180,10 @@ public class EditAppointmentController extends CreatePopUp {
          * TODO: Use this map to get the discount for the product
          * new Discount(long productId, double amount);
          */
-       
+
         mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
-                newEntry.getUserObject(), customer, a, cart.getProductList(), ((Product)newEntry.getCalendar().getUserObject()));
+                newEntry.getUserObject(), customer, a, cart.getProductList(),
+                ((Product) newEntry.getCalendar().getUserObject()));
     }
 
 }
