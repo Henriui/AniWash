@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
