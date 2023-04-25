@@ -1,5 +1,7 @@
 package aniwash.view.model;
 
+import aniwash.entity.Appointment;
+import aniwash.entity.Product;
 import aniwash.viewmodels.DiscountProduct;
 import aniwash.viewmodels.ShoppingCart;
 import javafx.geometry.Insets;
@@ -18,12 +20,16 @@ public class CustomListViewCellExtraProduct extends ListCell<DiscountProduct> {
     private ListView listView;
     private Text totalPrice;
     private ShoppingCart cart;
+    private Appointment appoitment;
 
-    public CustomListViewCellExtraProduct(ListView listView, Text totalPrice, ShoppingCart cart) {
+    public CustomListViewCellExtraProduct(ListView listView, Text totalPrice, ShoppingCart cart,
+            Appointment appoitment) {
         super();
         this.listView = listView;
         this.totalPrice = totalPrice;
         this.cart = cart;
+        this.appoitment = appoitment;
+
         // Create the customer info HBox once
 
         Label nameLabel = new Label();
@@ -78,7 +84,10 @@ public class CustomListViewCellExtraProduct extends ListCell<DiscountProduct> {
             deleteButton.setOnAction(event -> {
                 getListView().getItems().remove(product);
                 listView.getItems().add(product.getName());
-                System.out.println("NYT POISTETAAN " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
+                if (appoitment != null) {
+                    Product deleteProduct = cart.getProduct(product.getName());
+                    appoitment.removeProduct(deleteProduct);
+                }
                 cart.removeProductString(product.getName());
                 totalPrice.setText("Price " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
             });

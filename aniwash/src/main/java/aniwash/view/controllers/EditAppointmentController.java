@@ -34,11 +34,12 @@ public class EditAppointmentController extends CreatePopUp {
     private final MainViewModel mainViewModel = new MainViewModel();
 
     @FXML
-    private TextArea description, servicePane;
+    private TextArea descriptionArea, servicePane;
     @FXML
     private AnchorPane selectedProductPane;
     @FXML
-    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount, extraProductTitle, priceText, setDiscountTitle;
+    private Text selectedProductTitle, selectedProduct, selectedProductCost, selectedProductCostDiscount,
+            extraProductTitle, priceText, setDiscountTitle;
     @FXML
     private TextField setDiscount, searchField;
     @FXML
@@ -60,22 +61,23 @@ public class EditAppointmentController extends CreatePopUp {
     private Entry<Appointment> newEntry;
     private ObservableList<Calendar<Product>> calendarObservableList;
     private ObservableList<Customer> customerObservableList;
-    private ShoppingCart cart;
+    private ShoppingCart cart = new ShoppingCart();
 
     public void initialize() {
-        cart = getShoppingCart();
         newEntry = (Entry<Appointment>) getArg();
-        //services.getItems().add("                                   Create new service  +");
+        // services.getItems().add(" Create new service +");
         petList.getItems().add("                                   Create new pet  +");
         date.setValue(newEntry.getStartDate());
         startTime.setValue(newEntry.getStartTime());
         endTime.setValue(newEntry.getEndTime());
         // Initialize the person table with the three columns.
         personList.setCellFactory(personList -> new CustomListViewCellCustomer());
-        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart));
+        extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart,
+                newEntry.getUserObject()));
         personList.setStyle("-fx-background-color: #f4f4f4; -fx-background: #f4f4f4;");
         // Set the placeholder text for the ListView
-        Background background = new Background(new BackgroundFill(Color.web("#f4f4f4"), CornerRadii.EMPTY, Insets.EMPTY));
+        Background background = new Background(
+                new BackgroundFill(Color.web("#f4f4f4"), CornerRadii.EMPTY, Insets.EMPTY));
         personList.setPlaceholder(new Label("No items") {
             @Override
             protected void updateBounds() {
@@ -86,22 +88,31 @@ public class EditAppointmentController extends CreatePopUp {
         // Add data to the table
         calendarObservableList = FXCollections.observableArrayList(mainViewModel.getCalendarMap().values());
         calendarObservableList.forEach(service -> services.getItems().addAll(service.getName()));
-        personList.setOnMouseClicked(getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
-        //services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList));
-        petList.setOnMouseClicked(getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
-        getCurrentAppointment();
+        personList.setOnMouseClicked(
+                getPersonMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry, services));
+        // services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services,
+        // newEntry, petList));
+        petList.setOnMouseClicked(
+                getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
 
-        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane, selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn, extraProducts, priceText));
-        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct, selectedProductCost, selectedProductCostDiscount, priceText));
-        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount, newEntry, selectedProduct, priceText));
+        services.setOnMouseClicked(getProductMouseEvent(mainViewModel, services, newEntry, petList, selectedProductPane,
+                selectedProduct, selectedProductCost, selectedProductCostDiscount, deleteSelectedProductBtn,
+                extraProducts, priceText, cart));
+        deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
+                selectedProductCost, selectedProductCostDiscount, priceText, cart, newEntry.getUserObject()));
+        applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
+                newEntry, selectedProduct, priceText, cart));
         extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
         mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
+        getCurrentAppointment();
     }
     // Save the selected person and send entry .
 
     @FXML
     public void save() {
-        if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+        if ((personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null
+                || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1)
+                || !selectedProductPane.isVisible()) {
             System.out.println("Please select a service and a pet");
             // TODO: Alert popup for missing fields ;)
         } else {
@@ -118,12 +129,14 @@ public class EditAppointmentController extends CreatePopUp {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null)
                 return;
-            personList.setItems(customerObservableList.filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
+            personList.setItems(customerObservableList
+                    .filtered(person -> person.getName().toLowerCase().contains(newValue.toLowerCase())));
             if (newValue.isEmpty())
                 personList.setItems(null);
         });
         // Set the selection model to allow only one row to be selected at a time.
-        searchField.setOnKeyPressed(getSearchFieldKeyEvent(mainViewModel, searchField, personList, customerObservableList, petList, services, newEntry));
+        searchField.setOnKeyPressed(getSearchFieldKeyEvent(mainViewModel, searchField, personList,
+                customerObservableList, petList, services, newEntry));
     }
 
     public void getCurrentAppointment() {
@@ -140,7 +153,32 @@ public class EditAppointmentController extends CreatePopUp {
 
         customer.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
         petList.getSelectionModel().select(a.getName());
-        priceText.setText("Price: " + ((Product) newEntry.getCalendar().getUserObject()).getPrice() + " €");
+        priceText.setText("Price: " + (newEntry.getUserObject().getTotalPrice()) + " €");
+
+        if (appointment.getDescription("en") != null)
+            descriptionArea.setText(appointment.getLocalizations().get("en").getDescription());
+
+        appointment.getProducts().forEach(product -> {
+            cart.addProduct(product, appointment.getDiscount(product.getId()));
+            services.getItems().remove(product.getName("en"));
+            if (product != newEntry.getCalendar().getUserObject()) {
+                double newPrice = product.getPrice()
+                        - (product.getPrice()
+                                * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                extraProducts.getItems().add(new DiscountProduct(product.getName("en"), newPrice));
+            } else if (appointment.getDiscount(((Product) newEntry.getCalendar().getUserObject()))
+                    .getDiscountPercent() != 0.0) {
+                Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
+                double newPrice = mainProduct.getPrice()
+                        - (mainProduct.getPrice()
+                                * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                selectedProductCost.strikethroughProperty().set(true);
+                selectedProductCostDiscount.setVisible(true);
+                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");
+            }
+        });
+        priceText.setText(
+                "Price " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
         selectedProductPane.setVisible(true);
     }
 
@@ -150,13 +188,15 @@ public class EditAppointmentController extends CreatePopUp {
         Customer customer = appointment.getCustomerList().get(0);
         Animal a = appointment.getAnimalList().get(0);
 
-        //MainProductId
+        // MainProductId
         appointment.setMainProductId(((Product) newEntry.getCalendar().getUserObject()).getId());
-        /*TODO: Use this map to get the discount for the product
-            new Discount(long productId, double amount); */
-        Map<Product, Discount> p = new HashMap<>();
-        p.put((Product) newEntry.getCalendar().getUserObject(), new Discount(((Product) newEntry.getCalendar().getUserObject()).getId(), 0));
-        mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(), newEntry.getUserObject(), customer, a, p);
+        /*
+         * TODO: Use this map to get the discount for the product
+         * new Discount(long productId, double amount);
+         */
+        mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
+                newEntry.getUserObject(), customer, a, cart.getProductList(),
+                ((Product) newEntry.getCalendar().getUserObject()), descriptionArea);
     }
 
 }
