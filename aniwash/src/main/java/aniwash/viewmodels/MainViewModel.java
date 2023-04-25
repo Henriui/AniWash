@@ -36,7 +36,7 @@ public class MainViewModel {
 
     public MainViewModel() {
         // TODO: Test db connection, will be removed later
-        DatabaseConnector.openDbConnection("com.aniwash");
+        DatabaseConnector.openDbConnection("com.aniwash.test");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
         daoMap.put("animal", new AnimalDao());
