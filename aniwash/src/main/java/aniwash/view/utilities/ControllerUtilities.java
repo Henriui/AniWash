@@ -284,7 +284,7 @@ public class ControllerUtilities {
 
             if (!setDiscount.getText().isEmpty() && extraProducts.getSelectionModel().getSelectedItem() == null
                     && selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
-
+                System.out.println("Main product discount");
                 // Get main product from newEntry and calculate discount for the product.
 
                 Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
@@ -312,6 +312,7 @@ public class ControllerUtilities {
                     && !selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
                 System.out.println("nothing selected");
                 // TODO: add dicount to current price (To all items).
+                System.out.println("Please select a product" + extraProducts.getSelectionModel().getSelectedIndex());
             }
 
             // If discount is applied and extraProduct is selected.
@@ -324,13 +325,10 @@ public class ControllerUtilities {
                 DiscountProduct product = extraProducts.getSelectionModel().getSelectedItem();
                 String discount = setDiscount.getText();
                 Product original = shoppingCart.getProduct(product.getName());
-                System.out.println("Original price " + original.getPrice());
-                System.out.println("product product " + product.getPrice());
-                System.out.println("discount price " + discount);
+
                 double newPrice = original.getPrice() - (original.getPrice() * (0.01 * Double.parseDouble(discount)));
 
                 System.out.println("Please select a product what is in entry" + original.getPrice());
-                System.out.println("!?!?!?!?!?!??!?!?!" + newPrice);
 
                 // Set a price for the selected item, and modify the shopping cart the match the
                 // discounted %.
@@ -411,7 +409,7 @@ public class ControllerUtilities {
 
     public static EventHandler<ActionEvent> deleteMainProduct(ListView<String> services, AnchorPane selectedProductPane,
             Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
-            Text selectedProductCostDiscount, Text totalPrice, ShoppingCart shoppingCart) {
+            Text selectedProductCostDiscount, Text totalPrice, ShoppingCart shoppingCart, Appointment appointment) {
         return event -> {
 
             // Add MainProduct back to the product ListView and hide the MainProduct
@@ -419,12 +417,13 @@ public class ControllerUtilities {
 
             services.getItems().addAll(selectedProduct.getText());
             selectedProductPane.setVisible(false);
-            System.out.println("deleteMainProduct" + newEntry.getCalendar().getUserObject());
 
             // Remove product from the shopping cart.
 
             shoppingCart.removeProduct((Product) newEntry.getCalendar().getUserObject());
 
+            if (appointment != null)
+                appointment.removeProduct((Product) newEntry.getCalendar().getUserObject());
             // Set strike text to false and hide the discount text.
 
             selectedProductCost.strikethroughProperty().set(false);

@@ -81,7 +81,8 @@ public class NewAppointmentController extends CreatePopUp {
 		// Initialize the person table with the three columns.
 		personList.setCellFactory(personList -> new CustomListViewCellCustomer());
 		// Initialize the extra product table.
-		extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart));
+		extraProducts.setCellFactory(extraProducts -> new CustomListViewCellExtraProduct(services, priceText, cart,
+				newEntry.getUserObject()));
 		personList.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
 		// Set the placeholder text for the ListView
 		Background background = new Background(
@@ -117,7 +118,7 @@ public class NewAppointmentController extends CreatePopUp {
 		petList.setOnMouseClicked(
 				getAnimalMouseEvent(mainViewModel, customerObservableList, personList, petList, newEntry));
 		deleteSelectedProductBtn.setOnAction(deleteMainProduct(services, selectedProductPane, newEntry, selectedProduct,
-				selectedProductCost, selectedProductCostDiscount, priceText, cart));
+				selectedProductCost, selectedProductCostDiscount, priceText, cart, newEntry.getUserObject()));
 		applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
 				newEntry, selectedProduct, priceText, cart));
 		extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
@@ -126,8 +127,9 @@ public class NewAppointmentController extends CreatePopUp {
 
 	@FXML
 	public void save() {
-		if (personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null
-				|| newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1) {
+		if ((personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null
+				|| newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1)
+				|| !selectedProductPane.isVisible()) {
 			System.out.println("Please select Service and Pet");
 			// TODO: Alert popup for missing fields ;)
 		} else {

@@ -15,6 +15,7 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product, Discount discount) {
+        System.out.println("!!!!!!!!!!!!!!!!!!?!?!?!?!?!?" + product.getName("en"));
         productsMap.put(product, discount);
     }
 
@@ -78,10 +79,9 @@ public class ShoppingCart {
     public void getSelectedProducts() {
         // TODO: return a list of selected products
         // FIXME: now it only prints the products for Jonnes testing purposes.
+        System.out.println("!!!!!!!");
         for (Map.Entry<Product, Discount> entry : productsMap.entrySet()) {
-            Product product = entry.getKey();
-            Discount discount = entry.getValue();
-            System.out.println(product.getName("en") + " " + discount);
+            System.out.println(entry.getKey().getName("en"));
         }
     }
 

@@ -103,6 +103,10 @@ public class MainViewModel {
         for (Appointment appointment : appointmentList) {
             Product mainProduct = getMainProduct(appointment.getMainProductId(), appointment.getProductList());
             assert mainProduct != null;
+            if (mainProduct == null) {
+                System.out.println("mainProduct is null");
+                continue;
+            }
             Entry<Appointment> entry = new Entry<>(mainProduct.getName("en"),
                     new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
             entry.setLocation(appointment.getAnimalList().get(0).getName());
@@ -116,7 +120,7 @@ public class MainViewModel {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         Appointment appointment = new Appointment(zdtStart, zdtEnd);
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment,
-        "Appointment for " + selectedCustomer.getName());
+                "Appointment for " + selectedCustomer.getName());
         localAppointment.setId(new LocalizedId("en"));
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
@@ -132,7 +136,7 @@ public class MainViewModel {
         // System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " +
         // product.getName("en") + " " + appointment.getId() + " \n");
         appointment.setMainProductId(mainProductId);
-        System.out.println("addAppointmentE: \n\n\n\n\n" + " " + zdtStart.toString() + " " + appointment.getMainProductId() + " \n");
+
         updateCalendar(true);
         return appointment;
     }
