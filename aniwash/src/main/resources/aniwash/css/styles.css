@@ -157,3 +157,6 @@
 .style8-calendar-header {
     -fx-background-color: derive(-style8-color, 70.0%);
 }
+.onHover{
+    -fx-background-color: rgb(255, 217, 0);
+}
