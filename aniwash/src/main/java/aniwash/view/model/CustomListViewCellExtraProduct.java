@@ -85,7 +85,6 @@ public class CustomListViewCellExtraProduct extends ListCell<DiscountProduct> {
                 getListView().getItems().remove(product);
                 listView.getItems().add(product.getName());
                 if (appoitment != null) {
-                    cart.getSelectedProducts();
                     Product deleteProduct = cart.getProduct(product.getName());
                     appoitment.removeProduct(deleteProduct);
                 }

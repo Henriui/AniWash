@@ -79,7 +79,6 @@ public class ShoppingCart {
     public void getSelectedProducts() {
         // TODO: return a list of selected products
         // FIXME: now it only prints the products for Jonnes testing purposes.
-        System.out.println("!!!!!!!");
         for (Map.Entry<Product, Discount> entry : productsMap.entrySet()) {
             System.out.println(entry.getKey().getName("en"));
         }

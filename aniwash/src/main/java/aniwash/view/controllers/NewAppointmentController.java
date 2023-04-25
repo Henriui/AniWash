@@ -34,7 +34,7 @@ public class NewAppointmentController extends CreatePopUp {
 
 	private final MainViewModel mainViewModel = new MainViewModel();
 	@FXML
-	private TextArea description, servicePane;
+	private TextArea descriptionArea, servicePane;
 	@FXML
 	private AnchorPane selectedProductPane;
 	@FXML
@@ -153,10 +153,9 @@ public class NewAppointmentController extends CreatePopUp {
 		 * TODO: Add products and discounts to the appointment with this map
 		 * new Discount(long productId, double amount);
 		 */
-		System.out.println("ANAALI SAATANA \n\n" + ((Product) newEntry.getCalendar().getUserObject()).getId());
 		newEntry.setUserObject(mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(),
 				newEntry.getEndAsZonedDateTime(), selectedCustomer, animal,
-				((Product) newEntry.getCalendar().getUserObject()).getId(), cart.getProductList()));
+				((Product) newEntry.getCalendar().getUserObject()).getId(), cart.getProductList(), descriptionArea));
 		newEntry.setId("id" + newEntry.getUserObject().getId());
 		newEntry.setLocation(null);
 		newEntry.setHidden(false);

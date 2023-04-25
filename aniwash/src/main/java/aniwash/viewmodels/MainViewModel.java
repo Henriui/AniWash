@@ -116,7 +116,7 @@ public class MainViewModel {
     }
 
     public Appointment createAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Customer selectedCustomer,
-            Animal animal, long mainProductId, Map<Product, Discount> p) {
+            Animal animal, long mainProductId, Map<Product, Discount> p, TextArea descriptionText) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         Appointment appointment = new Appointment(zdtStart, zdtEnd);
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment,
@@ -132,6 +132,10 @@ public class MainViewModel {
         }
         appointment.setTotalPrice(totalPrice);
         appointment.getLocalizations().put("en", localAppointment);
+
+        if( descriptionText.getText() != null && !descriptionText.getText().isEmpty() ) {
+            appointment.getLocalizations().get("en").setDescription(descriptionText.getText());
+        }
         appointmentDao.addAppointment(appointment);
         // System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " +
         // product.getName("en") + " " + appointment.getId() + " \n");
@@ -143,7 +147,7 @@ public class MainViewModel {
 
     public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c,
             Animal a, Map<Product, Discount> p,
-            Product mainProduct) {
+            Product mainProduct, TextArea descriptionText) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         appointment.setStartDate(zdtStart);
         appointment.setEndDate(zdtEnd);
@@ -168,8 +172,10 @@ public class MainViewModel {
         appointment.setMainProductId(mainProduct.getId());
         // Database update for appointment
         appointmentDao.updateAppointment(appointment);
-        System.out.println("updateAppointmentE: " + " " + " " + appointment.getMainProductId() + " "
-                + appointment.getId() + " \n");
+        if (descriptionText.getText() != null && !descriptionText.getText().isEmpty()) {
+            appointment.getLocalizations().get("en").setDescription(descriptionText.getText());
+        }
+    
         updateCalendar(true);
     }
 

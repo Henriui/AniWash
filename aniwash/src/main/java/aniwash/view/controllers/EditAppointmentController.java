@@ -34,7 +34,7 @@ public class EditAppointmentController extends CreatePopUp {
     private final MainViewModel mainViewModel = new MainViewModel();
 
     @FXML
-    private TextArea description, servicePane;
+    private TextArea descriptionArea, servicePane;
     @FXML
     private AnchorPane selectedProductPane;
     @FXML
@@ -155,7 +155,8 @@ public class EditAppointmentController extends CreatePopUp {
         petList.getSelectionModel().select(a.getName());
         priceText.setText("Price: " + (newEntry.getUserObject().getTotalPrice()) + " €");
 
-        description.setText(appointment.getDescription("en"));
+        if (appointment.getDescription("en") != null)
+            descriptionArea.setText(appointment.getLocalizations().get("en").getDescription());
 
         appointment.getProducts().forEach(product -> {
             cart.addProduct(product, appointment.getDiscount(product.getId()));
@@ -189,7 +190,6 @@ public class EditAppointmentController extends CreatePopUp {
 
         // MainProductId
         appointment.setMainProductId(((Product) newEntry.getCalendar().getUserObject()).getId());
-        System.out.println("MainProductId: \n\n\n " + ((Product) newEntry.getCalendar().getUserObject()).getId());
         /*
          * TODO: Use this map to get the discount for the product
          * new Discount(long productId, double amount);
@@ -197,7 +197,7 @@ public class EditAppointmentController extends CreatePopUp {
         System.out.println("KUULAT ANAALIUN \n" + ((Product) newEntry.getCalendar().getUserObject()).getName("en"));
         mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
                 newEntry.getUserObject(), customer, a, cart.getProductList(),
-                ((Product) newEntry.getCalendar().getUserObject()));
+                ((Product) newEntry.getCalendar().getUserObject()), descriptionArea);
     }
 
 }

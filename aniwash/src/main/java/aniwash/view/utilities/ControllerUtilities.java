@@ -267,7 +267,6 @@ public class ControllerUtilities {
 
                 }
             }
-            System.out.println("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
 
             // Set totalPrice text to match all selected product price.
 
@@ -284,7 +283,6 @@ public class ControllerUtilities {
 
             if (!setDiscount.getText().isEmpty() && extraProducts.getSelectionModel().getSelectedItem() == null
                     && selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
-                System.out.println("Main product discount");
                 // Get main product from newEntry and calculate discount for the product.
 
                 Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
@@ -343,15 +341,9 @@ public class ControllerUtilities {
                 extraProducts.refresh(); // Should update all the cells in the ListView
 
             }
-            System.out.println("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
-
             // Set totalPrice text to match all selected product price.
 
             totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
-            Map<Product, Discount> asd = shoppingCart.getProductList();
-            for (Product product : asd.keySet()) {
-                System.out.println(product.getName("en") + " " + asd.get(product).getDiscount());
-            }
         };
     }
 
@@ -428,10 +420,6 @@ public class ControllerUtilities {
 
             selectedProductCost.strikethroughProperty().set(false);
             selectedProductCostDiscount.setVisible(false);
-
-            // Set Calendar to null.
-
-            // newEntry.setCalendar(null);
 
             // Set totalPrice text to match all selected product price.
 
