@@ -23,8 +23,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.event.ChangeListener;
-
 public class DashboardController {
     @FXML
     private AnchorPane backGround;
@@ -151,8 +149,8 @@ public class DashboardController {
             // go through this years appointments products and calculate monthly revenue.
             for (Product p : appt.getProducts()) {
                 // Calculate price of product from price and discount.
-                double price = p.getPrice() * (1 - appt.getDiscount(p).getDiscountPercent());
-                System.out.println(price);
+                double price = p.getPrice() * (1 - appt.getDiscount(p).getDiscountPercent()/100);
+                // System.out.println(price);
                 // if the month is already in the map, add the price to the value.
                 if (!monthlyDataMap.containsKey(m))
                     monthlyDataMap.put(m, price);
