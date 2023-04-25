@@ -194,7 +194,6 @@ public class EditAppointmentController extends CreatePopUp {
          * TODO: Use this map to get the discount for the product
          * new Discount(long productId, double amount);
          */
-        System.out.println("KUULAT ANAALIUN \n" + ((Product) newEntry.getCalendar().getUserObject()).getName("en"));
         mainViewModel.updateAppointment(newEntry.getStartAsZonedDateTime(), newEntry.getEndAsZonedDateTime(),
                 newEntry.getUserObject(), customer, a, cart.getProductList(),
                 ((Product) newEntry.getCalendar().getUserObject()), descriptionArea);
