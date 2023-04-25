@@ -15,7 +15,6 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product, Discount discount) {
-        System.out.println("!!!!!!!!!!!!!!!!!!?!?!?!?!?!?" + product.getName("en"));
         productsMap.put(product, discount);
     }
 
