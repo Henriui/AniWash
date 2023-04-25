@@ -15,8 +15,7 @@ import java.util.function.Consumer;
  */
 public class ProductDao implements IProductDao {
 
-    @Override
-    public boolean addProduct(Product product) {
+    public boolean add(Product product) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, product.getId());
         if (em.contains(p)) {
@@ -27,20 +26,17 @@ public class ProductDao implements IProductDao {
         return true;
     }
 
-    @Override
-    public List<Product> findAllProducts() {
+    public List<Product> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT p FROM Product p WHERE p.deleted = 0", Product.class).getResultList();
     }
 
-    @Override
-    public Product findByIdProduct(Long id) {
+    public Product findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Product.class, id);
     }
 
-    @Override
-    public Product findByNameProduct(String name) {
+    public Product findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = null;
         try {
@@ -52,8 +48,7 @@ public class ProductDao implements IProductDao {
         return p;
     }
 
-    @Override
-    public boolean updateProduct(Product product) {
+    public boolean update(Product product) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, product.getId());
         if (!em.contains(p)) {
@@ -67,8 +62,7 @@ public class ProductDao implements IProductDao {
         return true;
     }
 
-    @Override
-    public boolean deleteByIdProduct(Long id) {
+    public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, id);
         if (em.contains(p)) {
@@ -79,8 +73,7 @@ public class ProductDao implements IProductDao {
         return false;
     }
 
-    @Override
-    public Product findNewestProduct() {
+    public Product findNewest() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = null;
         try {
@@ -91,7 +84,7 @@ public class ProductDao implements IProductDao {
         return p;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+    public void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

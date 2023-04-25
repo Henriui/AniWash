@@ -14,8 +14,7 @@ import java.util.function.Consumer;
  */
 public class CustomerDao implements ICustomerDao {
 
-    @Override
-    public boolean addCustomer(Customer customer) {
+    public boolean add(Customer customer) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = em.find(Customer.class, customer.getId());
         if (em.contains(c)) {
@@ -27,20 +26,17 @@ public class CustomerDao implements ICustomerDao {
         return true;
     }
 
-    @Override
-    public List<Customer> findAllCustomer() {
+    public List<Customer> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT c FROM Customer c WHERE c.deleted = 0", Customer.class).getResultList();
     }
 
-    @Override
-    public Customer findByIdCustomer(long id) {
+    public Customer findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Customer.class, id);
     }
 
-    @Override
-    public Customer findByEmailCustomer(String email) {
+    public Customer findByEmail(String email) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
@@ -51,8 +47,7 @@ public class CustomerDao implements ICustomerDao {
         return c;
     }
 
-    @Override
-    public Customer findByPhoneCustomer(String phone) {
+    public Customer findByPhone(String phone) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
@@ -63,8 +58,7 @@ public class CustomerDao implements ICustomerDao {
         return c;
     }
 
-    @Override
-    public Customer findByNameCustomer(String name) {
+    public Customer findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
@@ -75,8 +69,7 @@ public class CustomerDao implements ICustomerDao {
         return c;
     }
 
-    @Override
-    public List<Customer> findByNameCustomerList(String name) {
+    public List<Customer> findByNameList(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         List<Customer> c = null;
         try {
@@ -92,8 +85,7 @@ public class CustomerDao implements ICustomerDao {
         return c;
     }
 
-    @Override
-    public boolean updateCustomer(Customer customer) {
+    public boolean update(Customer customer) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = em.find(Customer.class, customer.getId());
         if (!em.contains(c)) {
@@ -110,8 +102,7 @@ public class CustomerDao implements ICustomerDao {
         return true;
     }
 
-    @Override
-    public boolean deleteByIdCustomer(long id) {
+    public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = em.find(Customer.class, id);
         if (em.contains(c)) {
@@ -122,8 +113,7 @@ public class CustomerDao implements ICustomerDao {
         return false;
     }
 
-    @Override
-    public Customer findNewestCustomer() {
+    public Customer findNewest() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Customer c = null;
         try {
@@ -134,7 +124,7 @@ public class CustomerDao implements ICustomerDao {
         return c;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+    public void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

@@ -14,8 +14,7 @@ import java.util.function.Consumer;
  */
 public class EmployeeDao implements IEmployeeDao {
 
-    @Override
-    public boolean addEmployee(Employee employee) {
+    public boolean add(Employee employee) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         // Find employee by username to check if it already exists.
         // If it does, return false.
@@ -39,21 +38,17 @@ public class EmployeeDao implements IEmployeeDao {
         return true;
     }
 
-    @Override
-    public List<Employee> findAllEmployee() {
+    public List<Employee> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT a FROM Employee a", Employee.class).getResultList();
     }
 
-    @Override
-    public Employee findByIdEmployee(long id) {
-
+    public Employee findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Employee.class, id);
     }
 
-    @Override
-    public Employee findByNameEmployee(String name) {
+    public Employee findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
@@ -64,8 +59,7 @@ public class EmployeeDao implements IEmployeeDao {
         return emp;
     }
 
-    @Override
-    public Employee findByEmailEmployee(String email) {
+    public Employee findByEmail(String email) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
@@ -76,8 +70,7 @@ public class EmployeeDao implements IEmployeeDao {
         return emp;
     }
 
-    @Override
-    public Employee findByTitleEmployee(String title) {
+    public Employee findByTitle(String title) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
@@ -88,8 +81,7 @@ public class EmployeeDao implements IEmployeeDao {
         return emp;
     }
 
-    @Override
-    public Employee findByUsernameEmployee(String username) {
+    public Employee findByUsername(String username) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
@@ -100,8 +92,7 @@ public class EmployeeDao implements IEmployeeDao {
         return emp;
     }
 
-    @Override
-    public boolean updateEmployee(Employee employee) {
+    public boolean update(Employee employee) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = em.find(Employee.class, employee.getId());
         if (emp == null) {
@@ -118,8 +109,7 @@ public class EmployeeDao implements IEmployeeDao {
         return true;
     }
 
-    @Override
-    public boolean deleteByIdEmployee(long id) {
+    public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee employee = em.find(Employee.class, id);
         if (employee != null) {
@@ -130,8 +120,7 @@ public class EmployeeDao implements IEmployeeDao {
         return false;
     }
 
-    @Override
-    public Employee findNewestEmployee() {
+    public Employee findNewest() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee employee = null;
         try {
@@ -142,7 +131,7 @@ public class EmployeeDao implements IEmployeeDao {
         return employee;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+    public void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

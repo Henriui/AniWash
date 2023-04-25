@@ -137,7 +137,7 @@ public class EditCustomerController {
         customer.setPostalCode(postalCode);
 
         ICustomerDao customerDao = new CustomerDao();
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

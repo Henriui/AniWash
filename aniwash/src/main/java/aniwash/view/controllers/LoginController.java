@@ -40,7 +40,7 @@ public class LoginController {
 
     private void checkLogin(String username, String password) {
 
-        Employee e = employeeDao.findByUsernameEmployee(username);
+        Employee e = employeeDao.findByUsername(username);
         if (e != null) {
             if (e.getPassword().equals(password)) {
                 System.out.println("Login successful");

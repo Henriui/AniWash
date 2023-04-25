@@ -95,7 +95,7 @@ public class AdminViewController {
 
         // Check if the username is already taken.
 
-        if (ed.findByUsernameEmployee(username) != null)
+        if (ed.findByUsername(username) != null)
             return false;
 
         // Create the new employee
@@ -105,7 +105,7 @@ public class AdminViewController {
 
         // Add the employee to the database.
         try {
-            ed.addEmployee(e);
+            ed.add(e);
         } catch (Exception e1) {
             e1.printStackTrace();
             return false;

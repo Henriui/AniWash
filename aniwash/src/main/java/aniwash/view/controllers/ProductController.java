@@ -39,7 +39,7 @@ public class ProductController {
     public void initialize() {
 
         productDao = new ProductDao();
-        AtomicReference<ObservableList<Product>> products = new AtomicReference<>(FXCollections.observableList(productDao.findAllProducts()));
+        AtomicReference<ObservableList<Product>> products = new AtomicReference<>(FXCollections.observableList(productDao.findAll()));
         listView.setItems(products.get());
 
         // Set the cell factory to create custom ListCells
@@ -73,39 +73,12 @@ public class ProductController {
 
         });
 
-        // Double click on a customer to open the customer info popup window
-
-       /*  listView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                selectedProduct = listView.getSelectionModel().getSelectedItem();
-                // Create and show the popup window
-                // Pass the selected customer object to the popup window to display its info
-                final FXMLLoader loader;
-                final Scene scene;
-                try {
-                    loader = ControllerUtilities.loadFXML("");
-                    scene = new Scene((Parent) loader.load());
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.setTitle("Edit Product");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.show();
-
-                    // TODO: Should this only be done if change is made?
-                    stage.setOnHidden(view -> listView.setItems(FXCollections.observableList(productDao.findAllProduct())));
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }); */
-
     }
 
     @FXML
     public void newProduct() throws IOException {
         Stage stage = new Stage();
-        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(productDao.findAllProducts())));
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(productDao.findAll())));
         ControllerUtilities.newProduct(stage);
     }
 

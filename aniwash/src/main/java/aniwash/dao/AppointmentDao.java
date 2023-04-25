@@ -19,8 +19,7 @@ import java.util.function.Consumer;
  */
 public class AppointmentDao implements IAppointmentDao {
 
-    @Override
-    public boolean addAppointment(Appointment appointment) {
+    public boolean add(Appointment appointment) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (em.contains(app)) {
@@ -39,7 +38,6 @@ public class AppointmentDao implements IAppointmentDao {
      * @return List of appointments.
      * @author rasmushy
      */
-    @Override
     public List<Appointment> fetchAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -60,20 +58,17 @@ public class AppointmentDao implements IAppointmentDao {
      * @return List of appointments.
      * @author rasmushy
      */
-    @Override
-    public List<Appointment> findAllAppointments() {
+    public List<Appointment> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT a FROM Appointment a WHERE a.deleted = 0", Appointment.class).getResultList();
     }
 
-    @Override
-    public Appointment findByIdAppointment(Long id) {
+    public Appointment findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Appointment.class, id);
     }
 
-    @Override
-    public Appointment findByStartDateAppointment(ZonedDateTime date) {
+    public Appointment findByStartDate(ZonedDateTime date) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
@@ -84,8 +79,7 @@ public class AppointmentDao implements IAppointmentDao {
         return a;
     }
 
-    @Override
-    public boolean updateAppointment(Appointment appointment) {
+    public boolean update(Appointment appointment) {
         EntityManager em = DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (!em.contains(app)) {
@@ -103,8 +97,7 @@ public class AppointmentDao implements IAppointmentDao {
         return true;
     }
 
-    @Override
-    public boolean deleteByIdAppointment(Long id) {
+    public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment appointment = em.find(Appointment.class, id);
         if (em.contains(appointment)) {
@@ -115,8 +108,7 @@ public class AppointmentDao implements IAppointmentDao {
         return false;
     }
 
-    @Override
-    public Appointment findNewestAppointment() {
+    public Appointment findNewest() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
@@ -127,7 +119,7 @@ public class AppointmentDao implements IAppointmentDao {
         return a;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+    public void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalTime;
 
 public class ScheduleController {
+
     private CreatePopUp popup = new CreatePopUp();
     @FXML
     private CalendarView calendarView;
@@ -68,10 +69,12 @@ public class ScheduleController {
     private void customers() throws IOException {
         MainApp.setRoot("customerView");
     }
+
     @FXML
     private void products() throws IOException {
         MainApp.setRoot("productsView");
     }
+
     @FXML
     private void admin() throws IOException {
         MainApp.setRoot("AdminPanel");

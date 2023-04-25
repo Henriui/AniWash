@@ -33,12 +33,12 @@ public class AppointmentProductDbTest {
 
     @AfterEach
     public void tearDown() {
-        for (Appointment a : aDao.findAllAppointments()) {
-            aDao.deleteByIdAppointment(a.getId());
+        for (Appointment a : aDao.findAll()) {
+            aDao.deleteById(a.getId());
         }
 
-        for (Product p : pDao.findAllProducts()) {
-            pDao.deleteByIdProduct(p.getId());
+        for (Product p : pDao.findAll()) {
+            pDao.deleteById(p.getId());
         }
     }
 
@@ -62,8 +62,8 @@ public class AppointmentProductDbTest {
             LocalizedProduct localizedProduct = new LocalizedProduct(product, "Iso pesu", "Ison eläimen pesu");
             localizedProduct.setId(new LocalizedId("en"));
             product.getLocalizations().put("en", localizedProduct);
-            aDao.addAppointment(a);
-            pDao.addProduct(product);
+            aDao.add(a);
+            pDao.add(product);
             a.addProduct(product);
         }
 
@@ -77,15 +77,15 @@ public class AppointmentProductDbTest {
         }
 
         for (Product p : products) {
-            Appointment a = aDao.findNewestAppointment();
-            pDao.addProduct(p);
+            Appointment a = aDao.findNewest();
+            pDao.add(p);
             a.addProduct(p);
         }
 
-        assertEquals(3, aDao.findAllAppointments().size(), "findAllAppointments(): Wrong amount of appointments. Should be 3.");
-        assertEquals(4, aDao.findNewestAppointment().getProductList().size(), "findAllProducts(): Wrong amount of products. Should be 4.");
-        assertEquals(1, aDao.findByStartDateAppointment(ZonedDateTime.parse("2021-02-03T10:15:30+02:00")).getProductList().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
-        assertEquals(6, pDao.findAllProducts().size(), "findAllProducts(): Wrong amount of products. Should be 6.");
+        assertEquals(3, aDao.findAll().size(), "findAllAppointments(): Wrong amount of appointments. Should be 3.");
+        assertEquals(4, aDao.findNewest().getProductList().size(), "findAllProducts(): Wrong amount of products. Should be 4.");
+        assertEquals(1, aDao.findByStartDate(ZonedDateTime.parse("2021-02-03T10:15:30+02:00")).getProductList().size(), "findAllProducts(): Wrong amount of products. Should be 1.");
+        assertEquals(6, pDao.findAll().size(), "findAllProducts(): Wrong amount of products. Should be 6.");
 
     }
 
@@ -94,7 +94,7 @@ public class AppointmentProductDbTest {
     @Order(2)
     public void findAllProductsFromAppointment() {
         System.out.println("Find test");
-        List<Appointment> appointmentsList = aDao.findAllAppointments();
+        List<Appointment> appointmentsList = aDao.findAll();
         List<Product> productsList = new ArrayList<>();
         for (Appointment a : appointmentsList) {
             productsList.addAll(a.getProducts());
@@ -110,11 +110,11 @@ public class AppointmentProductDbTest {
     @Order(3)
     public void deleteAllAppointments() {
         System.out.println("Delete all appointments test");
-        List<Appointment> appointmentsList = aDao.findAllAppointments();
+        List<Appointment> appointmentsList = aDao.findAll();
         for (Appointment a : appointmentsList) {
-            aDao.deleteByIdAppointment(a.getId());
+            aDao.deleteById(a.getId());
         }
-        appointmentsList = aDao.findAllAppointments();
+        appointmentsList = aDao.findAll();
         assertEquals(0, appointmentsList.size(), "findAllAppointments(): Wrong amount of appointments. Should be 0.");
     }
 
@@ -123,11 +123,11 @@ public class AppointmentProductDbTest {
     @Order(4)
     public void deleteAllProducts() {
         System.out.println("Delete all products test");
-        List<Product> productsList = pDao.findAllProducts();
+        List<Product> productsList = pDao.findAll();
         for (Product p : productsList) {
-            pDao.deleteByIdProduct(p.getId());
+            pDao.deleteById(p.getId());
         }
-        productsList = pDao.findAllProducts();
+        productsList = pDao.findAll();
         assertEquals(0, productsList.size(), "findAllProducts(): Wrong amount of products. Should be 0.");
     }
 

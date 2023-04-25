@@ -51,7 +51,7 @@ public class CustomersController {
      * }
      */
 
-    private static FXMLLoader loadFXML(String fxml) throws IOException {
+    private static FXMLLoader loadFXML(String fxml) {
         return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
     }
 
@@ -61,7 +61,7 @@ public class CustomersController {
 
         customerDao = new CustomerDao();
         AtomicReference<ObservableList<Customer>> customers = new AtomicReference<>(
-                FXCollections.observableList(customerDao.findAllCustomer()));
+                FXCollections.observableList(customerDao.findAll()));
         listView.setItems(customers.get());
 
         // Bind the customerCount text property to the size of the list
@@ -109,7 +109,7 @@ public class CustomersController {
                 try {
                     Stage stage = new Stage();
                     stage.setOnHidden(
-                            view -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+                            view -> listView.setItems(FXCollections.observableList(customerDao.findAll())));
                     ControllerUtilities.editCustomer(stage);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -122,7 +122,7 @@ public class CustomersController {
     @FXML
     public void newCustomer() throws IOException {
         Stage stage = new Stage();
-        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(customerDao.findAllCustomer())));
+        stage.setOnHidden(event -> listView.setItems(FXCollections.observableList(customerDao.findAll())));
         ControllerUtilities.newCustomer(stage);
     }
 

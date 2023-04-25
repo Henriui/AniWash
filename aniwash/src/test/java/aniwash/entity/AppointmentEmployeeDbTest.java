@@ -32,8 +32,8 @@ public class AppointmentEmployeeDbTest {
 
     @AfterEach
     public void tearDown() {
-        for (Appointment a : aDao.findAllAppointments()) {
-            aDao.deleteByIdAppointment(a.getId());
+        for (Appointment a : aDao.findAll()) {
+            aDao.deleteById(a.getId());
         }
     }
 
@@ -54,8 +54,8 @@ public class AppointmentEmployeeDbTest {
             localAppointment.setId(new LocalizedId("en"));
             a.getLocalizations().put("en", localAppointment);
             Employee e = new Employee("kimmoka" + i, "12345" + i, "Kimmo Kala", "kimmo.kala" + i + "@gmail.com", "Työntekijä", UserType.EMPLOYEE);
-            aDao.addAppointment(a);
-            eDao.addEmployee(e);
+            aDao.add(a);
+            eDao.add(e);
         }
         List<Employee> employees = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
@@ -63,11 +63,11 @@ public class AppointmentEmployeeDbTest {
             employees.add(e);
         }
         for (Employee e : employees) {
-            Appointment a = aDao.findNewestAppointment();
-            eDao.addEmployee(e);
+            Appointment a = aDao.findNewest();
+            eDao.add(e);
         }
-        assertEquals(3, aDao.findAllAppointments().size(), "Appointment list size should be 3");
-        assertEquals(6, eDao.findAllEmployee().size(), "Employee list size should be 6");
+        assertEquals(3, aDao.findAll().size(), "Appointment list size should be 3");
+        assertEquals(6, eDao.findAll().size(), "Employee list size should be 6");
     }
 
     @Test
@@ -75,11 +75,11 @@ public class AppointmentEmployeeDbTest {
     @Order(3)
     public void deleteAllAppointments() {
         System.out.println("Delete all appointments test");
-        List<Appointment> appointmentList = aDao.findAllAppointments();
+        List<Appointment> appointmentList = aDao.findAll();
         for (Appointment a : appointmentList) {
-            aDao.deleteByIdAppointment(a.getId());
+            aDao.deleteById(a.getId());
         }
-        assertEquals(0, aDao.findAllAppointments().size(), "Appointment list size should be 0");
+        assertEquals(0, aDao.findAll().size(), "Appointment list size should be 0");
     }
 
     @Test
@@ -87,11 +87,11 @@ public class AppointmentEmployeeDbTest {
     @Order(4)
     public void deleteAllEmployees() {
         System.out.println("Delete all employees test");
-        List<Employee> employeeList = eDao.findAllEmployee();
+        List<Employee> employeeList = eDao.findAll();
         for (Employee e : employeeList) {
-            eDao.deleteByIdEmployee(e.getId());
+            eDao.deleteById(e.getId());
         }
-        assertEquals(0, eDao.findAllEmployee().size(), "Employee list size should be 0");
+        assertEquals(0, eDao.findAll().size(), "Employee list size should be 0");
     }
 
 }

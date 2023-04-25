@@ -14,8 +14,7 @@ import java.util.function.Consumer;
  */
 public class AnimalDao implements IAnimalDao {
 
-    @Override
-    public boolean addAnimal(Animal animal) {
+    public boolean add(Animal animal) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = em.find(Animal.class, animal.getId());
         if (em.contains(a)) {
@@ -27,20 +26,17 @@ public class AnimalDao implements IAnimalDao {
         return true;
     }
 
-    @Override
-    public List<Animal> findAllAnimals() {
+    public List<Animal> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT a FROM Animal a WHERE a.deleted = 0", Animal.class).getResultList();
     }
 
-    @Override
-    public Animal findByIdAnimal(long id) {
+    public Animal findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.find(Animal.class, id);
     }
 
-    @Override
-    public Animal findByNameAnimal(String name) {
+    public Animal findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal t = null;
         try {
@@ -51,8 +47,7 @@ public class AnimalDao implements IAnimalDao {
         return t;
     }
 
-    @Override
-    public boolean updateAnimal(Animal animal) {
+    public boolean update(Animal animal) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal t = em.find(Animal.class, animal.getId());
         if (!em.contains(t)) {
@@ -68,8 +63,7 @@ public class AnimalDao implements IAnimalDao {
         return true;
     }
 
-    @Override
-    public boolean deleteByIdAnimal(long id) {
+    public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = em.find(Animal.class, id);
         if (em.contains(a)) {
@@ -80,8 +74,7 @@ public class AnimalDao implements IAnimalDao {
         return false;
     }
 
-    @Override
-    public Animal findNewestAnimal() {
+    public Animal findNewest() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = null;
         try {
@@ -92,7 +85,7 @@ public class AnimalDao implements IAnimalDao {
         return a;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+    public void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.tool.schema.spi.SourceDescriptor;
-
 import static com.calendarfx.model.CalendarEvent.ENTRY_CALENDAR_CHANGED;
 import static com.calendarfx.model.CalendarEvent.ENTRY_INTERVAL_CHANGED;
 
@@ -70,7 +68,7 @@ public class MainViewModel {
 
     public void createCalendar(Product product) {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        productDao.addProduct(product);
+        productDao.add(product);
         Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
         calendar.setStyle(product.getStyle());
         calendar.addEventHandler(getEventHandler());
@@ -80,7 +78,7 @@ public class MainViewModel {
 
     private void addCalendarsToCalendarSource() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        for (Product product : productDao.findAllProducts()) {
+        for (Product product : productDao.findAll()) {
             Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
             calendar.setStyle(product.getStyle());
             calendar.addEventHandler(getEventHandler());
@@ -103,10 +101,6 @@ public class MainViewModel {
         for (Appointment appointment : appointmentList) {
             Product mainProduct = getMainProduct(appointment.getMainProductId(), appointment.getProductList());
             assert mainProduct != null;
-            if (mainProduct == null) {
-                System.out.println("mainProduct is null");
-                continue;
-            }
             Entry<Appointment> entry = new Entry<>(mainProduct.getName("en"),
                     new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
             entry.setLocation(appointment.getAnimalList().get(0).getName());
@@ -133,10 +127,10 @@ public class MainViewModel {
         appointment.setTotalPrice(totalPrice);
         appointment.getLocalizations().put("en", localAppointment);
 
-        if( descriptionText.getText() != null && !descriptionText.getText().isEmpty() ) {
+        if (descriptionText.getText() != null && !descriptionText.getText().isEmpty()) {
             appointment.getLocalizations().get("en").setDescription(descriptionText.getText());
         }
-        appointmentDao.addAppointment(appointment);
+        appointmentDao.add(appointment);
         // System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " +
         // product.getName("en") + " " + appointment.getId() + " \n");
         appointment.setMainProductId(mainProductId);
@@ -171,27 +165,27 @@ public class MainViewModel {
         }
         appointment.setMainProductId(mainProduct.getId());
         // Database update for appointment
-        appointmentDao.updateAppointment(appointment);
+        appointmentDao.update(appointment);
         if (descriptionText.getText() != null && !descriptionText.getText().isEmpty()) {
             appointment.getLocalizations().get("en").setDescription(descriptionText.getText());
         }
-    
+
         updateCalendar(true);
     }
 
     public Customer newestCustomer() {
         ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
-        return customerDao.findNewestCustomer();
+        return customerDao.findNewest();
     }
 
     public Animal newestPet() {
         IAnimalDao animalDao = (AnimalDao) daoMap.get("animal");
-        return animalDao.findNewestAnimal();
+        return animalDao.findNewest();
     }
 
     public Product newestProduct() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        return productDao.findNewestProduct();
+        return productDao.findNewest();
     }
 
     private Product getMainProduct(long id, List<Product> productList) {
@@ -205,7 +199,7 @@ public class MainViewModel {
 
     public ObservableList<Customer> getPeople() {
         ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
-        return FXCollections.observableList(customerDao.findAllCustomer());
+        return FXCollections.observableList(customerDao.findAll());
     }
 
     private static EventHandler<CalendarEvent> getEventHandler() {
@@ -220,10 +214,10 @@ public class MainViewModel {
             EventType<? extends Event> eventType = calendarEvent.getEventType();
             if (eventType == ENTRY_CALENDAR_CHANGED) {
                 if (calendar == null) {
-                    if (appointmentDao.deleteByIdAppointment(
+                    if (appointmentDao.deleteById(
                             ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()))) {
                         System.out.println(LocalTime.now().toString() + " Appointment deleted: "
-                                + calendarEvent.getEntry().getId() + "\n");
+                                           + calendarEvent.getEntry().getId() + "\n");
                     }
                 }
             } else if (eventType == ENTRY_INTERVAL_CHANGED) {
@@ -231,10 +225,10 @@ public class MainViewModel {
                     return;
                 }
                 Appointment appointment = appointmentDao
-                        .findByIdAppointment(ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()));
+                        .findById(ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()));
                 appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
                 appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
-                if (appointmentDao.updateAppointment(appointment)) {
+                if (appointmentDao.update(appointment)) {
                     System.out.println(LocalTime.now().toString() + " Appointment date updated");
                 }
             }
@@ -242,3 +236,4 @@ public class MainViewModel {
     }
 
 }
+

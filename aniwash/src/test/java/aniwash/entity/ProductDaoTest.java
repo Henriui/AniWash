@@ -39,8 +39,8 @@ public class ProductDaoTest {
 
     @AfterEach
     public void tearDown() {
-        for (Product p : productDao.findAllProducts()) {
-            productDao.deleteByIdProduct(p.getId());
+        for (Product p : productDao.findAll()) {
+            productDao.deleteById(p.getId());
         }
     }
 
@@ -55,8 +55,8 @@ public class ProductDaoTest {
     @Order(1)
     @DisplayName("Add new product")
     public void testAddProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
-        assertNotNull(product = productDao.findByIdProduct(product.getId()), "addProduct(): Can't find added product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
+        assertNotNull(product = productDao.findById(product.getId()), "addProduct(): Can't find added product.");
         assertEquals(product.getName("en"), Nimi, "addProduct(): Name of added product does not match.");
         assertEquals(product.getDescription("en"), Description, "addProduct(): Description of added product does not match.");
         assertEquals(product.getPrice(), Price, "addProduct(): Price of added product does not match.");
@@ -66,38 +66,38 @@ public class ProductDaoTest {
     @Order(2)
     @DisplayName("Try to add same product twice")
     public void testAddSameProductTwice() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
-        assertFalse(productDao.addProduct((product)), "addProduct(): Can add same product twice.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
+        assertFalse(productDao.add((product)), "addProduct(): Can add same product twice.");
     }
 
     @Test
     @Order(3)
     @DisplayName("Fetch added product by id")
     public void testFindByIdProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         long id = product.getId();
-        assertNotNull((product = productDao.findByIdProduct(id)), "findProductById(): Search for added product failed.");
+        assertNotNull((product = productDao.findById(id)), "findProductById(): Search for added product failed.");
     }
 
     @Test
     @Order(4)
     @DisplayName("Fetch added product by name")
     public void testFindByNameProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         String name = product.getName("en");
-        assertNotNull((product = productDao.findByNameProduct(name)), "findProductByName(): Search for added product failed.");
+        assertNotNull((product = productDao.findByName(name)), "findProductByName(): Search for added product failed.");
     }
 
     @Test
     @Order(5)
     @DisplayName("Fetch all products - one products in database")
     public void testFindAllProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
-        assertTrue(productDao.findAllProducts().size() > 0, "findAllProduct(): No products found.");
-        assertEquals(1, productDao.findAllProducts().size(), "findAllProduct(): Number of products does not match.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.findAll().size() > 0, "findAllProduct(): No products found.");
+        assertEquals(1, productDao.findAll().size(), "findAllProduct(): Number of products does not match.");
         Product product2 = new Product("Pesu iso", "Ison eläimen pesu", 50.00, "basic");
-        assertTrue(productDao.addProduct((product2)), "addProduct(): Can't add new product.");
-        assertEquals(2, productDao.findAllProducts().size(), "findAllProduct(): Number of products does not match.");
+        assertTrue(productDao.add((product2)), "addProduct(): Can't add new product.");
+        assertEquals(2, productDao.findAll().size(), "findAllProduct(): Number of products does not match.");
 
     }
 
@@ -105,89 +105,89 @@ public class ProductDaoTest {
     @Order(6)
     @DisplayName("Fetch all products - no products in database")
     public void testFindAllProductEmpty() {
-        productDao.addProduct((product));
-        List<Product> products = productDao.findAllProducts();
+        productDao.add((product));
+        List<Product> products = productDao.findAll();
         for (Product p : products) {
-            productDao.deleteByIdProduct(p.getId());
+            productDao.deleteById(p.getId());
         }
-        assertEquals(0, productDao.findAllProducts().size(), "findAllProduct(): Products found.");
+        assertEquals(0, productDao.findAll().size(), "findAllProduct(): Products found.");
     }
 
     @Test
     @Order(7)
     @DisplayName("Update name of product")
     public void testUpdateNameProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         String newName = "Pesu iso";
         product.getLocalizations().get("en").setName(newName);
-        assertTrue(productDao.updateProduct(product), "updateProduct(): Can't update product.");
-        assertEquals(newName, productDao.findByIdProduct(product.getId()).getName("en"), "updateProduct(): Name of product not updated.");
+        assertTrue(productDao.update(product), "updateProduct(): Can't update product.");
+        assertEquals(newName, productDao.findById(product.getId()).getName("en"), "updateProduct(): Name of product not updated.");
     }
 
     @Test
     @Order(8)
     @DisplayName("Update description of product")
     public void testUpdateDescriptionProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         String newDescription = "Ison eläimen pesu";
         product.getLocalizations().get("en").setDescription(newDescription);
-        assertTrue(productDao.updateProduct(product), "updateProduct(): Can't update product.");
-        assertEquals(newDescription, productDao.findByIdProduct(product.getId()).getDescription("en"), "updateProduct(): Description of product not updated.");
+        assertTrue(productDao.update(product), "updateProduct(): Can't update product.");
+        assertEquals(newDescription, productDao.findById(product.getId()).getDescription("en"), "updateProduct(): Description of product not updated.");
     }
 
     @Test
     @Order(9)
     @DisplayName("Update price of product")
     public void testUpdatePriceProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         double newPrice = 50.00;
         product.setPrice(newPrice);
-        assertTrue(productDao.updateProduct(product), "updateProduct(): Can't update product.");
-        assertEquals(newPrice, productDao.findByIdProduct(product.getId()).getPrice(), "updateProduct(): Price of product not updated.");
+        assertTrue(productDao.update(product), "updateProduct(): Can't update product.");
+        assertEquals(newPrice, productDao.findById(product.getId()).getPrice(), "updateProduct(): Price of product not updated.");
     }
 
     @Test
     @Order(10)
     @DisplayName("Delete product by id")
     public void testDeleteByIdProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         long id = product.getId();
-        assertTrue(productDao.deleteByIdProduct(id), "deleteProductById(): Can't delete product.");
-        assertNull(productDao.findByIdProduct(id), "deleteProductById(): Product not deleted.");
+        assertTrue(productDao.deleteById(id), "deleteProductById(): Can't delete product.");
+        assertNull(productDao.findById(id), "deleteProductById(): Product not deleted.");
     }
 
     @Test
     @Order(11)
     @DisplayName("Attempting to delete non-existing product should return false")
     public void testDeleteNonExistingProduct() {
-        assertFalse(productDao.deleteByIdProduct(999L), "deleteProductById(): Can delete non-existing product.");
+        assertFalse(productDao.deleteById(999L), "deleteProductById(): Can delete non-existing product.");
     }
 
     @Test
     @Order(12)
     @DisplayName("Attempting to update non-existing product should return false")
     public void testUpdateNonExistingProduct() {
-        assertFalse(productDao.updateProduct(product), "updateProduct(): Can update non-existing product.");
+        assertFalse(productDao.update(product), "updateProduct(): Can update non-existing product.");
     }
 
     @Test
     @Order(13)
     @DisplayName("Product soft delete")
     public void testSoftDeleteProduct() {
-        assertTrue(productDao.addProduct((product)), "addProduct(): Can't add new product.");
+        assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         long id = product.getId();
         product.setDeleted();
-        assertTrue(productDao.updateProduct(product), "softDeleteProduct(): Can't update product");
-        assertNotNull(productDao.findByIdProduct(id), "softDeleteProduct(): Product not found.");
-        assertEquals(1, productDao.findByIdProduct(id).isDeleted(), "softDeleteProduct(): Product not soft deleted.");
+        assertTrue(productDao.update(product), "softDeleteProduct(): Can't update product");
+        assertNotNull(productDao.findById(id), "softDeleteProduct(): Product not found.");
+        assertEquals(1, productDao.findById(id).isDeleted(), "softDeleteProduct(): Product not soft deleted.");
     }
 
     @Test
     @Order(14)
     @DisplayName("Search for nonexistent product should return null")
     public void testSearchNonExistingProduct() {
-        assertNull(productDao.findByIdProduct(999L), "findByIdProduct(): Found non-existing product.");
-        assertNull(productDao.findByNameProduct("Non-existing product"), "findByNameProduct(): Found non-existing product.");
+        assertNull(productDao.findById(999L), "findByIdProduct(): Found non-existing product.");
+        assertNull(productDao.findByName("Non-existing product"), "findByNameProduct(): Found non-existing product.");
     }
 
 }
