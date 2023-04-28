@@ -8,16 +8,15 @@ import jakarta.persistence.NoResultException;
 import java.util.List;
 import java.util.function.Consumer;
 
-/*
+/**
  * This class is used to access the database and perform CRUD operations on the Employee table.
+ *
  * @author rasmushy, lassib
  */
 public class EmployeeDao implements IEmployeeDao {
 
     public boolean add(Employee employee) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        // Find employee by username to check if it already exists.
-        // If it does, return false.
         try {
             Employee e = em.createQuery("SELECT a FROM Employee a WHERE a.username = :username", Employee.class).setParameter("username", employee.getUsername()).getSingleResult();
             if (em.contains(e)) {
@@ -40,19 +39,23 @@ public class EmployeeDao implements IEmployeeDao {
 
     public List<Employee> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.createQuery("SELECT a FROM Employee a", Employee.class).getResultList();
+        return em.createQuery("SELECT a FROM Employee a WHERE a.deleted = 0", Employee.class).getResultList();
     }
 
     public Employee findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.find(Employee.class, id);
+        Employee e = em.find(Employee.class, id);
+        if (e != null && e.isDeleted() > 0) {
+            return null;
+        }
+        return e;
     }
 
     public Employee findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
-            emp = em.createQuery("SELECT a FROM Employee a WHERE a.name = :name", Employee.class).setParameter("name", name).getSingleResult();
+            emp = em.createQuery("SELECT a FROM Employee a WHERE a.name = :name AND a.deleted = 0", Employee.class).setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No Employee found with name: " + name);
         }
@@ -63,7 +66,7 @@ public class EmployeeDao implements IEmployeeDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
-            emp = em.createQuery("SELECT a FROM Employee a WHERE a.email = :email", Employee.class).setParameter("email", email).getSingleResult();
+            emp = em.createQuery("SELECT a FROM Employee a WHERE a.email = :email AND a.deleted = 0", Employee.class).setParameter("email", email).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No Employee found with email: " + email);
         }
@@ -74,7 +77,7 @@ public class EmployeeDao implements IEmployeeDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
-            emp = em.createQuery("SELECT a FROM Employee a WHERE a.title = :title", Employee.class).setParameter("title", title).getSingleResult();
+            emp = em.createQuery("SELECT a FROM Employee a WHERE a.title = :title AND a.deleted = 0", Employee.class).setParameter("title", title).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No Employee found with title: " + title);
         }
@@ -85,7 +88,7 @@ public class EmployeeDao implements IEmployeeDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = null;
         try {
-            emp = em.createQuery("SELECT a FROM Employee a WHERE a.username = :username", Employee.class).setParameter("username", username).getSingleResult();
+            emp = em.createQuery("SELECT a FROM Employee a WHERE a.username = :username AND a.deleted = 0", Employee.class).setParameter("username", username).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No Employee found with username: " + username);
         }
@@ -95,7 +98,7 @@ public class EmployeeDao implements IEmployeeDao {
     public boolean update(Employee employee) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee emp = em.find(Employee.class, employee.getId());
-        if (emp == null) {
+        if (!em.contains(emp)) {
             System.out.println("Employee does not exist: " + employee.getName());
             return false;
         }
@@ -112,8 +115,11 @@ public class EmployeeDao implements IEmployeeDao {
     public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee employee = em.find(Employee.class, id);
-        if (employee != null) {
-            executeInTransaction(entityManager -> em.remove(employee), em);
+        if (em.contains(employee) && employee.isDeleted() == 0) {
+            em.getTransaction().begin();
+            employee.setDeleted();
+            em.getTransaction().commit();
+            //executeInTransaction(entityManager -> em.remove(employee), em);
             return true;
         }
         System.out.println("Employee does not exist with id: " + id);
@@ -124,7 +130,7 @@ public class EmployeeDao implements IEmployeeDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Employee employee = null;
         try {
-            employee = em.createQuery("SELECT a FROM Employee a ORDER BY a.id DESC", Employee.class).setMaxResults(1).getSingleResult();
+            employee = em.createQuery("SELECT a FROM Employee a WHERE a.deleted = 0 ORDER BY a.id DESC", Employee.class).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No Employee found");
         }

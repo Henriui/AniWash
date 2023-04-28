@@ -1,4 +1,4 @@
-package aniwash.view.model;
+package aniwash.view.elements;
 
 import aniwash.view.utilities.ControllerUtilities;
 import com.calendarfx.model.Entry;

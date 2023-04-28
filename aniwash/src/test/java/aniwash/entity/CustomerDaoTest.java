@@ -41,17 +41,6 @@ public class CustomerDaoTest {
         }
     }
 
-/*
-    @AfterAll
-    public static void afterAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
-    /*
-    ================================================================================================================
-    ===============================================================================================================
-    */
     @Test
     @DisplayName("Tässä kaikki testit yhdessä metodissa.")
     public void testDAOCustomer() {
@@ -269,8 +258,8 @@ public class CustomerDaoTest {
         long id = customer.getId();
         customer.setDeleted();
         assertTrue(customerDao.update(customer), "updateCustomer");
-        assertNotNull(customerDao.findById(id), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
-        assertEquals(1, customerDao.findById(id).isDeleted(), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
+        assertNull(customerDao.findById(id), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
+        //assertEquals(1, customerDao.findById(id).isDeleted(), "softDeleteCustomer(): Customerin poisto ei onnistunut.");
     }
 
 }

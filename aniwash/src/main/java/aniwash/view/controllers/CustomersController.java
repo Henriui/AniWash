@@ -8,7 +8,7 @@ import aniwash.MainApp;
 import aniwash.dao.CustomerDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Customer;
-import aniwash.view.model.CustomListViewCell;
+import aniwash.view.elements.CustomListViewCell;
 import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

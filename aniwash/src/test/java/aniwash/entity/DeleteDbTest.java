@@ -37,13 +37,6 @@ public class DeleteDbTest {
         apDao = new AppointmentDao();
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @DisplayName("Create multiple customers and animals test")
     @Order(1)

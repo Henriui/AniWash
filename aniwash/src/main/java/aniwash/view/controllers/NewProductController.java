@@ -1,5 +1,6 @@
 package aniwash.view.controllers;
 
+import aniwash.MainApp;
 import aniwash.entity.Product;
 import aniwash.entity.localization.LocalizedId;
 import aniwash.entity.localization.LocalizedProduct;
@@ -53,8 +54,8 @@ public class NewProductController {
         // All input values are valid, create the Procuct object
         Product product = new Product(name, description, Integer.parseInt(price), "style" + styleInt);
         LocalizedProduct localizedProduct = new LocalizedProduct(product, name, description);
-        localizedProduct.setId(new LocalizedId("en"));
-        product.getLocalizations().put("en", localizedProduct);
+        localizedProduct.setId(new LocalizedId(MainApp.getLocale().getLanguage()));
+        product.getLocalizations().put(MainApp.getLocale().getLanguage(), localizedProduct);
         MainViewModel mainViewModel = new MainViewModel();
         mainViewModel.createCalendar(product);
         Node source = (Node) event.getSource();

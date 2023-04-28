@@ -46,13 +46,6 @@ public class AppointmentAnimalTestDbTest {
         }
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @DisplayName("Create multiple appointments and animals test")
     @Order(1)

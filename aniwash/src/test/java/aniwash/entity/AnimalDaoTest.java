@@ -230,7 +230,8 @@ public class AnimalDaoTest {
         animalDao.add(animal);
         animal.setDeleted();
         assertTrue(animalDao.update(animal), "Päivitetyn eläimen tallennus ei onnistunut");
-        assertEquals(1, animalDao.findById(animal.getId()).isDeleted(), "Eläimen pehmeä poistaminen ei onnistunut");
+        assertNull(animalDao.findById(animal.getId()), "Eläimen pehmeä poistaminen ei onnistunut");
+        //assertEquals(1, animalDao.findById(animal.getId()).isDeleted(), "Eläimen pehmeä poistaminen ei onnistunut");
     }
 
 }

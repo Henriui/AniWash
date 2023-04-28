@@ -33,14 +33,18 @@ public class AnimalDao implements IAnimalDao {
 
     public Animal findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.find(Animal.class, id);
+        Animal a = em.find(Animal.class, id);
+        if (a != null && a.isDeleted() > 0) {
+            return null;
+        }
+        return a;
     }
 
     public Animal findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal t = null;
         try {
-            t = em.createQuery("SELECT a FROM Animal a WHERE a.name = :name", Animal.class).setParameter("name", name).getSingleResult();
+            t = em.createQuery("SELECT a FROM Animal a WHERE a.name = :name AND a.deleted = 0", Animal.class).setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No animal found with name: " + name);
         }
@@ -66,8 +70,11 @@ public class AnimalDao implements IAnimalDao {
     public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = em.find(Animal.class, id);
-        if (em.contains(a)) {
-            executeInTransaction(entityManager -> em.remove(a), em);
+        if (em.contains(a) && a.isDeleted() == 0) {
+            em.getTransaction().begin();
+            a.setDeleted();
+            em.getTransaction().commit();
+            //executeInTransaction(entityManager -> em.remove(a), em);
             return true;
         }
         System.out.println("Animal does not exist with id: " + id);
@@ -78,7 +85,7 @@ public class AnimalDao implements IAnimalDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Animal a = null;
         try {
-            a = em.createQuery("SELECT a FROM Animal a ORDER BY a.id DESC", Animal.class).setMaxResults(1).getSingleResult();
+            a = em.createQuery("SELECT a FROM Animal a WHERE a.deleted = 0 ORDER BY a.id DESC", Animal.class).setMaxResults(1).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No animal found");
         }

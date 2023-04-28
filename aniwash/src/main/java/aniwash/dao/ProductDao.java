@@ -9,8 +9,9 @@ import jakarta.persistence.NoResultException;
 import java.util.List;
 import java.util.function.Consumer;
 
-/*
+/**
  * This class is used to access the database and perform CRUD operations on the Product table.
+ *
  * @author rasmushy, lassib
  */
 public class ProductDao implements IProductDao {
@@ -33,14 +34,18 @@ public class ProductDao implements IProductDao {
 
     public Product findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.find(Product.class, id);
+        Product p = em.find(Product.class, id);
+        if (p != null && p.isDeleted() > 0) {
+            return null;
+        }
+        return p;
     }
 
     public Product findByName(String name) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = null;
         try {
-            LocalizedProduct lp = em.createQuery("SELECT lp FROM LocalizedProduct lp WHERE lp.name = :name", LocalizedProduct.class).setParameter("name", name).getSingleResult();
+            LocalizedProduct lp = em.createQuery("SELECT lp FROM LocalizedProduct lp WHERE lp.name = :name AND lp.product.deleted = 0", LocalizedProduct.class).setParameter("name", name).getSingleResult();
             p = lp.getProduct();
         } catch (NoResultException e) {
             System.out.println("No product found with name: " + name);
@@ -65,8 +70,11 @@ public class ProductDao implements IProductDao {
     public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = em.find(Product.class, id);
-        if (em.contains(p)) {
-            executeInTransaction(entityManager -> em.remove(p), em);
+        if (em.contains(p) && p.isDeleted() == 0) {
+            em.getTransaction().begin();
+            p.setDeleted();
+            em.getTransaction().commit();
+            //executeInTransaction(entityManager -> em.remove(p), em);
             return true;
         }
         System.out.println("Product does not exist for id: " + id);
@@ -77,7 +85,7 @@ public class ProductDao implements IProductDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Product p = null;
         try {
-            p = em.createQuery("SELECT p FROM Product p ORDER BY p.id DESC", Product.class).setMaxResults(1).getSingleResult();
+            p = em.createQuery("SELECT p FROM Product p ORDER BY p.id DESC", Product.class).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("No product found");
         }

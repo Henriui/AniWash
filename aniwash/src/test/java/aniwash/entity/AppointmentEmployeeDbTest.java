@@ -37,13 +37,6 @@ public class AppointmentEmployeeDbTest {
         }
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @DisplayName("Create multiple appointments and employees then remove appointments and employees")
     @Order(1)

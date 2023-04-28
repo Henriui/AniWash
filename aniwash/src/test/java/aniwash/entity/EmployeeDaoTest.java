@@ -40,13 +40,6 @@ public class EmployeeDaoTest {
         }
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @DisplayName("Create employee test")
     @Order(1)
@@ -74,6 +67,7 @@ public class EmployeeDaoTest {
     @DisplayName("Find employee by username test")
     @Order(3)
     public void findEmployeeByUsernameTest() {
+        employee.setUsername("tam");
         eDao.add(employee);
         Employee e = eDao.findByUsername(employee.getUsername());
         assertEquals(employee.getUsername(), e.getUsername(), "Employee username is not the same");
@@ -83,6 +77,7 @@ public class EmployeeDaoTest {
     @DisplayName("Find employee by email test")
     @Order(4)
     public void findEmployeeByEmailTest() {
+        employee.setUsername("tom");
         eDao.add(employee);
         Employee e = eDao.findByEmail(employee.getEmail());
         assertEquals(email, e.getEmail(), "Employee email is not the same");
@@ -92,6 +87,7 @@ public class EmployeeDaoTest {
     @DisplayName("Find employee by title test")
     @Order(5)
     public void findEmployeeByTitleTest() {
+        employee.setUsername("tem");
         eDao.add(employee);
         Employee e = eDao.findByTitle(employee.getTitle());
         assertEquals(title, e.getTitle(), "Employee role is not the same");
@@ -101,6 +97,7 @@ public class EmployeeDaoTest {
     @DisplayName("Find employee by name test")
     @Order(6)
     public void findEmployeeByNameTest() {
+        employee.setUsername("tum");
         eDao.add(employee);
         Employee e = eDao.findByName(employee.getName());
         assertEquals(name, e.getName(), "Employee name is not the same");
@@ -110,6 +107,7 @@ public class EmployeeDaoTest {
     @DisplayName("Update employee test")
     @Order(7)
     public void updateEmployeeTest() {
+        employee.setUsername("txm");
         eDao.add(employee);
         employee = eDao.findById(employee.getId());
         employee.setTitle("Employee");
@@ -126,6 +124,7 @@ public class EmployeeDaoTest {
     @DisplayName("Update employee password test")
     @Order(8)
     public void updateEmployeePasswordTest() {
+        employee.setUsername("tzm");
         eDao.add(employee);
         employee = eDao.findById(employee.getId());
         employee.setPassword("newPassword");
@@ -139,6 +138,7 @@ public class EmployeeDaoTest {
     @DisplayName("Delete employee test")
     @Order(9)
     public void deleteEmployeeTest() {
+        employee.setUsername("tvm");
         eDao.add(employee);
         assertTrue(eDao.deleteById(employee.getId()), "deleteByIdEmployee(): Employee was not deleted");
     }
@@ -154,12 +154,13 @@ public class EmployeeDaoTest {
     @DisplayName("Employee soft delete test")
     @Order(11)
     public void softDeleteEmployeeTest() {
+        employee.setUsername("tym");
         assertTrue(eDao.add(employee), "addEmployee(): Employee was not added");
         long id = employee.getId();
         employee.setDeleted();
         assertTrue(eDao.update(employee), "updateEmployee(): Employee was not updated");
-        assertNotNull((employee = eDao.findById(id)), "addEmployee(): Added employee is null");
-        assertEquals(1, employee.isDeleted(), "isDeleted(): Employee is not deleted");
+        assertNull((employee = eDao.findById(id)), "addEmployee(): Added employee is null");
+        //assertEquals(1, employee.isDeleted(), "isDeleted(): Employee is not deleted");
     }
 
     @Test

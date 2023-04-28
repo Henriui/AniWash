@@ -4,7 +4,7 @@ import aniwash.MainApp;
 import aniwash.dao.IProductDao;
 import aniwash.dao.ProductDao;
 import aniwash.entity.Product;
-import aniwash.view.model.CustomListViewCellProduct;
+import aniwash.view.elements.CustomListViewCellProduct;
 import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -65,7 +65,7 @@ public class ProductController {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 } else {
-                    return product.getLocalizations().get("en").getName().toLowerCase().contains(newValue.toLowerCase());
+                    return product.getLocalizations().get(MainApp.getLocale().getLanguage()).getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
             ObservableList<Product> filteredCustomers = products.get().filtered(productFilter);

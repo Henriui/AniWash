@@ -65,14 +65,18 @@ public class AppointmentDao implements IAppointmentDao {
 
     public Appointment findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.find(Appointment.class, id);
+        Appointment a = em.find(Appointment.class, id);
+        if (a != null && a.isDeleted() > 0) {
+            return null;
+        }
+        return a;
     }
 
     public Appointment findByStartDate(ZonedDateTime date) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :startDate", Appointment.class).setParameter("startDate", date).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :startDate AND a.deleted = 0", Appointment.class).setParameter("startDate", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }
@@ -100,8 +104,11 @@ public class AppointmentDao implements IAppointmentDao {
     public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment appointment = em.find(Appointment.class, id);
-        if (em.contains(appointment)) {
-            executeInTransaction(entityManager -> em.remove(appointment), em);
+        if (em.contains(appointment) && appointment.isDeleted() == 0) {
+            em.getTransaction().begin();
+            appointment.setDeleted();
+            em.getTransaction().commit();
+            //executeInTransaction(entityManager -> em.remove(appointment), em);
             return true;
         }
         System.out.println("No appointment found with id: " + id);
@@ -112,7 +119,7 @@ public class AppointmentDao implements IAppointmentDao {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a ORDER BY a.startDate DESC", Appointment.class).setMaxResults(1).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.deleted = 0 ORDER BY a.startDate DESC", Appointment.class).setMaxResults(1).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found");
         }

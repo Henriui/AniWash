@@ -43,13 +43,6 @@ public class AppointmentDaoTest {
         }
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @Order(1)
     @DisplayName("Add new appointment")
@@ -160,20 +153,10 @@ public class AppointmentDaoTest {
         assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
         appointment = appointmentDao.findById(appointment.getId());
         appointment.setDeleted();
-        assertTrue(appointmentDao.update(appointment), "updateAppointment(): Update added appointment failed.");
-        appointment = appointmentDao.findById(appointment.getId());
         assertEquals(1, appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
-    }
-
-    @Test
-    @Order(13)
-    @DisplayName("Set appointment as not deleted and fetch it")
-    public void testSetNotDeleted() {
-        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findById(appointment.getId());
-        appointment.setDeleted();
         assertTrue(appointmentDao.update(appointment), "updateAppointment(): Update added appointment failed.");
-        assertEquals(1, appointmentDao.findById(appointment.getId()).isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
+        appointment = appointmentDao.findById(appointment.getId());
+        assertNull(appointment, "updateAppointment(): Deleted appointment can still be found.");
     }
 
 }

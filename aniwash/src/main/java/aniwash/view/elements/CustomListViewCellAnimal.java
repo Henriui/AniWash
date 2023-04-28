@@ -1,4 +1,4 @@
-package aniwash.view.model;
+package aniwash.view.elements;
 
 import aniwash.entity.Animal;
 import javafx.geometry.Insets;

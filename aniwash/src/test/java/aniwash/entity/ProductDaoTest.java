@@ -44,13 +44,6 @@ public class ProductDaoTest {
         }
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @Order(1)
     @DisplayName("Add new product")
@@ -153,7 +146,8 @@ public class ProductDaoTest {
         assertTrue(productDao.add((product)), "addProduct(): Can't add new product.");
         long id = product.getId();
         assertTrue(productDao.deleteById(id), "deleteProductById(): Can't delete product.");
-        assertNull(productDao.findById(id), "deleteProductById(): Product not deleted.");
+        Product product = productDao.findById(id);
+        assertNull(product, "deleteProductById(): Product not deleted.");
     }
 
     @Test
@@ -178,8 +172,8 @@ public class ProductDaoTest {
         long id = product.getId();
         product.setDeleted();
         assertTrue(productDao.update(product), "softDeleteProduct(): Can't update product");
-        assertNotNull(productDao.findById(id), "softDeleteProduct(): Product not found.");
-        assertEquals(1, productDao.findById(id).isDeleted(), "softDeleteProduct(): Product not soft deleted.");
+        assertNull(productDao.findById(id), "softDeleteProduct(): Product not found.");
+        //assertEquals(1, productDao.findById(id).isDeleted(), "softDeleteProduct(): Product not soft deleted.");
     }
 
     @Test
