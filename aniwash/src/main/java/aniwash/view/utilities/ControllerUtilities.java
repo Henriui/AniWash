@@ -97,6 +97,17 @@ public class ControllerUtilities {
         stage.show();
     }
 
+    public static void newAnimal(Stage stage) throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+        loader = loadFXML("createNewAnimalView");
+        scene = new Scene(loader.load());
+        stage.setScene(scene);
+        stage.setTitle("Create Animal");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
     public static long removeStringFromId(String id) {
         StringBuilder sb = new StringBuilder(id);
         sb.deleteCharAt(0);

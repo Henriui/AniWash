@@ -37,7 +37,7 @@ public class CustomersController {
     @FXML
     private TextField searchField;
 
-    private ICustomerDao customerDao;
+    private ICustomerDao customerDao = new CustomerDao();
 
     /*
      * public void test() {
@@ -119,6 +119,8 @@ public class CustomersController {
         });
     }
 
+
+
     @FXML
     public void newCustomer() throws IOException {
         Stage stage = new Stage();
@@ -148,5 +150,11 @@ public class CustomersController {
     @FXML
     private void admin() throws IOException {
         MainApp.setRoot("AdminPanel");
+    }
+
+    public void removeCustomer(Customer customer) {
+        System.out.println("ONKO ID \n\n" + customer.getId());
+        //listView.getItems().remove(customer);
+        customerDao.deleteById(customer.getId());
     }
 }

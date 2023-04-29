@@ -33,7 +33,7 @@ public class MainViewModel {
     private static boolean updateTrigger = false;
 
     public MainViewModel() {
-        DatabaseConnector.openDbConnection("com.aniwash");
+        DatabaseConnector.openDbConnection("com.aniwash.test");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
         daoMap.put("animal", new AnimalDao());
