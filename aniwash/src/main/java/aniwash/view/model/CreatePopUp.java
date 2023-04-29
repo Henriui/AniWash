@@ -37,6 +37,7 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
         else {
             try {
                 loader = ControllerUtilities.loadFXML("editAppoitment");
+                System.out.println("Edit Appointment " + loader.toString() + " " + loader.getLocation());
                 scene = new Scene(loader.load());
                 Stage stage = new Stage();
                 stage.setScene(scene);

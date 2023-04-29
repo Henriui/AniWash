@@ -1,6 +1,7 @@
 package aniwash.view.controllers;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import aniwash.MainApp;
 import aniwash.dao.EmployeeDao;
@@ -24,7 +25,6 @@ public class AdminViewController {
     @FXML
     public void initialize() {
         // Set up the toggle group for the radio buttons.
-        System.out.println("Admin view controller initialized");
         ToggleGroup grp = new ToggleGroup();
         this.employee.setToggleGroup(grp);
         this.employer.setToggleGroup(grp);
@@ -67,7 +67,6 @@ public class AdminViewController {
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
-            System.out.println("sum ting wong");
         }
 
     }
@@ -119,5 +118,43 @@ public class AdminViewController {
         this.title.clear();
 
         return true;
+    }
+
+    private void logout() throws IOException {
+        MainApp.setRoot("login");
+    }
+
+    @FXML
+    private void mySchedule() throws IOException {
+        MainApp.setRoot("schedule");
+    }
+
+    @FXML
+    private void customers() throws IOException {
+        MainApp.setRoot("customerView");
+    }
+    @FXML
+    private void dashboard() throws IOException {
+        MainApp.setRoot("MainView");
+    }
+
+    @FXML
+    private void products() throws IOException {
+        MainApp.setRoot("productsView");
+    }
+
+    @FXML
+    private void admin() throws IOException {
+        MainApp.setRoot("AdminPanel");
+    }
+
+    @FXML
+    private void changeLanguage() throws IOException {
+        if (MainApp.getLocale().getLanguage().equals("en")) {
+            MainApp.setLocale(new Locale.Builder().setLanguage("fr").setRegion("FR").build());
+        } else {
+            MainApp.setLocale(new Locale.Builder().setLanguage("en").setRegion("US").build());
+        }
+        MainApp.setRoot("mainView");
     }
 }

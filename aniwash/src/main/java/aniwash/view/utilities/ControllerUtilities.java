@@ -3,6 +3,7 @@ package aniwash.view.utilities;
 import aniwash.MainApp;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
+import aniwash.entity.Discount;
 import aniwash.entity.Product;
 import aniwash.view.controllers.CreateNewAnimalController;
 import aniwash.viewmodels.DiscountProduct;
@@ -36,7 +37,6 @@ import java.io.IOException;
 public class ControllerUtilities {
 
     private static ObservableList<Product> extraProductObservableList;
-    public static ShoppingCart shoppingCart = new ShoppingCart();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
@@ -130,7 +130,7 @@ public class ControllerUtilities {
                     customerObservableList);
             petList.getSelectionModel().select(newAnimal);
             newEntry.setLocation(personList.getSelectionModel().getSelectedItem().getName()); // TODO: muuta käyttöä
-                                                                                              // titlelle
+            // titlelle
         };
     }
 
@@ -183,7 +183,7 @@ public class ControllerUtilities {
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
             Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
             Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
-            Button deleteSelectedProduct, ListView extraProducts, Text totalPrice) {
+            Button deleteSelectedProduct, ListView extraProducts, Text totalPrice, ShoppingCart shoppingCart) {
         return mouseEvent -> {
             extraProducts.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
             // Set the placeholder text for the ListView
@@ -219,7 +219,9 @@ public class ControllerUtilities {
 
                     // Adds mainProduct to shopping cart with default discount.
 
-                    shoppingCart.addProduct(productCalendar.getUserObject(), "0");
+                    Discount basicDiscount = new Discount(productCalendar.getUserObject().getId(), 0.0);
+
+                    shoppingCart.addProduct(productCalendar.getUserObject(), basicDiscount);
 
                     // Removes selected product from the product listview and sets mainProduct
                     // AnchorPane to visible.
@@ -232,12 +234,15 @@ public class ControllerUtilities {
                     // All other items selected from the product listView are extra products.
                     // Adds selected product to the shopping cart with default discount.
 
-                    shoppingCart.addProduct(productCalendar.getUserObject(), "0");
+                    Discount extraDiscount = new Discount(productCalendar.getUserObject().getId(), 0.0);
+                    shoppingCart.addProduct(productCalendar.getUserObject(), extraDiscount);
 
                     // Make "adapter" product so discount price can be directly be added to the
                     // product, so view is showing correct price.
 
-                    DiscountProduct discountProduct = new DiscountProduct(productCalendar.getUserObject().getLocalizations().get("en").getName(), productCalendar.getUserObject().getLocalizations().get("en").getDescription(), productCalendar.getUserObject().getPrice(), productCalendar.getUserObject().getStyle());
+                    DiscountProduct discountProduct = new DiscountProduct(
+                            productCalendar.getUserObject().getLocalizations().get("en").getName(),
+                            productCalendar.getUserObject().getPrice());
 
                     // Add product to the extra product listView.
 
@@ -253,7 +258,6 @@ public class ControllerUtilities {
 
                 }
             }
-            System.out.println("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
 
             // Set totalPrice text to match all selected product price.
 
@@ -262,15 +266,14 @@ public class ControllerUtilities {
     }
 
     public static EventHandler<ActionEvent> applyDiscount(TextField setDiscount,
-            ListView<DiscountProduct> extraProducts, Text selectedProductCost,
-            Text selectedProductCostDiscount, Entry newEntry, Text selectedProduct, Text totalPrice) {
+            ListView<DiscountProduct> extraProducts, Text selectedProductCost, Text selectedProductCostDiscount,
+            Entry newEntry, Text selectedProduct, Text totalPrice, ShoppingCart shoppingCart) {
         return event -> {
 
             // If discount is applied and MainProduct is selected.
 
             if (!setDiscount.getText().isEmpty() && extraProducts.getSelectionModel().getSelectedItem() == null
                     && selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
-
                 // Get main product from newEntry and calculate discount for the product.
 
                 Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
@@ -287,7 +290,9 @@ public class ControllerUtilities {
 
                 // Edit discount to the shopping cart.
 
-                shoppingCart.editDiscount(mainProduct, discount);
+                Discount editDiscount = new Discount(mainProduct.getId(), Double.parseDouble(discount));
+
+                shoppingCart.editDiscount(mainProduct, editDiscount);
             }
 
             // If discount is applied and nothing is selected.
@@ -296,6 +301,7 @@ public class ControllerUtilities {
                     && !selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
                 System.out.println("nothing selected");
                 // TODO: add dicount to current price (To all items).
+                System.out.println("Please select a product" + extraProducts.getSelectionModel().getSelectedIndex());
             }
 
             // If discount is applied and extraProduct is selected.
@@ -308,37 +314,34 @@ public class ControllerUtilities {
                 DiscountProduct product = extraProducts.getSelectionModel().getSelectedItem();
                 String discount = setDiscount.getText();
                 Product original = shoppingCart.getProduct(product.getName());
+
                 double newPrice = original.getPrice() - (original.getPrice() * (0.01 * Double.parseDouble(discount)));
 
                 System.out.println("Please select a product what is in entry" + original.getPrice());
-                System.out.println("!?!?!?!?!?!??!?!?!" + newPrice);
 
                 // Set a price for the selected item, and modify the shopping cart the match the
                 // discounted %.
 
                 extraProducts.getItems().get(extraProducts.getSelectionModel().getSelectedIndex()).setPrice(newPrice);
-                shoppingCart.editDiscountString(product.getName(), discount);
+
+                Discount editDiscount = new Discount(original.getId(), Double.parseDouble(discount));
+                shoppingCart.editDiscountString(product.getName(), editDiscount);
 
                 // Refresh the listview to show new price for discounted product.
 
                 extraProducts.refresh(); // Should update all the cells in the ListView
 
             }
-            System.out.println("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
-
             // Set totalPrice text to match all selected product price.
 
             totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
     }
 
-    public static ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
             ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
             Entry<Appointment> newEntry) {
+
         return mouseEvent -> {
             if (petList.getSelectionModel().getSelectedItem().contains("+")) {
                 try {
@@ -389,7 +392,7 @@ public class ControllerUtilities {
 
     public static EventHandler<ActionEvent> deleteMainProduct(ListView<String> services, AnchorPane selectedProductPane,
             Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
-            Text selectedProductCostDiscount, Text totalPrice) {
+            Text selectedProductCostDiscount, Text totalPrice, ShoppingCart shoppingCart, Appointment appointment) {
         return event -> {
 
             // Add MainProduct back to the product ListView and hide the MainProduct
@@ -397,20 +400,17 @@ public class ControllerUtilities {
 
             services.getItems().addAll(selectedProduct.getText());
             selectedProductPane.setVisible(false);
-            System.out.println("deleteMainProduct" + newEntry.getCalendar().getUserObject());
 
             // Remove product from the shopping cart.
 
-            shoppingCart.removeMainProduct((Product) newEntry.getCalendar().getUserObject());
+            shoppingCart.removeProduct((Product) newEntry.getCalendar().getUserObject());
 
+            if (appointment != null)
+                appointment.removeProduct((Product) newEntry.getCalendar().getUserObject());
             // Set strike text to false and hide the discount text.
 
             selectedProductCost.strikethroughProperty().set(false);
             selectedProductCostDiscount.setVisible(false);
-
-            // Set Calendar to null.
-
-            //newEntry.setCalendar(null);
 
             // Set totalPrice text to match all selected product price.
 
@@ -422,6 +422,7 @@ public class ControllerUtilities {
     public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel,
             ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
             Entry<Appointment> newEntry, ListView<String> services) {
+
         return mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
                 try {

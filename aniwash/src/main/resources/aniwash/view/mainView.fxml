@@ -119,13 +119,14 @@
                                     style="-fx-background-color: #fffdfd; -fx-background-radius: 15;"
                                     AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="395.0">
                             <children>
-                                <Text fill="#757575" layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="10" translateY="6.0" AnchorPane.leftAnchor="14.0"
+                                <Text fx:id='customersThisMo' fill="#757575" layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0"  translateY="6.0" AnchorPane.leftAnchor="14.0"
                                       AnchorPane.topAnchor="30.1240234375">
                                     <font>
                                         <Font size="49.0"/>
                                     </font>
                                 </Text>
+                                <!-- Year cuhtomer -->
                                 <Text layoutX="14.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0"
                                       text="%totalCustomersYearLabel" wrappingWidth="281.9775390625"
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="131.10799980163574">
@@ -133,14 +134,15 @@
                                         <Font name="Ikonli" size="21.0"/>
                                     </font>
                                 </Text>
-                                <Text fill="#757575" layoutX="14.0" layoutY="198.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="103" translateY="3.0"
+                                <Text fx:id='customersThisYear' fill="#757575" layoutX="14.0" layoutY="198.0" strokeType="OUTSIDE"
+                                      strokeWidth="0.0"  translateY="3.0"
                                       AnchorPane.bottomAnchor="52.35884490919261" AnchorPane.leftAnchor="14.0"
                                       AnchorPane.topAnchor="145.10382356769014">
                                     <font>
                                         <Font size="49.0"/>
                                     </font>
                                 </Text>
+                                <!-- month cuhtomer -->
                                 <Button layoutX="14.0" layoutY="218.0" mnemonicParsing="false" prefHeight="31.0"
                                         prefWidth="126.0"
                                         style="-fx-background-color: #f0f1f6; -fx-background-radius: 30;"
@@ -162,6 +164,7 @@
                                     style="-fx-background-color: #fffdfd; -fx-background-radius: 30;"
                                     AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="35.0">
                             <children>
+                            <!-- Month mony -->
                                 <Text fill="#868686" layoutX="14.0" layoutY="93.0" strokeType="OUTSIDE"
                                       strokeWidth="0.0" text="%incomeThisMonthLabel" wrappingWidth="281.9775390625"
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="74.0">
@@ -169,12 +172,13 @@
                                         <Font name="Ikonli" size="21.0"/>
                                     </font>
                                 </Text>
-                                <Text layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="300€"
+                                <Text fx:id='thisMonth' layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" 
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.1240234375">
                                     <font>
                                         <Font size="49.0"/>
                                     </font>
                                 </Text>
+                                <!-- last month mony -->
                                 <Text fill="#868686" layoutX="14.0" layoutY="193.0" strokeType="OUTSIDE"
                                       strokeWidth="0.0" text="%incomeLastMonthLabel" wrappingWidth="281.9775390625"
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="174.0">
@@ -182,7 +186,7 @@
                                         <Font name="Ikonli" size="21.0"/>
                                     </font>
                                 </Text>
-                                <Text layoutX="14.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="300€"
+                                <Text fx:id='lastMonth' layoutX="14.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" 
                                       AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="114.1240234375">
                                     <font>
                                         <Font size="49.0"/>
