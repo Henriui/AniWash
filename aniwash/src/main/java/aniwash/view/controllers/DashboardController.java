@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -42,6 +43,8 @@ public class DashboardController {
     private Text customersThisMo;
     @FXML
     private Text customersThisYear;
+    @FXML
+    private MenuButton languageButton;
 
     private final MainViewModel mainViewModel = new MainViewModel();
     @FXML
@@ -110,6 +113,18 @@ public class DashboardController {
         } else {
             MainApp.setLocale(new Locale.Builder().setLanguage("en").setRegion("US").build());
         }
+        MainApp.setRoot("mainView");
+    }
+
+    @FXML
+    private void changeLanguageEnglish() throws IOException {
+        MainApp.setLocale(new Locale.Builder().setLanguage("en").setRegion("US").build());
+        MainApp.setRoot("mainView");
+    }
+
+    @FXML
+    private void changeLanguageFrance() throws IOException {
+        MainApp.setLocale(new Locale.Builder().setLanguage("fr").setRegion("FR").build());
         MainApp.setRoot("mainView");
     }
 
