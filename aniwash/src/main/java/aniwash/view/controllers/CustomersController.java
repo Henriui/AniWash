@@ -119,8 +119,6 @@ public class CustomersController {
         });
     }
 
-
-
     @FXML
     public void newCustomer() throws IOException {
         Stage stage = new Stage();
