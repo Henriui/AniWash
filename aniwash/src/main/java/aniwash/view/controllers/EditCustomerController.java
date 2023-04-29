@@ -5,8 +5,8 @@ import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.view.model.CustomListViewCellAnimal;
-import aniwash.view.model.CustomListViewCellAppointment;
+import aniwash.view.elements.CustomListViewCellAnimal;
+import aniwash.view.elements.CustomListViewCellAppointment;
 import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -137,7 +137,7 @@ public class EditCustomerController {
         customer.setPostalCode(postalCode);
 
         ICustomerDao customerDao = new CustomerDao();
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

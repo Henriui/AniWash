@@ -86,8 +86,8 @@ public class NewCustomerController {
         Map<String, IDao> daoMap = calendar.getDaoMap();
         ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
         IAnimalDao animalDao = (AnimalDao) daoMap.get("animal");
-        customerDao.addCustomer(customer);
-        animalDao.addAnimal(animal);
+        customerDao.add(customer);
+        animalDao.add(animal);
         customer.addAnimal(animal);
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

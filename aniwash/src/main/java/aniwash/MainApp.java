@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static java.lang.System.getProperty;
-
 public class MainApp extends Application {
 
     @FXML

@@ -37,13 +37,6 @@ public class DeleteDbTest {
         apDao = new AppointmentDao();
     }
 
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
-
     @Test
     @DisplayName("Create multiple customers and animals test")
     @Order(1)
@@ -51,8 +44,8 @@ public class DeleteDbTest {
         for (int i = 0; i < 20; i++) {
             Customer c = TestCustomer.generateTestCustomer();
             Animal a = new Animal("Uli" + i, "Dog", "Husky", "Uliseva rakki");
-            cDao.addCustomer(c);
-            aDao.addAnimal(a);
+            cDao.add(c);
+            aDao.add(a);
             c.addAnimal(a);
         }
 
@@ -62,16 +55,16 @@ public class DeleteDbTest {
             animals.add(a);
         }
 
-        Customer c = cDao.findNewestCustomer();
+        Customer c = cDao.findNewest();
 
         for (Animal a : animals) {
-            aDao.addAnimal(a);
+            aDao.add(a);
             c.addAnimal(a);
         }
 
         for (int i = 0; i < 10; i++) {
             Employee e = new Employee("John" + i, "password", "John" + i, "john" + i + "@gmail.com", "Employee", UserType.EMPLOYEE);
-            eDao.addEmployee(e);
+            eDao.add(e);
         }
 
         for (int i = 1; i < 9; i++) {
@@ -87,28 +80,28 @@ public class DeleteDbTest {
             ap.addProduct(product);
             ap.addCustomer(c);
             ap.addAnimal(c.getAnimalList().get(i));
-            apDao.addAppointment(ap);
+            apDao.add(ap);
         }
 
-        assertEquals(20, cDao.findAllCustomer().size(), "Customer list size is not 10");
-        assertEquals(20, cDao.findNewestCustomer().getAnimalList().size(), "Customers animal list size is not 20");
-        assertEquals(39, aDao.findAllAnimals().size(), "Animal list size is not 39");
-        assertEquals(10, eDao.findAllEmployee().size(), "Employee list size is not 10");
-        assertEquals(8, pDao.findAllProducts().size(), "Product list size is not 10");
-        assertEquals(8, apDao.findAllAppointments().size(), "Appointment list size is not 10");
+        assertEquals(20, cDao.findAll().size(), "Customer list size is not 10");
+        assertEquals(20, cDao.findNewest().getAnimalList().size(), "Customers animal list size is not 20");
+        assertEquals(39, aDao.findAll().size(), "Animal list size is not 39");
+        assertEquals(10, eDao.findAll().size(), "Employee list size is not 10");
+        assertEquals(8, pDao.findAll().size(), "Product list size is not 10");
+        assertEquals(8, apDao.findAll().size(), "Appointment list size is not 10");
     }
 
     @Test
     @Order(2)
     @DisplayName("Find all animals from customer test")
     public void findTest() {
-        List<Customer> customerList = cDao.findAllCustomer();
+        List<Customer> customerList = cDao.findAll();
         List<Animal> animalList = new ArrayList<>();
         for (Customer c : customerList) {
             animalList.addAll(c.getAnimals());
         }
         for (Animal a : animalList) {
-            assertEquals(a, aDao.findByIdAnimal(a.getId()), "Animal not found");
+            assertEquals(a, aDao.findById(a.getId()), "Animal not found");
         }
     }
 
@@ -116,13 +109,13 @@ public class DeleteDbTest {
     @Order(3)
     @DisplayName("Find all appointments from customer test")
     public void findAppointmentTest() {
-        List<Customer> customerList = cDao.findAllCustomer();
+        List<Customer> customerList = cDao.findAll();
         List<Appointment> appointmentList = new ArrayList<>();
         for (Customer c : customerList) {
             appointmentList.addAll(c.getAppointments());
         }
         for (Appointment ap : appointmentList) {
-            assertEquals(ap, apDao.findByIdAppointment(ap.getId()), "Appointment not found");
+            assertEquals(ap, apDao.findById(ap.getId()), "Appointment not found");
         }
         assertEquals(8, appointmentList.size(), "Appointment list size is not 10");
     }
@@ -132,11 +125,11 @@ public class DeleteDbTest {
     @DisplayName("Delete all appointments test")
     public void deleteAllAppointmentTest() {
 
-        List<Appointment> appointmentList = apDao.findAllAppointments();
+        List<Appointment> appointmentList = apDao.findAll();
         for (Appointment ap : appointmentList) {
-            apDao.deleteByIdAppointment(ap.getId());
+            apDao.deleteById(ap.getId());
         }
-        appointmentList = apDao.findAllAppointments();
+        appointmentList = apDao.findAll();
         assertEquals(0, appointmentList.size(), "Appointment list size is not 0");
     }
 
@@ -145,16 +138,16 @@ public class DeleteDbTest {
     @DisplayName("Delete all customers test")
     public void deleteAllCustomerTest() {
 
-        List<Customer> customerList = cDao.findAllCustomer();
+        List<Customer> customerList = cDao.findAll();
         for (Customer c : customerList) {
 
             List<Animal> animalList = c.getAnimalList();
             for (Animal a : animalList) {
                 c.removeAnimal(a);
             }
-            cDao.deleteByIdCustomer(c.getId());
+            cDao.deleteById(c.getId());
         }
-        assertEquals(0, cDao.findAllCustomer().size(), "Customer list size is not 0");
+        assertEquals(0, cDao.findAll().size(), "Customer list size is not 0");
     }
 
     @Test
@@ -162,11 +155,11 @@ public class DeleteDbTest {
     @DisplayName("Delete all animals test")
     public void deleteAllAnimalTest() {
 
-        List<Animal> animalList = aDao.findAllAnimals();
+        List<Animal> animalList = aDao.findAll();
         for (Animal a : animalList) {
-            aDao.deleteByIdAnimal(a.getId());
+            aDao.deleteById(a.getId());
         }
-        animalList = aDao.findAllAnimals();
+        animalList = aDao.findAll();
         assertEquals(0, animalList.size(), "Animal list size is not 0");
     }
 
@@ -175,11 +168,11 @@ public class DeleteDbTest {
     @DisplayName("Delete all employees test")
     public void deleteAllEmployeeTest() {
 
-        List<Employee> employeeList = eDao.findAllEmployee();
+        List<Employee> employeeList = eDao.findAll();
         for (Employee e : employeeList) {
-            eDao.deleteByIdEmployee(e.getId());
+            eDao.deleteById(e.getId());
         }
-        employeeList = eDao.findAllEmployee();
+        employeeList = eDao.findAll();
         assertEquals(0, employeeList.size(), "Employee list size is not 0");
     }
 
@@ -188,11 +181,11 @@ public class DeleteDbTest {
     @DisplayName("Delete all products test")
     public void deleteAllProductTest() {
 
-        List<Product> productList = pDao.findAllProducts();
+        List<Product> productList = pDao.findAll();
         for (Product p : productList) {
-            pDao.deleteByIdProduct(p.getId());
+            pDao.deleteById(p.getId());
         }
-        productList = pDao.findAllProducts();
+        productList = pDao.findAll();
         assertEquals(0, productList.size(), "Product list size is not 0");
     }
 

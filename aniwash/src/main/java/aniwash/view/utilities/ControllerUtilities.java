@@ -68,7 +68,7 @@ public class ControllerUtilities {
         final FXMLLoader loader;
         final Scene scene;
         loader = loadFXML("editCustomerView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Customer");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -91,7 +91,7 @@ public class ControllerUtilities {
         final FXMLLoader loader;
         final Scene scene;
         loader = loadFXML("newProductView");
-        scene = new Scene((javafx.scene.Parent) loader.load());
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Product");
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -148,7 +148,7 @@ public class ControllerUtilities {
         return productEvent -> {
             services.getItems().clear();
             mainViewModel.getCalendarMap().values().forEach(service -> services.getItems().addAll(service.getName()));
-            String newProduct = mainViewModel.newestProduct().getLocalizations().get("en").getName();
+            String newProduct = mainViewModel.newestProduct().getName(MainApp.getLocale().getLanguage());
             services.getSelectionModel().select(newProduct);
             services.scrollTo(newProduct);
             Calendar<Product> productCalendar = mainViewModel.getCalendarMap()
@@ -212,7 +212,7 @@ public class ControllerUtilities {
 
                 // Main product
 
-                if (selectedProductPane.isVisible() == false) {
+                if (!selectedProductPane.isVisible()) {
 
                     // Set title and set petList to enabled
 
@@ -250,7 +250,7 @@ public class ControllerUtilities {
                     // product, so view is showing correct price.
 
                     DiscountProduct discountProduct = new DiscountProduct(
-                            productCalendar.getUserObject().getLocalizations().get("en").getName(),
+                            productCalendar.getUserObject().getName(MainApp.getLocale().getLanguage()),
                             productCalendar.getUserObject().getPrice());
 
                     // Add product to the extra product listView.
@@ -270,7 +270,7 @@ public class ControllerUtilities {
 
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
     }
 
@@ -343,7 +343,7 @@ public class ControllerUtilities {
             }
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
     }
 
@@ -423,7 +423,7 @@ public class ControllerUtilities {
 
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + String.valueOf(shoppingCart.getTotalDiscountedPrice() + "€"));
+            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
 
     }

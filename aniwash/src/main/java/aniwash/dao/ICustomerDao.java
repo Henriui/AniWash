@@ -4,24 +4,13 @@ import aniwash.entity.Customer;
 
 import java.util.List;
 
-public interface ICustomerDao extends IDao {
-    boolean addCustomer(Customer customer);
+public interface ICustomerDao extends IDao<Customer> {
 
-    List<Customer> findAllCustomer();
+    List<Customer> findByNameList(String name);
+    Customer findByName(String name);
 
-    Customer findByIdCustomer(long id);
+    Customer findByEmail(String email);
 
-    Customer findByEmailCustomer(String email);
+    Customer findByPhone(String phone);
 
-    Customer findByPhoneCustomer(String phone);
-
-    Customer findByNameCustomer(String name);
-
-    List<Customer> findByNameCustomerList(String name);
-
-    boolean updateCustomer(Customer customer);
-
-    boolean deleteByIdCustomer(long id);
-
-    Customer findNewestCustomer();
 }
