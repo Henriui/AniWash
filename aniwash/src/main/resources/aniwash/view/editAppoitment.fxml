@@ -193,7 +193,7 @@
         </ImageView>
         <AnchorPane fx:id="selectedProductPane" layoutX="571.0" layoutY="191.0" prefHeight="76.0" prefWidth="365.0" visible="false">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="53.0" layoutX="84.0" layoutY="8.0" stroke="#a4a4a4" strokeType="INSIDE" width="358.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="10.0" />
+                <Rectangle fx:id="mainProductBackground" arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="53.0" layoutX="84.0" layoutY="8.0" stroke="#a4a4a4" strokeType="INSIDE" width="358.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="10.0" />
                 <Text fx:id="selectedProduct" layoutX="13.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="181.24365234375">
                     <font>
                         <Font size="15.0" />
