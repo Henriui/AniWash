@@ -153,8 +153,6 @@ public class CustomersController {
     }
 
     public void removeCustomer(Customer customer) {
-        System.out.println("ONKO ID \n\n" + customer.getId());
-        //listView.getItems().remove(customer);
         customerDao.deleteById(customer.getId());
     }
 }
