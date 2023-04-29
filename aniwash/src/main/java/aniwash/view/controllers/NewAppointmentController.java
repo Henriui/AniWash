@@ -28,6 +28,9 @@ import javafx.stage.Stage;
 
 import static aniwash.view.utilities.ControllerUtilities.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class NewAppointmentController extends CreatePopUp {
 
 	private final MainViewModel mainViewModel = new MainViewModel();
@@ -70,8 +73,12 @@ public class NewAppointmentController extends CreatePopUp {
 		newEntry.setHidden(true);
 		petList.getItems().add("                                   Create new pet  +");
 		// Initialize datepicker with selected date
-		date = new DatePicker();
-		date.setValue(newEntry.getStartDate());
+
+		LocalDate localDate = newEntry.getStartDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String formattedDate = localDate.format(formatter);
+		date.setValue(LocalDate.parse(formattedDate, formatter));
+	
 		startTime = new TimeField();
 		endTime = new TimeField();
 		startTime.setValue(newEntry.getStartTime());

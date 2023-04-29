@@ -138,7 +138,7 @@
         <Separator layoutX="516.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="670.0" prefWidth="25.0" AnchorPane.bottomAnchor="15.0" AnchorPane.topAnchor="15.0" />
         <TextArea fx:id="descriptionArea" layoutX="550.0" layoutY="11.0" prefHeight="117.0" prefWidth="376.0" promptText="%descriptionLabel">
             <effect>
-                <DropShadow height="0.0" radius="0.0" width="0.0">
+                <DropShadow height="9.16" offsetX="10.0" radius="4.8425" width="12.21">
                     <color>
                         <Color red="0.8156862854957581" green="0.8196078538894653" blue="0.8313725590705872" />
                     </color>
@@ -150,7 +150,7 @@
         </TextArea>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="353.0" layoutX="551.0" layoutY="137.0" stroke="#ffffff00" strokeType="INSIDE" width="376.0">
             <effect>
-                <DropShadow height="220.31" radius="81.0775" width="106.0">
+                <DropShadow height="9.17" offsetX="10.0" radius="4.845000000000001" width="12.21">
                     <color>
                         <Color red="0.8156862854957581" green="0.8196078538894653" blue="0.8313725590705872" />
                     </color>
@@ -170,9 +170,9 @@
         </Text>
         <Separator layoutX="567.0" layoutY="272.0" prefHeight="20.0" prefWidth="358.0" />
         <ListView fx:id="extraProducts" fixedCellSize="0.0" layoutX="552.0" layoutY="293.0" prefHeight="191.0" prefWidth="376.0" style="-fx-background-color: #f4f4f4;" styleClass="list-cell" stylesheets="@../css/styles.css" />
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="65.0" layoutX="600.0" layoutY="620.0" stroke="#ffffff00" strokeType="INSIDE" width="257.0">
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="65.0" layoutX="600.0" layoutY="620.0" stroke="#839c5c" strokeType="OUTSIDE" strokeWidth="2.0" width="257.0">
             <effect>
-                <DropShadow height="220.31" radius="81.0775" width="106.0">
+                <DropShadow height="9.16" offsetX="10.0" radius="4.8425" width="12.21">
                     <color>
                         <Color red="0.8156862854957581" green="0.8196078538894653" blue="0.8313725590705872" />
                     </color>
@@ -186,7 +186,7 @@
         </Text>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f4f4f4" height="117.0" layoutX="550.0" layoutY="494.0" stroke="#ffffff00" strokeType="INSIDE" width="376.0">
             <effect>
-                <DropShadow height="220.31" radius="81.0775" width="106.0">
+                <DropShadow height="9.16" offsetX="10.0" radius="4.8425" width="12.21">
                     <color>
                         <Color red="0.8156862854957581" green="0.8196078538894653" blue="0.8313725590705872" />
                     </color>
