@@ -52,7 +52,7 @@ public class EditAppointmentController extends CreatePopUp {
     @FXML
     private ListView<Customer> personList;
     @FXML
-    private Rectangle mainProductRect;
+    private Rectangle mainProductRect, mainProductBackground;
     @FXML
     private DatePicker date = new DatePicker();
     @FXML
@@ -103,8 +103,8 @@ public class EditAppointmentController extends CreatePopUp {
                 selectedProductCost, selectedProductCostDiscount, priceText, cart, newEntry.getUserObject()));
         applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
                 newEntry, selectedProduct, priceText, cart));
-        extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
-        mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
+        extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct, mainProductBackground, extraProducts));
+        mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts, mainProductBackground));
         getCurrentAppointment();
     }
     // Save the selected person and send entry .
@@ -112,8 +112,8 @@ public class EditAppointmentController extends CreatePopUp {
     @FXML
     public void save() {
         if ((personList.getSelectionModel().getSelectedItem() == null || newEntry.getLocation() == null
-             || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1)
-            || !selectedProductPane.isVisible()) {
+                || newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1)
+                || !selectedProductPane.isVisible()) {
             System.out.println("Please select a service and a pet");
             // TODO: Alert popup for missing fields ;)
         } else {
@@ -164,15 +164,16 @@ public class EditAppointmentController extends CreatePopUp {
             services.getItems().remove(product.getName(MainApp.getLocale().getLanguage()));
             if (product != newEntry.getCalendar().getUserObject()) {
                 double newPrice = product.getPrice()
-                                  - (product.getPrice()
-                                     * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
-                extraProducts.getItems().add(new DiscountProduct(product.getName(MainApp.getLocale().getLanguage()), newPrice));
+                        - (product.getPrice()
+                                * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                extraProducts.getItems()
+                        .add(new DiscountProduct(product.getName(MainApp.getLocale().getLanguage()), newPrice));
             } else if (appointment.getDiscount(((Product) newEntry.getCalendar().getUserObject()))
-                               .getDiscountPercent() != 0.0) {
+                    .getDiscountPercent() != 0.0) {
                 Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
                 double newPrice = mainProduct.getPrice()
-                                  - (mainProduct.getPrice()
-                                     * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                        - (mainProduct.getPrice()
+                                * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
                 selectedProductCost.strikethroughProperty().set(true);
                 selectedProductCostDiscount.setVisible(true);
                 selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");

@@ -32,6 +32,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,8 +43,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class ControllerUtilities {
-
-    private static ObservableList<Product> extraProductObservableList;
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
         ResourceBundle bundle;
@@ -94,6 +93,17 @@ public class ControllerUtilities {
         scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Create Product");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    }
+
+    public static void newAnimal(Stage stage) throws IOException {
+        final FXMLLoader loader;
+        final Scene scene;
+        loader = loadFXML("createNewAnimalView");
+        scene = new Scene(loader.load());
+        stage.setScene(scene);
+        stage.setTitle("Create Animal");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
@@ -308,9 +318,31 @@ public class ControllerUtilities {
 
             else if (!setDiscount.getText().isEmpty() && extraProducts.getSelectionModel().getSelectedItem() == null
                     && !selectedProduct.getFill().equals(Color.web("#47c496ff"))) {
-                System.out.println("nothing selected");
-                // TODO: add dicount to current price (To all items).
-                System.out.println("Please select a product" + extraProducts.getSelectionModel().getSelectedIndex());
+
+                Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
+                String discount = setDiscount.getText();
+                double newPrice = mainProduct.getPrice()
+                        - (mainProduct.getPrice() * (0.01 * Double.parseDouble(discount)));
+
+                shoppingCart.addToAllProducts(setDiscount.getText());
+
+                extraProducts.getItems().forEach(asd -> {
+                    String newDiscount = setDiscount.getText();
+                    Product original = shoppingCart.getProduct(asd.getName());
+
+                    double newPrices = original.getPrice()
+                            - (original.getPrice() * (0.01 * Double.parseDouble(newDiscount)));
+                    asd.setPrice(newPrices);
+                });
+
+                // Strike original price from the main product and set discount text to visible
+                // and set a discounted price to it.
+
+                selectedProductCost.strikethroughProperty().set(true);
+                selectedProductCostDiscount.setVisible(true);
+                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");
+
+                extraProducts.refresh(); // Should update all the cells in the ListView
             }
 
             // If discount is applied and extraProduct is selected.
@@ -321,6 +353,7 @@ public class ControllerUtilities {
                 // Get "adapter" product from the listView and calculate a discounted price.
 
                 DiscountProduct product = extraProducts.getSelectionModel().getSelectedItem();
+
                 String discount = setDiscount.getText();
                 Product original = shoppingCart.getProduct(product.getName());
 
@@ -345,6 +378,7 @@ public class ControllerUtilities {
 
             totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
         };
+
     }
 
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
@@ -379,22 +413,29 @@ public class ControllerUtilities {
         };
     }
 
-    public static EventHandler<? super MouseEvent> selectExtraProduct(Text selectedProduct) {
+    public static EventHandler<? super MouseEvent> selectExtraProduct(Text selectedProduct, Rectangle mainProduct,
+            ListView<DiscountProduct> extraProducts) {
         return event -> {
 
             // Set MainProduct text to default, to showcase that it has been Unselected.
 
+            if (!selectedProduct.getFill().equals(Color.web("#32965D"))
+                    && event.getClickCount() == 2) {
+                extraProducts.getSelectionModel().clearSelection();
+            }
             selectedProduct.setFill(Color.web("#000000"));
+            mainProduct.setStroke(Color.web("#a4a4a4"));
         };
     }
 
     public static EventHandler<? super MouseEvent> selectMainProduct(Text selectedProduct,
-            ListView<DiscountProduct> extraProducts) {
+            ListView<DiscountProduct> extraProducts, Rectangle mainProduct) {
         return event -> {
 
             // Set MainProduct text light green, to showcase that it has been selected.
 
-            selectedProduct.setFill(Color.web("#47c496"));
+            selectedProduct.setFill(Color.web("#32965D"));
+            mainProduct.setStroke(Color.valueOf("#32965D"));
             extraProducts.getSelectionModel().clearSelection();
         };
     }

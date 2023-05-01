@@ -37,7 +37,7 @@ public class CustomersController {
     @FXML
     private TextField searchField;
 
-    private ICustomerDao customerDao;
+    private ICustomerDao customerDao = new CustomerDao();
 
     /*
      * public void test() {
@@ -148,5 +148,9 @@ public class CustomersController {
     @FXML
     private void admin() throws IOException {
         MainApp.setRoot("AdminPanel");
+    }
+
+    public void removeCustomer(Customer customer) {
+        customerDao.deleteById(customer.getId());
     }
 }

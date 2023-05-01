@@ -35,6 +35,13 @@ public class ShoppingCart {
         return null;
     }
 
+    public void addToAllProducts(String discount) {
+        for (Map.Entry<Product, Discount> entry : productsMap.entrySet()) {
+            Discount putDiscount = new Discount(entry.getKey().getId(), Double.parseDouble(discount));
+            productsMap.put(entry.getKey(), putDiscount);
+        }
+    }
+
     public void editDiscount(Product product, Discount discount) {
         productsMap.put(product, discount);
     }
