@@ -2,27 +2,14 @@ package aniwash.dao;
 
 import aniwash.entity.Employee;
 
-import java.util.List;
+public interface IEmployeeDao extends IDao<Employee> {
 
-public interface IEmployeeDao extends IDao {
+    Employee findByName(String name);
 
-    boolean addEmployee(Employee employee);
+    Employee findByTitle(String title);
 
-    List<Employee> findAllEmployee();
+    Employee findByUsername(String username);
 
-    Employee findByIdEmployee(long id);
+    Employee findByEmail(String email);
 
-    Employee findByNameEmployee(String name);
-
-    Employee findByEmailEmployee(String email);
-
-    Employee findByTitleEmployee(String title);
-
-    Employee findByUsernameEmployee(String username);
-
-    boolean deleteByIdEmployee(long id);
-
-    boolean updateEmployee(Employee employee);
-
-    Employee findNewestEmployee();
 }

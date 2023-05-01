@@ -70,9 +70,9 @@ public class CreateNewAnimalController {
         Animal animal = new Animal(petName, petType, petBreed, petDescription);
         ICustomerDao customerDao = new CustomerDao();
         IAnimalDao animalDao = new AnimalDao();
-        animalDao.addAnimal(animal); // add the animal to the database
+        animalDao.add(animal); // add the animal to the database
         customer.addAnimal(animal); // add the animal to the customer
-        customerDao.updateCustomer(customer); // update the customer in the database
+        customerDao.update(customer); // update the customer in the database
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();

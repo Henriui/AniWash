@@ -38,24 +38,17 @@ public class AppointmentDaoTest {
 
     @AfterEach
     public void tearDown() {
-        for (Appointment a : appointmentDao.findAllAppointments()) {
-            appointmentDao.deleteByIdAppointment(a.getId());
+        for (Appointment a : appointmentDao.findAll()) {
+            appointmentDao.deleteById(a.getId());
         }
     }
-
-/*
-    @AfterAll
-    public static void tearDownAll() {
-        DatabaseConnector.closeDbConnection();
-    }
-*/
 
     @Test
     @Order(1)
     @DisplayName("Add new appointment")
     public void testAddAppointment() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        assertNotNull(appointment = appointmentDao.findByIdAppointment(appointment.getId()), "addAppointment(): Cant find added appointment.");
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        assertNotNull(appointment = appointmentDao.findById(appointment.getId()), "addAppointment(): Cant find added appointment.");
         assertEquals(appointment.getStartDate().toString(), startDate, "addAppointment(): Date of added appointment does not match.");
         assertEquals(appointment.getDescription("en"), description, "addAppointment(): Description of added appointment does not match.");
     }
@@ -64,16 +57,16 @@ public class AppointmentDaoTest {
     @Order(2)
     @DisplayName("Add same appointment twice")
     public void testAddSameAppointment() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        assertFalse(appointmentDao.addAppointment(appointment), "addAppointment(): Same appointment can be added twice.");
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        assertFalse(appointmentDao.add(appointment), "addAppointment(): Same appointment can be added twice.");
     }
 
     @Test
     @Order(3)
     @DisplayName("Fetch added appointment by id")
     public void testFindAppointment() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
         assertNotNull(appointment, "findByIdAppointment(): Cant find added appointment.");
         assertEquals(appointment.getStartDate(), ZonedDateTime.parse(startDate), "findByIdAppointment(): Date of found appointment does not match added.");
         assertEquals(appointment.getDescription("en"), description, "findByIdAppointment(): Description of found appointment does not match added.");
@@ -83,8 +76,8 @@ public class AppointmentDaoTest {
     @Order(4)
     @DisplayName("Fetch added appointment by start date")
     public void testFindByStartDateAppointment() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByStartDateAppointment(ZonedDateTime.parse(startDate));
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findByStartDate(ZonedDateTime.parse(startDate));
         assertNotNull(appointment, "findByDateAppointment(): Cant find added appointment.");
         assertEquals(appointment.getStartDate(), ZonedDateTime.parse(startDate), "findByDateAppointment(): Date of found appointment does not match added.");
         assertEquals(appointment.getDescription("en"), description, "findByDateAppointment(): Description of found appointment does not match added.");
@@ -94,21 +87,21 @@ public class AppointmentDaoTest {
     @Order(5)
     @DisplayName("Delete added appointment by id")
     public void testDeleteByIdAppointment() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        assertTrue(appointmentDao.deleteByIdAppointment(appointment.getId()), "deleteByIdAppointment(): Delete added appointment failed.");
-        assertNull(appointmentDao.findByIdAppointment(appointment.getId()), "deleteByIdAppointment(): Deleted appointment can still be found.");
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        assertTrue(appointmentDao.deleteById(appointment.getId()), "deleteByIdAppointment(): Delete added appointment failed.");
+        assertNull(appointmentDao.findById(appointment.getId()), "deleteByIdAppointment(): Deleted appointment can still be found.");
     }
 
     @Test
     @Order(6)
     @DisplayName("Update added appointment")
     public void testUpdateAppointment() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
         appointment.setStartDate(ZonedDateTime.parse("2011-11-09T10:15:30+02:00"));
         appointment.getLocalizations().get("en").setDescription("Koiran pesu ja leikkaus");
-        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointmentDao.update(appointment), "updateAppointment(): Update added appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
         assertEquals(appointment.getDescription("en"), "Koiran pesu ja leikkaus", "updateAppointment(): Description of updated appointment does not match.");
         assertEquals(appointment.getStartDate(), ZonedDateTime.parse("2011-11-09T10:15:30+02:00"), "updateAppointment(): Date of updated appointment does not match.");
     }
@@ -117,39 +110,39 @@ public class AppointmentDaoTest {
     @Order(7)
     @DisplayName("Update non-existing appointment should retun false")
     public void testUpdateNonExistingAppointment() {
-        assertFalse(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update non-existing appointment should return false.");
+        assertFalse(appointmentDao.update(appointment), "updateAppointment(): Update non-existing appointment should return false.");
     }
 
     @Test
     @Order(8)
     @DisplayName("Delete non-existing appointment should return false")
     public void testDeleteNonExistingAppointment() {
-        assertFalse(appointmentDao.deleteByIdAppointment(appointment.getId()), "deleteByIdAppointment(): Delete non-existing appointment should return false.");
+        assertFalse(appointmentDao.deleteById(appointment.getId()), "deleteByIdAppointment(): Delete non-existing appointment should return false.");
     }
 
     @Test
     @Order(9)
     @DisplayName("Find non-existing appointment should return null")
     public void testFindNonExistingAppointment() {
-        assertNull(appointmentDao.findByIdAppointment(appointment.getId()), "findByIdAppointment(): Find non-existing appointment should return null.");
+        assertNull(appointmentDao.findById(appointment.getId()), "findByIdAppointment(): Find non-existing appointment should return null.");
     }
 
     @Test
     @Order(10)
     @DisplayName("Find non-existing appointment by start date should return null")
     public void testFindNonExistingAppointmentByStartDate() {
-        assertNull(appointmentDao.findByStartDateAppointment(ZonedDateTime.parse(startDate)), "findByStartDateAppointment(): Find non-existing appointment should return null.");
+        assertNull(appointmentDao.findByStartDate(ZonedDateTime.parse(startDate)), "findByStartDateAppointment(): Find non-existing appointment should return null.");
     }
 
     @Test
     @Order(11)
     @DisplayName("Set appointment end date and fetch it")
     public void testSetEndDate() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
         appointment.setEndDate(ZonedDateTime.parse("2011-11-09T10:15:30+02:00"));
-        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointmentDao.update(appointment), "updateAppointment(): Update added appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
         assertEquals(appointment.getEndDate(), ZonedDateTime.parse("2011-11-09T10:15:30+02:00"), "updateAppointment(): End date of updated appointment does not match.");
     }
 
@@ -157,23 +150,13 @@ public class AppointmentDaoTest {
     @Order(12)
     @DisplayName("Set appointment as deleted and fetch it")
     public void testSetDeleted() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
+        assertTrue(appointmentDao.add(appointment), "addAppointment(): Add new appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
         appointment.setDeleted();
-        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
         assertEquals(1, appointment.isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
-    }
-
-    @Test
-    @Order(13)
-    @DisplayName("Set appointment as not deleted and fetch it")
-    public void testSetNotDeleted() {
-        assertTrue(appointmentDao.addAppointment(appointment), "addAppointment(): Add new appointment failed.");
-        appointment = appointmentDao.findByIdAppointment(appointment.getId());
-        appointment.setDeleted();
-        assertTrue(appointmentDao.updateAppointment(appointment), "updateAppointment(): Update added appointment failed.");
-        assertEquals(1, appointmentDao.findByIdAppointment(appointment.getId()).isDeleted(), "updateAppointment(): Deleted status of updated appointment does not match.");
+        assertTrue(appointmentDao.update(appointment), "updateAppointment(): Update added appointment failed.");
+        appointment = appointmentDao.findById(appointment.getId());
+        assertNull(appointment, "updateAppointment(): Deleted appointment can still be found.");
     }
 
 }

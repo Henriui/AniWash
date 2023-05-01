@@ -31,8 +31,8 @@ public class AppointmentCustomerDbTest {
 
     @AfterEach
     public void tearDown() {
-        for (Appointment a : aDao.findAllAppointments()) {
-            aDao.deleteByIdAppointment(a.getId());
+        for (Appointment a : aDao.findAll()) {
+            aDao.deleteById(a.getId());
         }
     }
 
@@ -40,7 +40,7 @@ public class AppointmentCustomerDbTest {
     @DisplayName("Create multiple appointments and customers test")
     @Order(1)
     public void testCreateMultipleAppointmentsAndProducts() {
-        System.out.println("Cutomers: " + cDao.findAllCustomer().size());
+        System.out.println("Cutomers: " + cDao.findAll().size());
         for (int i = 1; i < 4; i++) {
             Appointment a = new Appointment(ZonedDateTime.parse("2021-0" + i + "-03T10:15:30+02:00"), ZonedDateTime.parse("2021-0" + i + "-03T11:15:30+02:00"));
             LocalizedAppointment localAppointment = new LocalizedAppointment(a, "Elmo koiran pesu" + i);
@@ -48,8 +48,8 @@ public class AppointmentCustomerDbTest {
             a.getLocalizations().put("en", localAppointment);
 
             Customer c = new Customer("Elmo Pohjonen" + i, "044355667" + i, "elmo.pohjonen" + i + "@gmail.com", "Kalakuja " + i, "0032" + i);
-            aDao.addAppointment(a);
-            cDao.addCustomer(c);
+            aDao.add(a);
+            cDao.add(c);
             a.addCustomer(c);
         }
         List<Customer> customers = new ArrayList<>();
@@ -58,14 +58,14 @@ public class AppointmentCustomerDbTest {
             customers.add(c);
         }
         for (Customer c : customers) {
-            Appointment a = aDao.findNewestAppointment();
-            cDao.addCustomer(c);
+            Appointment a = aDao.findNewest();
+            cDao.add(c);
             a.addCustomer(c);
         }
 
-        assertEquals(3, aDao.findAllAppointments().size(), "Appointment size should be 3");
-        assertEquals(6, cDao.findAllCustomer().size(), "Customer size should be 6");
-        assertEquals(4, aDao.findNewestAppointment().getCustomerList().size(), "Appointment size should be 4");
+        assertEquals(3, aDao.findAll().size(), "Appointment size should be 3");
+        assertEquals(6, cDao.findAll().size(), "Customer size should be 6");
+        assertEquals(4, aDao.findNewest().getCustomerList().size(), "Appointment size should be 4");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class AppointmentCustomerDbTest {
     @Order(2)
     public void findTest() {
         System.out.println("Find test");
-        List<Appointment> appointmentList = aDao.findAllAppointments();
+        List<Appointment> appointmentList = aDao.findAll();
         List<Customer> customerList = new ArrayList<>();
         for (Appointment a : appointmentList) {
             customerList.addAll(a.getCustomerList());
@@ -89,11 +89,11 @@ public class AppointmentCustomerDbTest {
     @Order(3)
     public void deleteAllAppointmentsTest() {
         System.out.println("Delete test");
-        List<Appointment> appointmentList = aDao.findAllAppointments();
+        List<Appointment> appointmentList = aDao.findAll();
         for (Appointment a : appointmentList) {
-            aDao.deleteByIdAppointment(a.getId());
+            aDao.deleteById(a.getId());
         }
-        assertEquals(0, aDao.findAllAppointments().size(), "Appointment size should be 0");
+        assertEquals(0, aDao.findAll().size(), "Appointment size should be 0");
     }
 
     @Test
@@ -101,11 +101,11 @@ public class AppointmentCustomerDbTest {
     @Order(4)
     public void deleteAllCustomersTest() {
         System.out.println("Delete test");
-        List<Customer> customerList = cDao.findAllCustomer();
+        List<Customer> customerList = cDao.findAll();
         for (Customer c : customerList) {
-            cDao.deleteByIdCustomer(c.getId());
+            cDao.deleteById(c.getId());
         }
-        assertEquals(0, cDao.findAllCustomer().size(), "Customer size should be 0");
+        assertEquals(0, cDao.findAll().size(), "Customer size should be 0");
     }
 
 }

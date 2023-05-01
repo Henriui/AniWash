@@ -1,12 +1,15 @@
 package aniwash.view.controllers;
 
+import aniwash.MainApp;
+import aniwash.dao.AnimalDao;
 import aniwash.dao.CustomerDao;
+import aniwash.dao.IAnimalDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
-import aniwash.view.model.CustomListViewCellAnimal;
-import aniwash.view.model.CustomListViewCellAppointment;
+import aniwash.view.elements.CustomListViewCellAnimal;
+import aniwash.view.elements.CustomListViewCellAppointment;
 import aniwash.view.utilities.ControllerUtilities;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -53,7 +57,7 @@ public class EditCustomerController {
     private TextField petDescriptionField;
 
     @FXML
-    private Button saveButton;
+    private Button saveButton, removeCustomer;
     private static final ObservableList<Animal> animals = FXCollections.observableArrayList();
     private static final ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
     @FXML
@@ -67,7 +71,6 @@ public class EditCustomerController {
     public void initialize() {
         customer = customersController.getSelectedCustomer();
 
-        //TODO: Purkka?
         animals.clear();
         appointmentsList.clear();
 
@@ -97,6 +100,24 @@ public class EditCustomerController {
         emailField.setText(customer.getEmail());
         addressField.setText(customer.getAddress());
         postalCodeField.setText(customer.getPostalCode());
+
+        listView.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DELETE) {
+                Animal selectedItem = listView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    customer.removeAnimal(selectedItem);
+                   
+                    listView.getItems().remove(selectedItem);
+                }
+            }
+        });
+        
+        removeCustomer.setOnAction(event -> {
+            customersController.removeCustomer(customer);
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.close();
+        });
 
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
@@ -137,7 +158,7 @@ public class EditCustomerController {
         customer.setPostalCode(postalCode);
 
         ICustomerDao customerDao = new CustomerDao();
-        customerDao.updateCustomer(customer);
+        customerDao.update(customer);
 
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
@@ -162,14 +183,10 @@ public class EditCustomerController {
     @FXML
     public void createNewAnimal() throws IOException {
         Stage popupStage = new Stage();
-        Parent popupRoot = FXMLLoader.load(getClass().getResource("createNewAnimalView.fxml"));
-        Scene popupScene = new Scene(popupRoot);
-        popupStage.setScene(popupScene);
-        popupStage.setTitle("Create Animal");
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.show();
+        ControllerUtilities.newAnimal(popupStage);
 
         popupStage.setOnHidden(view -> listView.setItems(FXCollections.observableList(customer.getAnimalList())));
         CreateNewAnimalController.setCustomer(customer);
     }
+
 }

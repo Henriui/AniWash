@@ -1,20 +1,21 @@
 package aniwash.view.controllers;
 
-import aniwash.entity.*;
-import aniwash.view.model.CreatePopUp;
-import aniwash.view.model.CustomListViewCellCustomer;
-import aniwash.view.model.CustomListViewCellExtraProduct;
+import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
+import aniwash.entity.Customer;
+import aniwash.entity.Product;
+import aniwash.view.elements.CreatePopUp;
+import aniwash.view.elements.CustomListViewCellCustomer;
+import aniwash.view.elements.CustomListViewCellExtraProduct;
 import aniwash.viewmodels.DiscountProduct;
 import aniwash.viewmodels.MainViewModel;
 import aniwash.viewmodels.ShoppingCart;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.TimeField;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -25,10 +26,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static aniwash.view.utilities.ControllerUtilities.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class NewAppointmentController extends CreatePopUp {
 
@@ -54,7 +55,7 @@ public class NewAppointmentController extends CreatePopUp {
 	@FXML
 	private Circle one, two, three;
 	@FXML
-	private Rectangle first, second, third, mainProductRect;
+	private Rectangle first, second, third, mainProductRect, mainProductBackground;
 	@FXML
 	private DatePicker date = new DatePicker();
 	@FXML
@@ -72,8 +73,12 @@ public class NewAppointmentController extends CreatePopUp {
 		newEntry.setHidden(true);
 		petList.getItems().add("                                   Create new pet  +");
 		// Initialize datepicker with selected date
-		date = new DatePicker();
-		date.setValue(newEntry.getStartDate());
+
+		LocalDate localDate = newEntry.getStartDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String formattedDate = localDate.format(formatter);
+		date.setValue(LocalDate.parse(formattedDate, formatter));
+	
 		startTime = new TimeField();
 		endTime = new TimeField();
 		startTime.setValue(newEntry.getStartTime());
@@ -121,8 +126,8 @@ public class NewAppointmentController extends CreatePopUp {
 				selectedProductCost, selectedProductCostDiscount, priceText, cart, newEntry.getUserObject()));
 		applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
 				newEntry, selectedProduct, priceText, cart));
-		extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
-		mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
+		extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct, mainProductBackground, extraProducts));
+		mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts, mainProductBackground));
 	}
 
 	@FXML
@@ -131,7 +136,6 @@ public class NewAppointmentController extends CreatePopUp {
 				|| newEntry.getTitle().contains("New Entry") || petList.getSelectionModel().getSelectedIndex() == -1)
 				|| !selectedProductPane.isVisible()) {
 			System.out.println("Please select Service and Pet");
-			// TODO: Alert popup for missing fields ;)
 		} else {
 			Stage stage = (Stage) saveBtn.getScene().getWindow();
 			stage.close();
@@ -139,20 +143,11 @@ public class NewAppointmentController extends CreatePopUp {
 		}
 	}
 
-	@FXML
-	public void textChanged() {
-		personList.getSelectionModel().clearSelection();
-	}
-
 	public void sendEntry() {
 		newEntry.setInterval(date.getValue(), startTime.getValue(), date.getValue(), endTime.getValue());
 		Customer selectedCustomer = personList.getSelectionModel().getSelectedItem();
 		Animal animal = selectedCustomer.getAnimals()
 				.toArray(new Animal[0])[petList.getSelectionModel().getSelectedIndex() - 1];
-		/*
-		 * TODO: Add products and discounts to the appointment with this map
-		 * new Discount(long productId, double amount);
-		 */
 		newEntry.setUserObject(mainViewModel.createAppointment(newEntry.getStartAsZonedDateTime(),
 				newEntry.getEndAsZonedDateTime(), selectedCustomer, animal,
 				((Product) newEntry.getCalendar().getUserObject()).getId(), cart.getProductList(), descriptionArea));

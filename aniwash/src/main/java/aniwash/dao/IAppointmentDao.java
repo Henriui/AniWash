@@ -5,22 +5,10 @@ import aniwash.entity.Appointment;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public interface IAppointmentDao extends IDao {
+public interface IAppointmentDao extends IDao<Appointment> {
 
-    boolean addAppointment(Appointment appointment);
+    Appointment findByStartDate(ZonedDateTime startDate);
 
     List<Appointment> fetchAppointments();
-
-    List<Appointment> findAllAppointments();
-
-    Appointment findByIdAppointment(Long id);
-
-    Appointment findByStartDateAppointment(ZonedDateTime date);
-
-    boolean deleteByIdAppointment(Long id);
-
-    boolean updateAppointment(Appointment appointment);
-
-    Appointment findNewestAppointment();
 
 }

@@ -9,6 +9,15 @@ public class DatabaseConnector {
     private static EntityManagerFactory emf = null;
     private static EntityManager em = null;
 
+    /**
+     * Opens a connection to the database.
+     * Used for using the default persistence unit.
+     *
+     * @return The EntityManager instance.
+     * @author rasmushy
+     * @see Persistence#createEntityManagerFactory(String)
+     * @see EntityManagerFactory#createEntityManager()
+     */
     public static EntityManager getInstance() {
         if (em == null) {
             if (emf == null) {
@@ -45,18 +54,6 @@ public class DatabaseConnector {
         if (emf != null) {
             emf.close();
         }
-    }
-
-    public static void flush() {
-        em.flush();
-    }
-
-    public static void clear() {
-        em.clear();
-    }
-
-    public static void refresh(Object o) {
-        em.refresh(o);
     }
 
 }

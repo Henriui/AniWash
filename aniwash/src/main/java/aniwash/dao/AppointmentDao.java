@@ -19,8 +19,7 @@ import java.util.function.Consumer;
  */
 public class AppointmentDao implements IAppointmentDao {
 
-    @Override
-    public boolean addAppointment(Appointment appointment) {
+    public boolean add(Appointment appointment) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (em.contains(app)) {
@@ -39,7 +38,6 @@ public class AppointmentDao implements IAppointmentDao {
      * @return List of appointments.
      * @author rasmushy
      */
-    @Override
     public List<Appointment> fetchAppointments() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -60,32 +58,32 @@ public class AppointmentDao implements IAppointmentDao {
      * @return List of appointments.
      * @author rasmushy
      */
-    @Override
-    public List<Appointment> findAllAppointments() {
+    public List<Appointment> findAll() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         return em.createQuery("SELECT a FROM Appointment a WHERE a.deleted = 0", Appointment.class).getResultList();
     }
 
-    @Override
-    public Appointment findByIdAppointment(Long id) {
+    public Appointment findById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
-        return em.find(Appointment.class, id);
+        Appointment a = em.find(Appointment.class, id);
+        if (a != null && a.isDeleted() > 0) {
+            return null;
+        }
+        return a;
     }
 
-    @Override
-    public Appointment findByStartDateAppointment(ZonedDateTime date) {
+    public Appointment findByStartDate(ZonedDateTime date) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :startDate", Appointment.class).setParameter("startDate", date).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.startDate = :startDate AND a.deleted = 0", Appointment.class).setParameter("startDate", date).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found with date: " + date);
         }
         return a;
     }
 
-    @Override
-    public boolean updateAppointment(Appointment appointment) {
+    public boolean update(Appointment appointment) {
         EntityManager em = DatabaseConnector.getInstance();
         Appointment app = em.find(Appointment.class, appointment.getId());
         if (!em.contains(app)) {
@@ -103,31 +101,32 @@ public class AppointmentDao implements IAppointmentDao {
         return true;
     }
 
-    @Override
-    public boolean deleteByIdAppointment(Long id) {
+    public boolean deleteById(long id) {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment appointment = em.find(Appointment.class, id);
-        if (em.contains(appointment)) {
-            executeInTransaction(entityManager -> em.remove(appointment), em);
+        if (em.contains(appointment) && appointment.isDeleted() == 0) {
+            em.getTransaction().begin();
+            appointment.setDeleted();
+            em.getTransaction().commit();
+            //executeInTransaction(entityManager -> em.remove(appointment), em);
             return true;
         }
         System.out.println("No appointment found with id: " + id);
         return false;
     }
 
-    @Override
-    public Appointment findNewestAppointment() {
+    public Appointment findNewest() {
         EntityManager em = aniwash.datastorage.DatabaseConnector.getInstance();
         Appointment a = null;
         try {
-            a = em.createQuery("SELECT a FROM Appointment a ORDER BY a.startDate DESC", Appointment.class).setMaxResults(1).getSingleResult();
+            a = em.createQuery("SELECT a FROM Appointment a WHERE a.deleted = 0 ORDER BY a.startDate DESC", Appointment.class).setMaxResults(1).getSingleResult();
         } catch (Exception e) {
             System.out.println("No appointment found");
         }
         return a;
     }
 
-    private void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
+    public void executeInTransaction(Consumer<EntityManager> action, EntityManager em) {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

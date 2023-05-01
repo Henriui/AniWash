@@ -1,9 +1,13 @@
 package aniwash.view.controllers;
 
-import aniwash.entity.*;
-import aniwash.view.model.CreatePopUp;
-import aniwash.view.model.CustomListViewCellCustomer;
-import aniwash.view.model.CustomListViewCellExtraProduct;
+import aniwash.MainApp;
+import aniwash.entity.Animal;
+import aniwash.entity.Appointment;
+import aniwash.entity.Customer;
+import aniwash.entity.Product;
+import aniwash.view.elements.CreatePopUp;
+import aniwash.view.elements.CustomListViewCellCustomer;
+import aniwash.view.elements.CustomListViewCellExtraProduct;
 import aniwash.viewmodels.DiscountProduct;
 import aniwash.viewmodels.MainViewModel;
 import aniwash.viewmodels.ShoppingCart;
@@ -23,9 +27,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static aniwash.view.utilities.ControllerUtilities.*;
 
@@ -51,7 +52,7 @@ public class EditAppointmentController extends CreatePopUp {
     @FXML
     private ListView<Customer> personList;
     @FXML
-    private Rectangle mainProductRect;
+    private Rectangle mainProductRect, mainProductBackground;
     @FXML
     private DatePicker date = new DatePicker();
     @FXML
@@ -102,8 +103,8 @@ public class EditAppointmentController extends CreatePopUp {
                 selectedProductCost, selectedProductCostDiscount, priceText, cart, newEntry.getUserObject()));
         applyBtn.setOnAction(applyDiscount(setDiscount, extraProducts, selectedProductCost, selectedProductCostDiscount,
                 newEntry, selectedProduct, priceText, cart));
-        extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct));
-        mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts));
+        extraProducts.setOnMouseClicked(selectExtraProduct(selectedProduct, mainProductBackground, extraProducts));
+        mainProductRect.setOnMousePressed(selectMainProduct(selectedProduct, extraProducts, mainProductBackground));
         getCurrentAppointment();
     }
     // Save the selected person and send entry .
@@ -155,17 +156,18 @@ public class EditAppointmentController extends CreatePopUp {
         petList.getSelectionModel().select(a.getName());
         priceText.setText("Price: " + (newEntry.getUserObject().getTotalPrice()) + " €");
 
-        if (appointment.getDescription("en") != null)
-            descriptionArea.setText(appointment.getLocalizations().get("en").getDescription());
+        if (appointment.getDescription(MainApp.getLocale().getLanguage()) != null)
+            descriptionArea.setText(appointment.getDescription(MainApp.getLocale().getLanguage()));
 
         appointment.getProducts().forEach(product -> {
             cart.addProduct(product, appointment.getDiscount(product.getId()));
-            services.getItems().remove(product.getName("en"));
+            services.getItems().remove(product.getName(MainApp.getLocale().getLanguage()));
             if (product != newEntry.getCalendar().getUserObject()) {
                 double newPrice = product.getPrice()
                         - (product.getPrice()
                                 * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
-                extraProducts.getItems().add(new DiscountProduct(product.getName("en"), newPrice));
+                extraProducts.getItems()
+                        .add(new DiscountProduct(product.getName(MainApp.getLocale().getLanguage()), newPrice));
             } else if (appointment.getDiscount(((Product) newEntry.getCalendar().getUserObject()))
                     .getDiscountPercent() != 0.0) {
                 Product mainProduct = (Product) newEntry.getCalendar().getUserObject();

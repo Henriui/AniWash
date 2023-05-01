@@ -1,5 +1,6 @@
 package aniwash.viewmodels;
 
+import aniwash.MainApp;
 import aniwash.dao.*;
 import aniwash.datastorage.DatabaseConnector;
 import aniwash.entity.*;
@@ -14,14 +15,11 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.TextArea;
 
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.hibernate.tool.schema.spi.SourceDescriptor;
 
 import static com.calendarfx.model.CalendarEvent.ENTRY_CALENDAR_CHANGED;
 import static com.calendarfx.model.CalendarEvent.ENTRY_INTERVAL_CHANGED;
@@ -35,7 +33,6 @@ public class MainViewModel {
     private static boolean updateTrigger = false;
 
     public MainViewModel() {
-        // TODO: Test db connection, will be removed later
         DatabaseConnector.openDbConnection("com.aniwash.test");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
@@ -47,7 +44,6 @@ public class MainViewModel {
     public void updateCalendar(boolean isInterAction) {
         if (!updateTrigger && !isInterAction) {
             updateTrigger = true;
-            System.out.println("updateTrigger = true, updateCalendar is skipped");
             return;
         }
         familyCalendarSource.getCalendars().clear();
@@ -70,22 +66,23 @@ public class MainViewModel {
 
     public void createCalendar(Product product) {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        productDao.addProduct(product);
-        Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
+        productDao.add(product);
+        Calendar<Product> calendar = new Calendar<>(product.getName(MainApp.getLocale().getLanguage()), product);
         calendar.setStyle(product.getStyle());
         calendar.addEventHandler(getEventHandler());
-        calendarMap.put(product.getName("en"), calendar);
-        familyCalendarSource.getCalendars().add(calendarMap.get(product.getName("en")));
+        calendarMap.put(product.getName(MainApp.getLocale().getLanguage()), calendar);
+        familyCalendarSource.getCalendars().add(calendarMap.get(product.getName(MainApp.getLocale().getLanguage())));
     }
 
     private void addCalendarsToCalendarSource() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        for (Product product : productDao.findAllProducts()) {
-            Calendar<Product> calendar = new Calendar<>(product.getName("en"), product);
+        for (Product product : productDao.findAll()) {
+            Calendar<Product> calendar = new Calendar<>(product.getName(MainApp.getLocale().getLanguage()), product);
             calendar.setStyle(product.getStyle());
             calendar.addEventHandler(getEventHandler());
-            calendarMap.put(product.getName("en"), calendar);
-            familyCalendarSource.getCalendars().add(calendarMap.get(product.getName("en")));
+            calendarMap.put(product.getName(MainApp.getLocale().getLanguage()), calendar);
+            familyCalendarSource.getCalendars()
+                    .add(calendarMap.get(product.getName(MainApp.getLocale().getLanguage())));
         }
 
     }
@@ -103,14 +100,12 @@ public class MainViewModel {
         for (Appointment appointment : appointmentList) {
             Product mainProduct = getMainProduct(appointment.getMainProductId(), appointment.getProductList());
             assert mainProduct != null;
-            if (mainProduct == null) {
-                System.out.println("mainProduct is null");
+            if (mainProduct == null)
                 continue;
-            }
-            Entry<Appointment> entry = new Entry<>(mainProduct.getName("en"),
+            Entry<Appointment> entry = new Entry<>(mainProduct.getName(MainApp.getLocale().getLanguage()),
                     new Interval(appointment.getStartDate(), appointment.getEndDate()), "id" + appointment.getId());
             entry.setLocation(appointment.getAnimalList().get(0).getName());
-            entry.setCalendar(calendarMap.get(mainProduct.getName("en")));
+            entry.setCalendar(calendarMap.get(mainProduct.getName(MainApp.getLocale().getLanguage())));
             entry.setUserObject(appointment);
         }
     }
@@ -121,7 +116,7 @@ public class MainViewModel {
         Appointment appointment = new Appointment(zdtStart, zdtEnd);
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment,
                 "Appointment for " + selectedCustomer.getName());
-        localAppointment.setId(new LocalizedId("en"));
+        localAppointment.setId(new LocalizedId(MainApp.getLocale().getLanguage()));
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
         // Add all products prices together
@@ -131,14 +126,13 @@ public class MainViewModel {
             totalPrice += product.getPrice();
         }
         appointment.setTotalPrice(totalPrice);
-        appointment.getLocalizations().put("en", localAppointment);
+        appointment.getLocalizations().put(MainApp.getLocale().getLanguage(), localAppointment);
 
-        if( descriptionText.getText() != null && !descriptionText.getText().isEmpty() ) {
-            appointment.getLocalizations().get("en").setDescription(descriptionText.getText());
+        if (descriptionText.getText() != null && !descriptionText.getText().isEmpty()) {
+            appointment.getLocalizations().get(MainApp.getLocale().getLanguage())
+                    .setDescription(descriptionText.getText());
         }
-        appointmentDao.addAppointment(appointment);
-        // System.out.println("addAppointmentE: " + " " + zdtStart.toString() + " " +
-        // product.getName("en") + " " + appointment.getId() + " \n");
+        appointmentDao.add(appointment);
         appointment.setMainProductId(mainProductId);
 
         updateCalendar(true);
@@ -146,8 +140,7 @@ public class MainViewModel {
     }
 
     public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c,
-            Animal a, Map<Product, Discount> p,
-            Product mainProduct, TextArea descriptionText) {
+            Animal a, Map<Product, Discount> p, Product mainProduct, TextArea descriptionText) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         appointment.setStartDate(zdtStart);
         appointment.setEndDate(zdtEnd);
@@ -171,27 +164,28 @@ public class MainViewModel {
         }
         appointment.setMainProductId(mainProduct.getId());
         // Database update for appointment
-        appointmentDao.updateAppointment(appointment);
+        appointmentDao.update(appointment);
         if (descriptionText.getText() != null && !descriptionText.getText().isEmpty()) {
-            appointment.getLocalizations().get("en").setDescription(descriptionText.getText());
+            appointment.getLocalizations().get(MainApp.getLocale().getLanguage())
+                    .setDescription(descriptionText.getText());
         }
-    
+
         updateCalendar(true);
     }
 
     public Customer newestCustomer() {
         ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
-        return customerDao.findNewestCustomer();
+        return customerDao.findNewest();
     }
 
     public Animal newestPet() {
         IAnimalDao animalDao = (AnimalDao) daoMap.get("animal");
-        return animalDao.findNewestAnimal();
+        return animalDao.findNewest();
     }
 
     public Product newestProduct() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
-        return productDao.findNewestProduct();
+        return productDao.findNewest();
     }
 
     private Product getMainProduct(long id, List<Product> productList) {
@@ -205,25 +199,24 @@ public class MainViewModel {
 
     public ObservableList<Customer> getPeople() {
         ICustomerDao customerDao = (CustomerDao) daoMap.get("customer");
-        return FXCollections.observableList(customerDao.findAllCustomer());
+        return FXCollections.observableList(customerDao.findAll());
     }
 
     private static EventHandler<CalendarEvent> getEventHandler() {
         return calendarEvent -> {
             Calendar calendar = calendarEvent.getEntry().getCalendar();
             if (!calendarEvent.getEntry().getId().startsWith("id")) {
-                // System.out.println(LocalTime.now().toString() + " " +
-                // calendarEvent.getEntry() + " \n");
                 return;
             }
             IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
             EventType<? extends Event> eventType = calendarEvent.getEventType();
             if (eventType == ENTRY_CALENDAR_CHANGED) {
                 if (calendar == null) {
-                    if (appointmentDao.deleteByIdAppointment(
-                            ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()))) {
-                        System.out.println(LocalTime.now().toString() + " Appointment deleted: "
-                                + calendarEvent.getEntry().getId() + "\n");
+                    if (appointmentDao
+                            .deleteById(ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()))) {
+                        // System.out.println(LocalTime.now().toString() + " Appointment deleted: " +
+                        // calendarEvent.getEntry().getId() + "\n");
+                        updateTrigger = true;
                     }
                 }
             } else if (eventType == ENTRY_INTERVAL_CHANGED) {
@@ -231,11 +224,13 @@ public class MainViewModel {
                     return;
                 }
                 Appointment appointment = appointmentDao
-                        .findByIdAppointment(ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()));
+                        .findById(ControllerUtilities.removeStringFromId(calendarEvent.getEntry().getId()));
                 appointment.setStartDate(calendarEvent.getEntry().getStartAsZonedDateTime());
                 appointment.setEndDate(calendarEvent.getEntry().getEndAsZonedDateTime());
-                if (appointmentDao.updateAppointment(appointment)) {
-                    System.out.println(LocalTime.now().toString() + " Appointment date updated");
+                if (appointmentDao.update(appointment)) {
+                    // System.out.println(LocalTime.now().toString() + " Appointment updated: " +
+                    // calendarEvent.getEntry().getId() + "\n");
+                    updateTrigger = true;
                 }
             }
         };

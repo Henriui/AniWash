@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -42,6 +43,8 @@ public class DashboardController {
     private Text customersThisMo;
     @FXML
     private Text customersThisYear;
+    @FXML
+    private MenuButton languageButton;
 
     private final MainViewModel mainViewModel = new MainViewModel();
     @FXML
@@ -104,12 +107,14 @@ public class DashboardController {
     }
 
     @FXML
-    private void changeLanguage() throws IOException {
-        if (MainApp.getLocale().getLanguage().equals("en")) {
-            MainApp.setLocale(new Locale.Builder().setLanguage("fr").setRegion("FR").build());
-        } else {
-            MainApp.setLocale(new Locale.Builder().setLanguage("en").setRegion("US").build());
-        }
+    private void changeLanguageEnglish() throws IOException {
+        MainApp.setLocale(new Locale.Builder().setLanguage("en").setRegion("US").build());
+        MainApp.setRoot("mainView");
+    }
+
+    @FXML
+    private void changeLanguageFrance() throws IOException {
+        MainApp.setLocale(new Locale.Builder().setLanguage("fr").setRegion("FR").build());
         MainApp.setRoot("mainView");
     }
 
@@ -143,13 +148,13 @@ public class DashboardController {
             // if the month is the current month, add to customer count.
             if (m == Month.of(cal.get(Calendar.MONTH) + 1))
                 custMo++;
-            
+
             custYear++;
 
             // go through this years appointments products and calculate monthly revenue.
             for (Product p : appt.getProducts()) {
                 // Calculate price of product from price and discount.
-                double price = p.getPrice() * (1 - appt.getDiscount(p).getDiscountPercent()/100);
+                double price = p.getPrice() * (1 - appt.getDiscount(p).getDiscountPercent() / 100);
                 // System.out.println(price);
                 // if the month is already in the map, add the price to the value.
                 if (!monthlyDataMap.containsKey(m))
@@ -159,7 +164,7 @@ public class DashboardController {
             }
         }
         // If yearly data is empty, return.
-        if(monthlyDataMap.isEmpty())
+        if (monthlyDataMap.isEmpty())
             return;
 
         // Add data to series in order of months.
@@ -170,34 +175,34 @@ public class DashboardController {
 
         // print out the data for debugging.
         // for (Month mo : monthlyDataMap.keySet()) {
-        //     System.out.println(mo + " " + monthlyDataMap.get(mo));
+        // System.out.println(mo + " " + monthlyDataMap.get(mo));
         // }
 
         // Add series to chart.
         barChart.getData().add(monthlyData);
 
         // Add tooltip to every node in the chart.
-        for(XYChart.Series<String, Double> s : barChart.getData()){
+        for (XYChart.Series<String, Double> s : barChart.getData()) {
             for (XYChart.Data<String, Double> data : s.getData()) {
-            // If value is greater than 0, add a label to the bar.
-            Tooltip tt = new Tooltip(data.getYValue().toString());
-            tt.setShowDelay(Duration.ZERO);
-            tt.setHideDelay(Duration.ZERO);
+                // If value is greater than 0, add a label to the bar.
+                Tooltip tt = new Tooltip(data.getYValue().toString());
+                tt.setShowDelay(Duration.ZERO);
+                tt.setHideDelay(Duration.ZERO);
                 Tooltip.install(data.getNode(), tt);
 
-                //Adding class on hover
+                // Adding class on hover
                 data.getNode().setOnMouseEntered(event -> data.getNode().getStyleClass().add("onHover"));
 
-                //Removing class on exit
+                // Removing class on exit
                 data.getNode().setOnMouseExited(event -> data.getNode().getStyleClass().remove("onHover"));
- 
+
+            }
         }
-    }
 
         int mo = cal.get(Calendar.MONTH);
         // set text of revenue from this and last month.
         thisMonth.setText(String.valueOf(monthlyDataMap.get(Month.of(mo + 1))));
-        
+
         lastMonth.setText(String.valueOf(monthlyDataMap.get(Month.of(mo))));
 
         // set text of customer counts.
