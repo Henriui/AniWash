@@ -53,7 +53,7 @@ public class MainApp extends Application {
         } catch (Exception e) {
             locale = new Locale("en", "US");
         }
-        setLocale(locale);//Change language here to fr_FR for French or en_US for English
+        setLocale(locale);
         // TODO: Change this to the login view when project done.
         Parent root = loadParent("mainView");
         scene = new Scene(root);
