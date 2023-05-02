@@ -65,7 +65,7 @@ public class ProductController {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 } else {
-                    return product.getLocalizations().get(MainApp.getLocale().getLanguage()).getName().toLowerCase().contains(newValue.toLowerCase());
+                    return product.getLocalizations().get("en").getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
             ObservableList<Product> filteredCustomers = products.get().filtered(productFilter);

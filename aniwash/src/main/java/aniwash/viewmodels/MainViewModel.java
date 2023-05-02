@@ -33,7 +33,7 @@ public class MainViewModel {
     private static boolean updateTrigger = false;
 
     public MainViewModel() {
-        DatabaseConnector.openDbConnection("com.aniwash.test");
+        DatabaseConnector.openDbConnection("com.aniwash");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
         daoMap.put("animal", new AnimalDao());
@@ -116,7 +116,7 @@ public class MainViewModel {
         Appointment appointment = new Appointment(zdtStart, zdtEnd);
         LocalizedAppointment localAppointment = new LocalizedAppointment(appointment,
                 "Appointment for " + selectedCustomer.getName());
-        localAppointment.setId(new LocalizedId(MainApp.getLocale().getLanguage()));
+        localAppointment.setId(new LocalizedId("en"));
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
         // Add all products prices together
