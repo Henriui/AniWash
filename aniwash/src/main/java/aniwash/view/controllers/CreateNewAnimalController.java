@@ -1,5 +1,6 @@
 package aniwash.view.controllers;
 
+import aniwash.MainApp;
 import aniwash.dao.AnimalDao;
 import aniwash.dao.CustomerDao;
 import aniwash.dao.IAnimalDao;
@@ -13,6 +14,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.util.ResourceBundle;
 
 /**
  * This is a Java class that creates a new animal object and adds it to a customer's list of animals in
@@ -33,8 +36,10 @@ public class CreateNewAnimalController {
     @FXML
     private Button saveButton;
     private static Customer customer;
+    private ResourceBundle bundle;
 
     public void initialize() {
+        bundle = MainApp.getBundle();
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
                 // Bind the save button's disable property to a BooleanBinding
@@ -49,7 +54,7 @@ public class CreateNewAnimalController {
 
     /**
      * This function saves the information entered by the user about a pet and adds it to the database.
-     * 
+     *
      * @param event An ActionEvent object that represents the event that triggered the method call. It
      * contains information about the event, such as the source of the event and any additional data
      * associated with the event.
@@ -65,14 +70,14 @@ public class CreateNewAnimalController {
 
         if (petName.isEmpty() || petType.isEmpty() || petBreed.isEmpty() || petAge.isEmpty() || petDescription.isEmpty()) {
             // Show error message if mandatory fields are empty
-            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillAllFieldsText"));
             return;
         }
 
         if (!ControllerUtilities.isNumeric(petAge)) {
             // Show error message if petAge fields contain non-numeric
             // characters
-            ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillNumericText"));
             return;
         }
 

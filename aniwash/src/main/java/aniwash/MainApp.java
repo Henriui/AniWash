@@ -2,6 +2,7 @@ package aniwash;
 
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
+import aniwash.view.utilities.LanguageSave;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,8 +49,15 @@ public class MainApp extends Application {
         cookie = new Biscuit();
         // TODO: Delete this before release.
         // cookie.setBiscuit(e);
-        locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
-        setLocale(locale);//Change language here to fr_FR for French or en_US for English
+        try {
+            locale = LanguageSave.readLanguageFromFile();
+            if (locale == null) {
+                locale = new Locale("en", "US");
+            }
+        } catch (Exception e) {
+            locale = new Locale("en", "US");
+        }
+        setLocale(locale);
         // TODO: Change this to the login view when project done.
         Parent root = loadParent("mainView");
         scene = new Scene(root);
@@ -78,13 +86,20 @@ public class MainApp extends Application {
     }
 
     public static void setLocale(Locale locale) {
+        LanguageSave.writeLanguageToFile(locale);
         MainApp.locale = locale;
+        Locale.setDefault(locale);
         bundle = ResourceBundle.getBundle("aniwash.languages.Resources", locale);
     }
 
     public static Locale getLocale() {
         return locale;
     }
+
+    public static ResourceBundle getBundle() {
+        return bundle;
+    }
+
 
     private static Parent loadParent(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));

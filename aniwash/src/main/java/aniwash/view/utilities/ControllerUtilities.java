@@ -1,10 +1,5 @@
 package aniwash.view.utilities;
 
-import java.io.IOException;
-
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Entry;
-
 import aniwash.MainApp;
 import aniwash.entity.Appointment;
 import aniwash.entity.Customer;
@@ -39,7 +34,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -47,12 +41,11 @@ import java.util.ResourceBundle;
  * pop-up windows, updating lists, and handling events in a JavaFX application.
  */
 public class ControllerUtilities {
+    private static final ResourceBundle bundle = MainApp.getBundle();
 
     public static FXMLLoader loadFXML(String fxml) throws IOException {
-        ResourceBundle bundle;
-        bundle = ResourceBundle.getBundle("aniwash.languages.Resources", MainApp.getLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
-        fxmlLoader.setResources(bundle);
+        fxmlLoader.setResources(MainApp.getBundle());
         return fxmlLoader;
     }
 
@@ -62,7 +55,7 @@ public class ControllerUtilities {
         loader = loadFXML("newCustomerView");
         scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Create Customer");
+        stage.setTitle(bundle.getString("createCustomerLabel"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
@@ -73,7 +66,7 @@ public class ControllerUtilities {
         loader = loadFXML("editCustomerView");
         scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Create Customer");
+        stage.setTitle(bundle.getString("editCustomerLabel"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
@@ -84,7 +77,7 @@ public class ControllerUtilities {
         loader = loadFXML("createNewAnimalView");
         scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Create Animal");
+        stage.setTitle(bundle.getString("createAnimalLabel"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
         CreateNewAnimalController.setCustomer(selectedPerson);
@@ -96,7 +89,7 @@ public class ControllerUtilities {
         loader = loadFXML("newProductView");
         scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Create Product");
+        stage.setTitle(bundle.getString("createProductLabel"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
@@ -107,7 +100,7 @@ public class ControllerUtilities {
         loader = loadFXML("createNewAnimalView");
         scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Create Animal");
+        stage.setTitle(bundle.getString("createAnimalLabel"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
@@ -125,14 +118,14 @@ public class ControllerUtilities {
 
     public static void showAlert(String message) {
         Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
+        alert.setTitle(bundle.getString("errorAlert"));
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
     public static void updateAnimals(Customer c, ListView<String> petList, ListView<Customer> personList,
-            ObservableList<Customer> customerObservableList) {
+                                     ObservableList<Customer> customerObservableList) {
         personList.setItems(customerObservableList.filtered(customer -> customer.getName().contains(c.getName())));
         petList.getItems().clear();
         petList.getItems().add("                                   Create new pet  +");
@@ -154,8 +147,8 @@ public class ControllerUtilities {
      * @return An EventHandler of type WindowEvent is being returned.
      */
     public static EventHandler<WindowEvent> getCustomerEvent(MainViewModel mainViewModel,
-            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
-            Entry<Appointment> newEntry) {
+                                                             ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+                                                             Entry<Appointment> newEntry) {
         return customerEvent -> {
             Customer c = mainViewModel.newestCustomer();
             customerObservableList.add(c);
@@ -183,7 +176,7 @@ public class ControllerUtilities {
      * @return An EventHandler of type WindowEvent.
      */
     public static EventHandler<WindowEvent> getProductEvent(MainViewModel mainViewModel, ListView<String> services,
-            Entry<Appointment> newEntry) {
+                                                            Entry<Appointment> newEntry) {
         return productEvent -> {
             services.getItems().clear();
             mainViewModel.getCalendarMap().values().forEach(service -> services.getItems().addAll(service.getName()));
@@ -214,8 +207,8 @@ public class ControllerUtilities {
      * @return An EventHandler<KeyEvent> object is being returned.
      */
     public static EventHandler<KeyEvent> getSearchFieldKeyEvent(MainViewModel mainViewModel, TextField searchField,
-            ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList,
-            ListView<String> services, Entry<Appointment> newEntry) {
+                                                                ListView<Customer> personList, ObservableList<Customer> customerObservableList, ListView<String> petList,
+                                                                ListView<String> services, Entry<Appointment> newEntry) {
         return event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 if (searchField.getText().isEmpty() || personList.getItems().isEmpty()) {
@@ -269,9 +262,9 @@ public class ControllerUtilities {
      * @return An EventHandler of type MouseEvent is being returned.
      */
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
-            Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
-            Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
-            Button deleteSelectedProduct, ListView extraProducts, Text totalPrice, ShoppingCart shoppingCart) {
+                                                                Entry<Appointment> newEntry, ListView<String> petList, AnchorPane selectedProductPane,
+                                                                Text selectedProductLabel, Text selectedProductPriceLabel, Text selectedProductDurationLabel,
+                                                                Button deleteSelectedProduct, ListView extraProducts, Text totalPrice, ShoppingCart shoppingCart) {
         return mouseEvent -> {
             extraProducts.setStyle("-fx-background-color:  #d7d7d7; -fx-background:  #d7d7d7;");
             // Set the placeholder text for the ListView
@@ -374,8 +367,8 @@ public class ControllerUtilities {
      * @return An EventHandler<ActionEvent> object is being returned.
      */
     public static EventHandler<ActionEvent> applyDiscount(TextField setDiscount,
-            ListView<DiscountProduct> extraProducts, Text selectedProductCost, Text selectedProductCostDiscount,
-            Entry newEntry, Text selectedProduct, Text totalPrice, ShoppingCart shoppingCart) {
+                                                          ListView<DiscountProduct> extraProducts, Text selectedProductCost, Text selectedProductCostDiscount,
+                                                          Entry newEntry, Text selectedProduct, Text totalPrice, ShoppingCart shoppingCart) {
         return event -> {
 
             // If discount is applied and MainProduct is selected.
@@ -465,7 +458,7 @@ public class ControllerUtilities {
             }
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
+            totalPrice.setText(bundle.getString("priceLabel") + ": " + shoppingCart.getTotalDiscountedPrice() + " €");
         };
 
     }
@@ -484,8 +477,8 @@ public class ControllerUtilities {
      * @return An EventHandler of type MouseEvent is being returned.
      */
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
-            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
-            Entry<Appointment> newEntry) {
+                                                               ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+                                                               Entry<Appointment> newEntry) {
 
         return mouseEvent -> {
             if (petList.getSelectionModel().getSelectedItem().contains("+")) {
@@ -526,7 +519,7 @@ public class ControllerUtilities {
      * @return An EventHandler of type MouseEvent or a subtype of MouseEvent.
      */
     public static EventHandler<? super MouseEvent> selectExtraProduct(Text selectedProduct, Rectangle mainProduct,
-            ListView<DiscountProduct> extraProducts) {
+                                                                      ListView<DiscountProduct> extraProducts) {
         return event -> {
 
             // Set MainProduct text to default, to showcase that it has been Unselected.
@@ -552,7 +545,7 @@ public class ControllerUtilities {
      * the method body.
      */
     public static EventHandler<? super MouseEvent> selectMainProduct(Text selectedProduct,
-            ListView<DiscountProduct> extraProducts, Rectangle mainProduct) {
+                                                                     ListView<DiscountProduct> extraProducts, Rectangle mainProduct) {
         return event -> {
 
             // Set MainProduct text light green, to showcase that it has been selected.
@@ -583,8 +576,8 @@ public class ControllerUtilities {
      * @return An EventHandler<ActionEvent> object is being returned.
      */
     public static EventHandler<ActionEvent> deleteMainProduct(ListView<String> services, AnchorPane selectedProductPane,
-            Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
-            Text selectedProductCostDiscount, Text totalPrice, ShoppingCart shoppingCart, Appointment appointment) {
+                                                              Entry<Appointment> newEntry, Text selectedProduct, Text selectedProductCost,
+                                                              Text selectedProductCostDiscount, Text totalPrice, ShoppingCart shoppingCart, Appointment appointment) {
         return event -> {
 
             // Add MainProduct back to the product ListView and hide the MainProduct
@@ -606,7 +599,7 @@ public class ControllerUtilities {
 
             // Set totalPrice text to match all selected product price.
 
-            totalPrice.setText("Price " + shoppingCart.getTotalDiscountedPrice() + "€");
+            totalPrice.setText(bundle.getString("priceLabel") + ": " + shoppingCart.getTotalDiscountedPrice() + " €");
         };
 
     }
@@ -627,8 +620,8 @@ public class ControllerUtilities {
      * @return An EventHandler of type MouseEvent is being returned.
      */
     public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel,
-            ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
-            Entry<Appointment> newEntry, ListView<String> services) {
+                                                               ObservableList<Customer> customerObservableList, ListView<Customer> personList, ListView<String> petList,
+                                                               Entry<Appointment> newEntry, ListView<String> services) {
 
         return mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {

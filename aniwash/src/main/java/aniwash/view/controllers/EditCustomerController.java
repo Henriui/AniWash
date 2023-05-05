@@ -1,9 +1,7 @@
 package aniwash.view.controllers;
 
 import aniwash.MainApp;
-import aniwash.dao.AnimalDao;
 import aniwash.dao.CustomerDao;
-import aniwash.dao.IAnimalDao;
 import aniwash.dao.ICustomerDao;
 import aniwash.entity.Animal;
 import aniwash.entity.Appointment;
@@ -15,21 +13,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 /**
  * The EditCustomerController class is responsible for handling the editing of
@@ -72,6 +70,7 @@ public class EditCustomerController {
 
     private static Customer customer;
     private final CustomersController customersController = new CustomersController();
+    private ResourceBundle bundle;
 
     /**
      * This function initializes the UI elements and populates them with data from
@@ -79,6 +78,7 @@ public class EditCustomerController {
      * customer object.
      */
     public void initialize() {
+        bundle = MainApp.getBundle();
         customer = customersController.getSelectedCustomer();
 
         animals.clear();
@@ -154,7 +154,7 @@ public class EditCustomerController {
 
         if (name.isEmpty() || phone.isEmpty() || email.isEmpty()) {
             // Show error message if mandatory fields are empty
-            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillAllFieldsText"));
             return;
         }
 
@@ -162,7 +162,7 @@ public class EditCustomerController {
                 || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilities.isNumeric(postalCode)) {
             // Show error message if phone or postal code fields contain non-numeric
             // characters
-            ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillNumericText"));
             return;
         }
 

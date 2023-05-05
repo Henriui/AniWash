@@ -28,6 +28,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
 import static aniwash.view.utilities.ControllerUtilities.*;
 
 /**
@@ -66,13 +68,15 @@ public class EditAppointmentController extends CreatePopUp {
     private Entry<Appointment> newEntry;
     private ObservableList<Calendar<Product>> calendarObservableList;
     private ObservableList<Customer> customerObservableList;
-    private ShoppingCart cart = new ShoppingCart();
+    private final ShoppingCart cart = new ShoppingCart();
+    private ResourceBundle bundle;
 
     /**
      * This function initializes various UI elements and sets event listeners for mouse clicks and
      * button actions in a Java application.
      */
     public void initialize() {
+        bundle = MainApp.getBundle();
         newEntry = (Entry<Appointment>) getArg();
         // services.getItems().add(" Create new service +");
         petList.getItems().add("                                   Create new pet  +");
@@ -166,7 +170,7 @@ public class EditAppointmentController extends CreatePopUp {
 
         customer.getAnimals().forEach(animal -> petList.getItems().add(animal.getName()));
         petList.getSelectionModel().select(a.getName());
-        priceText.setText("Price: " + (newEntry.getUserObject().getTotalPrice()) + " €");
+        priceText.setText(bundle.getString("priceLabel") + ": " + (newEntry.getUserObject().getTotalPrice()) + " €");
 
         if (appointment.getDescription(MainApp.getLocale().getLanguage()) != null)
             descriptionArea.setText(appointment.getDescription(MainApp.getLocale().getLanguage()));
@@ -177,7 +181,7 @@ public class EditAppointmentController extends CreatePopUp {
             if (product != newEntry.getCalendar().getUserObject()) {
                 double newPrice = product.getPrice()
                         - (product.getPrice()
-                                * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                        * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
                 extraProducts.getItems()
                         .add(new DiscountProduct(product.getName(MainApp.getLocale().getLanguage()), newPrice));
             } else if (appointment.getDiscount(((Product) newEntry.getCalendar().getUserObject()))
@@ -185,14 +189,14 @@ public class EditAppointmentController extends CreatePopUp {
                 Product mainProduct = (Product) newEntry.getCalendar().getUserObject();
                 double newPrice = mainProduct.getPrice()
                         - (mainProduct.getPrice()
-                                * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
+                        * (0.01 * appointment.getDiscount(product.getId()).getDiscountPercent()));
                 selectedProductCost.strikethroughProperty().set(true);
                 selectedProductCostDiscount.setVisible(true);
-                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + "€");
+                selectedProductCostDiscount.setText(String.format("%.2f", newPrice) + " €");
             }
         });
         priceText.setText(
-                "Price " + String.valueOf(cart.getTotalDiscountedPrice() + "€"));
+                bundle.getString("priceLabel") + ": " + cart.getTotalDiscountedPrice() + " €");
         selectedProductPane.setVisible(true);
     }
 
