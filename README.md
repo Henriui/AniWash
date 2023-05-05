@@ -47,7 +47,7 @@ The software is written in Java and uses the JavaFX library for the GUI.
 
 ## Installation
 
-To run the software, you need to have Java 8 or higher installed on your computer and have installed Apache Maven.
+To run the software you will need to be connected to Metropolia AMK network either trough WiFi or VPN!!! You also need to have Java 8 or higher installed on your computer and have installed Apache Maven.
 You also need to have MySQL installed on your computer.
 
 After you have installed Java, Maven and MySQL copy repository to your computer. Run Maven install in the project folder
