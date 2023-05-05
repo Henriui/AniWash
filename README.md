@@ -80,7 +80,8 @@ the [Maven website](https://maven.apache.org/install.html).
 
 ### Class diagram:
 
-<img src="readme_resources/Class_diagram.png" width="800" height="600">
+<img src="readme_resources/Class_diagram.png" width="1200" height="800">
+<img src="readme_resources/Db_diag.png" width="800" height="400">
 
 ### Entity classes
 
