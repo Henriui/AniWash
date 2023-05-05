@@ -3,6 +3,9 @@ package aniwash.entity.localization;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+/**
+ * This is a Java class for a localized ID that includes an ID and a locale.
+ */
 @Embeddable
 public class LocalizedId implements Serializable {
 

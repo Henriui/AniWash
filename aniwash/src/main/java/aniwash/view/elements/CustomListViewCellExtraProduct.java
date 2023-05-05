@@ -13,6 +13,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * This is a custom JavaFX ListCell class for displaying extra products in a shopping cart with the
+ * ability to delete them and update the total price.
+ */
 public class CustomListViewCellExtraProduct extends ListCell<DiscountProduct> {
 
     private HBox produtInfoHBox;

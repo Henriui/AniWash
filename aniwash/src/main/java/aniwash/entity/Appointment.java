@@ -7,6 +7,11 @@ import org.hibernate.annotations.Where;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+/**
+ * This is a Java class representing an appointment with customers, animals, products, discounts, and
+ * localizations.
+ * @author Rasmus
+ */
 @Entity
 @Where(clause = "DELETED = 0")
 public class Appointment {

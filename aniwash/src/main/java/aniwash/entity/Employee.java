@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Where;
 
+/**
+ * This is a Java class representing an Employee entity with fields such as username, password, name,
+ * email, title, and userType.
+ */
 @Entity
 @Where(clause = "DELETED = 0")
 public class Employee {

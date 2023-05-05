@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This is a Java class representing a customer with various properties and relationships to other
+ * classes.
+ */
 @Entity
 @Where(clause = "DELETED = 0")
 public class Customer {

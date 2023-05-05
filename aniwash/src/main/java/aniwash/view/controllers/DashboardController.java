@@ -24,6 +24,10 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * The DashboardController class controls the main dashboard view of a Java application, including a
+ * calendar, agenda, bar chart, and various buttons for navigating to other views.
+ */
 public class DashboardController {
     @FXML
     private AnchorPane backGround;
@@ -118,6 +122,10 @@ public class DashboardController {
         MainApp.setRoot("mainView");
     }
 
+    /**
+     * This function loads data from appointments and calculates monthly revenue and customer counts
+     * for the current year, and displays it in a bar chart with tooltips and hover effects.
+     */
     private void loadDataHistory() {
         Calendar cal = Calendar.getInstance();
         AppointmentDao apptDao = new AppointmentDao();

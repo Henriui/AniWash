@@ -1,6 +1,10 @@
 package aniwash.entity;
 
 import jakarta.persistence.*;
+/**
+ * This is a Java class representing a discount with a percentage and a product ID, which can be
+ * associated with an appointment.
+ */
 @Entity
 public class Discount {
 
