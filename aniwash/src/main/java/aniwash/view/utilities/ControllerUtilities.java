@@ -100,7 +100,7 @@ public class ControllerUtilities {
         loader = loadFXML("createNewAnimalView");
         scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle(bundle.getString("createAnimalLabel"));
+        stage.setTitle(bundle.getString("createNewPetLabel"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
@@ -134,16 +134,16 @@ public class ControllerUtilities {
 
     /**
      * This function adds a new customer to a list and updates the corresponding UI elements.
-     * 
-     * @param mainViewModel An instance of the MainViewModel class, which likely contains data and
-     * methods related to the application's main view or functionality.
+     *
+     * @param mainViewModel          An instance of the MainViewModel class, which likely contains data and
+     *                               methods related to the application's main view or functionality.
      * @param customerObservableList An ObservableList of Customer objects that is used to display and
-     * manage the list of customers in the UI.
-     * @param personList A ListView that displays a list of customers.
-     * @param petList A ListView of Strings representing the pets of a selected customer.
-     * @param newEntry An Entry object representing a new appointment that is being created. The method
-     * sets the location of the appointment to the name of the selected customer in the personList
-     * ListView.
+     *                               manage the list of customers in the UI.
+     * @param personList             A ListView that displays a list of customers.
+     * @param petList                A ListView of Strings representing the pets of a selected customer.
+     * @param newEntry               An Entry object representing a new appointment that is being created. The method
+     *                               sets the location of the appointment to the name of the selected customer in the personList
+     *                               ListView.
      * @return An EventHandler of type WindowEvent is being returned.
      */
     public static EventHandler<WindowEvent> getCustomerEvent(MainViewModel mainViewModel,
@@ -168,11 +168,11 @@ public class ControllerUtilities {
      * This function returns an event handler that clears a ListView, populates it with product names,
      * selects the newest product, sets the calendar and title of a new entry based on the selected
      * product.
-     * 
+     *
      * @param mainViewModel An instance of the MainViewModel class, which likely contains data and
-     * methods related to the application's main view and functionality.
-     * @param services A ListView of String type that displays the names of services.
-     * @param newEntry An Entry object representing a new appointment entry to be added to a calendar.
+     *                      methods related to the application's main view and functionality.
+     * @param services      A ListView of String type that displays the names of services.
+     * @param newEntry      An Entry object representing a new appointment entry to be added to a calendar.
      * @return An EventHandler of type WindowEvent.
      */
     public static EventHandler<WindowEvent> getProductEvent(MainViewModel mainViewModel, ListView<String> services,
@@ -193,17 +193,17 @@ public class ControllerUtilities {
     /**
      * This function returns an event handler that handles key events for a search field and performs
      * actions based on the input.
-     * 
-     * @param mainViewModel an instance of the MainViewModel class, which likely contains data and
-     * methods related to the application's main view and functionality.
-     * @param searchField A TextField where the user can enter a search query.
-     * @param personList A ListView of Customer objects.
+     *
+     * @param mainViewModel          an instance of the MainViewModel class, which likely contains data and
+     *                               methods related to the application's main view and functionality.
+     * @param searchField            A TextField where the user can enter a search query.
+     * @param personList             A ListView of Customer objects.
      * @param customerObservableList An ObservableList of Customer objects.
-     * @param petList A ListView of strings representing the pets owned by the selected customer in the
-     * personList.
-     * @param services A ListView of String objects representing the available services for an
-     * appointment.
-     * @param newEntry An Entry object representing a new appointment.
+     * @param petList                A ListView of strings representing the pets owned by the selected customer in the
+     *                               personList.
+     * @param services               A ListView of String objects representing the available services for an
+     *                               appointment.
+     * @param newEntry               An Entry object representing a new appointment.
      * @return An EventHandler<KeyEvent> object is being returned.
      */
     public static EventHandler<KeyEvent> getSearchFieldKeyEvent(MainViewModel mainViewModel, TextField searchField,
@@ -240,25 +240,25 @@ public class ControllerUtilities {
     /**
      * This function handles mouse events for selecting products and adding them to a shopping cart,
      * updating the total price.
-     * 
-     * @param mainViewModel An instance of the MainViewModel class, which likely contains data and
-     * methods related to the application's main view and functionality.
-     * @param services A ListView of String objects representing available services/products.
-     * @param newEntry An Entry object representing a new appointment entry in a calendar.
-     * @param petList A ListView of pets that the user can select for the appointment.
-     * @param selectedProductPane An AnchorPane that represents the main product selected by the user.
-     * @param selectedProductLabel A Text object representing the label for the currently selected
-     * product.
-     * @param selectedProductPriceLabel A Text object representing the label that displays the price of
-     * the selected product in the user interface.
+     *
+     * @param mainViewModel                An instance of the MainViewModel class, which likely contains data and
+     *                                     methods related to the application's main view and functionality.
+     * @param services                     A ListView of String objects representing available services/products.
+     * @param newEntry                     An Entry object representing a new appointment entry in a calendar.
+     * @param petList                      A ListView of pets that the user can select for the appointment.
+     * @param selectedProductPane          An AnchorPane that represents the main product selected by the user.
+     * @param selectedProductLabel         A Text object representing the label for the currently selected
+     *                                     product.
+     * @param selectedProductPriceLabel    A Text object representing the label that displays the price of
+     *                                     the selected product in the user interface.
      * @param selectedProductDurationLabel A Text object representing the duration of the selected
-     * product in the shopping cart.
-     * @param deleteSelectedProduct A Button object that represents the button used to delete a
-     * selected product from the shopping cart.
-     * @param extraProducts A ListView that displays extra products added to the shopping cart.
-     * @param totalPrice A Text object representing the total price of all selected products in the
-     * shopping cart.
-     * @param shoppingCart A ShoppingCart object that stores the selected products and their discounts.
+     *                                     product in the shopping cart.
+     * @param deleteSelectedProduct        A Button object that represents the button used to delete a
+     *                                     selected product from the shopping cart.
+     * @param extraProducts                A ListView that displays extra products added to the shopping cart.
+     * @param totalPrice                   A Text object representing the total price of all selected products in the
+     *                                     shopping cart.
+     * @param shoppingCart                 A ShoppingCart object that stores the selected products and their discounts.
      * @return An EventHandler of type MouseEvent is being returned.
      */
     public static EventHandler<MouseEvent> getProductMouseEvent(MainViewModel mainViewModel, ListView<String> services,
@@ -349,21 +349,21 @@ public class ControllerUtilities {
     /**
      * This function applies a discount to selected products in a shopping cart and updates the prices
      * accordingly.
-     * 
-     * @param setDiscount A TextField where the user can input a discount percentage.
-     * @param extraProducts A ListView of DiscountProduct objects, representing the extra products
-     * added to the shopping cart.
-     * @param selectedProductCost A Text object representing the original price of the selected
-     * product.
+     *
+     * @param setDiscount                 A TextField where the user can input a discount percentage.
+     * @param extraProducts               A ListView of DiscountProduct objects, representing the extra products
+     *                                    added to the shopping cart.
+     * @param selectedProductCost         A Text object representing the original price of the selected
+     *                                    product.
      * @param selectedProductCostDiscount A Text object representing the discounted price of the
-     * selected product.
-     * @param newEntry An Entry object representing a calendar entry for a product.
-     * @param selectedProduct A Text object representing the name of the selected product in the
-     * shopping cart.
-     * @param totalPrice A Text object representing the total price of all selected products in the
-     * shopping cart.
-     * @param shoppingCart It is an instance of the ShoppingCart class, which represents the user's
-     * shopping cart and contains methods for adding, removing, and editing products and discounts.
+     *                                    selected product.
+     * @param newEntry                    An Entry object representing a calendar entry for a product.
+     * @param selectedProduct             A Text object representing the name of the selected product in the
+     *                                    shopping cart.
+     * @param totalPrice                  A Text object representing the total price of all selected products in the
+     *                                    shopping cart.
+     * @param shoppingCart                It is an instance of the ShoppingCart class, which represents the user's
+     *                                    shopping cart and contains methods for adding, removing, and editing products and discounts.
      * @return An EventHandler<ActionEvent> object is being returned.
      */
     public static EventHandler<ActionEvent> applyDiscount(TextField setDiscount,
@@ -467,13 +467,13 @@ public class ControllerUtilities {
      * This function returns an event handler for a mouse click on an animal in a list, which opens a
      * new popup window to add a new animal or selects an existing animal and updates the appointment
      * location accordingly.
-     * 
-     * @param mainViewModel An instance of the MainViewModel class, which likely contains data and
-     * methods related to the main view of the application.
+     *
+     * @param mainViewModel          An instance of the MainViewModel class, which likely contains data and
+     *                               methods related to the main view of the application.
      * @param customerObservableList An ObservableList of Customer objects.
-     * @param personList A ListView that displays a list of customers.
-     * @param petList A ListView of Strings representing the list of pets for a selected customer.
-     * @param newEntry An Entry object representing a new appointment entry.
+     * @param personList             A ListView that displays a list of customers.
+     * @param petList                A ListView of Strings representing the list of pets for a selected customer.
+     * @param newEntry               An Entry object representing a new appointment entry.
      * @return An EventHandler of type MouseEvent is being returned.
      */
     public static EventHandler<MouseEvent> getAnimalMouseEvent(MainViewModel mainViewModel,
@@ -511,11 +511,11 @@ public class ControllerUtilities {
     /**
      * This function handles the selection of extra products in a ListView and updates the appearance
      * of the main product and selected product text accordingly.
-     * 
+     *
      * @param selectedProduct A Text object representing the currently selected product.
-     * @param mainProduct A Rectangle object representing the main product.
-     * @param extraProducts A ListView of DiscountProduct objects, which likely contains additional
-     * products that can be selected by the user.
+     * @param mainProduct     A Rectangle object representing the main product.
+     * @param extraProducts   A ListView of DiscountProduct objects, which likely contains additional
+     *                        products that can be selected by the user.
      * @return An EventHandler of type MouseEvent or a subtype of MouseEvent.
      */
     public static EventHandler<? super MouseEvent> selectExtraProduct(Text selectedProduct, Rectangle mainProduct,
@@ -536,11 +536,11 @@ public class ControllerUtilities {
     /**
      * This function sets the selected main product's text color and border to light green and clears
      * the selection of any extra products in a ListView.
-     * 
+     *
      * @param selectedProduct A Text object representing the main product that has been selected.
-     * @param extraProducts A ListView of DiscountProduct objects, which likely contains additional
-     * products related to the main product being selected.
-     * @param mainProduct A Rectangle object representing the main product that has been selected.
+     * @param extraProducts   A ListView of DiscountProduct objects, which likely contains additional
+     *                        products related to the main product being selected.
+     * @param mainProduct     A Rectangle object representing the main product that has been selected.
      * @return An EventHandler that takes a MouseEvent as input and performs the actions specified in
      * the method body.
      */
@@ -558,21 +558,21 @@ public class ControllerUtilities {
 
     /**
      * This Java function deletes a main product from a shopping cart and updates the total price.
-     * 
-     * @param services A ListView of available services/products.
-     * @param selectedProductPane An AnchorPane that represents the selected product in the UI.
-     * @param newEntry An Entry object representing an appointment in a calendar. It contains a
-     * reference to a Product object that represents the main product selected for the appointment.
-     * @param selectedProduct A Text object representing the name of the selected product.
-     * @param selectedProductCost A Text object representing the cost of the selected product before
-     * any discounts are applied.
+     *
+     * @param services                    A ListView of available services/products.
+     * @param selectedProductPane         An AnchorPane that represents the selected product in the UI.
+     * @param newEntry                    An Entry object representing an appointment in a calendar. It contains a
+     *                                    reference to a Product object that represents the main product selected for the appointment.
+     * @param selectedProduct             A Text object representing the name of the selected product.
+     * @param selectedProductCost         A Text object representing the cost of the selected product before
+     *                                    any discounts are applied.
      * @param selectedProductCostDiscount A Text object representing the discounted cost of the
-     * selected product.
-     * @param totalPrice A Text object representing the total price of all products in the shopping
-     * cart.
-     * @param shoppingCart A ShoppingCart object that contains the products selected by the user.
-     * @param appointment An instance of the Appointment class, representing an appointment that the
-     * user has scheduled.
+     *                                    selected product.
+     * @param totalPrice                  A Text object representing the total price of all products in the shopping
+     *                                    cart.
+     * @param shoppingCart                A ShoppingCart object that contains the products selected by the user.
+     * @param appointment                 An instance of the Appointment class, representing an appointment that the
+     *                                    user has scheduled.
      * @return An EventHandler<ActionEvent> object is being returned.
      */
     public static EventHandler<ActionEvent> deleteMainProduct(ListView<String> services, AnchorPane selectedProductPane,
@@ -607,16 +607,16 @@ public class ControllerUtilities {
     /**
      * This function returns a mouse event handler that either opens a new customer popup or updates
      * the selected customer's information.
-     * 
-     * @param mainViewModel It is an instance of the MainViewModel class, which is a view model that
-     * manages the data and behavior of the main view of the application.
+     *
+     * @param mainViewModel          It is an instance of the MainViewModel class, which is a view model that
+     *                               manages the data and behavior of the main view of the application.
      * @param customerObservableList An ObservableList of Customer objects, used to populate the
-     * ListView of customers in the UI.
-     * @param personList A ListView that displays a list of customers.
-     * @param petList A ListView of String objects representing the pets owned by a selected customer.
-     * @param newEntry An Entry object representing a new appointment to be added.
-     * @param services A ListView of String objects representing the available services for
-     * appointments.
+     *                               ListView of customers in the UI.
+     * @param personList             A ListView that displays a list of customers.
+     * @param petList                A ListView of String objects representing the pets owned by a selected customer.
+     * @param newEntry               An Entry object representing a new appointment to be added.
+     * @param services               A ListView of String objects representing the available services for
+     *                               appointments.
      * @return An EventHandler of type MouseEvent is being returned.
      */
     public static EventHandler<MouseEvent> getPersonMouseEvent(MainViewModel mainViewModel,
