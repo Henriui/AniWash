@@ -7,6 +7,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * This is a custom JavaFX ListCell class for displaying product information in a ListView.
+ */
 public class CustomListViewCellProduct extends ListCell<Product> {
 
     private HBox produtInfoHBox;

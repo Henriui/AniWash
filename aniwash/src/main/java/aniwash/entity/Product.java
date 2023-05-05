@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This is a Java class representing a product with price, style, and localized information, and it has
+ * many-to-many and one-to-many relationships with other classes.
+ */
 @Entity
 @Where(clause = "DELETED = 0")
 public class Product {
@@ -60,11 +64,11 @@ public class Product {
     }
 
     public String getName(String locale) {
-        return localizations.get(locale).getName();
+        return localizations.get("en").getName();
     }
 
     public String getDescription(String locale) {
-        return localizations.get(locale).getDescription();
+        return localizations.get("en").getDescription();
     }
 
     public Map<String, LocalizedProduct> getLocalizations() {

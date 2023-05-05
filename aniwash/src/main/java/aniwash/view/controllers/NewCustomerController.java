@@ -1,5 +1,6 @@
 package aniwash.view.controllers;
 
+import aniwash.MainApp;
 import aniwash.dao.*;
 import aniwash.entity.Animal;
 import aniwash.entity.Customer;
@@ -13,7 +14,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.util.Map;
+import java.util.ResourceBundle;
 
+/**
+ * This is a Java class that controls the creation of a new customer and their pet, with input
+ * validation and saving to a database.
+ */
 public class NewCustomerController {
 
     // Create text fields for Customer section
@@ -42,7 +48,10 @@ public class NewCustomerController {
     @FXML
     private Button saveButton;
 
+    private ResourceBundle bundle;
+
     public void initialize() {
+        bundle = MainApp.getBundle();
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
                 // Bind the save button's disable property to a BooleanBinding
@@ -51,6 +60,13 @@ public class NewCustomerController {
 
     }
 
+    /**
+     * This function saves customer and animal information to a database and checks for valid input.
+     * 
+     * @param event An ActionEvent object that represents the event that triggered the method call. It
+     * contains information about the event, such as the source of the event and any additional data
+     * associated with the event.
+     */
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         String name = nameField.getText().trim();
@@ -67,14 +83,14 @@ public class NewCustomerController {
 
         if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || petName.isEmpty() || petType.isEmpty() || petBreed.isEmpty() || petAge.isEmpty() || petDescription.isEmpty()) {
             // Show error message if mandatory fields are empty
-            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillAllFieldsText"));
             return;
         }
 
         if (!ControllerUtilities.isNumeric(phone) || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilities.isNumeric(postalCode) || !ControllerUtilities.isNumeric(petAge)) {
             // Show error message if phone or postal code fields contain non-numeric
             // characters
-            ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillNumericText"));
             return;
         }
 

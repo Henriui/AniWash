@@ -3,6 +3,9 @@ package aniwash.entity.localization;
 import aniwash.entity.Product;
 import jakarta.persistence.*;
 
+/**
+ * The LocalizedProduct class represents a product with localized name and description.
+ */
 @Entity
 public class LocalizedProduct {
 

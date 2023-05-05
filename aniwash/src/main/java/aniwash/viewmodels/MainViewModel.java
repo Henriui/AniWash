@@ -24,6 +24,9 @@ import java.util.Map;
 import static com.calendarfx.model.CalendarEvent.ENTRY_CALENDAR_CHANGED;
 import static com.calendarfx.model.CalendarEvent.ENTRY_INTERVAL_CHANGED;
 
+/**
+ * The MainViewModel class manages the calendar and database connections for a scheduling application.
+ */
 public class MainViewModel {
 
     private static final Map<String, Calendar<Product>> calendarMap = new HashMap<>();
@@ -32,8 +35,13 @@ public class MainViewModel {
 
     private static boolean updateTrigger = false;
 
+    // This is the constructor for the `MainViewModel` class. It initializes the database connection
+    // using `DatabaseConnector.openDbConnection("com.aniwash.test")`, creates instances of the DAO
+    // classes (`ProductDao`, `CustomerDao`, `AnimalDao`, and `AppointmentDao`) and adds them to the
+    // `daoMap`, and then calls the `updateCalendar` method with a `true` parameter to update the
+    // calendar.
     public MainViewModel() {
-        DatabaseConnector.openDbConnection("com.aniwash.test");
+        DatabaseConnector.openDbConnection("com.aniwash");
         daoMap.put("product", new ProductDao());
         daoMap.put("customer", new CustomerDao());
         daoMap.put("animal", new AnimalDao());
@@ -64,6 +72,12 @@ public class MainViewModel {
         return daoMap;
     }
 
+    /**
+     * The function creates a calendar for a product and adds it to a map of calendars.
+     * 
+     * @param product The product object that needs to be added to the calendar. It contains
+     * information about the product such as its name, style, and other details.
+     */
     public void createCalendar(Product product) {
         IProductDao productDao = (ProductDao) daoMap.get("product");
         productDao.add(product);
@@ -74,6 +88,9 @@ public class MainViewModel {
         familyCalendarSource.getCalendars().add(calendarMap.get(product.getName(MainApp.getLocale().getLanguage())));
     }
 
+    /**
+     * The function adds calendars for each product in the productDao to the familyCalendarSource.
+     */
     private void addCalendarsToCalendarSource() {
         IProductDao productDao = (ProductDao) daoMap.get("product");
         for (Product product : productDao.findAll()) {
@@ -108,10 +125,12 @@ public class MainViewModel {
         }
     }
 
-    public Appointment createAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Customer selectedCustomer, Animal animal, long mainProductId, Map<Product, Discount> p, TextArea descriptionText) {
+    public Appointment createAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Customer selectedCustomer,
+            Animal animal, long mainProductId, Map<Product, Discount> p, TextArea descriptionText) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         Appointment appointment = new Appointment(zdtStart, zdtEnd);
-        LocalizedAppointment localAppointment = new LocalizedAppointment(appointment, " " + descriptionText.getText());
+        LocalizedAppointment localAppointment = new LocalizedAppointment(appointment,
+                "Appointment for " + selectedCustomer.getName());
         localAppointment.setId(new LocalizedId("en"));
         appointment.addCustomer(selectedCustomer);
         appointment.addAnimal(animal);
@@ -134,7 +153,8 @@ public class MainViewModel {
         return appointment;
     }
 
-    public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c, Animal a, Map<Product, Discount> p, Product mainProduct, TextArea descriptionText) {
+    public void updateAppointment(ZonedDateTime zdtStart, ZonedDateTime zdtEnd, Appointment appointment, Customer c,
+            Animal a, Map<Product, Discount> p, Product mainProduct, TextArea descriptionText) {
         IAppointmentDao appointmentDao = (AppointmentDao) daoMap.get("appointment");
         appointment.setStartDate(zdtStart);
         appointment.setEndDate(zdtEnd);
@@ -195,6 +215,13 @@ public class MainViewModel {
         return FXCollections.observableList(customerDao.findAll());
     }
 
+    /**
+     * This function returns an event handler that updates or deletes appointments based on changes to
+     * a calendar event.
+     * 
+     * @return A static EventHandler that takes a CalendarEvent as input and performs certain actions
+     * based on the type of event and the state of the associated calendar and appointment data.
+     */
     private static EventHandler<CalendarEvent> getEventHandler() {
         return calendarEvent -> {
             Calendar calendar = calendarEvent.getEntry().getCalendar();

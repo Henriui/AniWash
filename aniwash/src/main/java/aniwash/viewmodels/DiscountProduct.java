@@ -1,5 +1,9 @@
 package aniwash.viewmodels;
 
+/**
+ * The DiscountProduct class has properties for name and price, as well as methods for getting and
+ * setting those properties.
+ */
 public class DiscountProduct {
     private double price;
     private String name;

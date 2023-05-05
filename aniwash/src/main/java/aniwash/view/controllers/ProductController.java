@@ -24,6 +24,10 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
+/**
+ * The ProductController class controls the behavior of a ListView of products and allows for searching
+ * and adding new products.
+ */
 public class ProductController {
 
     @FXML
@@ -36,6 +40,9 @@ public class ProductController {
 
     private IProductDao productDao;
 
+    /**
+     * This function initializes a ListView of products with a custom cell factory and a search filter.
+     */
     public void initialize() {
 
         productDao = new ProductDao();
@@ -65,7 +72,7 @@ public class ProductController {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 } else {
-                    return product.getLocalizations().get(MainApp.getLocale().getLanguage()).getName().toLowerCase().contains(newValue.toLowerCase());
+                    return product.getLocalizations().get("en").getName().toLowerCase().contains(newValue.toLowerCase());
                 }
             };
             ObservableList<Product> filteredCustomers = products.get().filtered(productFilter);

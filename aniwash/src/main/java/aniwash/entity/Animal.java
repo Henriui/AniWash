@@ -5,6 +5,11 @@ import org.hibernate.annotations.Where;
 
 import java.util.*;
 
+/**
+ * This is a Java class representing an animal with properties such as name, type, breed, and
+ * description, and methods for managing its owners and appointments.
+ * @author Lassi, Rasmus
+ */
 @Entity
 @Where(clause = "DELETED = 0")
 public class Animal {
@@ -43,6 +48,15 @@ public class Animal {
         this.description = description;
     }
 
+ /**
+  * This function removes a customer from the list of owners of an animal and removes the animal from
+  * the list of animals owned by the customer.
+  * 
+  * @param customer The "customer" parameter is an instance of the "Customer" class, which represents a
+  * customer who owns one or more animals. The method "removeOwner" removes the given customer from the
+  * list of owners of the current animal instance and also removes the current animal instance from the
+  * list of animals owned by
+  */
     public void removeOwner(Customer customer) {
         owner.remove(customer);
         customer.getAnimals().remove(this);

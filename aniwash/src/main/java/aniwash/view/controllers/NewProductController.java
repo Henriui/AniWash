@@ -13,6 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.util.ResourceBundle;
+
+/**
+ * This is a Java class for a new product controller that creates a product object and saves it based
+ * on user input.
+ */
 public class NewProductController {
 
     // Create text fields for Customer section
@@ -25,7 +31,10 @@ public class NewProductController {
     @FXML
     private Button saveButton;
 
+    private ResourceBundle bundle;
+
     public void initialize() {
+        bundle = MainApp.getBundle();
         // Set the text fields to be editable
         saveButton.disableProperty().bind(
                 // Bind the save button's disable property to a BooleanBinding
@@ -34,6 +43,12 @@ public class NewProductController {
 
     }
 
+    /**
+     * This function creates a new product object with user input and adds it to the main view model.
+     *
+     * @param event An ActionEvent object that represents the event that occurred, such as a button
+     * click or menu selection.
+     */
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         String name = nameField.getText().trim();
@@ -41,13 +56,13 @@ public class NewProductController {
         String price = priceField.getText().trim();
         if (name.isEmpty() || description.isEmpty() || price.isEmpty()) {
             // Show error message if mandatory fields are empty
-            ControllerUtilities.showAlert("Please fill in all mandatory fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillAllFieldsText"));
             return;
         }
         if (!ControllerUtilities.isNumeric(price)) {
             // Show error message if description or postal code fields contain non-numeric
             // characters
-            ControllerUtilities.showAlert("Please enter only numbers in the Price field fields.");
+            ControllerUtilities.showAlert(bundle.getString("fillNumericText"));
             return;
         }
         int styleInt = (int) (Math.random() * 8 - 1) + 1;

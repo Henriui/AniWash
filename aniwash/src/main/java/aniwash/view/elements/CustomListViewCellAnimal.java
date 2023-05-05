@@ -7,6 +7,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * This is a custom Java class for a ListView cell that displays information about an animal.
+ */
 public class CustomListViewCellAnimal extends ListCell<Animal> {
 
     private HBox animalInfoHBox;
