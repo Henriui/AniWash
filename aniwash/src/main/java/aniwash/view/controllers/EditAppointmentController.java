@@ -32,6 +32,10 @@ import java.util.ResourceBundle;
 
 import static aniwash.view.utilities.ControllerUtilities.*;
 
+/**
+ * The EditAppointmentController class is responsible for handling user input and updating appointments
+ * in the appointment scheduling system.
+ */
 public class EditAppointmentController extends CreatePopUp {
 
     private final MainViewModel mainViewModel = new MainViewModel();
@@ -67,6 +71,10 @@ public class EditAppointmentController extends CreatePopUp {
     private final ShoppingCart cart = new ShoppingCart();
     private ResourceBundle bundle;
 
+    /**
+     * This function initializes various UI elements and sets event listeners for mouse clicks and
+     * button actions in a Java application.
+     */
     public void initialize() {
         bundle = MainApp.getBundle();
         newEntry = (Entry<Appointment>) getArg();
@@ -144,6 +152,10 @@ public class EditAppointmentController extends CreatePopUp {
                 customerObservableList, petList, services, newEntry));
     }
 
+    /**
+     * This function retrieves and displays information about a current appointment, including the
+     * customer, animal, products, and pricing.
+     */
     public void getCurrentAppointment() {
         customerObservableList = mainViewModel.getPeople();
         Appointment appointment = newEntry.getUserObject();

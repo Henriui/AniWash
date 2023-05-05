@@ -14,6 +14,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+/**
+ * The AdminViewController class handles the creation of new employees and navigation between different
+ * views in the application.
+ */
 public class AdminViewController {
     public EmployeeDao ed = new EmployeeDao();
 

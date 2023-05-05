@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * The LoginController class handles user login functionality in a Java application.
+ */
 public class LoginController {
     @FXML
     private Button login;

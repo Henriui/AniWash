@@ -26,6 +26,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * The CustomersController class controls the behavior of the customer list view and handles user
+ * interactions with the list.
+ */
 public class CustomersController {
     private static Customer selectedCustomer;
     @FXML
@@ -55,6 +59,10 @@ public class CustomersController {
         return new FXMLLoader(MainApp.class.getResource("view/" + fxml + ".fxml"));
     }
 
+    /**
+     * This function initializes a ListView with custom ListCells, sets a filter predicate for
+     * searching, and opens a popup window to display customer info when a customer is double-clicked.
+     */
     public void initialize() {
         // test();
         // Bind the ListView to the ObservableList

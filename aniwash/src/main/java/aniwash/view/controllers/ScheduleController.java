@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * The ScheduleController class controls the display of a calendar view and allows the user to switch
+ * between different views of the calendar.
+ */
 public class ScheduleController {
 
     @FXML

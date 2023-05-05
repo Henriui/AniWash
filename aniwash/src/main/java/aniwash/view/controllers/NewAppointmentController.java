@@ -31,6 +31,9 @@ import static aniwash.view.utilities.ControllerUtilities.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This is a Java class for creating a new appointment with various UI elements and functionalities.
+ */
 public class NewAppointmentController extends CreatePopUp {
 
 	private final MainViewModel mainViewModel = new MainViewModel();
@@ -67,6 +70,9 @@ public class NewAppointmentController extends CreatePopUp {
 	private ObservableList<Customer> customerObservableList;
 	private ShoppingCart cart = new ShoppingCart();
 
+	/**
+	 * This function initializes various UI elements and sets event listeners for a calendar application.
+	 */
 	public void initialize() {
 		// Get the created entry from the calendar view.
 		newEntry = (Entry<Appointment>) getArg();

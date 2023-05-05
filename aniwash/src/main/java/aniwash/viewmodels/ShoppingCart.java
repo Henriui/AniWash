@@ -6,6 +6,11 @@ import aniwash.entity.Product;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ShoppingCart class represents a shopping cart that stores products and their associated
+ * discounts, and provides methods for adding, editing, and removing products, as well as calculating
+ * the total price and discounted price of the products in the cart.
+ */
 public class ShoppingCart {
 
     private Map<Product, Discount> productsMap;

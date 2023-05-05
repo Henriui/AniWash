@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * The MainApp class is responsible for initializing the application, setting the scene and stage,
+ * loading FXML files, and managing the user's login status and locale.
+ */
 public class MainApp extends Application {
 
     @FXML

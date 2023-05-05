@@ -13,6 +13,10 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+/**
+ * The CreatePopUp class creates a pop-up window for creating or editing appointments in a calendar
+ * application.
+ */
 public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
 
     private final ResourceBundle bundle = MainApp.getBundle();

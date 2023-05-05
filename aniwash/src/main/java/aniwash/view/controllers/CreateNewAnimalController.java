@@ -17,6 +17,10 @@ import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
+/**
+ * This is a Java class that creates a new animal object and adds it to a customer's list of animals in
+ * a database.
+ */
 public class CreateNewAnimalController {
 
     @FXML
@@ -48,6 +52,13 @@ public class CreateNewAnimalController {
         customer = selCustomer;
     }
 
+    /**
+     * This function saves the information entered by the user about a pet and adds it to the database.
+     *
+     * @param event An ActionEvent object that represents the event that triggered the method call. It
+     * contains information about the event, such as the source of the event and any additional data
+     * associated with the event.
+     */
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
 

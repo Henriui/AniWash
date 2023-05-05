@@ -16,6 +16,10 @@ import javafx.stage.Stage;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * This is a Java class that controls the creation of a new customer and their pet, with input
+ * validation and saving to a database.
+ */
 public class NewCustomerController {
 
     // Create text fields for Customer section
@@ -56,6 +60,13 @@ public class NewCustomerController {
 
     }
 
+    /**
+     * This function saves customer and animal information to a database and checks for valid input.
+     * 
+     * @param event An ActionEvent object that represents the event that triggered the method call. It
+     * contains information about the event, such as the source of the event and any additional data
+     * associated with the event.
+     */
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         String name = nameField.getText().trim();
