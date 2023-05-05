@@ -4,8 +4,8 @@ import aniwash.dao.EmployeeDao;
 import aniwash.dao.IEmployeeDao;
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
-import aniwash.view.utilities.LanguageSave;
 import aniwash.enums.UserType;
+import aniwash.view.utilities.LanguageSave;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,21 +51,17 @@ public class MainApp extends Application {
 
         // Initialise biscuit
         cookie = new Biscuit();
-        
 
         try {
             locale = LanguageSave.readLanguageFromFile();
             if (locale == null) {
-                locale = new Locale("en", "US");
+                locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
             }
         } catch (Exception e) {
-            locale = new Locale("en", "US");
+            locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
         }
         setLocale(locale);
         cookie.setBiscuit(empl);
-        locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
-        setLocale(locale);//Change language here to fr_FR for French or en_US for English
-        // TODO: Change this to the login view when project done.
         Parent root = loadParent("login");
         scene = new Scene(root);
         stage.setScene(scene);
