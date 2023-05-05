@@ -1,5 +1,6 @@
 package aniwash.view.elements;
 
+import aniwash.MainApp;
 import aniwash.view.utilities.ControllerUtilities;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.DateControl.EntryDetailsParameter;
@@ -10,8 +11,11 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
+
+    private final ResourceBundle bundle = MainApp.getBundle();
 
     static EntryDetailsParameter savedArg0;
     // This method is called when the user double clicks on a calendar entry or an
@@ -28,7 +32,7 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
                 scene = new Scene(loader.load());
                 Stage stage = new Stage();
                 stage.setScene(scene);
-                stage.setTitle("Create Appointment");
+                stage.setTitle(bundle.getString("createAppointmentTittle"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.show();
             } catch (IOException e) {
@@ -37,11 +41,11 @@ public class CreatePopUp implements Callback<EntryDetailsParameter, Boolean> {
         else {
             try {
                 loader = ControllerUtilities.loadFXML("editAppoitment");
-                System.out.println("Edit Appointment " + loader.toString() + " " + loader.getLocation());
+                System.out.println("Edit Appointment " + loader + " " + loader.getLocation());
                 scene = new Scene(loader.load());
                 Stage stage = new Stage();
                 stage.setScene(scene);
-                stage.setTitle("Edit Appointment");
+                stage.setTitle(bundle.getString("editAppointmentTittle"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.show();
             } catch (IOException e) {
