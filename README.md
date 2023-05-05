@@ -21,7 +21,7 @@
 
 ## Authors
 
-Henri Uimonewn
+Henri Uimonen
 Jonne Borgman
 Rasmus Hyyppä
 Lassi Bågman
@@ -53,6 +53,8 @@ You also need to have MySQL installed on your computer.
 After you have installed Java, Maven and MySQL copy repository to your computer. Run Maven install in the project folder
 to install all the dependencies. After that, you can run the program by running App.java in the
 aniwash/src/main/java/aniwash/App.java
+
+User guide for AniWash in finnish can be found in Documents folder
 
 ### MySQL
 
