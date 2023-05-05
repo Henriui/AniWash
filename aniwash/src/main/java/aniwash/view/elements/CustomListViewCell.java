@@ -7,6 +7,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * This is a custom JavaFX ListCell that displays customer information in a formatted HBox.
+ */
 public class CustomListViewCell extends ListCell<Customer> {
 
     private HBox customerInfoHBox;

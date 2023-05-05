@@ -3,6 +3,9 @@ package aniwash.entity.localization;
 import aniwash.entity.Appointment;
 import jakarta.persistence.*;
 
+/**
+ * The LocalizedAppointment class represents an appointment with a localized description.
+ */
 @Entity
 public class LocalizedAppointment {
 

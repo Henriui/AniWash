@@ -13,6 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * This is a Java class for a new product controller that creates a product object and saves it based
+ * on user input.
+ */
 public class NewProductController {
 
     // Create text fields for Customer section
@@ -34,6 +38,12 @@ public class NewProductController {
 
     }
 
+    /**
+     * This function creates a new product object with user input and adds it to the main view model.
+     * 
+     * @param event An ActionEvent object that represents the event that occurred, such as a button
+     * click or menu selection.
+     */
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         String name = nameField.getText().trim();

@@ -31,6 +31,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The EditCustomerController class is responsible for handling the editing of
+ * customer information and
+ * managing the display of associated pets and appointments.
+ */
 public class EditCustomerController {
     // Create text fields for Customer section
     @FXML
@@ -68,6 +73,11 @@ public class EditCustomerController {
     private static Customer customer;
     private final CustomersController customersController = new CustomersController();
 
+    /**
+     * This function initializes the UI elements and populates them with data from
+     * the selected
+     * customer object.
+     */
     public void initialize() {
         customer = customersController.getSelectedCustomer();
 
@@ -106,12 +116,12 @@ public class EditCustomerController {
                 Animal selectedItem = listView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
                     customer.removeAnimal(selectedItem);
-                   
+
                     listView.getItems().remove(selectedItem);
                 }
             }
         });
-        
+
         removeCustomer.setOnAction(event -> {
             customersController.removeCustomer(customer);
             Node source = (Node) event.getSource();
@@ -128,6 +138,12 @@ public class EditCustomerController {
                         .or(emailField.textProperty().isEmpty()));
     }
 
+    /**
+     * This function updates a customer object with input values and saves it to a database.
+     * 
+     * @param event An ActionEvent object that represents the event that occurred when the "Save"
+     * button was clicked.
+     */
     @FXML
     public void onSaveButtonClicked(ActionEvent event) {
         String name = nameField.getText().trim();
@@ -142,7 +158,8 @@ public class EditCustomerController {
             return;
         }
 
-        if (!ControllerUtilities.isNumeric(phone) || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilities.isNumeric(postalCode)) {
+        if (!ControllerUtilities.isNumeric(phone)
+                || !postalCodeField.getText().trim().isEmpty() && !ControllerUtilities.isNumeric(postalCode)) {
             // Show error message if phone or postal code fields contain non-numeric
             // characters
             ControllerUtilities.showAlert("Please enter only numbers in the Phone,Postal Code and pet Age fields.");
