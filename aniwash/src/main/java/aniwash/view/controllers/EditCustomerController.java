@@ -112,7 +112,7 @@ public class EditCustomerController {
         postalCodeField.setText(customer.getPostalCode());
 
         listView.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.DELETE) {
+            if (event.getCode() == KeyCode.BACK_SPACE) {
                 Animal selectedItem = listView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null) {
                     customer.removeAnimal(selectedItem);

@@ -69,8 +69,8 @@ public class NewProductController {
         // All input values are valid, create the Procuct object
         Product product = new Product(name, description, Integer.parseInt(price), "style" + styleInt);
         LocalizedProduct localizedProduct = new LocalizedProduct(product, name, description);
-        localizedProduct.setId(new LocalizedId(MainApp.getLocale().getLanguage()));
-        product.getLocalizations().put(MainApp.getLocale().getLanguage(), localizedProduct);
+        localizedProduct.setId(new LocalizedId("en"));
+        product.getLocalizations().put("en", localizedProduct);
         MainViewModel mainViewModel = new MainViewModel();
         mainViewModel.createCalendar(product);
         Node source = (Node) event.getSource();

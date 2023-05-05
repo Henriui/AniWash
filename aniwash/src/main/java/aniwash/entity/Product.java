@@ -64,11 +64,11 @@ public class Product {
     }
 
     public String getName(String locale) {
-        return localizations.get(locale).getName();
+        return localizations.get("en").getName();
     }
 
     public String getDescription(String locale) {
-        return localizations.get(locale).getDescription();
+        return localizations.get("en").getDescription();
     }
 
     public Map<String, LocalizedProduct> getLocalizations() {
