@@ -22,7 +22,6 @@ public class LoginController {
     private EmployeeDao employeeDao = new EmployeeDao();
 
     public void initialize() {
-        MainApp.changeStageSize(555, 555);
     }
 
     @FXML
@@ -53,7 +52,6 @@ public class LoginController {
 
                     MainApp.setBiscuit(e);
                     MainApp.setRoot("mainView");
-                    MainApp.changeStageSize(1300, 800);
                     return;
                 } catch (Exception ee) {
                     System.out.println("Error loading mainView");

@@ -2,6 +2,7 @@ package aniwash.view.controllers;
 
 import aniwash.MainApp;
 import aniwash.dao.AppointmentDao;
+import aniwash.datastorage.BiscuitExeption;
 import aniwash.entity.Appointment;
 import aniwash.entity.Product;
 import aniwash.viewmodels.MainViewModel;
@@ -18,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Calendar;
 import java.util.Hashtable;
@@ -57,30 +59,30 @@ public class DashboardController {
     public void initialize() {
 
         agendaView.getCalendarSources().addAll(mainViewModel.getFamilyCalendar());
-        /*
-         * try {
-         * // Write welcome text based on time of day (good morning, afternoon, evening)
-         * int time = LocalDateTime.now().getHour();
-         * System.out.println(time);
-         * if (time >= 0 && time < 12) {
-         * welcometext.setText("Good morning, " +
-         * MainApp.getBiscuit().getUser().getName() + "!");
-         * } else if (time >= 12 && time < 18) {
-         * welcometext.setText("Good afternoon, " +
-         * MainApp.getBiscuit().getUser().getName() + "!");
-         * } else {
-         * welcometext.setText("Good evening, " +
-         * MainApp.getBiscuit().getUser().getName() + "!");
-         * }
-         * } catch (BiscuitExeption e) {
-         * System.out.println("Biscuit fuked up");
-         * try {
-         * logout();
-         * } catch (IOException e1) {
-         * e1.printStackTrace();
-         * }
-         * }
-         */
+
+        try {
+            // Write welcome text based on time of day (good morning, afternoon, evening)
+            int time = LocalDateTime.now().getHour();
+            System.out.println(time);
+            if (time >= 0 && time < 12) {
+                welcometext.setText("Good morning, " +
+                        MainApp.getBiscuit().getUser().getName() + "!");
+            } else if (time >= 12 && time < 18) {
+                welcometext.setText("Good afternoon, " +
+                        MainApp.getBiscuit().getUser().getName() + "!");
+            } else {
+                welcometext.setText("Good evening, " +
+                        MainApp.getBiscuit().getUser().getName() + "!");
+            }
+        } catch (BiscuitExeption e) {
+            System.out.println("Biscuit fuked up");
+            try {
+                logout();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
         // agendaView.setCalendarSourceFactory(new Calendars());
 
         loadDataHistory();

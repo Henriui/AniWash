@@ -22,7 +22,7 @@
             <left>
                 <AnchorPane prefHeight="700.0" prefWidth="200.0" style="-fx-background-color: #E3D5CA; -fx-background-radius: 10; -fx-border-radius: 20; -fx-border-width: 5;" BorderPane.alignment="CENTER">
                     <children>
-                        <VBox prefHeight="700.0" prefWidth="193.0" spacing="10.0" styleClass="side-bar">
+                        <VBox prefHeight="700.0" prefWidth="193.0" spacing="10.0" styleClass="side-bar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <AnchorPane prefHeight="700.0" prefWidth="193.0" scaleZ="1" VBox.vgrow="ALWAYS">
                                     <children>

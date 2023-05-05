@@ -1,7 +1,10 @@
 package aniwash;
 
+import aniwash.dao.EmployeeDao;
+import aniwash.dao.IEmployeeDao;
 import aniwash.datastorage.Biscuit;
 import aniwash.entity.Employee;
+import aniwash.enums.UserType;
 import aniwash.view.utilities.LanguageSave;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -34,32 +37,32 @@ public class MainApp extends Application {
         // Add debug employee to database
         // TODO: Delete this before release.
 
-/*
-        Employee e = new Employee("tim", "cook", "Tim Cook", "tim.cook@lethimcook.com", "CEO entrepeneur", UserType.EMPLOYER);
+
+        Employee empl = new Employee("admin", "admin", "Tim Cook", "tim.cook@lethimcook.com", "CEO entrepeneur", UserType.EMPLOYER);
         IEmployeeDao ed = new EmployeeDao();
         try {
-            ed.addEmployee(e);
+            ed.add(empl);
         } catch (Exception ex) {
             System.out.println("Error deleting all employees");
         }
-*/
+
         // Set stage static so it can be accessed from other classes
         MainApp.stage = stage;
+
         // Initialise biscuit
         cookie = new Biscuit();
-        // TODO: Delete this before release.
-        // cookie.setBiscuit(e);
+
         try {
             locale = LanguageSave.readLanguageFromFile();
             if (locale == null) {
-                locale = new Locale("en", "US");
+                locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
             }
         } catch (Exception e) {
-            locale = new Locale("en", "US");
+            locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
         }
         setLocale(locale);
-        // TODO: Change this to the login view when project done.
-        Parent root = loadParent("mainView");
+        cookie.setBiscuit(empl);
+        Parent root = loadParent("login");
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -75,13 +78,12 @@ public class MainApp extends Application {
 
     public static void setRoot(String fxml) throws IOException {
         // Check if user is logged in. Otherwise, redirect to login view.
-/*
+
         if (!cookie.isBiscuitSet() || cookie.isBiscuitExpired()) {
             scene.setRoot(loadParent("login"));
             return;
         }
         cookie.updateLastActivity();
-*/
         scene.setRoot(loadParent(fxml));
     }
 
