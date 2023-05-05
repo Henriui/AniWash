@@ -71,6 +71,9 @@ public class NewProductController {
         LocalizedProduct localizedProduct = new LocalizedProduct(product, name, description);
         localizedProduct.setId(new LocalizedId("en"));
         product.getLocalizations().put("en", localizedProduct);
+        localizedProduct = new LocalizedProduct(product, name, description);
+        localizedProduct.setId(new LocalizedId("fr"));
+        product.getLocalizations().put("fr", localizedProduct);
         MainViewModel mainViewModel = new MainViewModel();
         mainViewModel.createCalendar(product);
         Node source = (Node) event.getSource();
