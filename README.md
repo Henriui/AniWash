@@ -78,6 +78,52 @@ the [Maven website](https://maven.apache.org/install.html).
 * Add a pet page where the customer can see their pet's information and appointments.
 * Add a page where the customer can see their invoices.
 
+## How to use
+
+### Login
+
+<img src="readme_resources/login.png" width="400" height="400">
+
+### Dashboard
+
+<img src="readme_resources/mainview.png" width="700" height="400">
+
+### Schedule
+
+<img src="readme_resources/schedule.png" width="700" height="400">
+
+### New appointment
+
+<img src="readme_resources/new.png" width="700" height="400">
+
+### Customer view
+
+<img src="readme_resources/customer.png" width="700" height="400">
+
+### New Customer
+
+<img src="readme_resources/newcustomer.png" width="700" height="400">
+
+### Edit Customer
+
+<img src="readme_resources/editcustomer.png" width="700" height="400">
+
+### New Pet
+
+<img src="readme_resources/createani.png" width="700" height="400">
+
+### Product view
+
+<img src="readme_resources/products.png" width="700" height="400">
+
+### New Product
+
+<img src="readme_resources/newproduct.png" width="700" height="400">
+
+### Admin view
+
+<img src="readme_resources/adminpanel.png" width="700" height="400">
+
 ## Class overview
 
 ### Class diagram:
